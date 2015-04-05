@@ -1,5 +1,8 @@
 <?php
 
+ require_once("helpers/Db2PhpEntityBase.class.php");  
+ require_once("helpers/Db2PhpEntityModificationTracking.class.php");  
+
 /**
  * 
  *
@@ -10,65 +13,51 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	private static $CLASS_NAME='SalaModel';
 	const SQL_IDENTIFIER_QUOTE='`';
 	const SQL_TABLE_NAME='sala';
-	const SQL_INSERT='INSERT INTO `sala` (`idSala`,`Descripcion`,`DescripcionCorta`,`Capacidad`,`FechaAlta`,`FechaBaja`) VALUES (?,?,?,?,?,?)';
-	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `sala` (`idSala`,`Descripcion`,`DescripcionCorta`,`Capacidad`,`FechaAlta`,`FechaBaja`) VALUES (?,?,?,?,?,?)';
-	const SQL_UPDATE='UPDATE `sala` SET `idSala`=?,`Descripcion`=?,`DescripcionCorta`=?,`Capacidad`=?,`FechaAlta`=?,`FechaBaja`=? WHERE `idSala`=?';
+	const SQL_INSERT='INSERT INTO `sala` (`idSala`,`Nombre`,`Capacidad`,`Descripcion`) VALUES (?,?,?,?)';
+	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `sala` (`Nombre`,`Capacidad`,`Descripcion`) VALUES (?,?,?)';
+	const SQL_UPDATE='UPDATE `sala` SET `idSala`=?,`Nombre`=?,`Capacidad`=?,`Descripcion`=? WHERE `idSala`=?';
 	const SQL_SELECT_PK='SELECT * FROM `sala` WHERE `idSala`=?';
 	const SQL_DELETE_PK='DELETE FROM `sala` WHERE `idSala`=?';
 	const FIELD_IDSALA=-1779113975;
-	const FIELD_DESCRIPCION=1751358562;
-	const FIELD_DESCRIPCIONCORTA=1016932145;
+	const FIELD_NOMBRE=1753800692;
 	const FIELD_CAPACIDAD=1597128679;
-	const FIELD_FECHAALTA=395767018;
-	const FIELD_FECHABAJA=395785928;
+	const FIELD_DESCRIPCION=1751358562;
 	private static $PRIMARY_KEYS=array(self::FIELD_IDSALA);
-	private static $AUTOINCREMENT_FIELDS=array();
+	private static $AUTOINCREMENT_FIELDS=array(self::FIELD_IDSALA);
 	private static $FIELD_NAMES=array(
 		self::FIELD_IDSALA=>'idSala',
-		self::FIELD_DESCRIPCION=>'Descripcion',
-		self::FIELD_DESCRIPCIONCORTA=>'DescripcionCorta',
+		self::FIELD_NOMBRE=>'Nombre',
 		self::FIELD_CAPACIDAD=>'Capacidad',
-		self::FIELD_FECHAALTA=>'FechaAlta',
-		self::FIELD_FECHABAJA=>'FechaBaja');
+		self::FIELD_DESCRIPCION=>'Descripcion');
 	private static $PROPERTY_NAMES=array(
 		self::FIELD_IDSALA=>'idSala',
-		self::FIELD_DESCRIPCION=>'Descripcion',
-		self::FIELD_DESCRIPCIONCORTA=>'DescripcionCorta',
+		self::FIELD_NOMBRE=>'Nombre',
 		self::FIELD_CAPACIDAD=>'Capacidad',
-		self::FIELD_FECHAALTA=>'FechaAlta',
-		self::FIELD_FECHABAJA=>'FechaBaja');
+		self::FIELD_DESCRIPCION=>'Descripcion');
 	private static $PROPERTY_TYPES=array(
 		self::FIELD_IDSALA=>Db2PhpEntity::PHP_TYPE_INT,
-		self::FIELD_DESCRIPCION=>Db2PhpEntity::PHP_TYPE_STRING,
-		self::FIELD_DESCRIPCIONCORTA=>Db2PhpEntity::PHP_TYPE_STRING,
+		self::FIELD_NOMBRE=>Db2PhpEntity::PHP_TYPE_STRING,
 		self::FIELD_CAPACIDAD=>Db2PhpEntity::PHP_TYPE_INT,
-		self::FIELD_FECHAALTA=>Db2PhpEntity::PHP_TYPE_STRING,
-		self::FIELD_FECHABAJA=>Db2PhpEntity::PHP_TYPE_STRING);
+		self::FIELD_DESCRIPCION=>Db2PhpEntity::PHP_TYPE_STRING);
 	private static $FIELD_TYPES=array(
 		self::FIELD_IDSALA=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
-		self::FIELD_DESCRIPCION=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,150,0,false),
-		self::FIELD_DESCRIPCIONCORTA=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,50,0,false),
-		self::FIELD_CAPACIDAD=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
-		self::FIELD_FECHAALTA=>array(Db2PhpEntity::JDBC_TYPE_DATE,10,0,false),
-		self::FIELD_FECHABAJA=>array(Db2PhpEntity::JDBC_TYPE_DATE,10,0,false));
+		self::FIELD_NOMBRE=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,45,0,true),
+		self::FIELD_CAPACIDAD=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,true),
+		self::FIELD_DESCRIPCION=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,45,0,true));
 	private static $DEFAULT_VALUES=array(
-		self::FIELD_IDSALA=>0,
-		self::FIELD_DESCRIPCION=>'',
-		self::FIELD_DESCRIPCIONCORTA=>'',
-		self::FIELD_CAPACIDAD=>0,
-		self::FIELD_FECHAALTA=>'',
-		self::FIELD_FECHABAJA=>'');
+		self::FIELD_IDSALA=>null,
+		self::FIELD_NOMBRE=>null,
+		self::FIELD_CAPACIDAD=>null,
+		self::FIELD_DESCRIPCION=>null);
 	private $idSala;
-	private $Descripcion;
-	private $DescripcionCorta;
+	private $Nombre;
 	private $Capacidad;
-	private $FechaAlta;
-	private $FechaBaja;
+	private $Descripcion;
 
 	/**
 	 * set value for idSala 
 	 *
-	 * type:INT,size:10,default:null,primary,index
+	 * type:INT,size:10,default:null,primary,unique,autoincrement
 	 *
 	 * @param mixed $idSala
 	 * @return SalaModel
@@ -82,7 +71,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	/**
 	 * get value for idSala 
 	 *
-	 * type:INT,size:10,default:null,primary,index
+	 * type:INT,size:10,default:null,primary,unique,autoincrement
 	 *
 	 * @return mixed
 	 */
@@ -91,59 +80,34 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	}
 
 	/**
-	 * set value for Descripcion 
+	 * set value for Nombre 
 	 *
-	 * type:VARCHAR,size:150,default:null
+	 * type:VARCHAR,size:45,default:null,nullable
 	 *
-	 * @param mixed $Descripcion
+	 * @param mixed $Nombre
 	 * @return SalaModel
 	 */
-	public function &setDescripcion($Descripcion) {
-		$this->notifyChanged(self::FIELD_DESCRIPCION,$this->Descripcion,$Descripcion);
-		$this->Descripcion=$Descripcion;
+	public function &setNombre($Nombre) {
+		$this->notifyChanged(self::FIELD_NOMBRE,$this->Nombre,$Nombre);
+		$this->Nombre=$Nombre;
 		return $this;
 	}
 
 	/**
-	 * get value for Descripcion 
+	 * get value for Nombre 
 	 *
-	 * type:VARCHAR,size:150,default:null
-	 *
-	 * @return mixed
-	 */
-	public function getDescripcion() {
-		return $this->Descripcion;
-	}
-
-	/**
-	 * set value for DescripcionCorta 
-	 *
-	 * type:VARCHAR,size:50,default:null
-	 *
-	 * @param mixed $DescripcionCorta
-	 * @return SalaModel
-	 */
-	public function &setDescripcionCorta($DescripcionCorta) {
-		$this->notifyChanged(self::FIELD_DESCRIPCIONCORTA,$this->DescripcionCorta,$DescripcionCorta);
-		$this->DescripcionCorta=$DescripcionCorta;
-		return $this;
-	}
-
-	/**
-	 * get value for DescripcionCorta 
-	 *
-	 * type:VARCHAR,size:50,default:null
+	 * type:VARCHAR,size:45,default:null,nullable
 	 *
 	 * @return mixed
 	 */
-	public function getDescripcionCorta() {
-		return $this->DescripcionCorta;
+	public function getNombre() {
+		return $this->Nombre;
 	}
 
 	/**
 	 * set value for Capacidad 
 	 *
-	 * type:INT,size:10,default:null
+	 * type:INT,size:10,default:null,nullable
 	 *
 	 * @param mixed $Capacidad
 	 * @return SalaModel
@@ -157,7 +121,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	/**
 	 * get value for Capacidad 
 	 *
-	 * type:INT,size:10,default:null
+	 * type:INT,size:10,default:null,nullable
 	 *
 	 * @return mixed
 	 */
@@ -166,53 +130,28 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	}
 
 	/**
-	 * set value for FechaAlta 
+	 * set value for Descripcion 
 	 *
-	 * type:DATE,size:10,default:null
+	 * type:VARCHAR,size:45,default:null,nullable
 	 *
-	 * @param mixed $FechaAlta
+	 * @param mixed $Descripcion
 	 * @return SalaModel
 	 */
-	public function &setFechaAlta($FechaAlta) {
-		$this->notifyChanged(self::FIELD_FECHAALTA,$this->FechaAlta,$FechaAlta);
-		$this->FechaAlta=$FechaAlta;
+	public function &setDescripcion($Descripcion) {
+		$this->notifyChanged(self::FIELD_DESCRIPCION,$this->Descripcion,$Descripcion);
+		$this->Descripcion=$Descripcion;
 		return $this;
 	}
 
 	/**
-	 * get value for FechaAlta 
+	 * get value for Descripcion 
 	 *
-	 * type:DATE,size:10,default:null
-	 *
-	 * @return mixed
-	 */
-	public function getFechaAlta() {
-		return $this->FechaAlta;
-	}
-
-	/**
-	 * set value for FechaBaja 
-	 *
-	 * type:DATE,size:10,default:null
-	 *
-	 * @param mixed $FechaBaja
-	 * @return SalaModel
-	 */
-	public function &setFechaBaja($FechaBaja) {
-		$this->notifyChanged(self::FIELD_FECHABAJA,$this->FechaBaja,$FechaBaja);
-		$this->FechaBaja=$FechaBaja;
-		return $this;
-	}
-
-	/**
-	 * get value for FechaBaja 
-	 *
-	 * type:DATE,size:10,default:null
+	 * type:VARCHAR,size:45,default:null,nullable
 	 *
 	 * @return mixed
 	 */
-	public function getFechaBaja() {
-		return $this->FechaBaja;
+	public function getDescripcion() {
+		return $this->Descripcion;
 	}
 
 	/**
@@ -327,11 +266,9 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	public function toArray() {
 		return array(
 			self::FIELD_IDSALA=>$this->getIdSala(),
-			self::FIELD_DESCRIPCION=>$this->getDescripcion(),
-			self::FIELD_DESCRIPCIONCORTA=>$this->getDescripcionCorta(),
+			self::FIELD_NOMBRE=>$this->getNombre(),
 			self::FIELD_CAPACIDAD=>$this->getCapacidad(),
-			self::FIELD_FECHAALTA=>$this->getFechaAlta(),
-			self::FIELD_FECHABAJA=>$this->getFechaBaja());
+			self::FIELD_DESCRIPCION=>$this->getDescripcion());
 	}
 
 
@@ -574,11 +511,9 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 */
 	public function assignByHash($result) {
 		$this->setIdSala($result['idSala']);
-		$this->setDescripcion($result['Descripcion']);
-		$this->setDescripcionCorta($result['DescripcionCorta']);
+		$this->setNombre($result['Nombre']);
 		$this->setCapacidad($result['Capacidad']);
-		$this->setFechaAlta($result['FechaAlta']);
-		$this->setFechaBaja($result['FechaBaja']);
+		$this->setDescripcion($result['Descripcion']);
 	}
 
 	/**
@@ -614,11 +549,9 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 */
 	protected function bindValues(PDOStatement &$stmt) {
 		$stmt->bindValue(1,$this->getIdSala());
-		$stmt->bindValue(2,$this->getDescripcion());
-		$stmt->bindValue(3,$this->getDescripcionCorta());
-		$stmt->bindValue(4,$this->getCapacidad());
-		$stmt->bindValue(5,$this->getFechaAlta());
-		$stmt->bindValue(6,$this->getFechaBaja());
+		$stmt->bindValue(2,$this->getNombre());
+		$stmt->bindValue(3,$this->getCapacidad());
+		$stmt->bindValue(4,$this->getDescripcion());
 	}
 
 
@@ -629,12 +562,23 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 * @return mixed
 	 */
 	public function insertIntoDatabase(PDO $db) {
-		$stmt=self::prepareStatement($db,self::SQL_INSERT);
-		$this->bindValues($stmt);
+		if (null===$this->getIdSala()) {
+			$stmt=self::prepareStatement($db,self::SQL_INSERT_AUTOINCREMENT);
+			$stmt->bindValue(1,$this->getNombre());
+			$stmt->bindValue(2,$this->getCapacidad());
+			$stmt->bindValue(3,$this->getDescripcion());
+		} else {
+			$stmt=self::prepareStatement($db,self::SQL_INSERT);
+			$this->bindValues($stmt);
+		}
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();
 			throw new Exception($stmt->errorCode() . ':' . var_export($stmt->errorInfo(), true), 0);
+		}
+		$lastInsertId=$db->lastInsertId();
+		if (false!==$lastInsertId) {
+			$this->setIdSala($lastInsertId);
 		}
 		$stmt->closeCursor();
 		$this->notifyPristine();
@@ -651,7 +595,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	public function updateToDatabase(PDO $db) {
 		$stmt=self::prepareStatement($db,self::SQL_UPDATE);
 		$this->bindValues($stmt);
-		$stmt->bindValue(7,$this->getIdSala());
+		$stmt->bindValue(5,$this->getIdSala());
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();
@@ -679,6 +623,19 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 		}
 		$stmt->closeCursor();
 		return $affected;
+	}
+
+	/**
+	 * Fetch ClaseModel's which this SalaModel references.
+	 * `sala`.`idSala` -> `clase`.`Sala`
+	 *
+	 * @param PDO $db a PDO Database instance
+	 * @param array $sort array of DSC instances
+	 * @return ClaseModel[]
+	 */
+	public function fetchClaseModelCollection(PDO $db, $sort=null) {
+		$filter=array(ClaseModel::FIELD_SALA=>$this->getIdSala());
+		return ClaseModel::findByFilter($db, $filter, true, $sort);
 	}
 
 
