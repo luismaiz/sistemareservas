@@ -114,7 +114,7 @@ class AdministradorBO extends Rest {
        $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);  
      }  
      
-     var_dump($SERVER);
+     //var_dump($SERVER);
      //echo $idUsuario . "<br/>";  
      if (isset($this->datosPeticion['idSala'])) {
          
@@ -127,11 +127,13 @@ class AdministradorBO extends Rest {
        $Descripcion = $this->datosPeticion['Descripcion'];  
        
        if (!empty($idSala)) {  
+           echo "jadjfkajdjf";
+         $sala->setIdSala($idSala);
          $sala->setNombre($Nombre);
          $sala->setCapacidad($Capacidad);
          $sala->setDescripcion($Descripcion);
-         //echo gettype($con);
-         $sala = $sala->updateToDatabase($this->con);
+         //var_dump($sala);
+         $filasActualizadas = $sala->updateToDatabase($this->con);
          
          /*$query = $this->_conn->prepare("update sala set Nombre=:Nombre, Capacidad=:Capacidad, Descripcion=:Descripcion WHERE idSala =:idSala");  
          $query->bindValue(":Nombre", $Nombre);  
@@ -142,7 +144,7 @@ class AdministradorBO extends Rest {
          //$filasActualizadas = $result->rowCount();  
          //var_dump($sala);
          //var_dump(count($sala));
-         if (count($sala) == 1) {  
+         if (count($filasActualizadas) == 1) {  
            $resp = array('estado' => "correcto", "msg" => "sala actualizada");  
            var_dump($resp);
            $this->mostrarRespuesta($this->convertirJson($resp), 200);  
@@ -190,7 +192,10 @@ class AdministradorBO extends Rest {
      
      $this->con = ConexionBD::getInstance();
      $sala = new SalaModel();
-     $filas = $sala->fetchClaseModelCollection($this->con);     
+     
+     $filas = $sala->findBySql($this->con,"Select * from sala");
+     
+     var_dump($filas);
      
      $num = count($filas);  
      if ($num > 0) {  
@@ -204,7 +209,7 @@ class AdministradorBO extends Rest {
    private function obtenerSala() {
         //var_dump($SERVER);
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+           $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
 
         //el constructor del padre ya se encarga de sanear los datos de entrada  
@@ -216,16 +221,24 @@ class AdministradorBO extends Rest {
         $sala = new SalaModel();
         
         $sala->setIdSala($idSala);
-        $fila = $sala->findById($this->con, $sala->getIdSala());
+        $fila = $sala->findById($this->con, $idSala);
+        
+        /*echo "datos de la consulta";
+        echo $fila->getIdSala();
+        echo $fila->getNombre();
+        echo $fila->getCapacidad();
+        echo $fila->getDescripcion();*/
         
         //var_dump($fila);
+        
+        //echo "Despues de fila";
 
         //consulta preparada ya hace mysqli_real_escape()  
         //$query = $this->_conn->prepare("SELECT idSala, Nombre, Capacidad, Descripcion FROM sala WHERE idSala=:idSala");
         //$query->bindValue(":idSala", $idSala);
         //$fila = $query->execute();
         //$query->execute();
-        
+        $respuesta = "";
         if ($fila != null) {
             $respuesta['estado'] = 'correcto';
             $respuesta['sala']['idSala'] = $fila->getIdSala();
@@ -235,7 +248,7 @@ class AdministradorBO extends Rest {
             //var_dump($respuesta);
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
-        $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);  
     }
 
 }
