@@ -14,10 +14,10 @@
 class ConexionBD extends PDO {
 
     private $engine = 'mysql';
-    private $host = '127.0.0.1:3306';
-    private $database = 'mydb';
-    private $username= 'root';
-    private $password = '';
+    private $host = 'hostingmysql321.nominalia.com:3306';
+    private $database = 'sistemareservas';
+    private $username= 'pfgreservas';
+    private $password = 'pfgreservas';
     private static $_instance = null;
 
     public function __construct() {
