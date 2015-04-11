@@ -1,5 +1,8 @@
 <?php
 
+require_once("helpers/Db2PhpEntityBase.class.php");
+require_once("helpers/Db2PhpEntityModificationTracking.class.php");
+
 /**
  * 
  *
