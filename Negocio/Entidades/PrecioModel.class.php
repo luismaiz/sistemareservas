@@ -6,172 +6,268 @@
  * @version 1.105
  * @package entity
  */
-class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTracking {
-	private static $CLASS_NAME='SalaModel';
+class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTracking {
+	private static $CLASS_NAME='PrecioModel';
 	const SQL_IDENTIFIER_QUOTE='`';
-	const SQL_TABLE_NAME='sala';
-	const SQL_INSERT='INSERT INTO `sala` (`idSala`,`NombreSala`,`CapacidadSala`,`DescripcionSala`,`FechaAlta`,`FechaBaja`) VALUES (?,?,?,?,?,?)';
-	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `sala` (`NombreSala`,`CapacidadSala`,`DescripcionSala`,`FechaAlta`,`FechaBaja`) VALUES (?,?,?,?,?)';
-	const SQL_UPDATE='UPDATE `sala` SET `idSala`=?,`NombreSala`=?,`CapacidadSala`=?,`DescripcionSala`=?,`FechaAlta`=?,`FechaBaja`=? WHERE `idSala`=?';
-	const SQL_SELECT_PK='SELECT * FROM `sala` WHERE `idSala`=?';
-	const SQL_DELETE_PK='DELETE FROM `sala` WHERE `idSala`=?';
-	const FIELD_IDSALA=-1779113975;
-	const FIELD_NOMBRESALA=949418583;
-	const FIELD_CAPACIDADSALA=-86431542;
-	const FIELD_DESCRIPCIONSALA=448909253;
-	const FIELD_FECHAALTA=395767018;
-	const FIELD_FECHABAJA=395785928;
-	private static $PRIMARY_KEYS=array(self::FIELD_IDSALA);
-	private static $AUTOINCREMENT_FIELDS=array(self::FIELD_IDSALA);
+	const SQL_TABLE_NAME='precio';
+	const SQL_INSERT='INSERT INTO `precio` (`idPrecio`,`idTipoSolicitud`,`idTipoAbono`,`idActividad`,`NombrePrecio`,`DescripcionPrecio`,`Precio`,`FechaAlta`,`FechaBaja`) VALUES (?,?,?,?,?,?,?,?,?)';
+	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `precio` (`idTipoSolicitud`,`idTipoAbono`,`idActividad`,`NombrePrecio`,`DescripcionPrecio`,`Precio`,`FechaAlta`,`FechaBaja`) VALUES (?,?,?,?,?,?,?,?)';
+	const SQL_UPDATE='UPDATE `precio` SET `idPrecio`=?,`idTipoSolicitud`=?,`idTipoAbono`=?,`idActividad`=?,`NombrePrecio`=?,`DescripcionPrecio`=?,`Precio`=?,`FechaAlta`=?,`FechaBaja`=? WHERE `idPrecio`=?';
+	const SQL_SELECT_PK='SELECT * FROM `precio` WHERE `idPrecio`=?';
+	const SQL_DELETE_PK='DELETE FROM `precio` WHERE `idPrecio`=?';
+	const FIELD_IDPRECIO=1851537897;
+	const FIELD_IDTIPOSOLICITUD=993437133;
+	const FIELD_IDTIPOABONO=-1060829608;
+	const FIELD_IDACTIVIDAD=481523386;
+	const FIELD_NOMBREPRECIO=-1803976137;
+	const FIELD_DESCRIPCIONPRECIO=-26400117;
+	const FIELD_PRECIO=-400820466;
+	const FIELD_FECHAALTA=1534012461;
+	const FIELD_FECHABAJA=1534031371;
+	private static $PRIMARY_KEYS=array(self::FIELD_IDPRECIO);
+	private static $AUTOINCREMENT_FIELDS=array(self::FIELD_IDPRECIO);
 	private static $FIELD_NAMES=array(
-		self::FIELD_IDSALA=>'idSala',
-		self::FIELD_NOMBRESALA=>'NombreSala',
-		self::FIELD_CAPACIDADSALA=>'CapacidadSala',
-		self::FIELD_DESCRIPCIONSALA=>'DescripcionSala',
+		self::FIELD_IDPRECIO=>'idPrecio',
+		self::FIELD_IDTIPOSOLICITUD=>'idTipoSolicitud',
+		self::FIELD_IDTIPOABONO=>'idTipoAbono',
+		self::FIELD_IDACTIVIDAD=>'idActividad',
+		self::FIELD_NOMBREPRECIO=>'NombrePrecio',
+		self::FIELD_DESCRIPCIONPRECIO=>'DescripcionPrecio',
+		self::FIELD_PRECIO=>'Precio',
 		self::FIELD_FECHAALTA=>'FechaAlta',
 		self::FIELD_FECHABAJA=>'FechaBaja');
 	private static $PROPERTY_NAMES=array(
-		self::FIELD_IDSALA=>'idSala',
-		self::FIELD_NOMBRESALA=>'NombreSala',
-		self::FIELD_CAPACIDADSALA=>'CapacidadSala',
-		self::FIELD_DESCRIPCIONSALA=>'DescripcionSala',
+		self::FIELD_IDPRECIO=>'idPrecio',
+		self::FIELD_IDTIPOSOLICITUD=>'idTipoSolicitud',
+		self::FIELD_IDTIPOABONO=>'idTipoAbono',
+		self::FIELD_IDACTIVIDAD=>'idActividad',
+		self::FIELD_NOMBREPRECIO=>'NombrePrecio',
+		self::FIELD_DESCRIPCIONPRECIO=>'DescripcionPrecio',
+		self::FIELD_PRECIO=>'Precio',
 		self::FIELD_FECHAALTA=>'FechaAlta',
 		self::FIELD_FECHABAJA=>'FechaBaja');
 	private static $PROPERTY_TYPES=array(
-		self::FIELD_IDSALA=>Db2PhpEntity::PHP_TYPE_INT,
-		self::FIELD_NOMBRESALA=>Db2PhpEntity::PHP_TYPE_STRING,
-		self::FIELD_CAPACIDADSALA=>Db2PhpEntity::PHP_TYPE_INT,
-		self::FIELD_DESCRIPCIONSALA=>Db2PhpEntity::PHP_TYPE_STRING,
+		self::FIELD_IDPRECIO=>Db2PhpEntity::PHP_TYPE_INT,
+		self::FIELD_IDTIPOSOLICITUD=>Db2PhpEntity::PHP_TYPE_INT,
+		self::FIELD_IDTIPOABONO=>Db2PhpEntity::PHP_TYPE_INT,
+		self::FIELD_IDACTIVIDAD=>Db2PhpEntity::PHP_TYPE_INT,
+		self::FIELD_NOMBREPRECIO=>Db2PhpEntity::PHP_TYPE_STRING,
+		self::FIELD_DESCRIPCIONPRECIO=>Db2PhpEntity::PHP_TYPE_STRING,
+		self::FIELD_PRECIO=>Db2PhpEntity::PHP_TYPE_FLOAT,
 		self::FIELD_FECHAALTA=>Db2PhpEntity::PHP_TYPE_STRING,
 		self::FIELD_FECHABAJA=>Db2PhpEntity::PHP_TYPE_STRING);
 	private static $FIELD_TYPES=array(
-		self::FIELD_IDSALA=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
-		self::FIELD_NOMBRESALA=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,45,0,true),
-		self::FIELD_CAPACIDADSALA=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,true),
-		self::FIELD_DESCRIPCIONSALA=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,150,0,true),
-		self::FIELD_FECHAALTA=>array(Db2PhpEntity::JDBC_TYPE_DATE,10,0,false),
-		self::FIELD_FECHABAJA=>array(Db2PhpEntity::JDBC_TYPE_DATE,10,0,false));
+		self::FIELD_IDPRECIO=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
+		self::FIELD_IDTIPOSOLICITUD=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,true),
+		self::FIELD_IDTIPOABONO=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,true),
+		self::FIELD_IDACTIVIDAD=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,true),
+		self::FIELD_NOMBREPRECIO=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,45,0,true),
+		self::FIELD_DESCRIPCIONPRECIO=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,45,0,true),
+		self::FIELD_PRECIO=>array(Db2PhpEntity::JDBC_TYPE_REAL,12,0,true),
+		self::FIELD_FECHAALTA=>array(Db2PhpEntity::JDBC_TYPE_TIMESTAMP,19,0,true),
+		self::FIELD_FECHABAJA=>array(Db2PhpEntity::JDBC_TYPE_TIMESTAMP,19,0,true));
 	private static $DEFAULT_VALUES=array(
-		self::FIELD_IDSALA=>null,
-		self::FIELD_NOMBRESALA=>null,
-		self::FIELD_CAPACIDADSALA=>null,
-		self::FIELD_DESCRIPCIONSALA=>null,
-		self::FIELD_FECHAALTA=>'',
-		self::FIELD_FECHABAJA=>'');
-	private $idSala;
-	private $NombreSala;
-	private $CapacidadSala;
-	private $DescripcionSala;
+		self::FIELD_IDPRECIO=>null,
+		self::FIELD_IDTIPOSOLICITUD=>null,
+		self::FIELD_IDTIPOABONO=>null,
+		self::FIELD_IDACTIVIDAD=>null,
+		self::FIELD_NOMBREPRECIO=>null,
+		self::FIELD_DESCRIPCIONPRECIO=>null,
+		self::FIELD_PRECIO=>null,
+		self::FIELD_FECHAALTA=>null,
+		self::FIELD_FECHABAJA=>null);
+	private $idPrecio;
+	private $idTipoSolicitud;
+	private $idTipoAbono;
+	private $idActividad;
+	private $NombrePrecio;
+	private $DescripcionPrecio;
+	private $Precio;
 	private $FechaAlta;
 	private $FechaBaja;
 
 	/**
-	 * set value for idSala 
+	 * set value for idPrecio 
 	 *
 	 * type:INT,size:10,default:null,primary,unique,autoincrement
 	 *
-	 * @param mixed $idSala
-	 * @return SalaModel
+	 * @param mixed $idPrecio
+	 * @return PrecioModel
 	 */
-	public function &setIdSala($idSala) {
-		$this->notifyChanged(self::FIELD_IDSALA,$this->idSala,$idSala);
-		$this->idSala=$idSala;
+	public function &setIdPrecio($idPrecio) {
+		$this->notifyChanged(self::FIELD_IDPRECIO,$this->idPrecio,$idPrecio);
+		$this->idPrecio=$idPrecio;
 		return $this;
 	}
 
 	/**
-	 * get value for idSala 
+	 * get value for idPrecio 
 	 *
 	 * type:INT,size:10,default:null,primary,unique,autoincrement
 	 *
 	 * @return mixed
 	 */
-	public function getIdSala() {
-		return $this->idSala;
+	public function getIdPrecio() {
+		return $this->idPrecio;
 	}
 
 	/**
-	 * set value for NombreSala 
+	 * set value for idTipoSolicitud 
+	 *
+	 * type:INT,size:10,default:null,unique,nullable
+	 *
+	 * @param mixed $idTipoSolicitud
+	 * @return PrecioModel
+	 */
+	public function &setIdTipoSolicitud($idTipoSolicitud) {
+		$this->notifyChanged(self::FIELD_IDTIPOSOLICITUD,$this->idTipoSolicitud,$idTipoSolicitud);
+		$this->idTipoSolicitud=$idTipoSolicitud;
+		return $this;
+	}
+
+	/**
+	 * get value for idTipoSolicitud 
+	 *
+	 * type:INT,size:10,default:null,unique,nullable
+	 *
+	 * @return mixed
+	 */
+	public function getIdTipoSolicitud() {
+		return $this->idTipoSolicitud;
+	}
+
+	/**
+	 * set value for idTipoAbono 
+	 *
+	 * type:INT,size:10,default:null,unique,nullable
+	 *
+	 * @param mixed $idTipoAbono
+	 * @return PrecioModel
+	 */
+	public function &setIdTipoAbono($idTipoAbono) {
+		$this->notifyChanged(self::FIELD_IDTIPOABONO,$this->idTipoAbono,$idTipoAbono);
+		$this->idTipoAbono=$idTipoAbono;
+		return $this;
+	}
+
+	/**
+	 * get value for idTipoAbono 
+	 *
+	 * type:INT,size:10,default:null,unique,nullable
+	 *
+	 * @return mixed
+	 */
+	public function getIdTipoAbono() {
+		return $this->idTipoAbono;
+	}
+
+	/**
+	 * set value for idActividad 
+	 *
+	 * type:INT,size:10,default:null,unique,nullable
+	 *
+	 * @param mixed $idActividad
+	 * @return PrecioModel
+	 */
+	public function &setIdActividad($idActividad) {
+		$this->notifyChanged(self::FIELD_IDACTIVIDAD,$this->idActividad,$idActividad);
+		$this->idActividad=$idActividad;
+		return $this;
+	}
+
+	/**
+	 * get value for idActividad 
+	 *
+	 * type:INT,size:10,default:null,unique,nullable
+	 *
+	 * @return mixed
+	 */
+	public function getIdActividad() {
+		return $this->idActividad;
+	}
+
+	/**
+	 * set value for NombrePrecio 
 	 *
 	 * type:VARCHAR,size:45,default:null,nullable
 	 *
-	 * @param mixed $NombreSala
-	 * @return SalaModel
+	 * @param mixed $NombrePrecio
+	 * @return PrecioModel
 	 */
-	public function &setNombreSala($NombreSala) {
-		$this->notifyChanged(self::FIELD_NOMBRESALA,$this->NombreSala,$NombreSala);
-		$this->NombreSala=$NombreSala;
+	public function &setNombrePrecio($NombrePrecio) {
+		$this->notifyChanged(self::FIELD_NOMBREPRECIO,$this->NombrePrecio,$NombrePrecio);
+		$this->NombrePrecio=$NombrePrecio;
 		return $this;
 	}
 
 	/**
-	 * get value for NombreSala 
+	 * get value for NombrePrecio 
 	 *
 	 * type:VARCHAR,size:45,default:null,nullable
 	 *
 	 * @return mixed
 	 */
-	public function getNombreSala() {
-		return $this->NombreSala;
+	public function getNombrePrecio() {
+		return $this->NombrePrecio;
 	}
 
 	/**
-	 * set value for CapacidadSala 
+	 * set value for DescripcionPrecio 
 	 *
-	 * type:INT,size:10,default:null,nullable
+	 * type:VARCHAR,size:45,default:null,nullable
 	 *
-	 * @param mixed $CapacidadSala
-	 * @return SalaModel
+	 * @param mixed $DescripcionPrecio
+	 * @return PrecioModel
 	 */
-	public function &setCapacidadSala($CapacidadSala) {
-		$this->notifyChanged(self::FIELD_CAPACIDADSALA,$this->CapacidadSala,$CapacidadSala);
-		$this->CapacidadSala=$CapacidadSala;
+	public function &setDescripcionPrecio($DescripcionPrecio) {
+		$this->notifyChanged(self::FIELD_DESCRIPCIONPRECIO,$this->DescripcionPrecio,$DescripcionPrecio);
+		$this->DescripcionPrecio=$DescripcionPrecio;
 		return $this;
 	}
 
 	/**
-	 * get value for CapacidadSala 
+	 * get value for DescripcionPrecio 
 	 *
-	 * type:INT,size:10,default:null,nullable
+	 * type:VARCHAR,size:45,default:null,nullable
 	 *
 	 * @return mixed
 	 */
-	public function getCapacidadSala() {
-		return $this->CapacidadSala;
+	public function getDescripcionPrecio() {
+		return $this->DescripcionPrecio;
 	}
 
 	/**
-	 * set value for DescripcionSala 
+	 * set value for Precio 
 	 *
-	 * type:VARCHAR,size:150,default:null,nullable
+	 * type:FLOAT,size:12,default:null,nullable
 	 *
-	 * @param mixed $DescripcionSala
-	 * @return SalaModel
+	 * @param mixed $Precio
+	 * @return PrecioModel
 	 */
-	public function &setDescripcionSala($DescripcionSala) {
-		$this->notifyChanged(self::FIELD_DESCRIPCIONSALA,$this->DescripcionSala,$DescripcionSala);
-		$this->DescripcionSala=$DescripcionSala;
+	public function &setPrecio($Precio) {
+		$this->notifyChanged(self::FIELD_PRECIO,$this->Precio,$Precio);
+		$this->Precio=$Precio;
 		return $this;
 	}
 
 	/**
-	 * get value for DescripcionSala 
+	 * get value for Precio 
 	 *
-	 * type:VARCHAR,size:150,default:null,nullable
+	 * type:FLOAT,size:12,default:null,nullable
 	 *
 	 * @return mixed
 	 */
-	public function getDescripcionSala() {
-		return $this->DescripcionSala;
+	public function getPrecio() {
+		return $this->Precio;
 	}
 
 	/**
 	 * set value for FechaAlta 
 	 *
-	 * type:DATE,size:10,default:null
+	 * type:TIMESTAMP,size:19,default:null,nullable
 	 *
 	 * @param mixed $FechaAlta
-	 * @return SalaModel
+	 * @return PrecioModel
 	 */
 	public function &setFechaAlta($FechaAlta) {
 		$this->notifyChanged(self::FIELD_FECHAALTA,$this->FechaAlta,$FechaAlta);
@@ -182,7 +278,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	/**
 	 * get value for FechaAlta 
 	 *
-	 * type:DATE,size:10,default:null
+	 * type:TIMESTAMP,size:19,default:null,nullable
 	 *
 	 * @return mixed
 	 */
@@ -193,10 +289,10 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	/**
 	 * set value for FechaBaja 
 	 *
-	 * type:DATE,size:10,default:null
+	 * type:TIMESTAMP,size:19,default:null,nullable
 	 *
 	 * @param mixed $FechaBaja
-	 * @return SalaModel
+	 * @return PrecioModel
 	 */
 	public function &setFechaBaja($FechaBaja) {
 		$this->notifyChanged(self::FIELD_FECHABAJA,$this->FechaBaja,$FechaBaja);
@@ -207,7 +303,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	/**
 	 * get value for FechaBaja 
 	 *
-	 * type:DATE,size:10,default:null
+	 * type:TIMESTAMP,size:19,default:null,nullable
 	 *
 	 * @return mixed
 	 */
@@ -326,10 +422,13 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 */
 	public function toArray() {
 		return array(
-			self::FIELD_IDSALA=>$this->getIdSala(),
-			self::FIELD_NOMBRESALA=>$this->getNombreSala(),
-			self::FIELD_CAPACIDADSALA=>$this->getCapacidadSala(),
-			self::FIELD_DESCRIPCIONSALA=>$this->getDescripcionSala(),
+			self::FIELD_IDPRECIO=>$this->getIdPrecio(),
+			self::FIELD_IDTIPOSOLICITUD=>$this->getIdTipoSolicitud(),
+			self::FIELD_IDTIPOABONO=>$this->getIdTipoAbono(),
+			self::FIELD_IDACTIVIDAD=>$this->getIdActividad(),
+			self::FIELD_NOMBREPRECIO=>$this->getNombrePrecio(),
+			self::FIELD_DESCRIPCIONPRECIO=>$this->getDescripcionPrecio(),
+			self::FIELD_PRECIO=>$this->getPrecio(),
 			self::FIELD_FECHAALTA=>$this->getFechaAlta(),
 			self::FIELD_FECHABAJA=>$this->getFechaBaja());
 	}
@@ -342,7 +441,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 */
 	public function getPrimaryKeyValues() {
 		return array(
-			self::FIELD_IDSALA=>$this->getIdSala());
+			self::FIELD_IDPRECIO=>$this->getIdPrecio());
 	}
 
 	/**
@@ -394,15 +493,15 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	/**
 	 * Query by Example.
 	 *
-	 * Match by attributes of passed example instance and return matched rows as an array of SalaModel instances
+	 * Match by attributes of passed example instance and return matched rows as an array of PrecioModel instances
 	 *
 	 * @param PDO $db a PDO Database instance
-	 * @param SalaModel $example an example instance defining the conditions. All non-null properties will be considered a constraint, null values will be ignored.
+	 * @param PrecioModel $example an example instance defining the conditions. All non-null properties will be considered a constraint, null values will be ignored.
 	 * @param boolean $and true if conditions should be and'ed, false if they should be or'ed
 	 * @param array $sort array of DSC instances
-	 * @return SalaModel[]
+	 * @return PrecioModel[]
 	 */
-	public static function findByExample(PDO $db,SalaModel $example, $and=true, $sort=null) {
+	public static function findByExample(PDO $db,PrecioModel $example, $and=true, $sort=null) {
 		$exampleValues=$example->toArray();
 		$filter=array();
 		foreach ($exampleValues as $fieldId=>$value) {
@@ -419,19 +518,19 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 * The filter can be either an hash with the field id as index and the value as filter value,
 	 * or a array of DFC instances.
 	 *
-	 * Will return matched rows as an array of SalaModel instances.
+	 * Will return matched rows as an array of PrecioModel instances.
 	 *
 	 * @param PDO $db a PDO Database instance
 	 * @param array $filter array of DFC instances defining the conditions
 	 * @param boolean $and true if conditions should be and'ed, false if they should be or'ed
 	 * @param array $sort array of DSC instances
-	 * @return SalaModel[]
+	 * @return PrecioModel[]
 	 */
 	public static function findByFilter(PDO $db, $filter, $and=true, $sort=null) {
 		if (!($filter instanceof DFCInterface)) {
 			$filter=new DFCAggregate($filter, $and);
 		}
-		$sql='SELECT * FROM `sala`'
+		$sql='SELECT * FROM `precio`'
 		. self::buildSqlWhere($filter, $and, false, true)
 		. self::buildSqlOrderBy($sort);
 
@@ -441,10 +540,10 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	}
 
 	/**
-	 * Will execute the passed statement and return the result as an array of SalaModel instances
+	 * Will execute the passed statement and return the result as an array of PrecioModel instances
 	 *
 	 * @param PDOStatement $stmt
-	 * @return SalaModel[]
+	 * @return PrecioModel[]
 	 */
 	public static function fromStatement(PDOStatement $stmt) {
 		$affected=$stmt->execute();
@@ -456,15 +555,15 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	}
 
 	/**
-	 * returns the result as an array of SalaModel instances without executing the passed statement
+	 * returns the result as an array of PrecioModel instances without executing the passed statement
 	 *
 	 * @param PDOStatement $stmt
-	 * @return SalaModel[]
+	 * @return PrecioModel[]
 	 */
 	public static function fromExecutedStatement(PDOStatement $stmt) {
 		$resultInstances=array();
 		while($result=$stmt->fetch(PDO::FETCH_ASSOC)) {
-			$o=new SalaModel();
+			$o=new PrecioModel();
 			$o->assignByHash($result);
 			$o->notifyPristine();
 			$resultInstances[]=$o;
@@ -510,13 +609,13 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	}
 
 	/**
-	 * Execute select query and return matched rows as an array of SalaModel instances.
+	 * Execute select query and return matched rows as an array of PrecioModel instances.
 	 *
 	 * The query should of course be on the table for this entity class and return all fields.
 	 *
 	 * @param PDO $db a PDO Database instance
 	 * @param string $sql
-	 * @return SalaModel[]
+	 * @return PrecioModel[]
 	 */
 	public static function findBySql(PDO $db, $sql) {
 		$stmt=$db->query($sql);
@@ -541,7 +640,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 		if (0==count($filter)) {
 			throw new InvalidArgumentException('refusing to delete without filter'); // just comment out this line if you are brave
 		}
-		$sql='DELETE FROM `sala`'
+		$sql='DELETE FROM `precio`'
 		. self::buildSqlWhere($filter, $and, false, true);
 		$stmt=self::prepareStatement($db, $sql);
 		self::bindValuesForFilter($stmt, $filter);
@@ -573,10 +672,13 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 * @param array $result
 	 */
 	public function assignByHash($result) {
-		$this->setIdSala($result['idSala']);
-		$this->setNombreSala($result['NombreSala']);
-		$this->setCapacidadSala($result['CapacidadSala']);
-		$this->setDescripcionSala($result['DescripcionSala']);
+		$this->setIdPrecio($result['idPrecio']);
+		$this->setIdTipoSolicitud($result['idTipoSolicitud']);
+		$this->setIdTipoAbono($result['idTipoAbono']);
+		$this->setIdActividad($result['idActividad']);
+		$this->setNombrePrecio($result['NombrePrecio']);
+		$this->setDescripcionPrecio($result['DescripcionPrecio']);
+		$this->setPrecio($result['Precio']);
 		$this->setFechaAlta($result['FechaAlta']);
 		$this->setFechaBaja($result['FechaBaja']);
 	}
@@ -586,11 +688,11 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 * Will return null if no row was matched.
 	 *
 	 * @param PDO $db
-	 * @return SalaModel
+	 * @return PrecioModel
 	 */
-	public static function findById(PDO $db,$idSala) {
+	public static function findById(PDO $db,$idPrecio) {
 		$stmt=self::prepareStatement($db,self::SQL_SELECT_PK);
-		$stmt->bindValue(1,$idSala);
+		$stmt->bindValue(1,$idPrecio);
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();
@@ -601,7 +703,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 		if(!$result) {
 			return null;
 		}
-		$o=new SalaModel();
+		$o=new PrecioModel();
 		$o->assignByHash($result);
 		$o->notifyPristine();
 		return $o;
@@ -613,12 +715,15 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 * @param PDOStatement $stmt
 	 */
 	protected function bindValues(PDOStatement &$stmt) {
-		$stmt->bindValue(1,$this->getIdSala());
-		$stmt->bindValue(2,$this->getNombreSala());
-		$stmt->bindValue(3,$this->getCapacidadSala());
-		$stmt->bindValue(4,$this->getDescripcionSala());
-		$stmt->bindValue(5,$this->getFechaAlta());
-		$stmt->bindValue(6,$this->getFechaBaja());
+		$stmt->bindValue(1,$this->getIdPrecio());
+		$stmt->bindValue(2,$this->getIdTipoSolicitud());
+		$stmt->bindValue(3,$this->getIdTipoAbono());
+		$stmt->bindValue(4,$this->getIdActividad());
+		$stmt->bindValue(5,$this->getNombrePrecio());
+		$stmt->bindValue(6,$this->getDescripcionPrecio());
+		$stmt->bindValue(7,$this->getPrecio());
+		$stmt->bindValue(8,$this->getFechaAlta());
+		$stmt->bindValue(9,$this->getFechaBaja());
 	}
 
 
@@ -629,13 +734,16 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 * @return mixed
 	 */
 	public function insertIntoDatabase(PDO $db) {
-		if (null===$this->getIdSala()) {
+		if (null===$this->getIdPrecio()) {
 			$stmt=self::prepareStatement($db,self::SQL_INSERT_AUTOINCREMENT);
-			$stmt->bindValue(1,$this->getNombreSala());
-			$stmt->bindValue(2,$this->getCapacidadSala());
-			$stmt->bindValue(3,$this->getDescripcionSala());
-			$stmt->bindValue(4,$this->getFechaAlta());
-			$stmt->bindValue(5,$this->getFechaBaja());
+			$stmt->bindValue(1,$this->getIdTipoSolicitud());
+			$stmt->bindValue(2,$this->getIdTipoAbono());
+			$stmt->bindValue(3,$this->getIdActividad());
+			$stmt->bindValue(4,$this->getNombrePrecio());
+			$stmt->bindValue(5,$this->getDescripcionPrecio());
+			$stmt->bindValue(6,$this->getPrecio());
+			$stmt->bindValue(7,$this->getFechaAlta());
+			$stmt->bindValue(8,$this->getFechaBaja());
 		} else {
 			$stmt=self::prepareStatement($db,self::SQL_INSERT);
 			$this->bindValues($stmt);
@@ -647,7 +755,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 		}
 		$lastInsertId=$db->lastInsertId();
 		if (false!==$lastInsertId) {
-			$this->setIdSala($lastInsertId);
+			$this->setIdPrecio($lastInsertId);
 		}
 		$stmt->closeCursor();
 		$this->notifyPristine();
@@ -664,7 +772,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	public function updateToDatabase(PDO $db) {
 		$stmt=self::prepareStatement($db,self::SQL_UPDATE);
 		$this->bindValues($stmt);
-		$stmt->bindValue(7,$this->getIdSala());
+		$stmt->bindValue(10,$this->getIdPrecio());
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();
@@ -684,7 +792,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 */
 	public function deleteFromDatabase(PDO $db) {
 		$stmt=self::prepareStatement($db,self::SQL_DELETE_PK);
-		$stmt->bindValue(1,$this->getIdSala());
+		$stmt->bindValue(1,$this->getIdPrecio());
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();
@@ -695,16 +803,45 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	}
 
 	/**
-	 * Fetch ClaseModel's which this SalaModel references.
-	 * `sala`.`idSala` -> `clase`.`idSala`
+	 * Fetch TiposolicitudModel which references this PrecioModel. Will return null in case reference is invalid.
+	 * `precio`.`idTipoSolicitud` -> `tiposolicitud`.`idTipoSolicitud`
 	 *
 	 * @param PDO $db a PDO Database instance
 	 * @param array $sort array of DSC instances
-	 * @return ClaseModel[]
+	 * @return TiposolicitudModel
 	 */
-	public function fetchClaseModelCollection(PDO $db, $sort=null) {
-		$filter=array(ClaseModel::FIELD_IDSALA=>$this->getIdSala());
-		return ClaseModel::findByFilter($db, $filter, true, $sort);
+	public function fetchTiposolicitudModel(PDO $db, $sort=null) {
+		$filter=array(TiposolicitudModel::FIELD_IDTIPOSOLICITUD=>$this->getIdTipoSolicitud());
+		$result=TiposolicitudModel::findByFilter($db, $filter, true, $sort);
+		return empty($result) ? null : $result[0];
+	}
+
+	/**
+	 * Fetch TipoabonoModel which references this PrecioModel. Will return null in case reference is invalid.
+	 * `precio`.`idTipoAbono` -> `tipoabono`.`idTipoAbono`
+	 *
+	 * @param PDO $db a PDO Database instance
+	 * @param array $sort array of DSC instances
+	 * @return TipoabonoModel
+	 */
+	public function fetchTipoabonoModel(PDO $db, $sort=null) {
+		$filter=array(TipoabonoModel::FIELD_IDTIPOABONO=>$this->getIdTipoAbono());
+		$result=TipoabonoModel::findByFilter($db, $filter, true, $sort);
+		return empty($result) ? null : $result[0];
+	}
+
+	/**
+	 * Fetch ActividadModel which references this PrecioModel. Will return null in case reference is invalid.
+	 * `precio`.`idActividad` -> `actividad`.`idActividad`
+	 *
+	 * @param PDO $db a PDO Database instance
+	 * @param array $sort array of DSC instances
+	 * @return ActividadModel
+	 */
+	public function fetchActividadModel(PDO $db, $sort=null) {
+		$filter=array(ActividadModel::FIELD_IDACTIVIDAD=>$this->getIdActividad());
+		$result=ActividadModel::findByFilter($db, $filter, true, $sort);
+		return empty($result) ? null : $result[0];
 	}
 
 
@@ -714,31 +851,31 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 * @return DOMDocument
 	 */
 	public function toDOM() {
-		return self::hashToDomDocument($this->toHash(), 'SalaModel');
+		return self::hashToDomDocument($this->toHash(), 'PrecioModel');
 	}
 
 	/**
-	 * get single SalaModel instance from a DOMElement
+	 * get single PrecioModel instance from a DOMElement
 	 *
 	 * @param DOMElement $node
-	 * @return SalaModel
+	 * @return PrecioModel
 	 */
 	public static function fromDOMElement(DOMElement $node) {
-		$o=new SalaModel();
+		$o=new PrecioModel();
 		$o->assignByHash(self::domNodeToHash($node, self::$FIELD_NAMES, self::$DEFAULT_VALUES, self::$FIELD_TYPES));
 			$o->notifyPristine();
 		return $o;
 	}
 
 	/**
-	 * get all instances of SalaModel from the passed DOMDocument
+	 * get all instances of PrecioModel from the passed DOMDocument
 	 *
 	 * @param DOMDocument $doc
-	 * @return SalaModel[]
+	 * @return PrecioModel[]
 	 */
 	public static function fromDOMDocument(DOMDocument $doc) {
 		$instances=array();
-		foreach ($doc->getElementsByTagName('SalaModel') as $node) {
+		foreach ($doc->getElementsByTagName('PrecioModel') as $node) {
 			$instances[]=self::fromDOMElement($node);
 		}
 		return $instances;

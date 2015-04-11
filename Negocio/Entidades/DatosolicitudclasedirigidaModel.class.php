@@ -6,213 +6,277 @@
  * @version 1.105
  * @package entity
  */
-class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTracking {
-	private static $CLASS_NAME='SalaModel';
+class DatosolicitudclasedirigidaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTracking {
+	private static $CLASS_NAME='DatosolicitudclasedirigidaModel';
 	const SQL_IDENTIFIER_QUOTE='`';
-	const SQL_TABLE_NAME='sala';
-	const SQL_INSERT='INSERT INTO `sala` (`idSala`,`NombreSala`,`CapacidadSala`,`DescripcionSala`,`FechaAlta`,`FechaBaja`) VALUES (?,?,?,?,?,?)';
-	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `sala` (`NombreSala`,`CapacidadSala`,`DescripcionSala`,`FechaAlta`,`FechaBaja`) VALUES (?,?,?,?,?)';
-	const SQL_UPDATE='UPDATE `sala` SET `idSala`=?,`NombreSala`=?,`CapacidadSala`=?,`DescripcionSala`=?,`FechaAlta`=?,`FechaBaja`=? WHERE `idSala`=?';
-	const SQL_SELECT_PK='SELECT * FROM `sala` WHERE `idSala`=?';
-	const SQL_DELETE_PK='DELETE FROM `sala` WHERE `idSala`=?';
-	const FIELD_IDSALA=-1779113975;
-	const FIELD_NOMBRESALA=949418583;
-	const FIELD_CAPACIDADSALA=-86431542;
-	const FIELD_DESCRIPCIONSALA=448909253;
-	const FIELD_FECHAALTA=395767018;
-	const FIELD_FECHABAJA=395785928;
-	private static $PRIMARY_KEYS=array(self::FIELD_IDSALA);
-	private static $AUTOINCREMENT_FIELDS=array(self::FIELD_IDSALA);
+	const SQL_TABLE_NAME='datosolicitudclasedirigida';
+	const SQL_INSERT='INSERT INTO `datosolicitudclasedirigida` (`idDatosSolicitudClaseDirigida`,`idSolicitud`,`Titular`,`IBAN`,`Entidad`,`Oficina`,`DigitoControl`,`Cuenta`) VALUES (?,?,?,?,?,?,?,?)';
+	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `datosolicitudclasedirigida` (`idSolicitud`,`Titular`,`IBAN`,`Entidad`,`Oficina`,`DigitoControl`,`Cuenta`) VALUES (?,?,?,?,?,?,?)';
+	const SQL_UPDATE='UPDATE `datosolicitudclasedirigida` SET `idDatosSolicitudClaseDirigida`=?,`idSolicitud`=?,`Titular`=?,`IBAN`=?,`Entidad`=?,`Oficina`=?,`DigitoControl`=?,`Cuenta`=? WHERE `idDatosSolicitudClaseDirigida`=?';
+	const SQL_SELECT_PK='SELECT * FROM `datosolicitudclasedirigida` WHERE `idDatosSolicitudClaseDirigida`=?';
+	const SQL_DELETE_PK='DELETE FROM `datosolicitudclasedirigida` WHERE `idDatosSolicitudClaseDirigida`=?';
+	const FIELD_IDDATOSSOLICITUDCLASEDIRIGIDA=-890942132;
+	const FIELD_IDSOLICITUD=-1396452684;
+	const FIELD_TITULAR=-960535950;
+	const FIELD_IBAN=1780964987;
+	const FIELD_ENTIDAD=-1245408716;
+	const FIELD_OFICINA=-1199671978;
+	const FIELD_DIGITOCONTROL=-1621949914;
+	const FIELD_CUENTA=1986800285;
+	private static $PRIMARY_KEYS=array(self::FIELD_IDDATOSSOLICITUDCLASEDIRIGIDA);
+	private static $AUTOINCREMENT_FIELDS=array(self::FIELD_IDDATOSSOLICITUDCLASEDIRIGIDA);
 	private static $FIELD_NAMES=array(
-		self::FIELD_IDSALA=>'idSala',
-		self::FIELD_NOMBRESALA=>'NombreSala',
-		self::FIELD_CAPACIDADSALA=>'CapacidadSala',
-		self::FIELD_DESCRIPCIONSALA=>'DescripcionSala',
-		self::FIELD_FECHAALTA=>'FechaAlta',
-		self::FIELD_FECHABAJA=>'FechaBaja');
+		self::FIELD_IDDATOSSOLICITUDCLASEDIRIGIDA=>'idDatosSolicitudClaseDirigida',
+		self::FIELD_IDSOLICITUD=>'idSolicitud',
+		self::FIELD_TITULAR=>'Titular',
+		self::FIELD_IBAN=>'IBAN',
+		self::FIELD_ENTIDAD=>'Entidad',
+		self::FIELD_OFICINA=>'Oficina',
+		self::FIELD_DIGITOCONTROL=>'DigitoControl',
+		self::FIELD_CUENTA=>'Cuenta');
 	private static $PROPERTY_NAMES=array(
-		self::FIELD_IDSALA=>'idSala',
-		self::FIELD_NOMBRESALA=>'NombreSala',
-		self::FIELD_CAPACIDADSALA=>'CapacidadSala',
-		self::FIELD_DESCRIPCIONSALA=>'DescripcionSala',
-		self::FIELD_FECHAALTA=>'FechaAlta',
-		self::FIELD_FECHABAJA=>'FechaBaja');
+		self::FIELD_IDDATOSSOLICITUDCLASEDIRIGIDA=>'idDatosSolicitudClaseDirigida',
+		self::FIELD_IDSOLICITUD=>'idSolicitud',
+		self::FIELD_TITULAR=>'Titular',
+		self::FIELD_IBAN=>'iban',
+		self::FIELD_ENTIDAD=>'Entidad',
+		self::FIELD_OFICINA=>'Oficina',
+		self::FIELD_DIGITOCONTROL=>'DigitoControl',
+		self::FIELD_CUENTA=>'Cuenta');
 	private static $PROPERTY_TYPES=array(
-		self::FIELD_IDSALA=>Db2PhpEntity::PHP_TYPE_INT,
-		self::FIELD_NOMBRESALA=>Db2PhpEntity::PHP_TYPE_STRING,
-		self::FIELD_CAPACIDADSALA=>Db2PhpEntity::PHP_TYPE_INT,
-		self::FIELD_DESCRIPCIONSALA=>Db2PhpEntity::PHP_TYPE_STRING,
-		self::FIELD_FECHAALTA=>Db2PhpEntity::PHP_TYPE_STRING,
-		self::FIELD_FECHABAJA=>Db2PhpEntity::PHP_TYPE_STRING);
+		self::FIELD_IDDATOSSOLICITUDCLASEDIRIGIDA=>Db2PhpEntity::PHP_TYPE_INT,
+		self::FIELD_IDSOLICITUD=>Db2PhpEntity::PHP_TYPE_INT,
+		self::FIELD_TITULAR=>Db2PhpEntity::PHP_TYPE_STRING,
+		self::FIELD_IBAN=>Db2PhpEntity::PHP_TYPE_STRING,
+		self::FIELD_ENTIDAD=>Db2PhpEntity::PHP_TYPE_STRING,
+		self::FIELD_OFICINA=>Db2PhpEntity::PHP_TYPE_STRING,
+		self::FIELD_DIGITOCONTROL=>Db2PhpEntity::PHP_TYPE_STRING,
+		self::FIELD_CUENTA=>Db2PhpEntity::PHP_TYPE_STRING);
 	private static $FIELD_TYPES=array(
-		self::FIELD_IDSALA=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
-		self::FIELD_NOMBRESALA=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,45,0,true),
-		self::FIELD_CAPACIDADSALA=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,true),
-		self::FIELD_DESCRIPCIONSALA=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,150,0,true),
-		self::FIELD_FECHAALTA=>array(Db2PhpEntity::JDBC_TYPE_DATE,10,0,false),
-		self::FIELD_FECHABAJA=>array(Db2PhpEntity::JDBC_TYPE_DATE,10,0,false));
+		self::FIELD_IDDATOSSOLICITUDCLASEDIRIGIDA=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
+		self::FIELD_IDSOLICITUD=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,true),
+		self::FIELD_TITULAR=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,150,0,true),
+		self::FIELD_IBAN=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,4,0,true),
+		self::FIELD_ENTIDAD=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,4,0,true),
+		self::FIELD_OFICINA=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,4,0,true),
+		self::FIELD_DIGITOCONTROL=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,2,0,true),
+		self::FIELD_CUENTA=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,10,0,true));
 	private static $DEFAULT_VALUES=array(
-		self::FIELD_IDSALA=>null,
-		self::FIELD_NOMBRESALA=>null,
-		self::FIELD_CAPACIDADSALA=>null,
-		self::FIELD_DESCRIPCIONSALA=>null,
-		self::FIELD_FECHAALTA=>'',
-		self::FIELD_FECHABAJA=>'');
-	private $idSala;
-	private $NombreSala;
-	private $CapacidadSala;
-	private $DescripcionSala;
-	private $FechaAlta;
-	private $FechaBaja;
+		self::FIELD_IDDATOSSOLICITUDCLASEDIRIGIDA=>null,
+		self::FIELD_IDSOLICITUD=>null,
+		self::FIELD_TITULAR=>null,
+		self::FIELD_IBAN=>null,
+		self::FIELD_ENTIDAD=>null,
+		self::FIELD_OFICINA=>null,
+		self::FIELD_DIGITOCONTROL=>null,
+		self::FIELD_CUENTA=>null);
+	private $idDatosSolicitudClaseDirigida;
+	private $idSolicitud;
+	private $Titular;
+	private $iban;
+	private $Entidad;
+	private $Oficina;
+	private $DigitoControl;
+	private $Cuenta;
 
 	/**
-	 * set value for idSala 
+	 * set value for idDatosSolicitudClaseDirigida 
 	 *
 	 * type:INT,size:10,default:null,primary,unique,autoincrement
 	 *
-	 * @param mixed $idSala
-	 * @return SalaModel
+	 * @param mixed $idDatosSolicitudClaseDirigida
+	 * @return DatosolicitudclasedirigidaModel
 	 */
-	public function &setIdSala($idSala) {
-		$this->notifyChanged(self::FIELD_IDSALA,$this->idSala,$idSala);
-		$this->idSala=$idSala;
+	public function &setIdDatosSolicitudClaseDirigida($idDatosSolicitudClaseDirigida) {
+		$this->notifyChanged(self::FIELD_IDDATOSSOLICITUDCLASEDIRIGIDA,$this->idDatosSolicitudClaseDirigida,$idDatosSolicitudClaseDirigida);
+		$this->idDatosSolicitudClaseDirigida=$idDatosSolicitudClaseDirigida;
 		return $this;
 	}
 
 	/**
-	 * get value for idSala 
+	 * get value for idDatosSolicitudClaseDirigida 
 	 *
 	 * type:INT,size:10,default:null,primary,unique,autoincrement
 	 *
 	 * @return mixed
 	 */
-	public function getIdSala() {
-		return $this->idSala;
+	public function getIdDatosSolicitudClaseDirigida() {
+		return $this->idDatosSolicitudClaseDirigida;
 	}
 
 	/**
-	 * set value for NombreSala 
+	 * set value for idSolicitud 
 	 *
-	 * type:VARCHAR,size:45,default:null,nullable
+	 * type:INT,size:10,default:null,index,nullable
 	 *
-	 * @param mixed $NombreSala
-	 * @return SalaModel
+	 * @param mixed $idSolicitud
+	 * @return DatosolicitudclasedirigidaModel
 	 */
-	public function &setNombreSala($NombreSala) {
-		$this->notifyChanged(self::FIELD_NOMBRESALA,$this->NombreSala,$NombreSala);
-		$this->NombreSala=$NombreSala;
+	public function &setIdSolicitud($idSolicitud) {
+		$this->notifyChanged(self::FIELD_IDSOLICITUD,$this->idSolicitud,$idSolicitud);
+		$this->idSolicitud=$idSolicitud;
 		return $this;
 	}
 
 	/**
-	 * get value for NombreSala 
+	 * get value for idSolicitud 
 	 *
-	 * type:VARCHAR,size:45,default:null,nullable
-	 *
-	 * @return mixed
-	 */
-	public function getNombreSala() {
-		return $this->NombreSala;
-	}
-
-	/**
-	 * set value for CapacidadSala 
-	 *
-	 * type:INT,size:10,default:null,nullable
-	 *
-	 * @param mixed $CapacidadSala
-	 * @return SalaModel
-	 */
-	public function &setCapacidadSala($CapacidadSala) {
-		$this->notifyChanged(self::FIELD_CAPACIDADSALA,$this->CapacidadSala,$CapacidadSala);
-		$this->CapacidadSala=$CapacidadSala;
-		return $this;
-	}
-
-	/**
-	 * get value for CapacidadSala 
-	 *
-	 * type:INT,size:10,default:null,nullable
+	 * type:INT,size:10,default:null,index,nullable
 	 *
 	 * @return mixed
 	 */
-	public function getCapacidadSala() {
-		return $this->CapacidadSala;
+	public function getIdSolicitud() {
+		return $this->idSolicitud;
 	}
 
 	/**
-	 * set value for DescripcionSala 
+	 * set value for Titular 
 	 *
 	 * type:VARCHAR,size:150,default:null,nullable
 	 *
-	 * @param mixed $DescripcionSala
-	 * @return SalaModel
+	 * @param mixed $Titular
+	 * @return DatosolicitudclasedirigidaModel
 	 */
-	public function &setDescripcionSala($DescripcionSala) {
-		$this->notifyChanged(self::FIELD_DESCRIPCIONSALA,$this->DescripcionSala,$DescripcionSala);
-		$this->DescripcionSala=$DescripcionSala;
+	public function &setTitular($Titular) {
+		$this->notifyChanged(self::FIELD_TITULAR,$this->Titular,$Titular);
+		$this->Titular=$Titular;
 		return $this;
 	}
 
 	/**
-	 * get value for DescripcionSala 
+	 * get value for Titular 
 	 *
 	 * type:VARCHAR,size:150,default:null,nullable
 	 *
 	 * @return mixed
 	 */
-	public function getDescripcionSala() {
-		return $this->DescripcionSala;
+	public function getTitular() {
+		return $this->Titular;
 	}
 
 	/**
-	 * set value for FechaAlta 
+	 * set value for IBAN 
 	 *
-	 * type:DATE,size:10,default:null
+	 * type:VARCHAR,size:4,default:null,nullable
 	 *
-	 * @param mixed $FechaAlta
-	 * @return SalaModel
+	 * @param mixed $iban
+	 * @return DatosolicitudclasedirigidaModel
 	 */
-	public function &setFechaAlta($FechaAlta) {
-		$this->notifyChanged(self::FIELD_FECHAALTA,$this->FechaAlta,$FechaAlta);
-		$this->FechaAlta=$FechaAlta;
+	public function &setIban($iban) {
+		$this->notifyChanged(self::FIELD_IBAN,$this->iban,$iban);
+		$this->iban=$iban;
 		return $this;
 	}
 
 	/**
-	 * get value for FechaAlta 
+	 * get value for IBAN 
 	 *
-	 * type:DATE,size:10,default:null
+	 * type:VARCHAR,size:4,default:null,nullable
 	 *
 	 * @return mixed
 	 */
-	public function getFechaAlta() {
-		return $this->FechaAlta;
+	public function getIban() {
+		return $this->iban;
 	}
 
 	/**
-	 * set value for FechaBaja 
+	 * set value for Entidad 
 	 *
-	 * type:DATE,size:10,default:null
+	 * type:VARCHAR,size:4,default:null,nullable
 	 *
-	 * @param mixed $FechaBaja
-	 * @return SalaModel
+	 * @param mixed $Entidad
+	 * @return DatosolicitudclasedirigidaModel
 	 */
-	public function &setFechaBaja($FechaBaja) {
-		$this->notifyChanged(self::FIELD_FECHABAJA,$this->FechaBaja,$FechaBaja);
-		$this->FechaBaja=$FechaBaja;
+	public function &setEntidad($Entidad) {
+		$this->notifyChanged(self::FIELD_ENTIDAD,$this->Entidad,$Entidad);
+		$this->Entidad=$Entidad;
 		return $this;
 	}
 
 	/**
-	 * get value for FechaBaja 
+	 * get value for Entidad 
 	 *
-	 * type:DATE,size:10,default:null
+	 * type:VARCHAR,size:4,default:null,nullable
 	 *
 	 * @return mixed
 	 */
-	public function getFechaBaja() {
-		return $this->FechaBaja;
+	public function getEntidad() {
+		return $this->Entidad;
+	}
+
+	/**
+	 * set value for Oficina 
+	 *
+	 * type:VARCHAR,size:4,default:null,nullable
+	 *
+	 * @param mixed $Oficina
+	 * @return DatosolicitudclasedirigidaModel
+	 */
+	public function &setOficina($Oficina) {
+		$this->notifyChanged(self::FIELD_OFICINA,$this->Oficina,$Oficina);
+		$this->Oficina=$Oficina;
+		return $this;
+	}
+
+	/**
+	 * get value for Oficina 
+	 *
+	 * type:VARCHAR,size:4,default:null,nullable
+	 *
+	 * @return mixed
+	 */
+	public function getOficina() {
+		return $this->Oficina;
+	}
+
+	/**
+	 * set value for DigitoControl 
+	 *
+	 * type:VARCHAR,size:2,default:null,nullable
+	 *
+	 * @param mixed $DigitoControl
+	 * @return DatosolicitudclasedirigidaModel
+	 */
+	public function &setDigitoControl($DigitoControl) {
+		$this->notifyChanged(self::FIELD_DIGITOCONTROL,$this->DigitoControl,$DigitoControl);
+		$this->DigitoControl=$DigitoControl;
+		return $this;
+	}
+
+	/**
+	 * get value for DigitoControl 
+	 *
+	 * type:VARCHAR,size:2,default:null,nullable
+	 *
+	 * @return mixed
+	 */
+	public function getDigitoControl() {
+		return $this->DigitoControl;
+	}
+
+	/**
+	 * set value for Cuenta 
+	 *
+	 * type:VARCHAR,size:10,default:null,nullable
+	 *
+	 * @param mixed $Cuenta
+	 * @return DatosolicitudclasedirigidaModel
+	 */
+	public function &setCuenta($Cuenta) {
+		$this->notifyChanged(self::FIELD_CUENTA,$this->Cuenta,$Cuenta);
+		$this->Cuenta=$Cuenta;
+		return $this;
+	}
+
+	/**
+	 * get value for Cuenta 
+	 *
+	 * type:VARCHAR,size:10,default:null,nullable
+	 *
+	 * @return mixed
+	 */
+	public function getCuenta() {
+		return $this->Cuenta;
 	}
 
 	/**
@@ -326,12 +390,14 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 */
 	public function toArray() {
 		return array(
-			self::FIELD_IDSALA=>$this->getIdSala(),
-			self::FIELD_NOMBRESALA=>$this->getNombreSala(),
-			self::FIELD_CAPACIDADSALA=>$this->getCapacidadSala(),
-			self::FIELD_DESCRIPCIONSALA=>$this->getDescripcionSala(),
-			self::FIELD_FECHAALTA=>$this->getFechaAlta(),
-			self::FIELD_FECHABAJA=>$this->getFechaBaja());
+			self::FIELD_IDDATOSSOLICITUDCLASEDIRIGIDA=>$this->getIdDatosSolicitudClaseDirigida(),
+			self::FIELD_IDSOLICITUD=>$this->getIdSolicitud(),
+			self::FIELD_TITULAR=>$this->getTitular(),
+			self::FIELD_IBAN=>$this->getIban(),
+			self::FIELD_ENTIDAD=>$this->getEntidad(),
+			self::FIELD_OFICINA=>$this->getOficina(),
+			self::FIELD_DIGITOCONTROL=>$this->getDigitoControl(),
+			self::FIELD_CUENTA=>$this->getCuenta());
 	}
 
 
@@ -342,7 +408,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 */
 	public function getPrimaryKeyValues() {
 		return array(
-			self::FIELD_IDSALA=>$this->getIdSala());
+			self::FIELD_IDDATOSSOLICITUDCLASEDIRIGIDA=>$this->getIdDatosSolicitudClaseDirigida());
 	}
 
 	/**
@@ -394,15 +460,15 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	/**
 	 * Query by Example.
 	 *
-	 * Match by attributes of passed example instance and return matched rows as an array of SalaModel instances
+	 * Match by attributes of passed example instance and return matched rows as an array of DatosolicitudclasedirigidaModel instances
 	 *
 	 * @param PDO $db a PDO Database instance
-	 * @param SalaModel $example an example instance defining the conditions. All non-null properties will be considered a constraint, null values will be ignored.
+	 * @param DatosolicitudclasedirigidaModel $example an example instance defining the conditions. All non-null properties will be considered a constraint, null values will be ignored.
 	 * @param boolean $and true if conditions should be and'ed, false if they should be or'ed
 	 * @param array $sort array of DSC instances
-	 * @return SalaModel[]
+	 * @return DatosolicitudclasedirigidaModel[]
 	 */
-	public static function findByExample(PDO $db,SalaModel $example, $and=true, $sort=null) {
+	public static function findByExample(PDO $db,DatosolicitudclasedirigidaModel $example, $and=true, $sort=null) {
 		$exampleValues=$example->toArray();
 		$filter=array();
 		foreach ($exampleValues as $fieldId=>$value) {
@@ -419,19 +485,19 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 * The filter can be either an hash with the field id as index and the value as filter value,
 	 * or a array of DFC instances.
 	 *
-	 * Will return matched rows as an array of SalaModel instances.
+	 * Will return matched rows as an array of DatosolicitudclasedirigidaModel instances.
 	 *
 	 * @param PDO $db a PDO Database instance
 	 * @param array $filter array of DFC instances defining the conditions
 	 * @param boolean $and true if conditions should be and'ed, false if they should be or'ed
 	 * @param array $sort array of DSC instances
-	 * @return SalaModel[]
+	 * @return DatosolicitudclasedirigidaModel[]
 	 */
 	public static function findByFilter(PDO $db, $filter, $and=true, $sort=null) {
 		if (!($filter instanceof DFCInterface)) {
 			$filter=new DFCAggregate($filter, $and);
 		}
-		$sql='SELECT * FROM `sala`'
+		$sql='SELECT * FROM `datosolicitudclasedirigida`'
 		. self::buildSqlWhere($filter, $and, false, true)
 		. self::buildSqlOrderBy($sort);
 
@@ -441,10 +507,10 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	}
 
 	/**
-	 * Will execute the passed statement and return the result as an array of SalaModel instances
+	 * Will execute the passed statement and return the result as an array of DatosolicitudclasedirigidaModel instances
 	 *
 	 * @param PDOStatement $stmt
-	 * @return SalaModel[]
+	 * @return DatosolicitudclasedirigidaModel[]
 	 */
 	public static function fromStatement(PDOStatement $stmt) {
 		$affected=$stmt->execute();
@@ -456,15 +522,15 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	}
 
 	/**
-	 * returns the result as an array of SalaModel instances without executing the passed statement
+	 * returns the result as an array of DatosolicitudclasedirigidaModel instances without executing the passed statement
 	 *
 	 * @param PDOStatement $stmt
-	 * @return SalaModel[]
+	 * @return DatosolicitudclasedirigidaModel[]
 	 */
 	public static function fromExecutedStatement(PDOStatement $stmt) {
 		$resultInstances=array();
 		while($result=$stmt->fetch(PDO::FETCH_ASSOC)) {
-			$o=new SalaModel();
+			$o=new DatosolicitudclasedirigidaModel();
 			$o->assignByHash($result);
 			$o->notifyPristine();
 			$resultInstances[]=$o;
@@ -510,13 +576,13 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	}
 
 	/**
-	 * Execute select query and return matched rows as an array of SalaModel instances.
+	 * Execute select query and return matched rows as an array of DatosolicitudclasedirigidaModel instances.
 	 *
 	 * The query should of course be on the table for this entity class and return all fields.
 	 *
 	 * @param PDO $db a PDO Database instance
 	 * @param string $sql
-	 * @return SalaModel[]
+	 * @return DatosolicitudclasedirigidaModel[]
 	 */
 	public static function findBySql(PDO $db, $sql) {
 		$stmt=$db->query($sql);
@@ -541,7 +607,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 		if (0==count($filter)) {
 			throw new InvalidArgumentException('refusing to delete without filter'); // just comment out this line if you are brave
 		}
-		$sql='DELETE FROM `sala`'
+		$sql='DELETE FROM `datosolicitudclasedirigida`'
 		. self::buildSqlWhere($filter, $and, false, true);
 		$stmt=self::prepareStatement($db, $sql);
 		self::bindValuesForFilter($stmt, $filter);
@@ -573,12 +639,14 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 * @param array $result
 	 */
 	public function assignByHash($result) {
-		$this->setIdSala($result['idSala']);
-		$this->setNombreSala($result['NombreSala']);
-		$this->setCapacidadSala($result['CapacidadSala']);
-		$this->setDescripcionSala($result['DescripcionSala']);
-		$this->setFechaAlta($result['FechaAlta']);
-		$this->setFechaBaja($result['FechaBaja']);
+		$this->setIdDatosSolicitudClaseDirigida($result['idDatosSolicitudClaseDirigida']);
+		$this->setIdSolicitud($result['idSolicitud']);
+		$this->setTitular($result['Titular']);
+		$this->setIban($result['IBAN']);
+		$this->setEntidad($result['Entidad']);
+		$this->setOficina($result['Oficina']);
+		$this->setDigitoControl($result['DigitoControl']);
+		$this->setCuenta($result['Cuenta']);
 	}
 
 	/**
@@ -586,11 +654,11 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 * Will return null if no row was matched.
 	 *
 	 * @param PDO $db
-	 * @return SalaModel
+	 * @return DatosolicitudclasedirigidaModel
 	 */
-	public static function findById(PDO $db,$idSala) {
+	public static function findById(PDO $db,$idDatosSolicitudClaseDirigida) {
 		$stmt=self::prepareStatement($db,self::SQL_SELECT_PK);
-		$stmt->bindValue(1,$idSala);
+		$stmt->bindValue(1,$idDatosSolicitudClaseDirigida);
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();
@@ -601,7 +669,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 		if(!$result) {
 			return null;
 		}
-		$o=new SalaModel();
+		$o=new DatosolicitudclasedirigidaModel();
 		$o->assignByHash($result);
 		$o->notifyPristine();
 		return $o;
@@ -613,12 +681,14 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 * @param PDOStatement $stmt
 	 */
 	protected function bindValues(PDOStatement &$stmt) {
-		$stmt->bindValue(1,$this->getIdSala());
-		$stmt->bindValue(2,$this->getNombreSala());
-		$stmt->bindValue(3,$this->getCapacidadSala());
-		$stmt->bindValue(4,$this->getDescripcionSala());
-		$stmt->bindValue(5,$this->getFechaAlta());
-		$stmt->bindValue(6,$this->getFechaBaja());
+		$stmt->bindValue(1,$this->getIdDatosSolicitudClaseDirigida());
+		$stmt->bindValue(2,$this->getIdSolicitud());
+		$stmt->bindValue(3,$this->getTitular());
+		$stmt->bindValue(4,$this->getIban());
+		$stmt->bindValue(5,$this->getEntidad());
+		$stmt->bindValue(6,$this->getOficina());
+		$stmt->bindValue(7,$this->getDigitoControl());
+		$stmt->bindValue(8,$this->getCuenta());
 	}
 
 
@@ -629,13 +699,15 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 * @return mixed
 	 */
 	public function insertIntoDatabase(PDO $db) {
-		if (null===$this->getIdSala()) {
+		if (null===$this->getIdDatosSolicitudClaseDirigida()) {
 			$stmt=self::prepareStatement($db,self::SQL_INSERT_AUTOINCREMENT);
-			$stmt->bindValue(1,$this->getNombreSala());
-			$stmt->bindValue(2,$this->getCapacidadSala());
-			$stmt->bindValue(3,$this->getDescripcionSala());
-			$stmt->bindValue(4,$this->getFechaAlta());
-			$stmt->bindValue(5,$this->getFechaBaja());
+			$stmt->bindValue(1,$this->getIdSolicitud());
+			$stmt->bindValue(2,$this->getTitular());
+			$stmt->bindValue(3,$this->getIban());
+			$stmt->bindValue(4,$this->getEntidad());
+			$stmt->bindValue(5,$this->getOficina());
+			$stmt->bindValue(6,$this->getDigitoControl());
+			$stmt->bindValue(7,$this->getCuenta());
 		} else {
 			$stmt=self::prepareStatement($db,self::SQL_INSERT);
 			$this->bindValues($stmt);
@@ -647,7 +719,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 		}
 		$lastInsertId=$db->lastInsertId();
 		if (false!==$lastInsertId) {
-			$this->setIdSala($lastInsertId);
+			$this->setIdDatosSolicitudClaseDirigida($lastInsertId);
 		}
 		$stmt->closeCursor();
 		$this->notifyPristine();
@@ -664,7 +736,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	public function updateToDatabase(PDO $db) {
 		$stmt=self::prepareStatement($db,self::SQL_UPDATE);
 		$this->bindValues($stmt);
-		$stmt->bindValue(7,$this->getIdSala());
+		$stmt->bindValue(9,$this->getIdDatosSolicitudClaseDirigida());
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();
@@ -684,7 +756,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 */
 	public function deleteFromDatabase(PDO $db) {
 		$stmt=self::prepareStatement($db,self::SQL_DELETE_PK);
-		$stmt->bindValue(1,$this->getIdSala());
+		$stmt->bindValue(1,$this->getIdDatosSolicitudClaseDirigida());
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();
@@ -695,16 +767,17 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	}
 
 	/**
-	 * Fetch ClaseModel's which this SalaModel references.
-	 * `sala`.`idSala` -> `clase`.`idSala`
+	 * Fetch SolicitudModel which references this DatosolicitudclasedirigidaModel. Will return null in case reference is invalid.
+	 * `datosolicitudclasedirigida`.`idSolicitud` -> `solicitud`.`idSolicitud`
 	 *
 	 * @param PDO $db a PDO Database instance
 	 * @param array $sort array of DSC instances
-	 * @return ClaseModel[]
+	 * @return SolicitudModel
 	 */
-	public function fetchClaseModelCollection(PDO $db, $sort=null) {
-		$filter=array(ClaseModel::FIELD_IDSALA=>$this->getIdSala());
-		return ClaseModel::findByFilter($db, $filter, true, $sort);
+	public function fetchSolicitudModel(PDO $db, $sort=null) {
+		$filter=array(SolicitudModel::FIELD_IDSOLICITUD=>$this->getIdSolicitud());
+		$result=SolicitudModel::findByFilter($db, $filter, true, $sort);
+		return empty($result) ? null : $result[0];
 	}
 
 
@@ -714,31 +787,31 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 * @return DOMDocument
 	 */
 	public function toDOM() {
-		return self::hashToDomDocument($this->toHash(), 'SalaModel');
+		return self::hashToDomDocument($this->toHash(), 'DatosolicitudclasedirigidaModel');
 	}
 
 	/**
-	 * get single SalaModel instance from a DOMElement
+	 * get single DatosolicitudclasedirigidaModel instance from a DOMElement
 	 *
 	 * @param DOMElement $node
-	 * @return SalaModel
+	 * @return DatosolicitudclasedirigidaModel
 	 */
 	public static function fromDOMElement(DOMElement $node) {
-		$o=new SalaModel();
+		$o=new DatosolicitudclasedirigidaModel();
 		$o->assignByHash(self::domNodeToHash($node, self::$FIELD_NAMES, self::$DEFAULT_VALUES, self::$FIELD_TYPES));
 			$o->notifyPristine();
 		return $o;
 	}
 
 	/**
-	 * get all instances of SalaModel from the passed DOMDocument
+	 * get all instances of DatosolicitudclasedirigidaModel from the passed DOMDocument
 	 *
 	 * @param DOMDocument $doc
-	 * @return SalaModel[]
+	 * @return DatosolicitudclasedirigidaModel[]
 	 */
 	public static function fromDOMDocument(DOMDocument $doc) {
 		$instances=array();
-		foreach ($doc->getElementsByTagName('SalaModel') as $node) {
+		foreach ($doc->getElementsByTagName('DatosolicitudclasedirigidaModel') as $node) {
 			$instances[]=self::fromDOMElement($node);
 		}
 		return $instances;

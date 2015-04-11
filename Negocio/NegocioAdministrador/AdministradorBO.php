@@ -2,7 +2,7 @@
 
 require_once("../../ComunicacionesREST/rest.php");
 require_once("../AccesoDatos/ConexionBD.php");
-require_once("../Entidades/SalasModel.class.php");
+require_once("../Entidades/SalaModel.class.php");
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -78,7 +78,7 @@ class AdministradorBO extends Rest {
         }
         $this->con = ConexionBD::getInstance();
         var_dump($this->con);
-        $sala = new SalasModel();
+        $sala = new SalaModel();
 
         //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {  
         $idSala = $this->datosPeticion['idSala'];
@@ -124,7 +124,7 @@ class AdministradorBO extends Rest {
         if (isset($this->datosPeticion['idSala'])) {
 
             $this->con = ConexionBD::getInstance();
-            $sala = new SalasModel();
+            $sala = new SalaModel();
 
             $idSala = $this->datosPeticion['idSala'];
             $NombreSala = $this->datosPeticion['NombreSala'];
@@ -173,7 +173,7 @@ class AdministradorBO extends Rest {
 
         if ($idSala >= 0) {
             $this->con = ConexionBD::getInstance();
-            $sala = new SalasModel();
+            $sala = new SalaModel();
 
             $sala->setIdSala($idSala);
             $result = $sala->deleteFromDatabase($this->con);
@@ -200,7 +200,7 @@ class AdministradorBO extends Rest {
         //$filas = $query->fetchAll(PDO::FETCH_ASSOC);  
 
         $this->con = ConexionBD::getInstance();
-        $sala = new SalasModel();
+        $sala = new SalaModel();
 
         $filas = $sala->findBySql($this->con, "Select * from sala");
 
@@ -227,7 +227,7 @@ class AdministradorBO extends Rest {
             $idSala = isset($this->datosPeticion['idSala']);
             
             $this->con = ConexionBD::getInstance();
-            $sala = new SalasModel();
+            $sala = new SalaModel();
 
             $sala->setIdSala($idSala);
             $fila = $sala->findById($this->con, $idSala);
