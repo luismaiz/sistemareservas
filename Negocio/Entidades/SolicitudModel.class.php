@@ -10,9 +10,9 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	private static $CLASS_NAME='SolicitudModel';
 	const SQL_IDENTIFIER_QUOTE='`';
 	const SQL_TABLE_NAME='solicitud';
-	const SQL_INSERT='INSERT INTO `solicitud` (`idSolicitud`,`idTipoSolicitud`,`idTipoTarifa`,`FechaSolicitud`,`Nombre`,`Apellido1`,`Apellido2`,`DNI`,`EMail`,`Direccion`,`CP`,`Sexo`,`FechaNacimiento`,`TutorLegal`,`Localidad`,`Telefono1`,`Telefono2`,`Provincia`,`DescripcionSolicitud`,`Otros`,`Localizador`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
-	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `solicitud` (`idTipoSolicitud`,`idTipoTarifa`,`FechaSolicitud`,`Nombre`,`Apellido1`,`Apellido2`,`DNI`,`EMail`,`Direccion`,`CP`,`Sexo`,`FechaNacimiento`,`TutorLegal`,`Localidad`,`Telefono1`,`Telefono2`,`Provincia`,`DescripcionSolicitud`,`Otros`,`Localizador`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
-	const SQL_UPDATE='UPDATE `solicitud` SET `idSolicitud`=?,`idTipoSolicitud`=?,`idTipoTarifa`=?,`FechaSolicitud`=?,`Nombre`=?,`Apellido1`=?,`Apellido2`=?,`DNI`=?,`EMail`=?,`Direccion`=?,`CP`=?,`Sexo`=?,`FechaNacimiento`=?,`TutorLegal`=?,`Localidad`=?,`Telefono1`=?,`Telefono2`=?,`Provincia`=?,`DescripcionSolicitud`=?,`Otros`=?,`Localizador`=? WHERE `idSolicitud`=?';
+	const SQL_INSERT='INSERT INTO `solicitud` (`idSolicitud`,`idTipoSolicitud`,`idTipoTarifa`,`FechaSolicitud`,`Nombre`,`Apellidos`,`DNI`,`EMail`,`Direccion`,`CP`,`Sexo`,`FechaNacimiento`,`TutorLegal`,`Localidad`,`Telefono1`,`Telefono2`,`Provincia`,`DescripcionSolicitud`,`Otros`,`Localizador`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `solicitud` (`idTipoSolicitud`,`idTipoTarifa`,`FechaSolicitud`,`Nombre`,`Apellidos`,`DNI`,`EMail`,`Direccion`,`CP`,`Sexo`,`FechaNacimiento`,`TutorLegal`,`Localidad`,`Telefono1`,`Telefono2`,`Provincia`,`DescripcionSolicitud`,`Otros`,`Localizador`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+	const SQL_UPDATE='UPDATE `solicitud` SET `idSolicitud`=?,`idTipoSolicitud`=?,`idTipoTarifa`=?,`FechaSolicitud`=?,`Nombre`=?,`Apellidos`=?,`DNI`=?,`EMail`=?,`Direccion`=?,`CP`=?,`Sexo`=?,`FechaNacimiento`=?,`TutorLegal`=?,`Localidad`=?,`Telefono1`=?,`Telefono2`=?,`Provincia`=?,`DescripcionSolicitud`=?,`Otros`=?,`Localizador`=? WHERE `idSolicitud`=?';
 	const SQL_SELECT_PK='SELECT * FROM `solicitud` WHERE `idSolicitud`=?';
 	const SQL_DELETE_PK='DELETE FROM `solicitud` WHERE `idSolicitud`=?';
 	const FIELD_IDSOLICITUD=1447296895;
@@ -20,8 +20,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	const FIELD_IDTIPOTARIFA=-1345692680;
 	const FIELD_FECHASOLICITUD=1971567697;
 	const FIELD_NOMBRE=-2000412045;
-	const FIELD_APELLIDO1=-363211735;
-	const FIELD_APELLIDO2=-363211734;
+	const FIELD_APELLIDOS=-363211669;
 	const FIELD_DNI=887144117;
 	const FIELD_EMAIL=2142891986;
 	const FIELD_DIRECCION=1933345350;
@@ -44,8 +43,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		self::FIELD_IDTIPOTARIFA=>'idTipoTarifa',
 		self::FIELD_FECHASOLICITUD=>'FechaSolicitud',
 		self::FIELD_NOMBRE=>'Nombre',
-		self::FIELD_APELLIDO1=>'Apellido1',
-		self::FIELD_APELLIDO2=>'Apellido2',
+		self::FIELD_APELLIDOS=>'Apellidos',
 		self::FIELD_DNI=>'DNI',
 		self::FIELD_EMAIL=>'EMail',
 		self::FIELD_DIRECCION=>'Direccion',
@@ -66,8 +64,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		self::FIELD_IDTIPOTARIFA=>'idTipoTarifa',
 		self::FIELD_FECHASOLICITUD=>'FechaSolicitud',
 		self::FIELD_NOMBRE=>'Nombre',
-		self::FIELD_APELLIDO1=>'Apellido1',
-		self::FIELD_APELLIDO2=>'Apellido2',
+		self::FIELD_APELLIDOS=>'Apellidos',
 		self::FIELD_DNI=>'dni',
 		self::FIELD_EMAIL=>'EMail',
 		self::FIELD_DIRECCION=>'Direccion',
@@ -88,8 +85,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		self::FIELD_IDTIPOTARIFA=>Db2PhpEntity::PHP_TYPE_INT,
 		self::FIELD_FECHASOLICITUD=>Db2PhpEntity::PHP_TYPE_STRING,
 		self::FIELD_NOMBRE=>Db2PhpEntity::PHP_TYPE_STRING,
-		self::FIELD_APELLIDO1=>Db2PhpEntity::PHP_TYPE_STRING,
-		self::FIELD_APELLIDO2=>Db2PhpEntity::PHP_TYPE_STRING,
+		self::FIELD_APELLIDOS=>Db2PhpEntity::PHP_TYPE_STRING,
 		self::FIELD_DNI=>Db2PhpEntity::PHP_TYPE_STRING,
 		self::FIELD_EMAIL=>Db2PhpEntity::PHP_TYPE_STRING,
 		self::FIELD_DIRECCION=>Db2PhpEntity::PHP_TYPE_STRING,
@@ -110,8 +106,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		self::FIELD_IDTIPOTARIFA=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,true),
 		self::FIELD_FECHASOLICITUD=>array(Db2PhpEntity::JDBC_TYPE_TIMESTAMP,19,0,true),
 		self::FIELD_NOMBRE=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,150,0,true),
-		self::FIELD_APELLIDO1=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,45,0,true),
-		self::FIELD_APELLIDO2=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,45,0,true),
+		self::FIELD_APELLIDOS=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,45,0,true),
 		self::FIELD_DNI=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,9,0,true),
 		self::FIELD_EMAIL=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,45,0,true),
 		self::FIELD_DIRECCION=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,150,0,true),
@@ -132,8 +127,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		self::FIELD_IDTIPOTARIFA=>null,
 		self::FIELD_FECHASOLICITUD=>null,
 		self::FIELD_NOMBRE=>null,
-		self::FIELD_APELLIDO1=>null,
-		self::FIELD_APELLIDO2=>null,
+		self::FIELD_APELLIDOS=>null,
 		self::FIELD_DNI=>null,
 		self::FIELD_EMAIL=>null,
 		self::FIELD_DIRECCION=>null,
@@ -153,8 +147,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	private $idTipoTarifa;
 	private $FechaSolicitud;
 	private $Nombre;
-	private $Apellido1;
-	private $Apellido2;
+	private $Apellidos;
 	private $dni;
 	private $EMail;
 	private $Direccion;
@@ -296,53 +289,28 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	}
 
 	/**
-	 * set value for Apellido1 
+	 * set value for Apellidos 
 	 *
 	 * type:VARCHAR,size:45,default:null,nullable
 	 *
-	 * @param mixed $Apellido1
+	 * @param mixed $Apellidos
 	 * @return SolicitudModel
 	 */
-	public function &setApellido1($Apellido1) {
-		$this->notifyChanged(self::FIELD_APELLIDO1,$this->Apellido1,$Apellido1);
-		$this->Apellido1=$Apellido1;
+	public function &setApellidos($Apellidos) {
+		$this->notifyChanged(self::FIELD_APELLIDOS,$this->Apellidos,$Apellidos);
+		$this->Apellidos=$Apellidos;
 		return $this;
 	}
 
 	/**
-	 * get value for Apellido1 
+	 * get value for Apellidos 
 	 *
 	 * type:VARCHAR,size:45,default:null,nullable
 	 *
 	 * @return mixed
 	 */
-	public function getApellido1() {
-		return $this->Apellido1;
-	}
-
-	/**
-	 * set value for Apellido2 
-	 *
-	 * type:VARCHAR,size:45,default:null,nullable
-	 *
-	 * @param mixed $Apellido2
-	 * @return SolicitudModel
-	 */
-	public function &setApellido2($Apellido2) {
-		$this->notifyChanged(self::FIELD_APELLIDO2,$this->Apellido2,$Apellido2);
-		$this->Apellido2=$Apellido2;
-		return $this;
-	}
-
-	/**
-	 * get value for Apellido2 
-	 *
-	 * type:VARCHAR,size:45,default:null,nullable
-	 *
-	 * @return mixed
-	 */
-	public function getApellido2() {
-		return $this->Apellido2;
+	public function getApellidos() {
+		return $this->Apellidos;
 	}
 
 	/**
@@ -811,8 +779,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 			self::FIELD_IDTIPOTARIFA=>$this->getIdTipoTarifa(),
 			self::FIELD_FECHASOLICITUD=>$this->getFechaSolicitud(),
 			self::FIELD_NOMBRE=>$this->getNombre(),
-			self::FIELD_APELLIDO1=>$this->getApellido1(),
-			self::FIELD_APELLIDO2=>$this->getApellido2(),
+			self::FIELD_APELLIDOS=>$this->getApellidos(),
 			self::FIELD_DNI=>$this->getDni(),
 			self::FIELD_EMAIL=>$this->getEMail(),
 			self::FIELD_DIRECCION=>$this->getDireccion(),
@@ -1073,8 +1040,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		$this->setIdTipoTarifa($result['idTipoTarifa']);
 		$this->setFechaSolicitud($result['FechaSolicitud']);
 		$this->setNombre($result['Nombre']);
-		$this->setApellido1($result['Apellido1']);
-		$this->setApellido2($result['Apellido2']);
+		$this->setApellidos($result['Apellidos']);
 		$this->setDni($result['DNI']);
 		$this->setEMail($result['EMail']);
 		$this->setDireccion($result['Direccion']);
@@ -1128,22 +1094,21 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		$stmt->bindValue(3,$this->getIdTipoTarifa());
 		$stmt->bindValue(4,$this->getFechaSolicitud());
 		$stmt->bindValue(5,$this->getNombre());
-		$stmt->bindValue(6,$this->getApellido1());
-		$stmt->bindValue(7,$this->getApellido2());
-		$stmt->bindValue(8,$this->getDni());
-		$stmt->bindValue(9,$this->getEMail());
-		$stmt->bindValue(10,$this->getDireccion());
-		$stmt->bindValue(11,$this->getCp());
-		$stmt->bindValue(12,$this->getSexo());
-		$stmt->bindValue(13,$this->getFechaNacimiento());
-		$stmt->bindValue(14,$this->getTutorLegal());
-		$stmt->bindValue(15,$this->getLocalidad());
-		$stmt->bindValue(16,$this->getTelefono1());
-		$stmt->bindValue(17,$this->getTelefono2());
-		$stmt->bindValue(18,$this->getProvincia());
-		$stmt->bindValue(19,$this->getDescripcionSolicitud());
-		$stmt->bindValue(20,$this->getOtros());
-		$stmt->bindValue(21,$this->getLocalizador());
+		$stmt->bindValue(6,$this->getApellidos());
+		$stmt->bindValue(7,$this->getDni());
+		$stmt->bindValue(8,$this->getEMail());
+		$stmt->bindValue(9,$this->getDireccion());
+		$stmt->bindValue(10,$this->getCp());
+		$stmt->bindValue(11,$this->getSexo());
+		$stmt->bindValue(12,$this->getFechaNacimiento());
+		$stmt->bindValue(13,$this->getTutorLegal());
+		$stmt->bindValue(14,$this->getLocalidad());
+		$stmt->bindValue(15,$this->getTelefono1());
+		$stmt->bindValue(16,$this->getTelefono2());
+		$stmt->bindValue(17,$this->getProvincia());
+		$stmt->bindValue(18,$this->getDescripcionSolicitud());
+		$stmt->bindValue(19,$this->getOtros());
+		$stmt->bindValue(20,$this->getLocalizador());
 	}
 
 
@@ -1160,22 +1125,21 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 			$stmt->bindValue(2,$this->getIdTipoTarifa());
 			$stmt->bindValue(3,$this->getFechaSolicitud());
 			$stmt->bindValue(4,$this->getNombre());
-			$stmt->bindValue(5,$this->getApellido1());
-			$stmt->bindValue(6,$this->getApellido2());
-			$stmt->bindValue(7,$this->getDni());
-			$stmt->bindValue(8,$this->getEMail());
-			$stmt->bindValue(9,$this->getDireccion());
-			$stmt->bindValue(10,$this->getCp());
-			$stmt->bindValue(11,$this->getSexo());
-			$stmt->bindValue(12,$this->getFechaNacimiento());
-			$stmt->bindValue(13,$this->getTutorLegal());
-			$stmt->bindValue(14,$this->getLocalidad());
-			$stmt->bindValue(15,$this->getTelefono1());
-			$stmt->bindValue(16,$this->getTelefono2());
-			$stmt->bindValue(17,$this->getProvincia());
-			$stmt->bindValue(18,$this->getDescripcionSolicitud());
-			$stmt->bindValue(19,$this->getOtros());
-			$stmt->bindValue(20,$this->getLocalizador());
+			$stmt->bindValue(5,$this->getApellidos());
+			$stmt->bindValue(6,$this->getDni());
+			$stmt->bindValue(7,$this->getEMail());
+			$stmt->bindValue(8,$this->getDireccion());
+			$stmt->bindValue(9,$this->getCp());
+			$stmt->bindValue(10,$this->getSexo());
+			$stmt->bindValue(11,$this->getFechaNacimiento());
+			$stmt->bindValue(12,$this->getTutorLegal());
+			$stmt->bindValue(13,$this->getLocalidad());
+			$stmt->bindValue(14,$this->getTelefono1());
+			$stmt->bindValue(15,$this->getTelefono2());
+			$stmt->bindValue(16,$this->getProvincia());
+			$stmt->bindValue(17,$this->getDescripcionSolicitud());
+			$stmt->bindValue(18,$this->getOtros());
+			$stmt->bindValue(19,$this->getLocalizador());
 		} else {
 			$stmt=self::prepareStatement($db,self::SQL_INSERT);
 			$this->bindValues($stmt);
@@ -1204,7 +1168,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	public function updateToDatabase(PDO $db) {
 		$stmt=self::prepareStatement($db,self::SQL_UPDATE);
 		$this->bindValues($stmt);
-		$stmt->bindValue(22,$this->getIdSolicitud());
+		$stmt->bindValue(21,$this->getIdSolicitud());
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();
