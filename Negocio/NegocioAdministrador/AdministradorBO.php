@@ -2,7 +2,7 @@
 
 require_once("../../ComunicacionesREST/rest.php");
 require_once("../AccesoDatos/ConexionBD.php");
-require_once("../Entidades/SalaModel.class.php");
+require_once("../Entidades/SalasModel.class.php");
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -23,7 +23,7 @@ class AdministradorBO extends Rest {
     private $_argumentos;
 
     public function __construct() {
-        parent::__construct();        
+        parent::__construct();
     }
 
     private function devolverError($id) {
@@ -77,22 +77,27 @@ class AdministradorBO extends Rest {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
         $this->con = ConexionBD::getInstance();
-        //var_dump($this->con);
-        $sala = new SalaModel();
-        
+        var_dump($this->con);
+        $sala = new SalasModel();
+
         //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {  
         $idSala = $this->datosPeticion['idSala'];
-        $Nombre = $this->datosPeticion['Nombre'];
-        $Capacidad = $this->datosPeticion['Capacidad'];
-        $Descripcion = $this->datosPeticion['Descripcion'];
+        $NombreSala = $this->datosPeticion['NombreSala'];
+        $CapacidadSala = $this->datosPeticion['CapacidadSala'];
+        $DescripcionSala = $this->datosPeticion['DescripcionSala'];
+        $FechaAlta = $this->datosPeticion['FechaAlta'];
+        $FechaBaja = $this->datosPeticion['FechaBaja'];
 
-        $sala->setNombre($Nombre);
-        $sala->setCapacidad($Capacidad);
-        $sala->setDescripcion($Descripcion);
-        //var_dump($sala);
+        $sala->setNombreSala($NombreSala);
+        $sala->setCapacidadSala($CapacidadSala);
+        $sala->setDescripcionSala($DescripcionSala);
+        $sala->setFechaAlta($FechaAlta);
+        $sala->setFechaBaja($FechaBaja);
+
+        var_dump($sala);
         //echo gettype($con);
         $result = $sala->insertIntoDatabase($this->con);
-        
+
         if ($result) {
             //$id = $this->_conn->lastInsertId();  
             $respuesta['estado'] = 'correcto';
@@ -108,147 +113,153 @@ class AdministradorBO extends Rest {
         //$this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);  
         //}  
     }
-    
-    private function actualizarSala() {  
-     if ($_SERVER['REQUEST_METHOD'] != "PUT") {  
-       $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);  
-     }  
-     
-     //var_dump($SERVER);
-     //echo $idUsuario . "<br/>";  
-     if (isset($this->datosPeticion['idSala'])) {
-         
-       $this->con = ConexionBD::getInstance();
-       $sala = new SalaModel();
-        
-       $idSala = $this->datosPeticion['idSala'];  
-       $Nombre = $this->datosPeticion['Nombre'];  
-       $Capacidad = $this->datosPeticion['Capacidad'];  
-       $Descripcion = $this->datosPeticion['Descripcion'];  
-       
-       if (!empty($idSala)) {  
-           echo "jadjfkajdjf";
-         $sala->setIdSala($idSala);
-         $sala->setNombre($Nombre);
-         $sala->setCapacidad($Capacidad);
-         $sala->setDescripcion($Descripcion);
-         //var_dump($sala);
-         $filasActualizadas = $sala->updateToDatabase($this->con);
-         
-         /*$query = $this->_conn->prepare("update sala set Nombre=:Nombre, Capacidad=:Capacidad, Descripcion=:Descripcion WHERE idSala =:idSala");  
-         $query->bindValue(":Nombre", $Nombre);  
-         $query->bindValue(":Capacidad", $Capacidad);  
-         $query->bindValue(":Descripcion", $Descripcion);  
-         $query->bindValue(":idSala", $idSala);  
-         $query->execute(); */
-         //$filasActualizadas = $result->rowCount();  
-         //var_dump($sala);
-         //var_dump(count($sala));
-         if (count($filasActualizadas) == 1) {  
-           $resp = array('estado' => "correcto", "msg" => "sala actualizada");  
-           var_dump($resp);
-           $this->mostrarRespuesta($this->convertirJson($resp), 200);  
-         } else {  
-           $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);  
-         }  
-       }  
-     }  
-     $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);  
-   }
-   
-   private function borrarSala() {  
-     if ($_SERVER['REQUEST_METHOD'] != "DELETE") {  
-       $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);  
-     }  
-     $idSala = $this->datosPeticion['idSala'];  
-     
-     if ($idSala >= 0) {  
-       $this->con = ConexionBD::getInstance();
-       $sala = new SalaModel();
-       
-       $sala->setIdSala($idSala);
-       $result = $sala->deleteFromDatabase($this->con);
-       //$query = $this->_conn->prepare("delete from sala WHERE idSala =:idSala");  
-       //$query->bindValue(":idSala", $idSala);  
-       //$query->execute();  
-       //rowcount para insert, delete. update  
-       //$filasBorradas = $query->rowCount();  
-       if (count($result) == 1) {  
-         $resp = array('estado' => "correcto", "msg" => "usuario borrado correctamente.");  
-         $this->mostrarRespuesta($this->convertirJson($resp), 200);  
-       } else {  
-         $this->mostrarRespuesta($this->convertirJson($this->devolverError(4)), 400);  
-       }  
-     }  
-     $this->mostrarRespuesta($this->convertirJson($this->devolverError(4)), 400);  
-   }  
-    
-    private function obtenerSalas() {  
-     if ($_SERVER['REQUEST_METHOD'] != "GET") {  
-       $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);  
-     }  
-     //$query = $this->_conn->query("SELECT idSala,Nombre,Capacidad,Descripcion FROM sala");  
-     //$filas = $query->fetchAll(PDO::FETCH_ASSOC);  
-     
-     $this->con = ConexionBD::getInstance();
-     $sala = new SalaModel();
-     
-     $filas = $sala->findBySql($this->con,"Select * from sala");
-     
-     var_dump($filas);
-     
-     $num = count($filas);  
-     if ($num > 0) {  
-       $respuesta['estado'] = 'correcto';  
-       $respuesta['salas'] = $filas;  
-       $this->mostrarRespuesta($this->convertirJson($respuesta), 200);  
-     }  
-     $this->mostrarRespuesta($this->devolverError(2), 204);  
-   }   
-   
-   private function obtenerSala() {
-        //var_dump($SERVER);
-        if ($_SERVER['REQUEST_METHOD'] != "POST") {
-           $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+
+    private function actualizarSala() {
+        if ($_SERVER['REQUEST_METHOD'] != "PUT") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
 
-        //el constructor del padre ya se encarga de sanear los datos de entrada  
-        $idSala = $this->datosPeticion['idSala'];
-        
-        //var_dump($idSala);
-        
-        $this->con = ConexionBD::getInstance();
-        $sala = new SalaModel();
-        
-        $sala->setIdSala($idSala);
-        $fila = $sala->findById($this->con, $idSala);
-        
-        /*echo "datos de la consulta";
-        echo $fila->getIdSala();
-        echo $fila->getNombre();
-        echo $fila->getCapacidad();
-        echo $fila->getDescripcion();*/
-        
-        //var_dump($fila);
-        
-        //echo "Despues de fila";
+        //var_dump($SERVER);
+        //echo $idUsuario . "<br/>";  
+        if (isset($this->datosPeticion['idSala'])) {
 
-        //consulta preparada ya hace mysqli_real_escape()  
-        //$query = $this->_conn->prepare("SELECT idSala, Nombre, Capacidad, Descripcion FROM sala WHERE idSala=:idSala");
-        //$query->bindValue(":idSala", $idSala);
-        //$fila = $query->execute();
-        //$query->execute();
-        $respuesta = "";
-        if ($fila != null) {
+            $this->con = ConexionBD::getInstance();
+            $sala = new SalasModel();
+
+            $idSala = $this->datosPeticion['idSala'];
+            $NombreSala = $this->datosPeticion['NombreSala'];
+            $CapacidadSala = $this->datosPeticion['CapacidadSala'];
+            $DescripcionSala = $this->datosPeticion['DescripcionSala'];
+            $FechaAlta = $this->datosPeticion['FechaAlta'];
+            $FechaBaja = $this->datosPeticion['FechaBaja'];
+
+            if (!empty($idSala)) {
+                echo "jadjfkajdjf";
+                $sala->setIdSala($idSala);
+                $sala->setNombreSala($NombreSala);
+                $sala->setCapacidadSala($CapacidadSala);
+                $sala->setDescripcionSala($DescripcionSala);
+                $sala->setFechaAlta($FechaAlta);
+                $sala->setFechaBaja($FechaBaja);
+                //var_dump($sala);
+                $filasActualizadas = $sala->updateToDatabase($this->con);
+
+                /* $query = $this->_conn->prepare("update sala set Nombre=:Nombre, Capacidad=:Capacidad, Descripcion=:Descripcion WHERE idSala =:idSala");  
+                  $query->bindValue(":Nombre", $Nombre);
+                  $query->bindValue(":Capacidad", $Capacidad);
+                  $query->bindValue(":Descripcion", $Descripcion);
+                  $query->bindValue(":idSala", $idSala);
+                  $query->execute(); */
+                //$filasActualizadas = $result->rowCount();  
+                //var_dump($sala);
+                //var_dump(count($sala));
+                if (count($filasActualizadas) == 1) {
+                    $resp = array('estado' => "correcto", "msg" => "sala actualizada");
+                    var_dump($resp);
+                    $this->mostrarRespuesta($this->convertirJson($resp), 200);
+                } else {
+                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+                }
+            }
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+    }
+
+    private function borrarSala() {
+        if ($_SERVER['REQUEST_METHOD'] != "DELETE") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        $idSala = $this->datosPeticion['idSala'];
+
+        if ($idSala >= 0) {
+            $this->con = ConexionBD::getInstance();
+            $sala = new SalasModel();
+
+            $sala->setIdSala($idSala);
+            $result = $sala->deleteFromDatabase($this->con);
+            //$query = $this->_conn->prepare("delete from sala WHERE idSala =:idSala");  
+            //$query->bindValue(":idSala", $idSala);  
+            //$query->execute();  
+            //rowcount para insert, delete. update  
+            //$filasBorradas = $query->rowCount();  
+            if (count($result) == 1) {
+                $resp = array('estado' => "correcto", "msg" => "usuario borrado correctamente.");
+                $this->mostrarRespuesta($this->convertirJson($resp), 200);
+            } else {
+                $this->mostrarRespuesta($this->convertirJson($this->devolverError(4)), 400);
+            }
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(4)), 400);
+    }
+
+    private function obtenerSalas() {
+        if ($_SERVER['REQUEST_METHOD'] != "GET") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        //$query = $this->_conn->query("SELECT idSala,Nombre,Capacidad,Descripcion FROM sala");  
+        //$filas = $query->fetchAll(PDO::FETCH_ASSOC);  
+
+        $this->con = ConexionBD::getInstance();
+        $sala = new SalasModel();
+
+        $filas = $sala->findBySql($this->con, "Select * from sala");
+
+        var_dump($filas);
+
+        $num = count($filas);
+        if ($num > 0) {
             $respuesta['estado'] = 'correcto';
-            $respuesta['sala']['idSala'] = $fila->getIdSala();
-            $respuesta['sala']['Nombre'] = $fila->getNombre();
-            $respuesta['sala']['Capacidad'] = $fila->getCapacidad();
-            $respuesta['sala']['Descripcion'] = $fila->getDescripcion();
-            //var_dump($respuesta);
+            $respuesta['salas'] = $filas;
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
-        $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);  
+        $this->mostrarRespuesta($this->devolverError(2), 204);
+    }
+
+    private function obtenerSala() {
+        //var_dump($SERVER);
+        //if ($_SERVER['REQUEST_METHOD'] != "POST") {
+        //  $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        //}
+        //el constructor del padre ya se encarga de sanear los datos de entrada  
+                
+
+        if (isset($this->datosPeticion['idSala'])) {
+            $idSala = isset($this->datosPeticion['idSala']);
+            
+            $this->con = ConexionBD::getInstance();
+            $sala = new SalasModel();
+
+            $sala->setIdSala($idSala);
+            $fila = $sala->findById($this->con, $idSala);
+
+            /* echo "datos de la consulta";
+              echo $fila->getIdSala();
+              echo $fila->getNombre();
+              echo $fila->getCapacidad();
+              echo $fila->getDescripcion(); */
+
+            //var_dump($fila);
+            //echo "Despues de fila";
+            //consulta preparada ya hace mysqli_real_escape()  
+            //$query = $this->_conn->prepare("SELECT idSala, Nombre, Capacidad, Descripcion FROM sala WHERE idSala=:idSala");
+            //$query->bindValue(":idSala", $idSala);
+            //$fila = $query->execute();
+            var_dump($fila);
+            //$query->execute();
+            $respuesta = "";
+            if ($fila) {
+                $respuesta['estado'] = 'correcto';
+                $respuesta['sala']['idSala'] = $fila->getIdSala();
+                $respuesta['sala']['NombreSala'] = $fila->getNombreSala();
+                $respuesta['sala']['CapacidadSala'] = $fila->getCapacidadSala();
+                $respuesta['sala']['DescripcionSala'] = $fila->getDescripcionSala();
+                $respuesta['sala']['FechaAlta'] = $fila->getFechaAlta();
+                $respuesta['sala']['FechaBaja'] = $fila->getFechaAlta();
+                //var_dump($respuesta);
+                $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+            }
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+        }
     }
 
 }
