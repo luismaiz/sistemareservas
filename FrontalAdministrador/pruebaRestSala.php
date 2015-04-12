@@ -178,18 +178,18 @@
     <body>
 
         <form method="post">
-            idSala: <input type="text" id="idSala" name="idSala"></input>
-            NombreSala: <input type="text" id="NombreSala" name="NombreSala"></input>
-            CapacidadSala: <input type="text" id="CapacidadSala" name="CapacidadSala"></input>
-            DescripcionSala: <input type="text" id="DescripcionSala" name="DescripcionSala"></input>
-            FechaAlta: <input type="text" id="FechaAlta" name="FechaAlta"></input>
-            FechaBaja: <input type="text" id="FechaBaja" name="FechaBaja"></input>
+            idSala: <input type="text" id="idSala" name="idSala"/>
+            NombreSala: <input type="text" id="NombreSala" name="NombreSala"/>
+            CapacidadSala: <input type="text" id="CapacidadSala" name="CapacidadSala"/>
+            DescripcionSala: <input type="text" id="DescripcionSala" name="DescripcionSala"/>
+            FechaAlta: <input type="text" id="FechaAlta" name="FechaAlta"/>
+            FechaBaja: <input type="text" id="FechaBaja" name="FechaBaja"/>
             
             </br></br>
-            <input type="button" value="Crear Sala" onclick="crearSala()"></input>
-            <input type="button" value="Obtener Sala" onclick="obtenerSala()"></input>
-            <input type="button" value="Actualizar Sala" onclick="actualizarSala()"></input>
-            <input type="button" value="Borrar Sala" onclick="borrarSala()"></input>
+            <input type="button" value="Crear Sala" onclick="crearSala()"/>
+            <input type="button" value="Obtener Sala" onclick="obtenerSala()"/>
+            <input type="button" value="Actualizar Sala" onclick="actualizarSala()"/>
+            <input type="button" value="Borrar Sala" onclick="borrarSala()"/>
         </form>
 
 
