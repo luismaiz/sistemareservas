@@ -202,14 +202,18 @@ class AdministradorBO extends Rest {
         $this->con = ConexionBD::getInstance();
         $sala = new SalaModel();
 
-        $filas = $sala->findBySql($this->con, "Select * from sala");
-
-        var_dump($filas);
+        $filas = $sala->findBySql($this->con, SalaModel::SQL_SELECT);
 
         $num = count($filas);
         if ($num > 0) {
             $respuesta['estado'] = 'correcto';
-            $respuesta['salas'] = $filas;
+                      
+        for ($i = 1; $i < $num; $i++) 
+        {
+            $array[] = $filas[$i]->toHash();
+        }
+            
+            $respuesta['salas'] = $array;
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->devolverError(2), 204);
@@ -229,33 +233,15 @@ class AdministradorBO extends Rest {
             $this->con = ConexionBD::getInstance();
             $sala = new SalaModel();
 
-            $sala->setIdSala($idSala);
+            //sala->setIdSala($idSala);
             $fila = $sala->findById($this->con, $idSala);
-
-            /* echo "datos de la consulta";
-              echo $fila->getIdSala();
-              echo $fila->getNombre();
-              echo $fila->getCapacidad();
-              echo $fila->getDescripcion(); */
-
-            //var_dump($fila);
-            //echo "Despues de fila";
-            //consulta preparada ya hace mysqli_real_escape()  
-            //$query = $this->_conn->prepare("SELECT idSala, Nombre, Capacidad, Descripcion FROM sala WHERE idSala=:idSala");
-            //$query->bindValue(":idSala", $idSala);
-            //$fila = $query->execute();
-            var_dump($fila);
-            //$query->execute();
+            
+            $fila = $sala->findByFilter($this->con, $filter);
             $respuesta = "";
             if ($fila) {
                 $respuesta['estado'] = 'correcto';
-                $respuesta['sala']['idSala'] = $fila->getIdSala();
-                $respuesta['sala']['NombreSala'] = $fila->getNombreSala();
-                $respuesta['sala']['CapacidadSala'] = $fila->getCapacidadSala();
-                $respuesta['sala']['DescripcionSala'] = $fila->getDescripcionSala();
-                $respuesta['sala']['FechaAlta'] = $fila->getFechaAlta();
-                $respuesta['sala']['FechaBaja'] = $fila->getFechaAlta();
-                //var_dump($respuesta);
+                $respuesta['sala'] = [$fila->toHash()];
+
                 $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
             }
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
