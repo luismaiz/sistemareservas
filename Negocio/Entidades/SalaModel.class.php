@@ -17,6 +17,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `sala` (`NombreSala`,`CapacidadSala`,`DescripcionSala`,`FechaAlta`,`FechaBaja`) VALUES (?,?,?,?,?)';
 	const SQL_UPDATE='UPDATE `sala` SET `idSala`=?,`NombreSala`=?,`CapacidadSala`=?,`DescripcionSala`=?,`FechaAlta`=?,`FechaBaja`=? WHERE `idSala`=?';
 	const SQL_SELECT_PK='SELECT * FROM SALA WHERE IDSALA=?';
+        const SQL_SELECT_PK='SELECT * FROM SALA';
 	const SQL_DELETE_PK='DELETE FROM `sala` WHERE `idSala`=?';
 	const FIELD_IDSALA=-1779113975;
 	const FIELD_NOMBRESALA=949418583;
