@@ -226,26 +226,24 @@ class AdministradorBO extends Rest {
         }
         //el constructor del padre ya se encarga de sanear los datos de entrada  
                 
-
-        if (isset($this->datosPeticion['idSala'])) {
-            $idSala = isset($this->datosPeticion['idSala']);
+//            echo($this->datosPeticion['idSala']);
+//        if (isset($this->datosPeticion['idSala'])) {
+//            $idSala = isset($this->datosPeticion['idSala']);
             
             $this->con = ConexionBD::getInstance();
-            $sala = new SalaModel();
-
-            //sala->setIdSala($idSala);
-            $fila = $sala->findById($this->con, $idSala);
             
-            $fila = $sala->findByFilter($this->con, $filter);
+            //$sala->setIdSala($idSala);
+            $fila = SalaModel::findById($this->con, $this->datosPeticion['idSala']);
+
             $respuesta = "";
             if ($fila) {
                 $respuesta['estado'] = 'correcto';
-                $respuesta['sala'] = [$fila->toHash()];
+                $respuesta['sala'] = $fila->toHash();
 
                 $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
             }
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
-        }
+        //}
     }
     
     
