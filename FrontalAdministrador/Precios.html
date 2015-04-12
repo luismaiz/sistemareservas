@@ -1,51 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <script>
-            function AjaxObj()
-            {
-                var xmlhttp = null;
-
-                if (window.XMLHttpRequest)
-                {
-                    xmlhttp = new XMLHttpRequest();
-
-                    if (xmlhttp.overrideMimeType)
-                    {
-                        xmlhttp.overrideMimeType('text/xml');
-                    }
-                }
-                else if (window.ActiveXObject)
-                {
-                    // Internet Explorer    
-                    try
-                    {
-                        xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-                    }
-                    catch (e)
-                    {
-                        try
-                        {
-                            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                        }
-                        catch (e)
-                        {
-                            xmlhttp = null;
-                        }
-                    }
-	
-                    if (!xmlhttp && typeof XMLHttpRequest!='undefined')
-                    {
-                        xmlhttp = new XMLHttpRequest();
-	  
-                        if (!xmlhttp)
-                        {
-                            failed = true;
-                        }
-                    }
-                }
-                return xmlhttp;
-            }
+        <script>            
 
             var Ajax = new AjaxObj();
 
@@ -237,7 +193,7 @@
                                     </div>
                                 </div>
                                 <div class="box-content" id="salas">
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -251,7 +207,7 @@
 
                 </div><!--/fluid-row-->
 
-                
+
                 <hr>
 
                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
