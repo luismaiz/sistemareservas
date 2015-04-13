@@ -1,4 +1,6 @@
 <?php require('Cabecera.php'); ?>
+
+
 <script>
            
             var Ajax = new AjaxObj();
@@ -67,11 +69,11 @@
                 } 
             } 
 
-            function obtenerSala() {
-                alert("dfjkaldjlafj");
-                alert(getVariable("idSala"));
-                var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerSala";
-                var Params = 'idSala='+ document.getElementById('idSala').value;
+            function obtenerSala(idSala) {
+                alert(idSala);
+                
+                var Url = "http://localhost:8080/pfgreservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerSala";
+                var Params = 'idSala='+ idSala;
 
 	
                 Ajax.open("POST", Url, false);
@@ -95,15 +97,28 @@
                 alert('CapacidadSala: '+ Clase.sala.CapacidadSala);
                 alert('DescripcionSala: '+ Clase.sala.DescripcionSala);
 	  
-                document.getElementById('idSala').value=Clase.sala.idSala;
-                document.getElementById('NombreSala').value=Clase.sala.NombreSala;
-                document.getElementById('CapacidadSala').value=Clase.sala.CapacidadSala;
-                document.getElementById('DescripcionSala').value=Clase.sala.DescripcionSala;
-                document.getElementById('FechaAlta').value=Clase.sala.FechaAlta;
-                document.getElementById('FechaBaja').value=Clase.sala.FechaBaja;                
+                //alert (document.getElementById('NombreSala').value)
+                //document.getElementById('idSala').value=Clase.sala.idSala;
+                document.getElementsByName('nombresala').value=Clase.sala.NombreSala;
+                //document.getElementById('CapacidadSala')=Clase.sala.CapacidadSala;
+                //document.getElementById('DescripcionSala')=Clase.sala.DescripcionSala;
+                //document.getElementById('FechaAlta')=Clase.sala.FechaAlta;
+                //document.getElementById('FechaBaja')=Clase.sala.FechaBaja;                
             }
             
         </script>
+        <?php  
+if(isset($_GET['idSala'])) {
+    $test = $_GET['idSala'];
+    echo $test;
+    echo '<script>
+           var varjs="'.$test.'";
+           obtenerSala(varjs);
+           </script>';
+} else {
+    $test = '';
+}
+?>
 <div>
     <ul class="breadcrumb">
         <li>
@@ -129,7 +144,7 @@
                             
                             <form class="form-group">
                                 <label class="control-label" >Nombre</label>
-                                <input type="text" class="input-sm"  id="NombreSala"></br></br>
+                                <input type="text" class="input-sm" name="nombresala" id="NombreSala"></br></br>
                                 
                                 <label class="control-label" >Descripcion</label>
                                 <input type="text" class="input-sm"  id="DescripcionSala"></br></br>
