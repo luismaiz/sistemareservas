@@ -6,6 +6,8 @@
  * and open the template in the editor.
  */
 
+require_once 'sec-config.php';
+
 /**
  * Description of ConexionBD
  *
@@ -13,20 +15,15 @@
  */
 class ConexionBD extends PDO {
 
-    private $engine = 'mysql';
-    private $host = 'hostingmysql321.nominalia.com:3306';
-    private $database = 'sistemareservas';
-    private $username= 'pfgreservas';
-    private $password = 'pfgreservas';
     private static $_instance = null;
 
     public function __construct() {
         $opciones = array(
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
         );
-        $dsn = $this->engine . ':host=' . $this->host . ';dbname=' . $this->database;
+        $dsn = SELF::ENGINE . ':host=' . SELF::HOST . ';dbname=' . SELF::DATABASE;
         try {
-            parent::__construct($dsn, $this->username, $this->password,$opciones);
+            parent::__construct($dsn, SELF::USER, SELF::PASSWORD, $opciones);
         } catch (PDOException $e) {
             echo 'Error en Conexión a la Base de Datos. Detalle: ' . $e->getMessage();
             exit;

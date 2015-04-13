@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title></title>
-    </head>
-    <body>
-        <?php
-        // put your code here
-        ?>
-    </body>
-</html>
+<?php
+require 'FrontalGlobal/header.php';
+?>
+<form role="form" action="LoginBO.php" method="post" name="inicio" id="inicioSesion">
+    <label>Usuario</label>
+    <input id="nombre" name="Nombre" type="text" size="30" maxlength="40" required placeholder="Usuario">
+    <label>Contraseña</label>
+    <input id="password" name="Password" type="password" size="30" maxlength="40" required placeholder="Contraseña">
+    <button type="submit" class="btn btn-warning btn-lg" id="boton">Entrar</button>
+</form>
+<?php
+require 'FrontalGlobal/footer.php';
