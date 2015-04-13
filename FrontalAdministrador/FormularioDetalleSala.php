@@ -129,22 +129,22 @@
                             
                             <form class="form-group">
                                 <label class="control-label" >Nombre</label>
-                                <input type="text"  id="NombreSala"></br></br>
+                                <input type="text" class="input-sm"  id="NombreSala"></br></br>
                                 
                                 <label class="control-label" >Descripcion</label>
-                                <input type="text"  id="DescripcionSala"></br></br>
+                                <input type="text" class="input-sm"  id="DescripcionSala"></br></br>
                                 
                                 <label class="control-label" >Capacidad</label>
-                                <input type="text" id="CapacidadSala"></br></br>
+                                <input type="text" class="input-sm" id="CapacidadSala"></br></br>
                                             
                                 <label class="control-label" >Fecha Alta</label>
-                                <input type="date" name="FechaAlta" id="FechaAlta">
+                                <input type="date" class="input-sm" name="FechaAlta" id="FechaAlta">
                                 
                                 <label class="control-label" >Fecha Baja</label>
-                                <input type="date" name="FechaBaja" id="FechaBaja">
+                                <input type="date" class="input-sm" name="FechaBaja" id="FechaBaja">
                                       
-                                <input class="btn btn-default " type="button" value="Cancelar" onClick=" window.location.href='Salas.php' " />
-                                <input class="btn btn-default " type="button" value="Aceptar" onclick="crearSala()"/>
+                                <input class="btn btn-primary " type="button" value="Cancelar" onClick=" window.location.href='Salas.php' " />
+                                <input class="btn btn-primary " type="button" value="Aceptar" onclick="crearSala()"/>
                                
                             </form>
                         </div>

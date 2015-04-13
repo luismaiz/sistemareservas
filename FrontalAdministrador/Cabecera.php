@@ -102,7 +102,7 @@ function AjaxObj()
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a href="login.html">Cerrar sesion</a></li>
+                    <li><a href="login.php">Cerrar sesion</a></li>
                 </ul>
             </div>
             <!-- user dropdown ends -->
@@ -123,7 +123,7 @@ function AjaxObj()
                     </div>
                     <ul class="nav nav-pills nav-stacked main-menu">
                         <li class="nav-header">Main</li>
-                                <li><a class="ajax-link" href="index.php"><i class="glyphicon glyphicon-home"></i><span> Inicio</span></a>
+                                <li><a class="ajax-link" href="Inicio.php"><i class="glyphicon glyphicon-home"></i><span> Inicio</span></a>
                                 </li>
                                 <li><a class="ajax-link" href="Reservas.php"><i class="glyphicon glyphicon-edit"></i><span> Reservas </span></a>
                                 </li>
@@ -134,7 +134,7 @@ function AjaxObj()
                                 </li>
                                 <li><a class="ajax-link" href="TipoTarifa.php"><i class="glyphicon glyphicon-edit"></i><span> Tarifas</span></a>
                                 </li>
-                                <li><a class="ajax-link" href="Precios.php"><i class="glyphicon glyphicon-edit"></i><span> Precios</span></a>
+                                <li><a class="ajax-link" href="Precios.php"><i class="glyphicon glyphicon-play"></i><span> Precios</span></a>
                                 </li>
                                 <li><a class="ajax-link" href="Informes.php"><i class="glyphicon glyphicon-eye-open"></i><span> Informe</span></a>
                                 </li>

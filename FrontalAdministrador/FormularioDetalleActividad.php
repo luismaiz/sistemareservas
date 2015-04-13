@@ -164,25 +164,25 @@
                             
                             <form class="form-group">
                                 <label class="control-label" >Actividad</label>
-                                <input type="text"  id="NombreActividad"></br></br>
+                                <input type="text" class="input-sm"  id="NombreActividad"></br></br>
                                 
                                 <label class="control-label" >Descripcion</label>
-                                <input type="text"  id="Descripcion"></br></br>
+                                <input type="text" class="input-sm"  id="Descripcion"></br></br>
                                 
                                 <label class="control-label" >Grupo</label>
-                                <input type="text" id="Grupo"></br></br>
+                                <input type="text" class="input-sm" id="Grupo"></br></br>
                                             
                                 <label class="control-label" >Intensidad</label>
-                                <input type="color" id="IntensidadActividad"></br></br>
+                                <input type="color" class="input-sm" id="IntensidadActividad"></br></br>
                                 
                                 <label class="control-label" >Edad Mínima</label>
-                                <input type="text" name="FechaAlta" id="Edad_Minima">
+                                <input type="text" class="input-sm" name="FechaAlta" id="Edad_Minima">
                                 
                                 <label class="control-label" >Edad Máxima</label>
-                                <input type="text" name="FechaBaja" id="Edad_Maxima">
+                                <input type="text" class="input-sm" name="FechaBaja" id="Edad_Maxima">
                                 
-                                <input class="btn btn-default" type="button" value="Cancelar" onClick=" window.location.href='Actividades.php' " />
-                                <input class="btn btn-default" type="button" value="Aceptar" onclick="crearSala()"/>
+                                <input class="btn btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Actividades.php' " />
+                                <input class="btn btn-primary" type="button" value="Aceptar" onclick="crearSala()"/>
                             </form>
                         </div>
                         </div>
