@@ -21,8 +21,6 @@
 	
                 var RespTxt = Ajax.responseText;
         
-                alert(RespTxt);
-	
                 var Clase = eval('(' + RespTxt + ')');	
         
                 //alert(Clase);
@@ -33,12 +31,12 @@
                 for(i=0; i<Clase.salas.length; i++){
                     contenido = contenido + '<tr>';
                     contenido = contenido + '<input type="hidden" id="idSala" value=' + Clase.salas[i].idSala + '</input>';
-                    contenido = contenido + '<th class="center">' + Clase.salas[i].NombreSala + '</th>';
-                    contenido = contenido + '<th class="center">' + Clase.salas[i].CapacidadSala + '</th>';
-                    contenido = contenido + '<th class="center">' + Clase.salas[i].DescripcionSala + '</th>';
-                    contenido = contenido + '<th class="center">' + Clase.salas[i].FechaAlta + '</th>';
-                    contenido = contenido + '<th class="center">' + Clase.salas[i].FechaBaja + '</th>';
-                    contenido = contenido + '<td class="center"><a href="FormularioNuevaSala.php#obtenerSala()?idSala=' + Clase.salas[i].idSala + '" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Edit</a></td>';
+                    contenido = contenido + '<td class="center">' + Clase.salas[i].NombreSala + '</td>';
+                    contenido = contenido + '<td class="center">' + Clase.salas[i].CapacidadSala + '</td>';
+                    contenido = contenido + '<td class="center">' + Clase.salas[i].DescripcionSala + '</td>';
+                    contenido = contenido + '<td class="center">' + Clase.salas[i].FechaAlta + '</td>';
+                    contenido = contenido + '<td class="center">' + Clase.salas[i].FechaBaja + '</td>';
+                    contenido = contenido + '<td class="center"><a href="FormularioNuevaSala.php#obtenerSala()?idSala=' + Clase.salas[i].idSala + '" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>';
                     contenido = contenido + '</tr>';
                     //contenido = contenido + "<br>";
                 }
@@ -84,17 +82,18 @@
                         <div class="box-content">
                             <div class="row">
                         <div class="form-group">
-                            <div class="col-md-4">
-                                <div>
-					<label class="control-label" >Salas</label>
-                        <input type="text"  id="IntensidadActividad"></div>	
+                            <div class="col-md-12">
+                                <div class="form-group">
+					<label class="control-label" >Nombre Sala</label>
+                                        <input type="text"  id="filtronombresala">	
+                                        <label class="control-label" >Capacidad Sala</label>
+                                        <input type="text"  id="filtrocapacidadsala">
+                                        <input class="btn btn-default" type="button" value="Buscar" onClick="obtenerSalas()"/></div>
 				</div>
-                                <div class="col-md-4">
-                                    <input class="btn btn-default" type="button" value="Buscar" onClick="obtenerSalas()"/>
-                                    </div>
                             </div>
 
                         </div>
+                            
                         </div>
                         </div>
 
