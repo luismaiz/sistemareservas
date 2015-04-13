@@ -79,18 +79,15 @@ class AdministradorBO extends Rest {
     private function convertirJson($data) {
         return json_encode($data);
     }
-    
-    private function administradorBO(){
-        $clase = "Sala";//$this->datosPeticion['metodo'];
+
+    private function administradorBO() {
+        $clase = "Sala"; //$this->datosPeticion['metodo'];
         $metodo = "crearSala";
-        
+
         //$reflexión = new SDO_Model_ReflectionDataObject($clase);
         $myClassReflection = new ReflectionClass($clase);
-        $myClassReflection->getMethod($metodo)->invoke();        
+        $myClassReflection->getMethod($metodo)->invoke();
     }
-    
-    
-     
 
     //Metodos CRUD Sala
     private function crearSala() {
@@ -230,7 +227,7 @@ class AdministradorBO extends Rest {
         if ($num > 0) {
             $respuesta['estado'] = 'correcto';
                       
-        for ($i = 1; $i < $num; $i++) 
+        for ($i = 0; $i < $num; $i++) 
         {
             $array[] = $filas[$i]->toHash();
         }
@@ -244,30 +241,29 @@ class AdministradorBO extends Rest {
     private function obtenerSala() {
         //var_dump($SERVER);
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
-          $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
         //el constructor del padre ya se encarga de sanear los datos de entrada  
-                
 //            echo($this->datosPeticion['idSala']);
 //        if (isset($this->datosPeticion['idSala'])) {
 //            $idSala = isset($this->datosPeticion['idSala']);
-            
-            $this->con = ConexionBD::getInstance();
-            
-            //$sala->setIdSala($idSala);
-            $fila = SalaModel::findById($this->con, $this->datosPeticion['idSala']);
 
-            $respuesta = "";
-            if ($fila) {
-                $respuesta['estado'] = 'correcto';
-                $respuesta['sala'] = $fila->toHash();
+        $this->con = ConexionBD::getInstance();
 
-                $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
-            }
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+        //$sala->setIdSala($idSala);
+        $fila = SalaModel::findById($this->con, $this->datosPeticion['idSala']);
+
+        $respuesta = "";
+        if ($fila) {
+            $respuesta['estado'] = 'correcto';
+            $respuesta['sala'] = $fila->toHash();
+
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
         //}
     }
-    
+
     //Metodos CRUD Actividad    
     private function crearActividad() {
 
@@ -354,7 +350,7 @@ class AdministradorBO extends Rest {
         if ($num > 0) {
             $respuesta['estado'] = 'correcto';
                       
-        for ($i = 1; $i < $num; $i++) 
+        for ($i = 0; $i < $num; $i++) 
         {
             $array[] = $filas[$i]->toHash();
         }
@@ -560,13 +556,13 @@ class AdministradorBO extends Rest {
         $this->con = ConexionBD::getInstance();
         $clase = new ClaseModel();
 
-        $filas = $actividad->findBySql($this->con, ClaseModel::SQL_SELECT);
+        $filas = $clase->findBySql($this->con, ClaseModel::SQL_SELECT);
 
         $num = count($filas);
         if ($num > 0) {
             $respuesta['estado'] = 'correcto';
                       
-        for ($i = 1; $i < $num; $i++) 
+        for ($i = 0; $i < $num; $i++) 
         {
             $array[] = $filas[$i]->toHash();
         }
@@ -754,20 +750,20 @@ class AdministradorBO extends Rest {
         //$filas = $query->fetchAll(PDO::FETCH_ASSOC);  
 
         $this->con = ConexionBD::getInstance();
-        $tipotarifa = new TipotarifaModel();
+        $tipoTarifa = new TipoTarifaModel();
 
-        $filas = $tipotarifa->findBySql($this->con, TipotarifaModel::SQL_SELECT);
+        $filas = $tipoTarifa->findBySql($this->con, TipoTarifaModel::SQL_SELECT);
 
         $num = count($filas);
         if ($num > 0) {
             $respuesta['estado'] = 'correcto';
                       
-        for ($i = 1; $i < $num; $i++) 
+        for ($i = 0; $i < $num; $i++) 
         {
             $array[] = $filas[$i]->toHash();
         }
             
-            $respuesta['tipostarifa'] = $array;
+            $respuesta['tiposTarifa'] = $array;
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->devolverError(2), 204);
@@ -1610,7 +1606,7 @@ class AdministradorBO extends Rest {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
         //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {       	 	
-        
+
         $idSolicitud = $this->datosPeticion['idSolicitud'];
         $Titular = $this->datosPeticion['Titular'];
         $IBAN = $this->datosPeticion['IBAN'];
@@ -1620,21 +1616,21 @@ class AdministradorBO extends Rest {
         $Cuenta = $this->datosPeticion['Cuenta'];
 
         //if (!$this->existeUsuario($email)) {  
-        /*$query = $this->_conn->prepare("INSERT into clasedirigida(idClaseDirigida,SolicitudClaseDirigida,Titular,IBAN,Entidad,Oficina,DigitoControl,Cuenta) 
-         				VALUES (:idClaseDirigida,:SolicitudClaseDirigida,:Titular,:IBAN,:Entidad,:Oficina,:DigitoControl,:Cuenta)");
-        $query->bindValue(":idClaseDirigida", $idClaseDirigida);
-        $query->bindValue(":SolicitudClaseDirigida", $SolicitudClaseDirigida);
-        $query->bindValue(":Titular", $Titular);
-        $query->bindValue(":IBAN", $IBAN);
-        $query->bindValue(":Entidad", $Entidad);
-        $query->bindValue(":Oficina", $Oficina);
-        $query->bindValue(":DigitoControl", $DigitoControl);
-        $query->bindValue(":Cuenta", $Cuenta);
-        $query->execute();*/
-        
+        /* $query = $this->_conn->prepare("INSERT into clasedirigida(idClaseDirigida,SolicitudClaseDirigida,Titular,IBAN,Entidad,Oficina,DigitoControl,Cuenta) 
+          VALUES (:idClaseDirigida,:SolicitudClaseDirigida,:Titular,:IBAN,:Entidad,:Oficina,:DigitoControl,:Cuenta)");
+          $query->bindValue(":idClaseDirigida", $idClaseDirigida);
+          $query->bindValue(":SolicitudClaseDirigida", $SolicitudClaseDirigida);
+          $query->bindValue(":Titular", $Titular);
+          $query->bindValue(":IBAN", $IBAN);
+          $query->bindValue(":Entidad", $Entidad);
+          $query->bindValue(":Oficina", $Oficina);
+          $query->bindValue(":DigitoControl", $DigitoControl);
+          $query->bindValue(":Cuenta", $Cuenta);
+          $query->execute(); */
+
         $this->con = ConexionBD::getInstance();
         $datosSolicitudClaseDirigida = new DatosolicitudclasedirigidaModel();
-        
+
         $datosSolicitudClaseDirigida->setIdSolicitud($idSolicitud);
         $datosSolicitudClaseDirigida->setTitular(base64_encode($Titular));
         $datosSolicitudClaseDirigida->setIban(base64_encode($IBAN));
@@ -1642,9 +1638,9 @@ class AdministradorBO extends Rest {
         $datosSolicitudClaseDirigida->setOficina(base64_encode($Oficina));
         $datosSolicitudClaseDirigida->setDigitoControl(base64_encode($DigitoControl));
         $datosSolicitudClaseDirigida->setCuenta(base64_encode($Cuenta));
-                
-        $result = $datosSolicitudClaseDirigida->insertIntoDatabase($this->con);        
-        
+
+        $result = $datosSolicitudClaseDirigida->insertIntoDatabase($this->con);
+
         if (count($result) == 1) {
 
             //$id = $this->_conn->lastInsertId();  
@@ -1679,23 +1675,23 @@ class AdministradorBO extends Rest {
         $Cuenta = $this->datosPeticion['Cuenta'];
 
         //if (!$this->existeUsuario($email)) {  
-        /*$query = $this->_conn->prepare("UPDATE clasedirigida set SolicitudClaseDirigida=:SolicitudClaseDirigida,Titular=:Titular,IBAN=:IBAN,Entidad=:Entidad,
-         					 Oficina=:Oficina,DigitoControl=:DigitoControl,Cuenta=:Cuenta 
-         				 WHERE idClaseDirigida=:idClaseDirigida");
-        $query->bindValue(":idClaseDirigida", $idClaseDirigida);
-        $query->bindValue(":SolicitudClaseDirigida", $SolicitudClaseDirigida);
-        $query->bindValue(":Titular", $Titular);
-        $query->bindValue(":IBAN", $IBAN);
-        $query->bindValue(":Entidad", $Entidad);
-        $query->bindValue(":Oficina", $Oficina);
-        $query->bindValue(":DigitoControl", $DigitoControl);
-        $query->bindValue(":Cuenta", $Cuenta);
-        $query->execute();
-        $filasActualizadas = $query->rowCount();*/        
-        
+        /* $query = $this->_conn->prepare("UPDATE clasedirigida set SolicitudClaseDirigida=:SolicitudClaseDirigida,Titular=:Titular,IBAN=:IBAN,Entidad=:Entidad,
+          Oficina=:Oficina,DigitoControl=:DigitoControl,Cuenta=:Cuenta
+          WHERE idClaseDirigida=:idClaseDirigida");
+          $query->bindValue(":idClaseDirigida", $idClaseDirigida);
+          $query->bindValue(":SolicitudClaseDirigida", $SolicitudClaseDirigida);
+          $query->bindValue(":Titular", $Titular);
+          $query->bindValue(":IBAN", $IBAN);
+          $query->bindValue(":Entidad", $Entidad);
+          $query->bindValue(":Oficina", $Oficina);
+          $query->bindValue(":DigitoControl", $DigitoControl);
+          $query->bindValue(":Cuenta", $Cuenta);
+          $query->execute();
+          $filasActualizadas = $query->rowCount(); */
+
         $this->con = ConexionBD::getInstance();
         $datosSolicitudClaseDirigida = new DatosolicitudclasedirigidaModel();
-        
+
         $datosSolicitudClaseDirigida->setIdDatosSolicitudClaseDirigida($idDatosSolicitudClaseDirigida);
         $datosSolicitudClaseDirigida->setIdSolicitud($idSolicitud);
         $datosSolicitudClaseDirigida->setTitular(base64_encode($Titular));
@@ -1704,9 +1700,9 @@ class AdministradorBO extends Rest {
         $datosSolicitudClaseDirigida->setOficina(base64_encode($Oficina));
         $datosSolicitudClaseDirigida->setDigitoControl(base64_encode($DigitoControl));
         $datosSolicitudClaseDirigida->setCuenta(base64_encode($Cuenta));
-                
-        $result = $datosSolicitudClaseDirigida->updateToDatabase($this->con);        
-        
+
+        $result = $datosSolicitudClaseDirigida->updateToDatabase($this->con);
+
         if (count($result) == 1) {
             $resp = array('estado' => "correcto", "msg" => "clase dirigida actualizada");
             $this->mostrarRespuesta($this->convertirJson($resp), 200);
@@ -1725,19 +1721,19 @@ class AdministradorBO extends Rest {
         $idDatosSolicitudClaseDirigida = $this->datosPeticion['idDatosSolicitudClaseDirigida'];
 
         //consulta preparada ya hace mysqli_real_escape()  
-        /*$query = $this->_conn->prepare("SELECT idClaseDirigida,SolicitudClaseDirigida,Titular,IBAN,Entidad,Oficina,DigitoControl,Cuenta 
-           				   FROM clasedirigida WHERE idClaseDirigida=:idClaseDirigida");
-        $query->bindValue(":idClaseDirigida", $idClaseDirigida);
-        $fila = $query->execute();
-        $query->execute();
+        /* $query = $this->_conn->prepare("SELECT idClaseDirigida,SolicitudClaseDirigida,Titular,IBAN,Entidad,Oficina,DigitoControl,Cuenta 
+          FROM clasedirigida WHERE idClaseDirigida=:idClaseDirigida");
+          $query->bindValue(":idClaseDirigida", $idClaseDirigida);
+          $fila = $query->execute();
+          $query->execute();
          */
-        
-        
+
+
         $this->con = ConexionBD::getInstance();
         $datosSolicitudClaseDirigida = new DatosolicitudclasedirigidaModel();
-        
+
         $fila = $datosSolicitudClaseDirigida->findById($this->con, $idDatosSolicitudClaseDirigida);
-        
+
         if ($fila) {
             $respuesta['estado'] = 'correcto';
             $respuesta['clase']['idDatosSolicitudClaseDirigida'] = $fila->getIdDatosSolicitudClaseDirigida();
@@ -1766,20 +1762,20 @@ class AdministradorBO extends Rest {
         $idActividad = $this->datosPeticion['idActividad'];
 
         //if (!$this->existeUsuario($email)) {  
-        /*$query = $this->_conn->prepare("INSERT into solicitudclasedirigida(IdSolicitudClaseDirigida, Solicitud, Clase) 
-         				VALUES (:IdSolicitudClaseDirigida, :Solicitud, :Clase)");
-        $query->bindValue(":IdSolicitudClaseDirigida", $IdSolicitudClaseDirigida);
-        $query->bindValue(":Solicitud", $Solicitud);
-        $query->bindValue(":Clase", $Clase);
+        /* $query = $this->_conn->prepare("INSERT into solicitudclasedirigida(IdSolicitudClaseDirigida, Solicitud, Clase) 
+          VALUES (:IdSolicitudClaseDirigida, :Solicitud, :Clase)");
+          $query->bindValue(":IdSolicitudClaseDirigida", $IdSolicitudClaseDirigida);
+          $query->bindValue(":Solicitud", $Solicitud);
+          $query->bindValue(":Clase", $Clase);
 
-        $query->execute();*/
-        
-        
+          $query->execute(); */
+
+
         $this->con = ConexionBD::getInstance();
         $actividadSolicitudClaseDirigida = new ActividadsolicitudclasedirigidaModel();
         $actividadSolicitudClaseDirigida->setIdSolicitud($idSolicitud);
-        $actividadSolicitudClaseDirigida->setIdActividad($idActividad);        
-        
+        $actividadSolicitudClaseDirigida->setIdActividad($idActividad);
+
         $result = $actividadSolicitudClaseDirigida->insertIntoDatabase($this->con);
 
         if ($query->rowCount() == 1) {
@@ -1804,15 +1800,15 @@ class AdministradorBO extends Rest {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
 
-        /*$query = $this->_conn->query("SELECT IdSolicitudClaseDirigida, Solicitud, Clase FROM solicitudclasedirigida");
-        $filas = $query->fetchAll(PDO::FETCH_ASSOC);
-        $num = count($filas);*/
-        
+        /* $query = $this->_conn->query("SELECT IdSolicitudClaseDirigida, Solicitud, Clase FROM solicitudclasedirigida");
+          $filas = $query->fetchAll(PDO::FETCH_ASSOC);
+          $num = count($filas); */
+
         $this->con = ConexionBD::getInstance();
         $actividadSolicitudClaseDirigida = new ActividadsolicitudclasedirigidaModel();
-        
-        $filas = $actividadSolicitudClaseDirigida->findBySql($this->con, "Select * from actividadsolicitudclasedirigida");        
-        
+
+        $filas = $actividadSolicitudClaseDirigida->findBySql($this->con, "Select * from actividadsolicitudclasedirigida");
+
         if (count($filas) > 0) {
             $respuesta['estado'] = 'correcto';
             $respuesta['solicitudes'] = $filas;
@@ -1830,28 +1826,28 @@ class AdministradorBO extends Rest {
         if (isset($this->datosPeticion['IdActividadesSolicitudClaseDirigida'])) {
             $IdActividadesSolicitudClaseDirigida = $this->datosPeticion['IdActividadesSolicitudClaseDirigida'];
             $IdSolicitud = $this->datosPeticion['IdSolicitud'];
-            $IdActividad = $this->datosPeticion['IdActividad'];            
+            $IdActividad = $this->datosPeticion['IdActividad'];
 
             if (!empty($IdActividadesSolicitudClaseDirigida)) {
-                /*$query = $this->_conn->prepare("update tiposolicitud set NombreSolicitud=:NombreSolicitud, DescripcionSolicitud=:DescripcionSolicitud, FechaAlta=:FechaAlta, FechaBaja=:FechaBaja  
-         				 WHERE idTipoSolicitud=:idTipoSolicitud");
-                $query->bindValue(":idTipoSolicitud", $idTipoSolicitud);
-                $query->bindValue(":NombreSolicitud", $NombreSolicitud);
-                $query->bindValue(":DescripcionSolicitud", $DescripcionSolicitud);
-                $query->bindValue(":FechaAlta", $FechaAlta);
-                $query->bindValue(":FechaBaja", $FechaBaja);
-                $query->execute();
-                $filasActualizadas = $query->rowCount();*/
-                
-                
+                /* $query = $this->_conn->prepare("update tiposolicitud set NombreSolicitud=:NombreSolicitud, DescripcionSolicitud=:DescripcionSolicitud, FechaAlta=:FechaAlta, FechaBaja=:FechaBaja  
+                  WHERE idTipoSolicitud=:idTipoSolicitud");
+                  $query->bindValue(":idTipoSolicitud", $idTipoSolicitud);
+                  $query->bindValue(":NombreSolicitud", $NombreSolicitud);
+                  $query->bindValue(":DescripcionSolicitud", $DescripcionSolicitud);
+                  $query->bindValue(":FechaAlta", $FechaAlta);
+                  $query->bindValue(":FechaBaja", $FechaBaja);
+                  $query->execute();
+                  $filasActualizadas = $query->rowCount(); */
+
+
                 $this->con = ConexionBD::getInstance();
                 $actividadSolicitudClaseDirigida = new ActividadsolicitudclasedirigidaModel();
                 $actividadSolicitudClaseDirigida->setIdActividadesSolicitudClaseDirigida($IdActividadesSolicitudClaseDirigida);
                 $actividadSolicitudClaseDirigida->setIdSolicitud($IdSolicitud);
-                $actividadSolicitudClaseDirigida->setIdActividad($IdActividad);        
-                
-                $result = $actividadSolicitudClaseDirigida->updateToDatabase($this->con);                
-                
+                $actividadSolicitudClaseDirigida->setIdActividad($IdActividad);
+
+                $result = $actividadSolicitudClaseDirigida->updateToDatabase($this->con);
+
                 if (count($result) == 1) {
                     $resp = array('estado' => "correcto", "msg" => "tipo de solicitud actualizada");
                     $this->mostrarRespuesta($this->convertirJson($resp), 200);
@@ -1872,17 +1868,17 @@ class AdministradorBO extends Rest {
         $idActividadesSolicitudClaseDirigida = $this->datosPeticion['idActividadesSolicitudClaseDirigida'];
 
         //consulta preparada ya hace mysqli_real_escape()  
-        /*$query = $this->_conn->prepare("SELECT IdSolicitudClaseDirigida, Solicitud, Clase FROM solicitudclasedirigida WHERE IdSolicitudClaseDirigida=:IdSolicitudClaseDirigida");
-        $query->bindValue(":IdSolicitudClaseDirigida", $IdSolicitudClaseDirigida);
-        $fila = $query->execute();
-        $query->execute();
+        /* $query = $this->_conn->prepare("SELECT IdSolicitudClaseDirigida, Solicitud, Clase FROM solicitudclasedirigida WHERE IdSolicitudClaseDirigida=:IdSolicitudClaseDirigida");
+          $query->bindValue(":IdSolicitudClaseDirigida", $IdSolicitudClaseDirigida);
+          $fila = $query->execute();
+          $query->execute();
          */
-        
+
         $this->con = ConexionBD::getInstance();
-        $actividadSolicitudClaseDirigida = new ActividadsolicitudclasedirigidaModel();        
-        
-        $fila = $actividadSolicitudClaseDirigida->findById($this->con, $idActividadesSolicitudClaseDirigida);        
-        
+        $actividadSolicitudClaseDirigida = new ActividadsolicitudclasedirigidaModel();
+
+        $fila = $actividadSolicitudClaseDirigida->findById($this->con, $idActividadesSolicitudClaseDirigida);
+
         if ($fila) {
             $respuesta['estado'] = 'correcto';
             $respuesta['solicitud']['idActividadesSolicitudClaseDirigida'] = $fila->getIdActividadesSolicitudClaseDirigida();
@@ -1892,6 +1888,128 @@ class AdministradorBO extends Rest {
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
     }
+
+    //Metodos CRUD TipoAbono
+    private function crearTipoAbono() {
+
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {       	 	
+
+        $idTipoAbono = $this->datosPeticion['idTipoAbono'];
+        $NombreAbono = $this->datosPeticion['NombreAbono'];
+        $DescripcionAbono = $this->datosPeticion['DescripcionAbono'];
+        $FechaAlta = $this->datosPeticion['FechaAlta'];
+        $FechaBaja = $this->datosPeticion['FechaBaja'];
+        //if (!$this->existeUsuario($email)) {  
+        /* $query = $this->_conn->prepare("INSERT into tiposolicitud(idTipoSolicitud, NombreSolicitud, DescripcionSolicitud, FechaAlta, FechaBaja) 
+          VALUES (:idTipoSolicitud, :NombreSolicitud, :DescripcionSolicitud, :FechaAlta, :FechaBaja)");
+          $query->bindValue(":idTipoSolicitud", $idTipoSolicitud);
+          $query->bindValue(":NombreSolicitud", $NombreSolicitud);
+          $query->bindValue(":DescripcionSolicitud", $DescripcionSolicitud);
+          $query->bindValue(":FechaAlta", $FechaAlta);
+          $query->bindValue(":FechaBaja", $FechaBaja);
+          $query->execute(); */
+
+        $this->con = ConexionBD::getInstance();
+        $tipoAbono = new SalaModel();
+
+
+
+        if ($query->rowCount() == 1) {
+
+            //$id = $this->_conn->lastInsertId();  
+            $respuesta['estado'] = 'correcto';
+            $respuesta['msg'] = 'tipo solicitud creado correctamente';
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        else
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
+        //}  
+        //else  
+        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(8)), 400);  
+        //} else {  
+        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);  
+        //}  
+    }
+
+    private function obtenerTiposSolicitudes() {
+        if ($_SERVER['REQUEST_METHOD'] != "GET") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+
+        $query = $this->_conn->query("SELECT idTipoSolicitud, NombreSolicitud, DescripcionSolicitud, FechaAlta, FechaBaja FROM tiposolicitud");
+        $filas = $query->fetchAll(PDO::FETCH_ASSOC);
+        $num = count($filas);
+        if ($num > 0) {
+            $respuesta['estado'] = 'correcto';
+            $respuesta['tiposSolicitudes'] = $filas;
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        $this->mostrarRespuesta($this->devolverError(2), 204);
+    }
+
+    private function actualizarTipoSolicitud() {
+        if ($_SERVER['REQUEST_METHOD'] != "PUT") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+
+        //echo $idUsuario . "<br/>";  
+        if (isset($this->datosPeticion['idTipoSolicitud'])) {
+            $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
+            $NombreSolicitud = $this->datosPeticion['NombreSolicitud'];
+            $DescripcionSolicitud = $this->datosPeticion['DescripcionSolicitud'];
+            $FechaAlta = $this->datosPeticion['FechaAlta'];
+            $FechaBaja = $this->datosPeticion['FechaBaja'];
+
+            if (!empty($idTipoSolicitud)) {
+                $query = $this->_conn->prepare("update tiposolicitud set NombreSolicitud=:NombreSolicitud, DescripcionSolicitud=:DescripcionSolicitud, FechaAlta=:FechaAlta, FechaBaja=:FechaBaja  
+         				 WHERE idTipoSolicitud=:idTipoSolicitud");
+                $query->bindValue(":idTipoSolicitud", $idTipoSolicitud);
+                $query->bindValue(":NombreSolicitud", $NombreSolicitud);
+                $query->bindValue(":DescripcionSolicitud", $DescripcionSolicitud);
+                $query->bindValue(":FechaAlta", $FechaAlta);
+                $query->bindValue(":FechaBaja", $FechaBaja);
+                $query->execute();
+                $filasActualizadas = $query->rowCount();
+                if ($filasActualizadas == 1) {
+                    $resp = array('estado' => "correcto", "msg" => "tipo de solicitud actualizada");
+                    $this->mostrarRespuesta($this->convertirJson($resp), 200);
+                } else {
+                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+                }
+            }
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+    }
+
+    private function obtenerTipoSolicitud() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+
+        //el constructor del padre ya se encarga de sanear los datos de entrada  
+        $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
+
+        //consulta preparada ya hace mysqli_real_escape()  
+        $query = $this->_conn->prepare("SELECT idTipoSolicitud,NombreSolicitud,DescripcionSolicitud,FechaAlta,FechaBaja FROM tiposolicitud WHERE idTipoSolicitud=:idTipoSolicitud");
+        $query->bindValue(":idTipoSolicitud", $idTipoSolicitud);
+        $fila = $query->execute();
+
+        $query->execute();
+        if ($fila = $query->fetch(PDO::FETCH_ASSOC)) {
+            $respuesta['estado'] = 'correcto';
+            $respuesta['tipoSolicitud']['idTipoSolicitud'] = $fila['idTipoSolicitud'];
+            $respuesta['tipoSolicitud']['NombreSolicitud'] = $fila['NombreSolicitud'];
+            $respuesta['tipoSolicitud']['DescripcionSolicitud'] = $fila['DescripcionSolicitud'];
+            $respuesta['tipoSolicitud']['FechaAlta'] = $fila['FechaAlta'];
+            $respuesta['tipoSolicitud']['FechaBaja'] = $fila['FechaBaja'];
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+    }
+
 }
 
 $administradorBO = new AdministradorBO();
