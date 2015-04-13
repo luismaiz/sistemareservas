@@ -88,7 +88,7 @@
                                         <input type="text"  id="filtronombresala">	
                                         <label class="control-label" >Capacidad Sala</label>
                                         <input type="text"  id="filtrocapacidadsala">
-                                        <input class="btn btn-default" type="button" value="Buscar" onClick="obtenerSalas()"/></div>
+                                        <input class="btn btn-primary" type="button" value="Buscar" onClick="obtenerSalas()"/></div>
 				</div>
                             </div>
 

@@ -39,7 +39,7 @@
                                         <input type="text"  id="filtrodni">
                                         <label class="control-label" >eMail</label>
                                         <input type="text"  id="filtrodni">
-                                        <input class="btn btn-default" type="button" value="Buscar"/>
+                                        <input class="btn btn-primary" type="button" value="Buscar"/>
                                 </div>
 				</div>
                             </div>
@@ -77,7 +77,7 @@
                             <td class="center">Adulto</td>
                             <td class="center">Mensual</td>
                             <td class="center">
-                                <a class="btn btn-info" href="#">
+                                <a class="btn btn-info" href="FormularioDetalleSolicitudClasesDirigidas.php">
                                     <i class="glyphicon glyphicon-edit icon-white"></i>
                                     Detalle
                                 </a>
@@ -91,7 +91,7 @@
                             <td class="center">Solo Mañana</td>
                             <td class="center">Diario</td>
                             <td class="center">
-                                <a class="btn btn-info" href="#">
+                                <a class="btn btn-info" href="FormularioDetalleSolicitudClasesDirigidas.php">
                                     <i class="glyphicon glyphicon-edit icon-white"></i>
                                     Detalle
                                 </a>

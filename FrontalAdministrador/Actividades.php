@@ -12,8 +12,7 @@
 	
                 var RespTxt = Ajax.responseText;
                 
-                alert('hola');
-                
+                               
                 var Clase = eval('(' + RespTxt + ')');	
                 
                 //alert(Clase);
@@ -83,7 +82,7 @@
                                         <input type="text"  id="filtrointensidad">
                                         <label class="control-label" >Grupo</label>
                                         <input type="text"  id="filtrogrupo">
-                                        <input class="btn btn-default" type="button" value="Buscar" onClick="obtenerActividades();"/>
+                                        <input class="btn btn-primary" type="button" value="Buscar" onClick="obtenerActividades();"/>
                         
                         </div>
 				</div>
@@ -110,7 +109,7 @@
                                <div class="box-content" id="actividades"></div>
                             </div>
                             <br>
-                            <input class="btn btn-default" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleActividad.php' "/>
+                            <input class="btn btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleActividad.php' "/>
                             
                         </div>
                         
