@@ -1,4 +1,4 @@
-<?php require('headerReservas.php'); ?>
+<?php require('Cabecera.php'); ?>
 <script>
     var Ajax = new AjaxObj();
     function obtenerActividades(){
@@ -12,6 +12,7 @@
 	
                 var RespTxt = Ajax.responseText;
                 
+                alert('hola');
                 
                 var Clase = eval('(' + RespTxt + ')');	
                 
@@ -109,11 +110,11 @@
                                <div class="box-content" id="actividades"></div>
                             </div>
                             <br>
-                            <input class="btn btn-default" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleActividad' "/>
+                            <input class="btn btn-default" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleActividad.php' "/>
                             
                         </div>
                         
                     </div>
 </div>
 
-<?php require('footerReservas.php'); ?>
+<?php require('Pie.php'); ?>
