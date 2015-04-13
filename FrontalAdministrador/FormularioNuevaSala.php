@@ -144,7 +144,8 @@
                                 <label class="control-label" >Fecha Baja</label>
                                 <input type="date" name="FechaBaja" id="FechaBaja">
                                 
-                                <input class="btn btn-default" type="button" value="Crear Sala" onclick="crearSala()"/>
+                                <input class="btn btn-default" type="button" value="Cancelar" href="Salas.php" />
+                                <input class="btn btn-default" type="button" value="Aceptar" onclick="crearSala()"/>
                             </form>
                         </div>
                         </div>
