@@ -19,6 +19,7 @@
                 Ajax.send(Params); // Enviamos los datos
             }
 
+
             function actualizarSala() {
                 var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=actualizarSala";
                 var Params = 'idSala='+ document.getElementById('idSala').value +
@@ -142,10 +143,8 @@
                                 
                                 <label class="control-label" >Fecha Baja</label>
                                 <input type="date" name="FechaBaja" id="FechaBaja">
-                                      
-                                <input class="btn btn-default " type="button" value="Cancelar" onClick=" window.location.href='Salas.php' " />
-                                <input class="btn btn-default " type="button" value="Aceptar" onclick="crearSala()"/>
-                               
+                                
+                                <input class="btn btn-default" type="button" value="Crear Sala" onclick="crearSala()"/>
                             </form>
                         </div>
                         </div>

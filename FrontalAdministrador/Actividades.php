@@ -1,4 +1,4 @@
-<?php require('headerReservas.php'); ?>
+<?php require('Cabecera.php'); ?>
 <script>
     var Ajax = new AjaxObj();
     function obtenerActividades(){
@@ -117,4 +117,4 @@
                     </div>
 </div>
 
-<?php require('footerReservas.php'); ?>
+<?php require('Pie.php'); ?>

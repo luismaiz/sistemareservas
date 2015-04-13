@@ -1,4 +1,4 @@
-<?php require('headerReservas.php'); ?>
+<?php require('Cabecera.php'); ?>
 <div>
     <ul class="breadcrumb">
         <li>
@@ -112,4 +112,4 @@
                     </div>
 </div>
 
-<?php require('footerReservas.php'); ?>
+<?php require('Pie.php'); ?>

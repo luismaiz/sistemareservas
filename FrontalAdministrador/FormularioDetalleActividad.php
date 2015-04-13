@@ -1,4 +1,4 @@
-<?php require('headerReservas.php'); ?>
+<?php require('Cabecera.php'); ?>
 <script>
            
             var Ajax = new AjaxObj();
@@ -192,4 +192,4 @@
                        
 </div>
 
-<?php require('footerReservas.php'); ?>
+<?php require('Pie.php'); ?>
