@@ -8,43 +8,32 @@
     </ul>
 </div>
 <div class=" row">
-    <div class="col-md-3 col-sm-3 col-xs-6">
-        <a data-toggle="tooltip" title="6 new members." class="well top-block" href="#">
+   <div class="col-md-4 col-sm-3 col-xs-6">
+        <a data-toggle="tooltip" title="3 nuevas solicitudes." class="well top-block" href="Reservas.php">
             <i class="glyphicon glyphicon-user blue"></i>
 
-            <div>Total Members</div>
-            <div>507</div>
-            <span class="notification">6</span>
+            <div>Abonos diarios</div>
+            <div>7</div>
+            <span class="notification">7</span>
+        </a>
+    </div>
+    <div class="col-md-4 col-sm-3 col-xs-6">
+        <a data-toggle="tooltip" title="14 nuevas solicitudes." class="well top-block" href="Reservas.php">
+            <i class="glyphicon glyphicon-user blue"></i>
+
+            <div>Clase Dirigidas</div>
+            <div>14</div>
+            <span class="notification">507</span>
         </a>
     </div>
 
-    <div class="col-md-3 col-sm-3 col-xs-6">
-        <a data-toggle="tooltip" title="4 new pro members." class="well top-block" href="#">
-            <i class="glyphicon glyphicon-star green"></i>
+    <div class="col-md-4 col-sm-3 col-xs-6">
+        <a data-toggle="tooltip" title="28 nuevas solicitudes." class="well top-block" href="Reservas.php">
+            <i class="glyphicon glyphicon-user blue"></i>
 
-            <div>Pro Members</div>
-            <div>228</div>
-            <span class="notification green">4</span>
-        </a>
-    </div>
-
-    <div class="col-md-3 col-sm-3 col-xs-6">
-        <a data-toggle="tooltip" title="$34 new sales." class="well top-block" href="#">
-            <i class="glyphicon glyphicon-shopping-cart yellow"></i>
-
-            <div>Sales</div>
-            <div>$13320</div>
-            <span class="notification yellow">$34</span>
-        </a>
-    </div>
-
-    <div class="col-md-3 col-sm-3 col-xs-6">
-        <a data-toggle="tooltip" title="12 new messages." class="well top-block" href="#">
-            <i class="glyphicon glyphicon-envelope red"></i>
-
-            <div>Messages</div>
-            <div>25</div>
-            <span class="notification red">12</span>
+            <div>Abonos mensuales</div>
+            <div>28</div>
+            <span class="notification">28</span>
         </a>
     </div>
 </div>
@@ -95,6 +84,7 @@
                     </li>
                 </ul>
             </div>
+            <div id="piechart" style="height:300px"></div>
         </div>
     </div>
     <!--/span-->
@@ -134,27 +124,19 @@
                     
                 </ul>
             </div>
+            <div id="donutchart" style="height: 300px;">
         </div>
     </div>
     <!--/span-->    
 </div><!--/row-->
-<div class="row">
-    <div class="box col-md-12">
-        <div class="box-inner">
-            <div class="box-header well" data-original-title="">
-                <h2><i class="glyphicon glyphicon-list-alt"></i> Pie</h2>
 
-                <div class="box-icon">
-                    
-                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
-                            class="glyphicon glyphicon-chevron-up"></i></a>
-                    
-                </div>
-            </div>
-            <div class="box-content">
-                <div id="piechart" style="height:300px"></div>
-            </div>
-        </div>
-    </div>
-</div><!--/row-->
+
+<!-- chart libraries start -->
+<script src="bower_components/flot/excanvas.min.js"></script>
+<script src="bower_components/flot/jquery.flot.js"></script>
+<script src="bower_components/flot/jquery.flot.pie.js"></script>
+<script src="bower_components/flot/jquery.flot.stack.js"></script>
+<script src="bower_components/flot/jquery.flot.resize.js"></script>
+<!-- chart libraries end -->
+<script src="js/init-chart.js"></script>
 <?php require('footerReservas.php'); ?>
