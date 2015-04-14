@@ -25,6 +25,9 @@ if(isset($_GET['idTarifa'])) {
             <a href="#">Inicio</a>
         </li>
         <li>
+            <a href="#">Tarifas</a>
+        </li>
+        <li>
             <a href="#">Detalle Tarifa</a>
         </li>
     </ul>

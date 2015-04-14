@@ -25,6 +25,9 @@ if(isset($_GET['idAbono'])) {
             <a href="#">Inicio</a>
         </li>
         <li>
+            <a href="#">Tipo Abono</a>
+        </li>
+        <li>
             <a href="#">Detalle Abono</a>
         </li>
     </ul>

@@ -11,6 +11,9 @@
             <a href="#">Inicio</a>
         </li>
         <li>
+            <a href="#">Reservas</a>
+        </li>
+        <li>
             <a href="#">Detalle Solicitud Clase Dirigida</a>
         </li>
     </ul>

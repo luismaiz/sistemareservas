@@ -145,6 +145,9 @@
             <a href="#">Inicio</a>
         </li>
         <li>
+            <a href="#">Actividades</a>
+        </li>
+        <li>
             <a href="#">Detalle Actividad</a>
         </li>
     </ul>

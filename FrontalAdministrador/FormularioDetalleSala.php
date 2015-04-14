@@ -125,6 +125,9 @@ if(isset($_GET['idSala'])) {
             <a href="#">Inicio</a>
         </li>
         <li>
+            <a href="#">Salas</a>
+        </li>
+        <li>
             <a href="#">Detalle Sala</a>
         </li>
     </ul>
