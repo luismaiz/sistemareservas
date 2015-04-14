@@ -91,6 +91,7 @@
 
 
                         </div>
+</div>
                        <div class="row">
                         <div class="box col-md-12">
                             <div class="box-inner">
@@ -102,6 +103,7 @@
                                                 class="glyphicon glyphicon-chevron-up"></i></a>
                                     </div>
                                 </div>
+                            
                                 <div class="box-content" id="tiposAbono">
                                                                     </div>
                             </div>

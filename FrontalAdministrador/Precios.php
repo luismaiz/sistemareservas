@@ -23,32 +23,33 @@
                         <div class="box-content">
                             <div class="row">
                         <div class="form-group">
-                            <div class="col-md-4">
-                                <div>
+                            <div class="col-md-12">
+                                <div class="form-group">
 					<label class="control-label" >Actividad</label>
-                                        <input type="text"  id="FiltroPrecioActividad">
+                                    <select id="filtroactividad" class="input-sm" >	
+                                        <option>Cardio</option>
+                                        <option>Fitness</option>
+                                        
+                                    </select>
+                                        <label class="control-label" >Tipo Abono</label>
+                                    <select id="filtrotipoabono" class="input-sm" >	
+                                        <option>Abono Diario</option>
+                                        <option>Abono Mensual</option>
+                                        <option>Clase Dirigida</option>
+                                    </select>
+                                        <label class="control-label" >Tipo Tarifa</label>
+                                    <select id="filtrotipotarifa" class="input-sm" >	
+                                        <option>Mayores</option>
+                                        <option>Familiar</option>
+                                        <option>Adulto</option>
+                                    </select>
+                                    <input class="box btn-primary" type="button" value="Buscar" onClick="obtenerPrecios()"/>
                                 </div>	
 				</div>
-                            <div class="col-md-4">
-                                <div>
-					<label class="control-label" >Tarifa</label>
-                                        <input type="text"  id="FiltroPrecioTarifa"></div>	
-				</div>
-                                <div class="col-md-4">
-                                    <div>
-					<label class="control-label" >Abono</label>
-                                        <input type="text"  id="FiltroPrecioAbono"></div>	
-				</div>
-                                <div class="col-md-4">
-                                    <input class="btn btn-default" type="button" value="Buscar"/>
-                                    </div>
                             </div>
-
                         </div>
                         </div>
                         </div>
-
-
                         </div>
                        <div class="row">
                         <div class="box col-md-12">
@@ -66,26 +67,20 @@
                                             <thead>
                                                 <tr>
                                                     <th>Actividad</th>
-                                                    <th>Descripcion</th>
-                                                    <th>Intensidad</th>
-                                                    <th>Grupo</th>
-                                                    <th>EdadMinima</th>
-                                                    <th>EdadMaxima</th>
+                                                    <th>Tarifa</th>
+                                                    <th>Tipo Abono</th>
+                                                    <th>Precio</th>
                                                     <th></th>
                                                 </tr>
-                                                <tr> 
+                                                <tr>
                             <td class="center">Fitness</td>
-                            <td class="center">Fitness</td>
-                            <td class="center">Alta</td>
-                            <td class="center">Mañana</td>
-                            <td class="center">18</td>
-                            <td class="center">65</td>
+                            <td class="center">Adulto</td>
+                            <td class="center">Mensual</td>
                             <td class="center">
-                                <a class="btn btn-info" href="#">
+                                <a class="btn btn-info2" href="#">
                                     <i class="glyphicon glyphicon-edit icon-white"></i>
-                                    Edit
+                                    Detalle
                                 </a>
-                                
                             </td>
                                                 <tr>
                                             </thead>
@@ -95,7 +90,7 @@
                                                                     </div>
                             </div>
                             <br>
-                            <input class="btn btn-default" type="button" value="Añadir" onClick=" window.location.href='file:///C:/Users/Alejandro/Downloads/Proyecto/charisma-master/charisma-master/FormularioNuevaSala.html' "/>
+                            <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetallePrecios.php' "/>
                         </div>
                         
                     </div>

@@ -1,4 +1,45 @@
 <?php require('Cabecera.php'); ?>
+<script>
+var Ajax = new AjaxObj();
+
+            function obtenerTiposTarifa(){
+                //var Url = "http://www.rightwatch.es/pfgreservas/Api.php?url=obtenerActividades";	
+                var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerTiposTarifa";		        
+                var Params = '';
+
+	
+                Ajax.open("GET", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
+                Ajax.send(Params); // Enviamos los datos
+	
+                var RespTxt = Ajax.responseText;
+                
+                //alert(RespTxt);
+	
+                var Clase = eval('(' + RespTxt + ')');	
+                
+                //alert(Clase);
+	
+                var contenido = '<table class="table table-striped table-bordered responsive"><thead><tr><th>NombreTarifa</th><th>DescripcionTarifa</th><th>FechaAlta</th><th>FechaBaja</th><th></th></tr>';
+                                                    
+                var div = document.getElementById("tiposTarifa");                
+	
+                for(i=0; i<Clase.tiposTarifa.length; i++){		
+                    //contenido = contenido + '<th>' + Clase.tiposTarifa[i].idTipoTarifa + '</th>';
+                    contenido = contenido + '<tr>';
+                    contenido = contenido + '<td>' + Clase.tiposTarifa[i].NombreTarifa + '</td>';
+                    contenido = contenido + '<td>' + Clase.tiposTarifa[i].DescripcionTarifa + '</td>';
+                    contenido = contenido + '<td>' + Clase.tiposTarifa[i].FechaAlta + '</td>';
+                    contenido = contenido + '<td>' + Clase.tiposTarifa[i].FechaBaja + '</td>';
+                    contenido = contenido + '<td class="center"><a class="btn btn-info2" href="#"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>';	
+                    contenido = contenido + '</tr>';
+                }
+                contenido = contenido + '</thead></table>';
+	
+                div.innerHTML = contenido;	
+            }
+            
+            </script>
 <div>
     <ul class="breadcrumb">
         <li>
@@ -37,6 +78,7 @@
 
 
                         </div>
+</div>
                        <div class="row">
                         <div class="box col-md-12">
                             <div class="box-inner">
@@ -48,38 +90,9 @@
                                                 class="glyphicon glyphicon-chevron-up"></i></a>
                                     </div>
                                 </div>
-                                <div class="box-content">
-                                        <table class="table table-striped table-bordered responsive">
-                                            <thead>
-                                                <tr>
-                                                    <th>Actividad</th>
-                                                    <th>Descripcion</th>
-                                                    <th>Intensidad</th>
-                                                    <th>Grupo</th>
-                                                    <th>EdadMinima</th>
-                                                    <th>EdadMaxima</th>
-                                                    <th></th>
-                                                </tr>
-                                                <tr> 
-                            <td class="center">Fitness</td>
-                            <td class="center">Fitness</td>
-                            <td class="center">Alta</td>
-                            <td class="center">Mañana</td>
-                            <td class="center">18</td>
-                            <td class="center">65</td>
-                            <td class="center">
-                                <a class="btn btn-info2" href="#">
-                                    <i class="glyphicon glyphicon-edit icon-white"></i>
-                                    Detalle
-                                </a>
-                                
-                            </td>
-                                                <tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>    
-                                        </table>            
-                                                                    </div>
+                                <div class="box-content" id="tiposTarifa">
+
+                                </div>
                             </div>
                             <br>
                             <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleTarifa.php' "/>
