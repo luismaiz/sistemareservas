@@ -6,10 +6,10 @@
             function obtenerSalas() {
                 
                 //var Url = "http://www.rightwatch.es/pfgreservas/Api.php?url=obtenerSalas";
-                var Url = "http://localhost:8080/pfgreservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerSalas";
+                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerSalas";
                 var Params = '';
 
-	alert('hola');
+	
                 Ajax.open("GET", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/json");
                 //Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");

@@ -4,7 +4,7 @@ var Ajax = new AjaxObj();
 
             function obtenerTiposTarifa(){
                 //var Url = "http://www.rightwatch.es/pfgreservas/Api.php?url=obtenerActividades";	
-                var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerTiposTarifa";		        
+                var Url = "http://pfgreservas.rightwatch.es/Negocio/AdministradorBO.php?url=obtenerTiposTarifa";		        
                 var Params = '';
 
 	
