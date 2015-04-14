@@ -69,56 +69,10 @@
                 } 
             } 
 
-            function obtenerSala(idSala) {
-                alert(idSala);
-                
-                var Url = "http://localhost:8080/pfgreservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerSala";
-                var Params = 'idSala='+ idSala;
-
-	
-                Ajax.open("POST", Url, false);
-                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-                Ajax.send(Params); // Enviamos los datos
-	
-                var RespTxt = Ajax.responseText;
-	
-                alert("Resultado:" + RespTxt);
-	
-                //alert(eval('(' + RespTxt + ')'));
-                //alert("Prueba: " + $.parseJSON(RespTxt));
-                //var Clase = eval('(' + RespTxt + ')');
-                var Clase = eval('(' + RespTxt + ')');	
-	
-                //eval('(' + RespTxt + ')');
-                alert(Clase);
-                alert('Estado: '+ Clase.estado);
-                alert('idSala: '+ Clase.sala.idSala);
-                alert('NombreSala: '+ Clase.sala.NombreSala);
-                alert('CapacidadSala: '+ Clase.sala.CapacidadSala);
-                alert('DescripcionSala: '+ Clase.sala.DescripcionSala);
-	  
-                //alert (document.getElementById('NombreSala').value)
-                //document.getElementById('idSala').value=Clase.sala.idSala;
-                document.getElementsByName('nombresala').value=Clase.sala.NombreSala;
-                //document.getElementById('CapacidadSala')=Clase.sala.CapacidadSala;
-                //document.getElementById('DescripcionSala')=Clase.sala.DescripcionSala;
-                //document.getElementById('FechaAlta')=Clase.sala.FechaAlta;
-                //document.getElementById('FechaBaja')=Clase.sala.FechaBaja;                
-            }
+            
             
         </script>
-        <?php  
-if(isset($_GET['idSala'])) {
-    $test = $_GET['idSala'];
-    echo $test;
-    echo '<script>
-           var varjs="'.$test.'";
-           obtenerSala(varjs);
-           </script>';
-} else {
-    $test = '';
-}
-?>
+       
 <div>
     <ul class="breadcrumb">
         <li>
@@ -147,7 +101,7 @@ if(isset($_GET['idSala'])) {
                             
                             <form class="form-group">
                                 <label class="control-label" >Nombre</label>
-                                <input type="text" class="input-sm" name="nombresala" id="NombreSala"></br></br>
+                                <input value = "" type="text" class="input-sm" name="nombresala" id="NombreSala"></br></br>
                                 
                                 <label class="control-label" >Descripcion</label>
                                 <input type="text" class="input-sm"  id="DescripcionSala"></br></br>
@@ -172,5 +126,53 @@ if(isset($_GET['idSala'])) {
                         </div>
                        
 </div>
+        <script>
+            function obtenerSala(idSala) {
+//                alert(idSala);
+                
+                var Url = "http://localhost:8080/pfgreservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerSala";
+                var Params = 'idSala='+ idSala;
 
+	
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+	
+                var RespTxt = Ajax.responseText;
+	
+//                alert("Resultado:" + RespTxt);
+	
+                //alert(eval('(' + RespTxt + ')'));
+                //alert("Prueba: " + $.parseJSON(RespTxt));
+                //var Clase = eval('(' + RespTxt + ')');
+                var Clase = eval('(' + RespTxt + ')');	
+	
+                //eval('(' + RespTxt + ')');
+//                alert(Clase);
+//                alert('Estado: '+ Clase.estado);
+//                alert('idSala: '+ Clase.sala.idSala);
+//                alert('NombreSala: '+ Clase.sala.NombreSala);
+//                alert('CapacidadSala: '+ Clase.sala.CapacidadSala);
+//                alert('DescripcionSala: '+ Clase.sala.DescripcionSala);
+                
+                document.getElementById('NombreSala').value= Clase.sala.idSala;
+                document.getElementById('CapacidadSala').value= Clase.sala.CapacidadSala;
+                document.getElementById('DescripcionSala').value= Clase.sala.DescripcionSala;
+                document.getElementById('FechaAlta').value= Clase.sala.FechaAlta;
+                document.getElementById('FechaBaja').value= Clase.sala.FechaBaja;                
+            }
+                         
+        </script>
+ <?php  
+if(isset($_GET['idSala'])) {
+    $test = $_GET['idSala'];
+    echo '<script>
+           var varjs="'.$test.'";
+           obtenerSala(varjs);
+           </script>';
+} else {
+    $test = '';
+}
+?>        
+        
 <?php require('Pie.php'); ?>

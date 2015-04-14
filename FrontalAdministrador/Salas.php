@@ -9,7 +9,7 @@
                 var Url = "http://localhost:8080/pfgreservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerSalas";
                 var Params = '';
 
-	
+	alert('hola');
                 Ajax.open("GET", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/json");
                 //Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
