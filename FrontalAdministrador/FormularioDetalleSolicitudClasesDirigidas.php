@@ -100,7 +100,7 @@
                                 <div class="box col-md-4"></div>
                                 <div class="box col-md-4"></div>
                                     <div class="box col-md-4">
-                                        <input class="box btn-primary" type="button" value="Cancelar" onclick="Actividades.php"/>
+                                        <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Reservas.php' "/>
                                         <input class="box btn-primary" type="button" value="Aceptar" onclick="crearSala()"/>
                                     </div>
                             </div>

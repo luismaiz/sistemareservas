@@ -88,9 +88,9 @@
                             <div class="col-md-12">
                                 <div class="form-group">
 					<label class="control-label" >Nombre Sala</label>
-                                        <input type="text"  id="filtronombresala">	
+                                        <input type="text" class="input-sm"  id="filtronombresala">	
                                         <label class="control-label" >Capacidad Sala</label>
-                                        <input type="text"  id="filtrocapacidadsala">
+                                        <input type="text" class="input-sm"  id="filtrocapacidadsala">
                                         <input class="box btn-primary" type="button" value="Buscar" onClick="obtenerSalas()"/></div>
 				</div>
                             </div>

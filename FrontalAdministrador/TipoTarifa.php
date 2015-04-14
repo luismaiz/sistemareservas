@@ -67,7 +67,7 @@ var Ajax = new AjaxObj();
                             <div class="col-md-12">
                                 <div class="form-group">
 					<label class="control-label" >Tipos de Tarifa</label>
-                                         <input type="text"  id="IntensidadActividad">	
+                                         <input type="text" class="input-sm" id="IntensidadActividad">	
 				        <input class="box btn-primary" type="button" value="Buscar"/>
                                     </div>
                             </div>

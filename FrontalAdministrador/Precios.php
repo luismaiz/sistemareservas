@@ -76,6 +76,7 @@
                             <td class="center">Fitness</td>
                             <td class="center">Adulto</td>
                             <td class="center">Mensual</td>
+                            <td class="center">30,65</td>
                             <td class="center">
                                 <a class="btn btn-info2" href="#">
                                     <i class="glyphicon glyphicon-edit icon-white"></i>
