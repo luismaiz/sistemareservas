@@ -30,7 +30,7 @@
                     contenido = contenido + '<td>' + Clase.actividades[i].Edad_Max + '</td>';                    
                     contenido = contenido + '<td>' + Clase.actividades[i].Grupo + '</td>';
                     contenido = contenido + '<td>' + Clase.actividades[i].Descripcion + '</td>';
-                    contenido = contenido + '<td class="center"><a href="FormularioDetalleActividad.php#obtenerActividad()?idActividad=' + Clase.actividades[i].idActividad + '" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>';	
+                    contenido = contenido + '<td class="center"><a href="FormularioDetalleActividad.php#obtenerActividad()?idActividad=' + Clase.actividades[i].idActividad + '" class="btn btn-info2"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>';	
                     contenido = contenido + '</tr>';
                 }
                 contenido = contenido + '</thead></table>';
@@ -77,12 +77,12 @@
                             <div class="col-md-12">
                                 <div class="form-group">
 					<label class="control-label" >Actividad</label>
-                                        <input type="text"  id="filtroactividad">
+                                        <input type="text" class="input-sm"  id="filtroactividad">
                                         <label class="control-label" >Intensidad</label>
-                                        <input type="text"  id="filtrointensidad">
+                                        <input type="text" class="input-sm"  id="filtrointensidad">
                                         <label class="control-label" >Grupo</label>
-                                        <input type="text"  id="filtrogrupo">
-                                        <input class="btn btn-primary" type="button" value="Buscar" onClick="obtenerActividades();"/>
+                                        <input type="text" class="input-sm"  id="filtrogrupo">
+                                        <input class="box btn-primary" type="button" value="Buscar" onClick="obtenerActividades();"/>
                         
                         </div>
 				</div>
@@ -109,7 +109,7 @@
                                <div class="box-content" id="actividades"></div>
                             </div>
                             <br>
-                            <input class="btn btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleActividad.php' "/>
+                            <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleActividad.php' "/>
                             
                         </div>
                         

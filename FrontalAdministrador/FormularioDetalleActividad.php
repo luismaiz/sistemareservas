@@ -181,8 +181,8 @@
                                 <label class="control-label" >Edad Máxima</label>
                                 <input type="text" class="input-sm" name="FechaBaja" id="Edad_Maxima">
                                 
-                                <input class="btn btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Actividades.php' " />
-                                <input class="btn btn-primary" type="button" value="Aceptar" onclick="crearSala()"/>
+                                <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Actividades.php' " />
+                                <input class="box btn-primary" type="button" value="Aceptar" onclick="crearSala()"/>
                             </form>
                         </div>
                         </div>

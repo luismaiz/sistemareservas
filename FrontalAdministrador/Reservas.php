@@ -26,20 +26,24 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="control-label" >Localizador</label>
-                                    <input type="text"  id="filtrolocalizador">	
+                                    <input type="text" class="input-sm" id="filtrolocalizador">	
                                     <label class="control-label" >Tipo Abono</label>
-                                    <input type="select"  id="filtrotipoabono">	
+                                    <select id="filtrotipoabono" class="input-sm" >	
+                                        <option>Abono Diario</option>
+                                        <option>Abono Mensual</option>
+                                        <option>Clase Dirigida</option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
 					<label class="control-label" >Nombre</label>
-                                        <input type="text"  id="filtronombre">	
+                                        <input type="text" class="input-sm"  id="filtronombre">	
                                         <label class="control-label" >Apellidos</label>
-                                        <input type="text"  id="filtroapellidos">
+                                        <input type="text" class="input-sm"  id="filtroapellidos">
                                         <label class="control-label" >DNI</label>
-                                        <input type="text"  id="filtrodni">
+                                        <input type="text" class="input-sm" id="filtrodni">
                                         <label class="control-label" >eMail</label>
-                                        <input type="text"  id="filtrodni">
-                                        <input class="btn btn-primary" type="button" value="Buscar"/>
+                                        <input type="email" class="input-sm" id="filtrodni">
+                                        <input class="box btn-primary" type="button" value="Buscar"/>
                                 </div>
 				</div>
                             </div>
@@ -77,7 +81,7 @@
                             <td class="center">Adulto</td>
                             <td class="center">Mensual</td>
                             <td class="center">
-                                <a class="btn btn-info" href="FormularioDetalleSolicitudClasesDirigidas.php">
+                                <a class="btn btn-info2" href="FormularioDetalleSolicitudClasesDirigidas.php">
                                     <i class="glyphicon glyphicon-edit icon-white"></i>
                                     Detalle
                                 </a>
@@ -91,7 +95,7 @@
                             <td class="center">Solo Mañana</td>
                             <td class="center">Diario</td>
                             <td class="center">
-                                <a class="btn btn-info" href="FormularioDetalleSolicitudClasesDirigidas.php">
+                                <a class="btn btn-info2" href="FormularioDetalleSolicitudClasesDirigidas.php">
                                     <i class="glyphicon glyphicon-edit icon-white"></i>
                                     Detalle
                                 </a>

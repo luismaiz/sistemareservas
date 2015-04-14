@@ -23,7 +23,7 @@
 
             <div>Clase Dirigidas</div>
             <div>14</div>
-            <span class="notification">507</span>
+            <span class="notification">14</span>
         </a>
     </div>
 
@@ -132,11 +132,11 @@
 
 
 <!-- chart libraries start -->
-<script src="bower_components/flot/excanvas.min.js"></script>
+<!--<script src="bower_components/flot/excanvas.min.js"></script>-->
 <script src="bower_components/flot/jquery.flot.js"></script>
 <script src="bower_components/flot/jquery.flot.pie.js"></script>
-<script src="bower_components/flot/jquery.flot.stack.js"></script>
-<script src="bower_components/flot/jquery.flot.resize.js"></script>
+<!--<script src="bower_components/flot/jquery.flot.stack.js"></script>-->
+<!--<script src="bower_components/flot/jquery.flot.resize.js"></script>-->
 <!-- chart libraries end -->
 <script src="js/init-chart.js"></script>
 <?php require('Pie.php'); ?>

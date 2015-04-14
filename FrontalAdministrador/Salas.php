@@ -39,7 +39,7 @@
                     contenido = contenido + '<td class="center">' + Clase.salas[i].DescripcionSala + '</td>';
                     contenido = contenido + '<td class="center">' + Clase.salas[i].FechaAlta + '</td>';
                     contenido = contenido + '<td class="center">' + Clase.salas[i].FechaBaja + '</td>';
-                    contenido = contenido + '<td class="center"><a href="FormularioDetalleSala.php?idSala=' + Clase.salas[i].idSala + '" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>';
+                    contenido = contenido + '<td class="center"><a href="FormularioDetalleSala.php?idSala=' + Clase.salas[i].idSala + '" class="btn btn-info2"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>';
                     contenido = contenido + '</tr>';
                     //contenido = contenido + "<br>";
                 }
@@ -91,7 +91,7 @@
                                         <input type="text"  id="filtronombresala">	
                                         <label class="control-label" >Capacidad Sala</label>
                                         <input type="text"  id="filtrocapacidadsala">
-                                        <input class="btn btn-primary" type="button" value="Buscar" onClick="obtenerSalas()"/></div>
+                                        <input class="box btn-primary" type="button" value="Buscar" onClick="obtenerSalas()"/></div>
 				</div>
                             </div>
 
@@ -117,7 +117,7 @@
                                 </div>
                             </div>
                             <br>
-                            <input class="btn btn-default" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleSala.php' "/>
+                            <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleSala.php' "/>
                         </div>
                         
                     </div>

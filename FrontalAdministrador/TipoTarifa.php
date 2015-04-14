@@ -5,7 +5,7 @@
             <a href="#">Inicio</a>
         </li>
         <li>
-            <a href="#">Tipo de Abono</a>
+            <a href="#">Tipo de Tarifa</a>
         </li>
     </ul>
 </div>
@@ -13,7 +13,7 @@
 <div class="box col-md-12">
                         <div class="box-inner">
                         <div class="box-header well" data-original-title="">
-                        <h2><i class="glyphicon glyphicon-edit"></i> Buscador Tipos de Abono</h2>
+                        <h2><i class="glyphicon glyphicon-edit"></i> Buscador Tipos de Tarifa</h2>
                         <div class="box-icon">
 
                         <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
@@ -23,13 +23,11 @@
                         <div class="box-content">
                             <div class="row">
                         <div class="form-group">
-                            <div class="col-md-4">
-                                <div>
-					<label class="control-label" >Tipos de Abono</label>
-                        <input type="text"  id="IntensidadActividad"></div>	
-				</div>
-                                <div class="col-md-4">
-                                    <input class="btn btn-default" type="button" value="Buscar"/>
+                            <div class="col-md-12">
+                                <div class="form-group">
+					<label class="control-label" >Tipos de Tarifa</label>
+                                         <input type="text"  id="IntensidadActividad">	
+				        <input class="box btn-primary" type="button" value="Buscar"/>
                                     </div>
                             </div>
 
@@ -43,7 +41,7 @@
                         <div class="box col-md-12">
                             <div class="box-inner">
                                 <div class="box-header well" data-original-title="">
-                                    <h2><i class="glyphicon glyphicon-th"></i> Tipos de abono </h2>
+                                    <h2><i class="glyphicon glyphicon-th"></i> Tipos de tarifa </h2>
 
                                     <div class="box-icon">
                                         <a href="#" class="btn btn-minimize btn-round btn-default"><i
@@ -70,9 +68,9 @@
                             <td class="center">18</td>
                             <td class="center">65</td>
                             <td class="center">
-                                <a class="btn btn-info" href="#">
+                                <a class="btn btn-info2" href="#">
                                     <i class="glyphicon glyphicon-edit icon-white"></i>
-                                    Edit
+                                    Detalle
                                 </a>
                                 
                             </td>
@@ -84,7 +82,7 @@
                                                                     </div>
                             </div>
                             <br>
-                            <input class="btn btn-default" type="button" value="Añadir" onClick=" window.location.href='file:///C:/Users/Alejandro/Downloads/Proyecto/charisma-master/charisma-master/FormularioNuevaSala.html' "/>
+                            <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleTarifa.php' "/>
                         </div>
                         
                     </div>

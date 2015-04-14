@@ -33,7 +33,7 @@
                                 <label class="control-label" >Apellidos</label>
                                 <input type="text" class="input-sm"  id="Apellidos">
                                 
-                                <label class="control-label" >Dni</label>
+                                <label class="control-label" >DNI</label>
                                 <input type="text" class="input-sm" id="dni"></br></br>
                                                                             
                                 <label class="control-label" >Fecha Nacimiento</label>
@@ -61,22 +61,53 @@
                                 <input type="text" class="input-sm"  id="direccion">
                                 
                                 <label class="control-label" >Localidad</label>
-                                <input type="text" class="input-sm"  id="localidad"></br></br>
+                                <input type="text" class="input-sm"  id="localidad">
                                 
                                 <label class="control-label" >Provincia</label>
                                 <input type="text" class="input-sm" id="provincia">
                                 <label class="control-label" >Codigo Postal</label>
-                                <input type="text" class="input-sm" id="codigopostal">
+                                <input type="text" class="input-sm" id="codigopostal"></br></br>
+                                <label class="control-label" >Telefono</label>
+                                <input type="tel" class="input-sm"  id="telefono">
+                                
+                                <label class="control-label" >Email</label>
+                                <input type="email" class="input-sm"  id="email">
+                                
                                     </div>
                                 </div>
                             </div>
                             </div>
                     </div>
-                            <div class="align-center">
-                        <input class="btn btn-primary" type="button" value="Cancelar" onclick="Actividades.php"/>
-                        <input class="btn btn-primary" type="button" value="Aceptar" onclick="crearSala()"/>
-
+                            <div class="box-header well" data-original-title="">
+                        <h2><i class="glyphicon glyphicon-edit"></i> Datos de pago</h2>
+                        
                         </div>
+                            <div class="box-content">
+                            <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label" >IBAN</label>
+                                        <input type="text" class="input-sm"  id="direccion">
+                                
+                                <label class="control-label" >Precio Abono</label>
+                                <input type="text" disabled="true" class="input-sm"  id="localidad">
+                                
+                                <label class="control-label" >Total Pagado</label>
+                                <input type="text" class="input-sm" id="provincia">
+                                    </div>
+                                </div>
+                                <div class="box col-md-4"></div>
+                                <div class="box col-md-4"></div>
+                                    <div class="box col-md-4">
+                                        <input class="box btn-primary" type="button" value="Cancelar" onclick="Actividades.php"/>
+                                        <input class="box btn-primary" type="button" value="Aceptar" onclick="crearSala()"/>
+                                    </div>
+                            </div>
+                            </div>
+                                
+                    </div>
+                            
                         </div>
                        
 </div>

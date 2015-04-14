@@ -92,8 +92,8 @@ function AjaxObj()
 
         <div class="navbar-inner">
             
-             <a class="navbar-brand" href="Inicio.html"> <img alt="FMN Logo" src="img/FMN.jpg" class="hidden-xs"/>
-                    <span>M-86</span></a>
+             <a class="navbar-brand" href="Inicio.php"> <img alt="FMN Logo" src="img/FMN.jpg" class="hidden-xs"/>
+                 <span >M-86</span></a>
 
             <!-- user dropdown starts -->
             <div class="btn-group pull-right">
@@ -122,7 +122,7 @@ function AjaxObj()
 
                     </div>
                     <ul class="nav nav-pills nav-stacked main-menu">
-                        <li class="nav-header">Main</li>
+                        <li class="nav-header">Menú Principal</li>
                                 <li><a class="ajax-link" href="Inicio.php"><i class="glyphicon glyphicon-home"></i><span> Inicio</span></a>
                                 </li>
                                 <li><a class="ajax-link" href="Reservas.php"><i class="glyphicon glyphicon-edit"></i><span> Reservas </span></a>
@@ -134,7 +134,7 @@ function AjaxObj()
                                 </li>
                                 <li><a class="ajax-link" href="TipoTarifa.php"><i class="glyphicon glyphicon-edit"></i><span> Tarifas</span></a>
                                 </li>
-                                <li><a class="ajax-link" href="Precios.php"><i class="glyphicon glyphicon-play"></i><span> Precios</span></a>
+                                <li><a class="ajax-link" href="Precios.php"><i class="glyphicon glyphicon-edit"></i><span> Precios</span></a>
                                 </li>
                                 <li><a class="ajax-link" href="Informes.php"><i class="glyphicon glyphicon-eye-open"></i><span> Informe</span></a>
                                 </li>

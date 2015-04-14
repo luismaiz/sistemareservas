@@ -158,8 +158,8 @@ if(isset($_GET['idSala'])) {
                                 <label class="control-label" >Fecha Baja</label>
                                 <input type="date" class="input-sm" name="FechaBaja" id="FechaBaja">
                                       
-                                <input class="btn btn-primary " type="button" value="Cancelar" onClick=" window.location.href='Salas.php' " />
-                                <input class="btn btn-primary " type="button" value="Aceptar" onclick="crearSala()"/>
+                                <input class="box btn-primary " type="button" value="Cancelar" onClick=" window.location.href='Salas.php' " />
+                                <input class="box btn-primary " type="button" value="Aceptar" onclick="crearSala()"/>
                                
                             </form>
                         </div>
