@@ -14,6 +14,7 @@ class TipotarifaModel extends Db2PhpEntityBase implements Db2PhpEntityModificati
 	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `tipotarifa` (`NombreTarifa`,`DescripcionTarifa`,`FechaAlta`,`FechaBaja`) VALUES (?,?,?,?)';
 	const SQL_UPDATE='UPDATE `tipotarifa` SET `idTipoTarifa`=?,`NombreTarifa`=?,`DescripcionTarifa`=?,`FechaAlta`=?,`FechaBaja`=? WHERE `idTipoTarifa`=?';
 	const SQL_SELECT_PK='SELECT * FROM `tipotarifa` WHERE `idTipoTarifa`=?';
+	const SQL_SELECT='SELECT * FROM `tipotarifa`';
 	const SQL_DELETE_PK='DELETE FROM `tipotarifa` WHERE `idTipoTarifa`=?';
 	const FIELD_IDTIPOTARIFA=1492588969;
 	const FIELD_NOMBRETARIFA=2065654563;

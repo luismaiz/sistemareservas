@@ -14,6 +14,7 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `clase` (`idActividad`,`idSala`,`HoraInicio`,`HoraFin`,`Ocupacion`,`Dia`,`Publicada`) VALUES (?,?,?,?,?,?,?)';
 	const SQL_UPDATE='UPDATE `clase` SET `idClase`=?,`idActividad`=?,`idSala`=?,`HoraInicio`=?,`HoraFin`=?,`Ocupacion`=?,`Dia`=?,`Publicada`=? WHERE `idClase`=?';
 	const SQL_SELECT_PK='SELECT * FROM `clase` WHERE `idClase`=?';
+	const SQL_SELECT='SELECT * FROM `clase`';
 	const SQL_DELETE_PK='DELETE FROM `clase` WHERE `idClase`=?';
 	const FIELD_IDCLASE=766399627;
 	const FIELD_IDACTIVIDAD=1539203806;
