@@ -2,8 +2,8 @@
 <script>
     var Ajax = new AjaxObj();
     function obtenerActividades(){
-                //var Url = "http://www.rightwatch.es/pfgreservas/Api.php?url=obtenerActividades";	
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerActividades";		        
+                var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerActividades";	
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerActividades";		        
                 var Params = '';
 
                 Ajax.open("GET", Url, false);
@@ -12,12 +12,14 @@
 	
                 var RespTxt = Ajax.responseText;
                 
+                //alert(RespTxt);
+                
                                
                 var Clase = eval('(' + RespTxt + ')');	
                 
                 //alert(Clase);
 	
-                var contenido = '<table class="table table-striped table-bordered responsive"><thead><tr><th>Actividad</th><th>Descripcion</th><th>Intensidad</th><th>Grupo</th><th>Edad Minima</th><th>Edad Maxima</th><th></th></tr>';
+                var contenido = '<table class="table table-striped table-bordered responsive"><thead><tr><th>Actividad</th><th>Intensidad</th><th>Edad Minima</th><th>Edad Maxima</th><th>Grupo</th><th>Descripcion</th><th>Fecha Alta</th><th>Fecha Baja</th></th><th></th></tr>';
                                                     
                 var div = document.getElementById("actividades");                
 	
@@ -26,11 +28,15 @@
                     contenido = contenido + '<tr>';
                     contenido = contenido + '<td>' + Clase.actividades[i].NombreActividad + '</td>';
                     contenido = contenido + '<td>' + Clase.actividades[i].IntensidadActividad + '</td>';
-                    contenido = contenido + '<td>' + Clase.actividades[i].Edad_Minima + '</td>';
-                    contenido = contenido + '<td>' + Clase.actividades[i].Edad_Max + '</td>';                    
+                    contenido = contenido + '<td>' + Clase.actividades[i].EdadMinima + '</td>';
+                    contenido = contenido + '<td>' + Clase.actividades[i].EdadMaxima + '</td>';                    
                     contenido = contenido + '<td>' + Clase.actividades[i].Grupo + '</td>';
-                    contenido = contenido + '<td>' + Clase.actividades[i].Descripcion + '</td>';
-                    contenido = contenido + '<td class="center"><a href="FormularioDetalleActividad.php#obtenerActividad()?idActividad=' + Clase.actividades[i].idActividad + '" class="btn btn-info2"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>';	
+                    contenido = contenido + '<td>';
+                    contenido = contenido + '<input type="color" disabled="false" class="input-sm" id="Descripcion" name="Descripcion" value="' + Clase.actividades[i].Descripcion + '"/>';
+                    contenido = contenido + '</td>';
+                    contenido = contenido + '<td>' + Clase.actividades[i].FechaAlta + '</td>';
+                    contenido = contenido + '<td>' + Clase.actividades[i].FechaBaja + '</td>';
+                    contenido = contenido + '<td class="center"><a href="FormularioDetalleActividad.php?idActividad=' + Clase.actividades[i].idActividad + '" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>';	                    
                     contenido = contenido + '</tr>';
                 }
                 contenido = contenido + '</thead></table>';

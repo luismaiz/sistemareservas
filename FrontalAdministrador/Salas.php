@@ -5,18 +5,14 @@
                 
             function obtenerSalas() {
                 
-                //var Url = "http://www.rightwatch.es/pfgreservas/Api.php?url=obtenerSalas";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerSalas";
+                var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerSalas";
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerSalas";
                 var Params = '';
 
 	
                 Ajax.open("GET", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/json");
-                //Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-                Ajax.setRequestHeader("Access-Control-Allow-Origin","*");
-                Ajax.setRequestHeader("Access-Control-Allow-Headers", "Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With");
-                Ajax.setRequestHeader("Access-Control-Allow-Methods", "GET, PUT, POST");
-                Ajax.setRequestHeader("Access-Control-Allow-Credentials", "true");
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");                
                 Ajax.send(Params); // Enviamos los datos
 	
                 var RespTxt = Ajax.responseText;
@@ -39,7 +35,7 @@
                     contenido = contenido + '<td class="center">' + Clase.salas[i].DescripcionSala + '</td>';
                     contenido = contenido + '<td class="center">' + Clase.salas[i].FechaAlta + '</td>';
                     contenido = contenido + '<td class="center">' + Clase.salas[i].FechaBaja + '</td>';
-                    contenido = contenido + '<td class="center"><a href="FormularioDetalleSala.php?idSala=' + Clase.salas[i].idSala + '" class="btn btn-info2"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>';
+                    contenido = contenido + '<td class="center"><a href="FormularioDetalleSala.php?idSala=' + Clase.salas[i].idSala + '" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>';                    
                     contenido = contenido + '</tr>';
                     //contenido = contenido + "<br>";
                 }
