@@ -31,10 +31,88 @@
 
    
     <link rel="shortcut icon" href="img/favicon.ico">
+<script>
+    function AjaxObj()
+            {
+                var xmlhttp = null;
 
+                if (window.XMLHttpRequest)
+                {
+                    xmlhttp = new XMLHttpRequest();
+
+                    if (xmlhttp.overrideMimeType)
+                    {
+                        xmlhttp.overrideMimeType('text/xml');
+                    }
+                }
+                else if (window.ActiveXObject)
+                {
+                    // Internet Explorer    
+                    try
+                    {
+                        xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+                    }
+                    catch (e)
+                    {
+                        try
+                        {
+                            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                        }
+                        catch (e)
+                        {
+                            xmlhttp = null;
+                        }
+                    }
+	
+                    if (!xmlhttp && typeof XMLHttpRequest!='undefined')
+                    {
+                        xmlhttp = new XMLHttpRequest();
+	  
+                        if (!xmlhttp)
+                        {
+                            failed = true;
+                        }
+                    }
+                }
+                return xmlhttp;
+            }
+    var Ajax = new AjaxObj();
+    function obtenerActividades(){
+                var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerActividades";	
+               	        
+                var Params = '';
+
+                Ajax.open("GET", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
+                Ajax.send(Params); // Enviamos los datos
+	
+                var RespTxt = Ajax.responseText;
+                
+                //alert(RespTxt);
+                
+                               
+                var Clase = eval('(' + RespTxt + ')');	
+                
+                //alert(Clase);
+	
+                var contenido = "";
+                                                    
+                var div = document.getElementById("actividades");                
+	
+                for(i=0; i<Clase.actividades.length; i++){		
+                    //contenido = contenido + '<th>' + Clase.actividades[i].idActividad + '</th>';
+                    contenido = contenido + '<input type="checkbox" name="';
+                    contenido = contenido + Clase.actividades[i].NombreActividad;
+                    contenido = contenido + ' value="' + Clase.actividades[i].idActividad;
+                    contenido = contenido + ' />' + Clase.actividades[i].NombreActividad + '<br><br>';                 
+                }                
+	
+                div.innerHTML = contenido;
+            }
+</script>
 </head>
 
-<body>
+<body onload="obtenerActividades()">
     <!-- topbar starts -->
     <div class="navbar navbar-default" role="navigation">
 
@@ -90,22 +168,7 @@
                     </div>
                     <ul class="nav nav-pills nav-stacked main-menu">
                        
-                       <li class="nav-header">Main</li>
-                        <li><a class="ajax-link" href="Inicio.html"><i class="glyphicon glyphicon-home"></i><span> Inicio</span></a>
-                        </li>
-                        <li><a class="ajax-link" href="FormularioResevas.html"><i class="glyphicon glyphicon-edit"></i><span> Reservas </span></a>
-                        </li>
-                        <li><a class="ajax-link" href="Salas.html"><i class="glyphicon glyphicon-edit"></i><span> Salas</span></a></li>
-                        <li><a class="ajax-link" href="Actividades.html"><i class="glyphicon glyphicon-edit"></i><span> Actividades</span></a>
-                        </li>
-                        <li><a class="ajax-link" href="typography.html"><i class="glyphicon glyphicon-edit"></i><span> Tipo de abono</span></a>
-                        </li>
-                        <li><a class="ajax-link" href="gallery.html"><i class="glyphicon glyphicon-eye-open"></i><span> Precios</span></a>
-                        </li>            
-						<li><a class="ajax-link" href="gallery.html"><i class="glyphicon glyphicon-eye-open"></i><span> Informes</span></a></li>
-                        <li><a href="login.html"><i class="glyphicon glyphicon-lock"></i><span> Login Page</span></a>
-                        </li>
-                        
+                      
                         
                         </li>
                     </ul>
@@ -154,44 +217,13 @@
 
              
 
-                <form class="form-inline" role="form">
-                    <div class="form-group has-success has-feedback">
-                        <h3>Actividades que solicita</h3>
- Matro natacion &nbsp &nbsp &nbsp  &nbsp &nbsp  <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> 
- Iniciacion deportiva &nbsp &nbsp &nbsp  <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> <br/>
- Bebes &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  <input type="checkbox" name="Bebes" value="Bebes" /> 
- Enseñanza &nbsp &nbsp &nbsp  <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> <br/>
- Benjamin &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> 
- Perfecionamiento &nbsp &nbsp &nbsp  <input type="checkbox" name="Perfecionamiento" value="Perfecionamiento" /> <br/>
- Adaptacion acuatica  <input type="checkbox" name="Lunes y Martes" value="Adaptacion acuatica" /> 
- ESC. INI.COMP &nbsp &nbsp &nbsp &nbsp  <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> <br/>
- Dominio acuatico &nbsp &nbsp &nbsp  <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> 
- Natacion juvenil &nbsp &nbsp &nbsp  <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> <br/>
- 
- <h3>Para mayores</h3>
-  <input type="checkbox" name="Aprendizaje" value="Aprendizaje" /> <label class="control-label" > Aprendizaje</label>
-  <input type="checkbox" name="Aquarunning" value="Aquarunning" /> <label class="control-label" > Aquarunning</label></br>
-  <input type="checkbox" name="Nat mantenimiento" value="Nat mantenimiento" /> <label class="control-label" > Nat mantenimiento</label>
- Relajacion acuatica &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> <br/>
- Nat Man Deportivo &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> 
- Gim Mantenimiento &nbsp  &nbsp &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> <br/>
- Premamas  &nbsp &nbsp &nbsp &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> 
- Aerofitnes &nbsp &nbsp &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> <br/>
- Mamas &nbsp &nbsp &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> 
- Pilates &nbsp &nbsp &nbsp &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> <br/>
- Aquafitnes  <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> 
- Bici sala &nbsp &nbsp &nbsp &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> <br/>
- 
- <h3>Mayores</h3>
- Aprendizaje &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> </br>
- Nat Mantenimiento &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> </br>
- Gimnasia acuatica &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> </br>
- Gim mantenimiento mayorea &nbsp  <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> <br/>
+                <form class="form-inline" role="form" method="post" action="FormularioDatosClasesDirigidas.html">
+                    <div class="form-group has-success has-feedback" id="actividades">
+  
 
- 
-				
-				
-				<input type="button" value="Aceptar" onclick=" window.location.href='file:///D:/SistemaReservas/FrontalJoomla/FormularioDatosClasesDirigidas.html' "/>
+ 			  </div>
+                    </div>
+				<input type="submit" value="Aceptar" onclick=" window.location.href='FormularioDatosClasesDirigidas.html' "/>
 				<input type="button" value="Cancelar" onclick="obtenerSala()"/>
 				
                 </form>
@@ -199,8 +231,8 @@
 
                 <br>
 
-            </div>
-        </div>
+          
+        
     </div>
     
 </div>

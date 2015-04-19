@@ -68,24 +68,6 @@ function crearDatosSolicitudClaseDirigida() {
 	Ajax.send(Params); // Enviamos los datos
 }
 
-function actualizarDatosSolicitudClaseDirigida() {
-        var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url==actualizarDatosSolicitudClaseDirigida";
-		
-	var Params = 'idDatosSolicitudClaseDirigida='+ document.getElementById('idDatosSolicitudClaseDirigida').value +
-		     '&idSolicitud='+ document.getElementById('idSolicitud').value +
-		     '&Titular='+ document.getElementById('Titular').value +
-		     '&IBAN='+ document.getElementById('IBAN').value +
-		     '&Entidad='+ document.getElementById('Entidad').value +
-		     '&Oficina='+ document.getElementById('Oficina').value +
-		     '&DigitoControl='+ document.getElementById('DigitoControl').value +
-		     '&Cuenta='+ document.getElementById('Cuenta').value;
-		     
-	//alert(Params);
-		     
-	Ajax.open("POST", Url, true);
-	Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
-	Ajax.send(Params); // Enviamos los datos
-}
 
 function obtenerDatosSolicitudClaseDirigida() {
 	var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerDatosSolicitudClaseDirigida";
@@ -208,6 +190,91 @@ function obtenerActividadSolicitudClaseDirigida() {
 	  document.getElementById('idActividad').value=Clase.solicitud.idActividad;
 }
 </script>
+<script>
+function AjaxObj()
+{
+  var xmlhttp = null;
+
+  if (window.XMLHttpRequest)
+  {
+    xmlhttp = new XMLHttpRequest();
+
+    if (xmlhttp.overrideMimeType)
+    {
+      xmlhttp.overrideMimeType('text/xml');
+    }
+  }
+  else if (window.ActiveXObject)
+  { 
+    // Internet Explorer    
+    try
+    {
+      xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+    }
+    catch (e)
+    {
+      try
+      {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      catch (e)
+      {
+        xmlhttp = null;
+      }
+    }
+	
+    if (!xmlhttp && typeof XMLHttpRequest!='undefined')
+    {
+      xmlhttp = new XMLHttpRequest();
+	  
+      if (!xmlhttp)
+      {
+        failed = true;
+      }
+    }
+  }
+  return xmlhttp;
+}
+
+var Ajax = new AjaxObj();
+
+
+function crearSolicitud() {		
+	var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=crearSolicitud";
+		
+	var Params = '&idTipoSolicitud='+ document.getElementById('idTipoSolicitud').value +
+		     '&Nombre='+ document.getElementById('Nombre').value +
+		     '&Apellidos='+ document.getElementById('Apellidos').value +		     
+		     '&DNI='+ document.getElementById('DNI').value +
+		     '&EMail='+ document.getElementById('EMail').value +
+		     '&Direccion='+ document.getElementById('Direccion').value +		     
+		     '&CP='+ document.getElementById('CP').value +
+		     '&Sexo=V'+ document.getElementById('Sexo').value +
+		     '&FechaNacimiento='+ document.getElementById('FechaNacimiento').value +
+		     '&TutorLegal='+ document.getElementById('TutorLegal').value +
+		     '&Localidad='+ document.getElementById('Localidad').value +
+		     '&Telefono1='+ document.getElementById('Telefono1').value +
+		     '&Telefono2='+ document.getElementById('Telefono2').value +
+		     '&Provincia='+ document.getElementById('Provincia').value +		     
+		     '&DescripcionSolicitud='+ document.getElementById('DescripcionSolicitud').value +
+		     '&Otros='+ document.getElementById('Otros').value;
+		
+		     
+	alert(Params);
+		     
+	Ajax.open("POST", Url, true);
+	Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
+	Ajax.send(Params); // Enviamos los datos
+        
+       var Clase = eval('(' + RespTxt + ')');
+       var IdSolicitud = Clase.solicitud.idSolicitud;
+       var Localizador = Clase.solicitud.Localizador;
+}
+
+
+
+
+</script>
 <link id="bs-css" href="css/bootstrap-cerulean.min.css" rel="stylesheet">
 
     <link href="css/charisma-app.css" rel="stylesheet">
@@ -287,22 +354,7 @@ function obtenerActividadSolicitudClaseDirigida() {
                     </div>
                     <ul class="nav nav-pills nav-stacked main-menu">
                        
-                       <li class="nav-header">Main</li>
-                        <li><a class="ajax-link" href="Inicio.html"><i class="glyphicon glyphicon-home"></i><span> Inicio</span></a>
-                        </li>
-                        <li><a class="ajax-link" href="FormularioResevas.html"><i class="glyphicon glyphicon-edit"></i><span> Reservas </span></a>
-                        </li>
-                        <li><a class="ajax-link" href="Salas.html"><i class="glyphicon glyphicon-edit"></i><span> Salas</span></a></li>
-                        <li><a class="ajax-link" href="Actividades.html"><i class="glyphicon glyphicon-edit"></i><span> Actividades</span></a>
-                        </li>
-                        <li><a class="ajax-link" href="typography.html"><i class="glyphicon glyphicon-edit"></i><span> Tipo de abono</span></a>
-                        </li>
-                        <li><a class="ajax-link" href="gallery.html"><i class="glyphicon glyphicon-eye-open"></i><span> Precios</span></a>
-                        </li>            
-			<li><a class="ajax-link" href="gallery.html"><i class="glyphicon glyphicon-eye-open"></i><span> Informes</span></a></li>
-                        <li><a href="login.html"><i class="glyphicon glyphicon-lock"></i><span> Login Page</span></a>
-                        </li>
-                        
+                       
                         
                         </li>
                     </ul>
@@ -383,7 +435,7 @@ function obtenerActividadSolicitudClaseDirigida() {
 				</div>
 				
 				
-				<input type="button" value="Aceptar" onClick=" crearDatosSolicitudClaseDirigida();"/>
+				<input type="button" value="Aceptar" onClick=" crearSolicitud();crearDatosSolicitudClaseDirigida();"/>
 				
                 </form>
            
