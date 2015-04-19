@@ -191,7 +191,7 @@
                 </div>
             </div>
             <br>
-            <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetallePrecios.php' "/>
+            <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetallePrecio.php' "/>
         </div>
 
     </div>

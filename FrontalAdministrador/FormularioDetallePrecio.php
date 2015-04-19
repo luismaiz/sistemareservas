@@ -23,6 +23,8 @@
         Ajax.open("POST", Url, false);
         Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
         Ajax.send(Params); // Enviamos los datos
+        
+        mostrarRespuesta(Ajax.responseText);
     }
 
     function actualizarPrecio() {
@@ -43,6 +45,8 @@
         Ajax.open("PUT", Url, false);
         Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
         Ajax.send(Params); // Enviamos los datos
+        
+        mostrarRespuesta(Ajax.responseText);
     }       
 </script>
 <div>

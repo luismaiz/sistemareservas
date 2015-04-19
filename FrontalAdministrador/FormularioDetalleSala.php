@@ -28,6 +28,8 @@
                 Ajax.open("POST", Url, true);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
+                
+                mostrarRespuesta(Ajax.responseText);
             }
 
             function actualizarSala() {
@@ -45,6 +47,8 @@
                 Ajax.open("PUT", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
+                
+                mostrarRespuesta(Ajax.responseText);
             }
 
             function borrarSala() {

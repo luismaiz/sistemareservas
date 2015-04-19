@@ -14,7 +14,7 @@
     }
 
     function crearTipoAbono() {
-        alert("crear");
+        //alert("crear");
         var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=crearTipoAbono";
         //var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearTipoAbono";	
         var Params = 'NombreAbono='+ document.getElementById('NombreAbono').value +
@@ -27,10 +27,12 @@
         Ajax.open("POST", Url, false);
         Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
         Ajax.send(Params); // Enviamos los datos
+        
+        mostrarRespuesta(Ajax.responseText);
     }
 
     function actualizarTipoAbono() {
-        alert("actualizar");
+        //alert("actualizar");
         var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=actualizarTipoAbono";
         //var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=actualizarTipoAbono";
         var Params = 'idTipoAbono='+ document.getElementById('idTipoAbono').value +
@@ -39,11 +41,13 @@
             '&FechaAlta='+ document.getElementById('FechaAlta').value +
             '&FechaBaja='+ document.getElementById('FechaBaja').value;
 
-        alert(Params);
+        //alert(Params);
 	
         Ajax.open("PUT", Url, false);
         Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
         Ajax.send(Params); // Enviamos los datos
+        
+        mostrarRespuesta(Ajax.responseText);
     }                  
             
 </script>

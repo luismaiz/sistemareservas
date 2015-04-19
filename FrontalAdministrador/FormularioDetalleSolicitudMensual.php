@@ -17,6 +17,8 @@
                 Ajax.open("POST", Url, true);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
+                
+                mostrarRespuesta(Ajax.responseText);
             }
 
 
@@ -33,6 +35,8 @@
                 Ajax.open("PUT", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
+                
+                mostrarRespuesta(Ajax.responseText);
             }
 
             function borrarSala() {
@@ -44,29 +48,7 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
             }
-            //coge una variable dada(por su número empezando desde 0 o su nombre)             
-            function getVariable(variable){ 
-		             
-                var tipo = typeof variable; 
-                var direccion = location.href; 
-		                 
-                if (tipo == "string"){ 
-                    var posicion = direccion.indexOf("?"); 
-                    posicion = direccion.indexOf(variable,posicion) + variable.length; 
-                } 
-                else if (tipo == "number"){ 
-                    var posicion=0; 
-                    for (var contador = 0 ; contador < variable + 1 ; contador++){ 
-                        posicion = direccion.indexOf("=",++posicion); 
-                        if (posicion == -1)posicion=999; 
-                    } 
-                } 
-                if (direccion.charAt(posicion) == "="){ 
-                    var ultima = direccion.indexOf("&",posicion); 
-                    if (ultima == -1){ultima=direccion.length;}; 
-                    return direccion.substring(posicion + 1,ultima); 
-                } 
-            } 
+            
 
             function obtenerSala() {
                 alert("dfjkaldjlafj");

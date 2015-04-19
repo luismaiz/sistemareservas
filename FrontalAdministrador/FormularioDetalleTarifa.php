@@ -14,7 +14,7 @@
     }
     
     function crearTipoTarifa() {	
-        alert("crear");
+        //alert("crear");
         var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=crearTipoTarifa";
         //var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearTipoTarifa";		
         var Params = 'idTipoTarifa='+ document.getElementById('idTipoTarifa').value +
@@ -28,10 +28,12 @@
         Ajax.open("POST", Url, false);
         Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
         Ajax.send(Params); // Enviamos los datos
-    }
+        
+        mostrarRespuesta(Ajax.responseText);
+    }   
 
     function actualizarTipoTarifa() {
-        alert("actualizar");
+        //alert("actualizar");
         var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=actualizarTipoTarifa";
         //var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=actualizarTipoTarifa";
         var Params = 'idTipoTarifa='+ document.getElementById('idTipoTarifa').value +
@@ -40,11 +42,13 @@
             '&FechaAlta='+ document.getElementById('FechaAlta').value +
             '&FechaBaja='+ document.getElementById('FechaBaja').value;
 
-        alert(Params);
+        //alert(Params);
 	
         Ajax.open("PUT", Url, false);
         Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
         Ajax.send(Params); // Enviamos los datos
+        
+        mostrarRespuesta(Ajax.responseText);
     }            
 </script>
 
@@ -83,10 +87,10 @@
                     <input type="text" class="input-sm"  id="DescripcionTarifa" name="DescripcionTarifa"/><br><br>
 
                     <label class="control-label" >Fecha Alta</label>
-                    <input type="date" class="input-sm" name="FechaAlta" id="FechaAlta"/>
+                    <input type="datetime" class="input-sm" name="FechaAlta" id="FechaAlta"/>
 
                     <label class="control-label" >Fecha Baja</label>
-                    <input type="date" class="input-sm" name="FechaBaja" id="FechaBaja"/>
+                    <input type="datetime" class="input-sm" name="FechaBaja" id="FechaBaja"/>
 
                     <input class="box btn-primary " type="button" value="Cancelar" onClick=" window.location.href='TipoTarifa.php' " />
                     <input class="box btn-primary " type="button" value="Aceptar" onclick="TipoTarifa()"/>
@@ -113,7 +117,7 @@
 	
         var RespTxt = Ajax.responseText;	
 	
-        //alert(RespTxt);
+        alert(RespTxt);
 	
         var Clase = eval('(' + RespTxt + ')');
         //alert('idTipoTarifa: '+ Clase.tipoTarifa.idTipoTarifa);
@@ -125,6 +129,7 @@
         document.getElementById('idTipoTarifa').value=Clase.tipoTarifa.idTipoTarifa;
         document.getElementById('NombreTarifa').value=Clase.tipoTarifa.NombreTarifa;
         document.getElementById('DescripcionTarifa').value=Clase.tipoTarifa.DescripcionTarifa;
+        alert(Clase.tipoTarifa.FechaAlta);
         document.getElementById('FechaAlta').value=Clase.tipoTarifa.FechaAlta;
         document.getElementById('FechaBaja').value=Clase.tipoTarifa.FechaBaja;
     }
@@ -133,7 +138,7 @@
 
 if (isset($_GET['idTipoTarifa'])) {
     $test = $_GET['idTipoTarifa'];
-    echo $test;
+    //echo $test;
     echo '<script>
            var varjs="' . $test . '";
            obtenerTipoTarifa(varjs);
