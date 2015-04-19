@@ -37,7 +37,7 @@
     <!-- The fav icon -->
     <link rel="shortcut icon" href="img/favicon.ico">
 
-</head>
+
 <script>
 function AjaxObj()
             {
@@ -85,6 +85,7 @@ function AjaxObj()
             }
 
 </script>
+</head>
 <body>
 <?php if (!isset($no_visible_elements) || !$no_visible_elements) { ?>
     <!-- topbar starts -->
