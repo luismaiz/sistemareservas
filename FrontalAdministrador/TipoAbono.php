@@ -5,7 +5,7 @@
             function obtenerTiposAbono(){
                 alert(RespTxt);
                 //var Url = "http://www.rightwatch.es/pfgreservas/Api.php?url=obtenerActividades";	
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerTiposAbono";		        
+                var Url = "http://localhost:8080/pfgreservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerTiposAbono";		        
                 var Params = '';
 
 	
@@ -15,7 +15,7 @@
 	
                 var RespTxt = Ajax.responseText;
                 
-                //alert(RespTxt);
+                alert(RespTxt);
 	
                 var Clase = eval('(' + RespTxt + ')');	
                 

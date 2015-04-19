@@ -130,7 +130,7 @@
             function obtenerSala(idSala) {
 //                alert(idSala);
                 
-                var Url = "http://pfgreservas.rightwatch.es//Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerSala";
+                var Url = "http://localhost:8080/pfgreservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerSala";
                 var Params = 'idSala='+ idSala;
 
 	

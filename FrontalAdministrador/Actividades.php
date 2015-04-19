@@ -3,7 +3,7 @@
     var Ajax = new AjaxObj();
     function obtenerActividades(){
                 //var Url = "http://www.rightwatch.es/pfgreservas/Api.php?url=obtenerActividades";	
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerActividades";		        
+                var Url = "http://localhost:8080/pfgreservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerActividades";		        
                 var Params = '';
 
                 Ajax.open("GET", Url, false);
