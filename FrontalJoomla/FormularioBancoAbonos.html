@@ -68,6 +68,24 @@ function crearDatosSolicitudClaseDirigida() {
 	Ajax.send(Params); // Enviamos los datos
 }
 
+function actualizarDatosSolicitudClaseDirigida() {
+        var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url==actualizarDatosSolicitudClaseDirigida";
+		
+	var Params = 'idDatosSolicitudClaseDirigida='+ document.getElementById('idDatosSolicitudClaseDirigida').value +
+		     '&idSolicitud='+ document.getElementById('idSolicitud').value +
+		     '&Titular='+ document.getElementById('Titular').value +
+		     '&IBAN='+ document.getElementById('IBAN').value +
+		     '&Entidad='+ document.getElementById('Entidad').value +
+		     '&Oficina='+ document.getElementById('Oficina').value +
+		     '&DigitoControl='+ document.getElementById('DigitoControl').value +
+		     '&Cuenta='+ document.getElementById('Cuenta').value;
+		     
+	//alert(Params);
+		     
+	Ajax.open("POST", Url, true);
+	Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
+	Ajax.send(Params); // Enviamos los datos
+}
 
 function obtenerDatosSolicitudClaseDirigida() {
 	var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerDatosSolicitudClaseDirigida";
@@ -190,91 +208,6 @@ function obtenerActividadSolicitudClaseDirigida() {
 	  document.getElementById('idActividad').value=Clase.solicitud.idActividad;
 }
 </script>
-<script>
-function AjaxObj()
-{
-  var xmlhttp = null;
-
-  if (window.XMLHttpRequest)
-  {
-    xmlhttp = new XMLHttpRequest();
-
-    if (xmlhttp.overrideMimeType)
-    {
-      xmlhttp.overrideMimeType('text/xml');
-    }
-  }
-  else if (window.ActiveXObject)
-  { 
-    // Internet Explorer    
-    try
-    {
-      xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-    }
-    catch (e)
-    {
-      try
-      {
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-      }
-      catch (e)
-      {
-        xmlhttp = null;
-      }
-    }
-	
-    if (!xmlhttp && typeof XMLHttpRequest!='undefined')
-    {
-      xmlhttp = new XMLHttpRequest();
-	  
-      if (!xmlhttp)
-      {
-        failed = true;
-      }
-    }
-  }
-  return xmlhttp;
-}
-
-var Ajax = new AjaxObj();
-
-
-function crearSolicitud() {		
-	var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=crearSolicitud";
-		
-	var Params = '&idTipoSolicitud='+ document.getElementById('idTipoSolicitud').value +
-		     '&Nombre='+ document.getElementById('Nombre').value +
-		     '&Apellidos='+ document.getElementById('Apellidos').value +		     
-		     '&DNI='+ document.getElementById('DNI').value +
-		     '&EMail='+ document.getElementById('EMail').value +
-		     '&Direccion='+ document.getElementById('Direccion').value +		     
-		     '&CP='+ document.getElementById('CP').value +
-		     '&Sexo=V'+ document.getElementById('Sexo').value +
-		     '&FechaNacimiento='+ document.getElementById('FechaNacimiento').value +
-		     '&TutorLegal='+ document.getElementById('TutorLegal').value +
-		     '&Localidad='+ document.getElementById('Localidad').value +
-		     '&Telefono1='+ document.getElementById('Telefono1').value +
-		     '&Telefono2='+ document.getElementById('Telefono2').value +
-		     '&Provincia='+ document.getElementById('Provincia').value +		     
-		     '&DescripcionSolicitud='+ document.getElementById('DescripcionSolicitud').value +
-		     '&Otros='+ document.getElementById('Otros').value;
-		
-		     
-	alert(Params);
-		     
-	Ajax.open("POST", Url, true);
-	Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
-	Ajax.send(Params); // Enviamos los datos
-        
-       var Clase = eval('(' + RespTxt + ')');
-       var IdSolicitud = Clase.solicitud.idSolicitud;
-       var Localizador = Clase.solicitud.Localizador;
-}
-
-
-
-
-</script>
 <link id="bs-css" href="css/bootstrap-cerulean.min.css" rel="stylesheet">
 
     <link href="css/charisma-app.css" rel="stylesheet">
@@ -352,12 +285,7 @@ function crearSolicitud() {
                     <div class="nav-sm nav nav-stacked">
 
                     </div>
-                    <ul class="nav nav-pills nav-stacked main-menu">
-                       
-                       
-                        
-                        </li>
-                    </ul>
+                    
                     
                 </div>
             </div>
@@ -403,39 +331,39 @@ function crearSolicitud() {
                     <div class="form-group has-success has-feedback">
                         
                         <label class="control-label" >Titular</label>
-                        <input type="text" required pattern="^[a-zA-Z0-9]{4,12}$" placeholder="2804" id="Titular"></input>
+                        <input type="text" required pattern="^[a-zA-Z0-9]{4,12}$" placeholder="2804" ize="5"maxlength="500"id="Titular"/></input></br>
                         
                          <label class="control-label" >IBAN</label>
-                        <input type="text" required pattern="^[a-zA-Z0-9]{4,12}$" placeholder="2804" id="IBAN">
+                        <input type="text" required pattern="^[a-zA-Z0-9]{4,12}$" placeholder="2804"ize="3"maxlength="3" id="IBAN"/>
                         
                         <label class="control-label" >Entidad</label>
-                        <input type="text" required pattern="^[a-zA-Z0-9]{4,12}$" placeholder="2804" id="Entidad">
-                      <!--  <span class="glyphicon glyphicon-ok form-control-feedback"></span></br></p>-->
+                        <input type="text" required pattern="^[a-zA-Z0-9]{4,12}$" placeholder="2804" ize="3"maxlength="3"id="Entidad"/>
+                     
 				 
                       		
 			<label class="control-label" >Oficina</label>
-                        <input type="text" required pattern="^[a-zA-Z0-9]{4,12}$" placeholder="2804" id="Oficina">
-                       <!-- <span class="glyphicon glyphicon-ok form-control-feedback"></span></br></p>-->
+                        <input type="text" required pattern="^[a-zA-Z0-9]{4,12}$" placeholder="2804"ize="3"maxlength="3" id="Oficina"/>
+                    
 					   
 					   
 			 <label class="control-label" >DigitoControl</label>
-                        <input type="text" required pattern="^[a-zA-Z0-9]{4,12}$" placeholder="2804" id="DigitoControl">
-                       <!-- <span class="glyphicon glyphicon-ok form-control-feedback"></span></br></p>-->
+                        <input type="text" required pattern="^[a-zA-Z0-9]{4,12}$" placeholder="2804" ize="3"maxlength="3"id="DigitoControl"/>
+                       
 					   
 			<label class="control-label" >CTA/Libreta</label>
-                        <input type="text" required pattern="^[a-zA-Z0-9]{4,12}$" placeholder="2804" id="Cuenta"></br></p></br></p>
-                      <!--  <span class="glyphicon glyphicon-ok form-control-feedback"></span></br></p>-->
+                        <input type="text" required pattern="^[a-zA-Z0-9]{4,12}$" placeholder="2804"ize="3"maxlength="3" id="Cuenta"/></br></p></br></p>
+                      
                     </div>
 			<div class="form-group has-success has-feedback">
                        
-                      <!--  <span class="glyphicon glyphicon-ok form-control-feedback"></span></br></p>-->
+                    
 						
 						
                     </div>
 				</div>
 				
-				
-				<input type="button" value="Aceptar" onClick=" crearSolicitud();crearDatosSolicitudClaseDirigida();"/>
+	<input type="button" value="Cancelar"onClick=" window.location.href='file:///D:/SistemaReservas/FrontalJoomla/FormularioDatosAbonos.html'" />			
+	<input type="button" value="Aceptar" onClick=" crearDatosSolicitudClaseDirigida();"/>
 				
                 </form>
            
@@ -539,42 +467,6 @@ function crearSolicitud() {
 <script src="js/jquery.history.js"></script>
 <!-- application script for Charisma demo -->
 <script src="js/charisma.js"></script>
-<script>
-// Validate the Entered input aganist the generated security code function
-function check(input) {
-  var cap =removeSpaces(document.getElementById('txtCaptcha').value);
-if (input.value != cap ) {
-  input.setCustomValidity("Error in code Please Check!");
-  } else {
-  // input is fine -- reset the error message
-  input.setCustomValidity('');
-  }
-  }
- </script>
 
-<?php
-
-   $postre = $_POST['postre'];
-   $idTipoSolicitud = $_POST ['idTipoSolicitud'];
-   $Nombre = $_POST ['Nombre'];
-   $Apellidos = $_POST ['Apellidos'];
-   $Nombre = $_POST ['Nombre'];
-   $DNI = $_POST ['DNI'];
-   $EMail = $_POST ['EMail'];		  
-   $Direccion = $_POST ['Direccion'];			     
-   $CP = $_POST ['CP'];			   	     
-   $Sexo = $_POST ['Sexo'];		     
-   $FechaNacimiento = $_POST ['FechaNacimiento'];		     
-		     
-		     $TutorLegal= $_POST ['TutorLegal']
-		     $Localidad= $_POST ['Localidad'];
-		     $Telefono1= $_POST ['Telefono1']
-		     $Telefono2= $_POST ['Telefono2'];
-		     $Provincia= $_POST ['Provincia'];		     
-		     $DescripcionSolicitud= $_POST ['DescripcionSolicitud'];
-		     $Otros= $_POST ['Otros'];
-		
-
-?>
 </body>
 </html>

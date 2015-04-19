@@ -1,8 +1,38 @@
 <!DOCTYPE html>
 <html lang="es"">
 <head>
-   <script>
-            function AjaxObj()
+  
+    <meta charset="utf-8">
+    <title>Formulario Clases dirigidas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">
+   
+
+    <!-- The styles -->
+    <link id="bs-css" href="css/bootstrap-cerulean.min.css" rel="stylesheet">
+
+    <link href="css/charisma-app.css" rel="stylesheet">
+    <link href='bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>
+    <link href='bower_components/fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print'>
+    <link href='bower_components/chosen/chosen.min.css' rel='stylesheet'>
+    <link href='bower_components/colorbox/example3/colorbox.css' rel='stylesheet'>
+    <link href='bower_components/responsive-tables/responsive-tables.css' rel='stylesheet'>
+    <link href='bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css' rel='stylesheet'>
+    <link href='css/jquery.noty.css' rel='stylesheet'>
+    <link href='css/noty_theme_default.css' rel='stylesheet'>
+    <link href='css/elfinder.min.css' rel='stylesheet'>
+    <link href='css/elfinder.theme.css' rel='stylesheet'>
+    <link href='css/jquery.iphone.toggle.css' rel='stylesheet'>
+    <link href='css/uploadify.css' rel='stylesheet'>
+    <link href='css/animate.min.css' rel='stylesheet'>
+
+    <!-- jQuery -->
+    <script src="bower_components/jquery/jquery.min.js"></script>
+
+   
+    <link rel="shortcut icon" href="img/favicon.ico">
+<script>
+    function AjaxObj()
             {
                 var xmlhttp = null;
 
@@ -46,167 +76,43 @@
                 }
                 return xmlhttp;
             }
-
-            var Ajax = new AjaxObj();
-
-            function crearSala() {
-                var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=crearSala";		
-                var Params ='&NombreSala='+ document.getElementById('NombreSala').value +
-                    '&CapacidadSala='+ document.getElementById('CapacidadSala').value +
-                    '&DescripcionSala='+ document.getElementById('DescripcionSala').value +
-                    '&FechaAlta='+ document.getElementById('FechaAlta').value +
-                    '&FechaBaja='+ document.getElementById('FechaBaja').value;
-
-                alert(Params);
-	
-	
-                Ajax.open("POST", Url, true);
-                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-                Ajax.send(Params); // Enviamos los datos
-            }
-
-
-            function actualizarSala() {
-                var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=actualizarSala";
-                var Params = 'idSala='+ document.getElementById('idSala').value +
-                    '&NombreSala='+ document.getElementById('NombreSala').value +
-                    '&CapacidadSala='+ document.getElementById('CapacidadSala').value +
-                    '&DescripcionSala='+ document.getElementById('DescripcionSala').value +
-                    '&FechaAlta='+ document.getElementById('FechaAlta').value +
-                    '&FechaBaja='+ document.getElementById('FechaBaja').value;
-
-	
-                Ajax.open("PUT", Url, false);
-                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-                Ajax.send(Params); // Enviamos los datos
-            }
-
-            function borrarSala() {
-                var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=borrarSala";
-                var Params = 'idSala='+ document.getElementById('idSala').value;
-
-	
-                Ajax.open("DELETE", Url, false);
-                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-                Ajax.send(Params); // Enviamos los datos
-            }
-
-            function obtenerSalas() {
-                //var Url = "http://www.rightwatch.es/pfgreservas/Api.php?url=obtenerSalas";
-                var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerSalas";
+    var Ajax = new AjaxObj();
+    function obtenerActividades(){
+                var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerActividades";	
+               	        
                 var Params = '';
 
-	
                 Ajax.open("GET", Url, false);
-                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
                 Ajax.send(Params); // Enviamos los datos
 	
                 var RespTxt = Ajax.responseText;
-        
-                alert(RespTxt);
-	
+                
+                //alert(RespTxt);
+                
+                               
                 var Clase = eval('(' + RespTxt + ')');	
-        
-                alert(Clase);
+                
+                //alert(Clase);
 	
                 var contenido = "";
-                var div = document.getElementById("salas");
-                contenido = contenido + '<form>';
+                                                    
+                var div = document.getElementById("actividades");                
 	
-                for(i=0; i<Clase.salas.length; i++){
-                    contenido = contenido + 'idSala: <input type="text" id="idSala" name="idSala" value="' + Clase.salas[i].idSala + '"></input>';
-                    contenido = contenido + 'NombreSala: <input type="text" id="NombreSala" name="NombreSala" value="' + Clase.salas[i].NombreSala + '"></input>';
-                    contenido = contenido + 'CapacidadSala: <input type="text" id="CapacidadSala" name="CapacidadSala" value="' + Clase.salas[i].CapacidadSala + '"></input>';
-                    contenido = contenido + 'DescripcionSala: <input type="text" id="DescripcionSala" name="DescripcionSala" value="' + Clase.salas[i].DescripcionSala + '"></input>';
-                    contenido = contenido + 'FechaAlta: <input type="text" id="FechaAlta" name="FechaAlta" value="' + Clase.salas[i].FechaAlta + '"></input>';
-                    contenido = contenido + 'FechaBaja: <input type="text" id="FechaBaja" name="FechaBaja" value="' + Clase.salas[i].FechaBaja + '"></input>';                    
-                    contenido = contenido + "<br>";
-                }
-                contenido = contenido + '</form>';
+                for(i=0; i<Clase.actividades.length; i++){		
+                    //contenido = contenido + '<th>' + Clase.actividades[i].idActividad + '</th>';
+                    contenido = contenido + '<input type="checkbox" name="';
+                    contenido = contenido + Clase.actividades[i].NombreActividad;
+                    contenido = contenido + ' value="' + Clase.actividades[i].idActividad;
+                    contenido = contenido + ' />' + Clase.actividades[i].NombreActividad + '<br><br>';                 
+                }                
 	
                 div.innerHTML = contenido;
-	
-                //alert('Estado: '+ Clase.estado);
-                //alert('idSala: '+ Clase.salas.length);
-                //alert('idSala: '+ Clase.salas[0].idSala);
-                //alert('NombreSala: '+ Clase.salas[0].NombreSala);
-                //alert('CapacidadSala: '+ Clase.salas[0].CapacidadSala);
-                //alert('DescripcionSala: '+ Clase.salas[0].DescripcionSala);
-	  
-                //document.getElementById('idSala').value=Clase.salas[0].idSala;
-                //document.getElementById('NombreSala').value=Clase.salas[0].NombreSala;
-                //document.getElementById('CapacidadSala').value=Clase.salas[0].CapacidadSala;
-                //document.getElementById('DescripcionSala').value=Clase.salas[0].DescripcionSala;
             }
-
-            function obtenerSala() {
-                var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerSala";
-                var Params = 'idSala='+ document.getElementById('idSala').value;
-
-	
-                Ajax.open("POST", Url, false);
-                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-                Ajax.send(Params); // Enviamos los datos
-	
-                var RespTxt = Ajax.responseText;
-	
-                alert("Resultado:" + RespTxt);
-	
-                //alert(eval('(' + RespTxt + ')'));
-                //alert("Prueba: " + $.parseJSON(RespTxt));
-                //var Clase = eval('(' + RespTxt + ')');
-                var Clase = eval('(' + RespTxt + ')');	
-	
-                //eval('(' + RespTxt + ')');
-                alert(Clase);
-                alert('Estado: '+ Clase.estado);
-                alert('idSala: '+ Clase.sala.idSala);
-                alert('NombreSala: '+ Clase.sala.NombreSala);
-                alert('CapacidadSala: '+ Clase.sala.CapacidadSala);
-                alert('DescripcionSala: '+ Clase.sala.DescripcionSala);
-	  
-                document.getElementById('idSala').value=Clase.sala.idSala;
-                document.getElementById('NombreSala').value=Clase.sala.NombreSala;
-                document.getElementById('CapacidadSala').value=Clase.sala.CapacidadSala;
-                document.getElementById('DescripcionSala').value=Clase.sala.DescripcionSala;
-                document.getElementById('FechaAlta').value=Clase.sala.FechaAlta;
-                document.getElementById('FechaBaja').value=Clase.sala.FechaBaja;                
-            }
-
-        </script>
-    <meta charset="utf-8">
-    <title>Formulario Clases dirigidas</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">
-    <meta name="author" content="Muhammad Usman">
-
-    <!-- The styles -->
-    <link id="bs-css" href="css/bootstrap-cerulean.min.css" rel="stylesheet">
-
-    <link href="css/charisma-app.css" rel="stylesheet">
-    <link href='bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>
-    <link href='bower_components/fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print'>
-    <link href='bower_components/chosen/chosen.min.css' rel='stylesheet'>
-    <link href='bower_components/colorbox/example3/colorbox.css' rel='stylesheet'>
-    <link href='bower_components/responsive-tables/responsive-tables.css' rel='stylesheet'>
-    <link href='bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css' rel='stylesheet'>
-    <link href='css/jquery.noty.css' rel='stylesheet'>
-    <link href='css/noty_theme_default.css' rel='stylesheet'>
-    <link href='css/elfinder.min.css' rel='stylesheet'>
-    <link href='css/elfinder.theme.css' rel='stylesheet'>
-    <link href='css/jquery.iphone.toggle.css' rel='stylesheet'>
-    <link href='css/uploadify.css' rel='stylesheet'>
-    <link href='css/animate.min.css' rel='stylesheet'>
-
-    <!-- jQuery -->
-    <script src="bower_components/jquery/jquery.min.js"></script>
-
-   
-    <link rel="shortcut icon" href="img/favicon.ico">
-
+</script>
 </head>
 
-<body>
+<body onload="obtenerActividades()">
     <!-- topbar starts -->
     <div class="navbar navbar-default" role="navigation">
 
@@ -223,7 +129,7 @@
             <!-- user dropdown starts -->
             <div class="btn-group pull-right">
                 <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    <i class="glyphicon glyphicon-user"></i><span class="hidden-sm hidden-xs"> admin</span>
+                    <i class="glyphicon glyphicon-user"></i><span class="hidden-sm hidden-xs"> Administrador</span>
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
@@ -262,22 +168,7 @@
                     </div>
                     <ul class="nav nav-pills nav-stacked main-menu">
                        
-                       <li class="nav-header">Main</li>
-                        <li><a class="ajax-link" href="Inicio.html"><i class="glyphicon glyphicon-home"></i><span> Inicio</span></a>
-                        </li>
-                        <li><a class="ajax-link" href="FormularioResevas.html"><i class="glyphicon glyphicon-edit"></i><span> Reservas </span></a>
-                        </li>
-                        <li><a class="ajax-link" href="Salas.html"><i class="glyphicon glyphicon-edit"></i><span> Salas</span></a></li>
-                        <li><a class="ajax-link" href="Actividades.html"><i class="glyphicon glyphicon-edit"></i><span> Actividades</span></a>
-                        </li>
-                        <li><a class="ajax-link" href="typography.html"><i class="glyphicon glyphicon-edit"></i><span> Tipo de abono</span></a>
-                        </li>
-                        <li><a class="ajax-link" href="gallery.html"><i class="glyphicon glyphicon-eye-open"></i><span> Precios</span></a>
-                        </li>            
-						<li><a class="ajax-link" href="gallery.html"><i class="glyphicon glyphicon-eye-open"></i><span> Informes</span></a></li>
-                        <li><a href="login.html"><i class="glyphicon glyphicon-lock"></i><span> Login Page</span></a>
-                        </li>
-                        
+                      
                         
                         </li>
                     </ul>
@@ -326,44 +217,13 @@
 
              
 
-                <form class="form-inline" role="form">
-                    <div class="form-group has-success has-feedback">
-                        <h3>Actividades que solicita</h3>
- Matro natacion &nbsp &nbsp &nbsp  &nbsp &nbsp  <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> 
- Iniciacion deportiva &nbsp &nbsp &nbsp  <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> <br/>
- Bebes &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  <input type="checkbox" name="Bebes" value="Bebes" /> 
- Enseñanza &nbsp &nbsp &nbsp  <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> <br/>
- Benjamin &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> 
- Perfecionamiento &nbsp &nbsp &nbsp  <input type="checkbox" name="Perfecionamiento" value="Perfecionamiento" /> <br/>
- Adaptacion acuatica  <input type="checkbox" name="Lunes y Martes" value="Adaptacion acuatica" /> 
- ESC. INI.COMP &nbsp &nbsp &nbsp &nbsp  <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> <br/>
- Dominio acuatico &nbsp &nbsp &nbsp  <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> 
- Natacion juvenil &nbsp &nbsp &nbsp  <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> <br/>
- 
- <h3>Para mayores</h3>
- Aprendizaje &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> 
- Aquarunning &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> <br/>
- Nat mantenimiento &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> 
- Relajacion acuatica &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> <br/>
- Nat Man Deportivo &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> 
- Gim Mantenimiento &nbsp  &nbsp &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> <br/>
- Premamas  &nbsp &nbsp &nbsp &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> 
- Aerofitnes &nbsp &nbsp &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> <br/>
- Mamas &nbsp &nbsp &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> 
- Pilates &nbsp &nbsp &nbsp &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> <br/>
- Aquafitnes  <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> 
- Bici sala &nbsp &nbsp &nbsp &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> <br/>
- 
- <h3>Mayores</h3>
- Aprendizaje &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> </br>
- Nat Mantenimiento &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> </br>
- Gimnasia acuatica &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> </br>
- Gim mantenimiento mayorea &nbsp  <input type="checkbox" name="Lunes y Martes" value="Lunes y Martes" /> <br/>
+                <form class="form-inline" role="form" method="post" action="FormularioDatosClasesDirigidas.html">
+                    <div class="form-group has-success has-feedback" id="actividades">
+  
 
- 
-				
-				
-				<input type="button" value="Aceptar" onclick=" window.location.href='file:///D:/SistemaReservas/FrontalJoomla/FormularioDatosClasesDirigidas.html' "/>
+ 			  </div>
+                    </div>
+				<input type="submit" value="Aceptar" onclick=" window.location.href='FormularioDatosClasesDirigidas.html' "/>
 				<input type="button" value="Cancelar" onclick="obtenerSala()"/>
 				
                 </form>
@@ -371,8 +231,8 @@
 
                 <br>
 
-            </div>
-        </div>
+          
+        
     </div>
     
 </div>
