@@ -10,6 +10,8 @@ require_once("Negocio/Entidades/PrecioModel.class.php");
 require_once("Negocio/Entidades/TiposolicitudModel.class.php");
 require_once("Negocio/Entidades/SolicitudModel.class.php");
 require_once("Negocio/Entidades/TipoabonoModel.class.php");
+require_once("Negocio/Entidades/helpers/DFC.class.php");
+require_once("Negocio/Entidades/DatosolicitudclasedirigidaModel.class.php");
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -911,9 +913,9 @@ class AdministradorBO extends Rest {
     }
 
     private function obtenerPrecios() {
-        /*if ($_SERVER['REQUEST_METHOD'] != "GET") {
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-        }*/
+        /* if ($_SERVER['REQUEST_METHOD'] != "GET") {
+          $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+          } */
         //$query = $this->_conn->query("SELECT idSala,Nombre,Capacidad,Descripcion FROM sala");  
         //$filas = $query->fetchAll(PDO::FETCH_ASSOC);  
 
@@ -1181,13 +1183,18 @@ class AdministradorBO extends Rest {
     private function crearSolicitud() {
 
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-        }
+          $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+          } 
         //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {          
 
+        $this->con = ConexionBD::getInstance();
+        $solicitud = new SolicitudModel();
+
+        //echo $solicitud->getIdSolicitud();
         $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
         $idTipoTarifa = $this->datosPeticion['idTipoTarifa'];
-        $FechaSolicitud = $this->datosPeticion['FechaSolicitud'];
+        date_default_timezone_set("Europe/Madrid");
+        $FechaSolicitud = date("y/m/d H:i:s");
         $Nombre = $this->datosPeticion['Nombre'];
         $Apellidos = $this->datosPeticion['Apellidos'];
         $DNI = $this->datosPeticion['DNI'];
@@ -1203,7 +1210,7 @@ class AdministradorBO extends Rest {
         $Provincia = $this->datosPeticion['Provincia'];
         $DescripcionSolicitud = $this->datosPeticion['DescripcionSolicitud'];
         $Otros = $this->datosPeticion['Otros'];
-        $Localizador = $this->datosPeticion['Localizador'];
+        $Localizador = $this->generarLocalizador($Nombre, $Apellidos, $FechaSolicitud, $DNI);
 
 
         //if (!$this->existeUsuario($email)) {  
@@ -1233,12 +1240,10 @@ class AdministradorBO extends Rest {
           $query->bindValue(":Localizador", $Localizador);
           $query->execute(); */
 
-        $this->con = ConexionBD::getInstance();
-        $solicitud = new SolicitudModel();
+
 
         //var_dump($solicitud);
-
-
+        //$solicitud->setIdTipoSolicitud($idSolicitud);
         $solicitud->setIdTipoSolicitud($idTipoSolicitud);
         $solicitud->setIdTipoTarifa($idTipoTarifa);
         $solicitud->setFechaSolicitud($FechaSolicitud);
@@ -1263,10 +1268,13 @@ class AdministradorBO extends Rest {
 
         $result = $solicitud->insertIntoDatabase($this->con);
 
+
         if (count($result) == 1) {
 
             //$id = $this->_conn->lastInsertId();  
             $respuesta['estado'] = 'correcto';
+            $respuesta['solicitud']['IdSolicitud'] = $solicitud->getIdSolicitud();
+            $respuesta['solicitud']['Localizador'] = $solicitud->getLocalizador();
             $respuesta['msg'] = 'solicitud creada correctamente';
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
@@ -1281,24 +1289,47 @@ class AdministradorBO extends Rest {
     }
 
     private function obtenerSolicitudes() {
-        if ($_SERVER['REQUEST_METHOD'] != "GET") {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-
-        /* $query = $this->_conn->query("SELECT idSolicitud,Fecha,Nombre,Apellido1,Apellido2,DNI,EMail,Calle,Piso,CP,Sexo,FechaNacimiento,
-          TutorLegal,Localidad,Telefono1,Telefono2,Provincia,TipoSolicitud,TipoPrecio,Descripcion,Otros,Localizador
-          FROM solicitud");
-          $filas = $query->fetchAll(PDO::FETCH_ASSOC);
-          $num = count($filas); */
+        //$query = $this->_conn->query("SELECT idSala,Nombre,Capacidad,Descripcion FROM sala");  
+        //$filas = $query->fetchAll(PDO::FETCH_ASSOC);             		
 
         $this->con = ConexionBD::getInstance();
         $solicitud = new SolicitudModel();
 
-        $filas = $solicitud->findBySql($this->con, "Select * from solicitud");
+        $filter = array();
+        $i = 0;
+        if (isset($this->datosPeticion['Localizador']))
+            $filter[$i+=1] = new DFC(SolicitudModel::FIELD_LOCALIZADOR, $this->datosPeticion['Localizador'], DFC::EXACT);
+        if (isset($this->datosPeticion['Nombre']))
+            $filter[$i+=1] = new DFC(SolicitudModel::FIELD_NOMBRE, $this->datosPeticion['Nombre'], DFC::CONTAINS);
+        if (isset($this->datosPeticion['Apellidos']))
+            $filter[$i+=1] = new DFC(SolicitudModel::FIELD_APELLIDOS, $this->datosPeticion['Apellidos'], DFC::CONTAINS);
+        if (isset($this->datosPeticion['DNI']))
+            $filter[$i+=1] = new DFC(SolicitudModel::FIELD_DNI, $this->datosPeticion['DNI'], DFC::EXACT);
+        if (isset($this->datosPeticion['EMail']))
+            $filter[$i+=1] = new DFC(SolicitudModel::FIELD_EMAIL, $this->datosPeticion['EMail'], DFC::EXACT);
+        if (isset($this->datosPeticion['FechaSolicitud']))
+            $filter[$i+=1] = new DFC(SolicitudModel::FIELD_FECHASOLICITUD, $this->datosPeticion['FechaSolicitud'], DFC::CONTAINS);
 
-        if (count($filas) > 0) {
+        //var_dump($filter);
+
+        $filas = SolicitudModel::findByFilter($this->con, $filter, true, $sort);
+
+        //var_dump($filas);
+
+        $num = count($filas);
+        if ($num > 0) {
             $respuesta['estado'] = 'correcto';
-            $respuesta['solicitudes'] = $filas;
+
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
+            //var_dump($array);
+
+            $respuesta['solicitudes'] = $array;
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->devolverError(2), 204);
@@ -1604,6 +1635,144 @@ class AdministradorBO extends Rest {
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+    }
+
+    //Metodos CRUD Clase Dirigida 
+    private function crearDatosSolicitudClaseDirigida() {
+
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {       	 	
+        //$idSolicitud = $this->datosPeticion['idSolicitud'];
+        $Titular = $this->datosPeticion['Titular'];
+        $IBAN = $this->datosPeticion['IBAN'];
+        $Entidad = $this->datosPeticion['Entidad'];
+        $Oficina = $this->datosPeticion['Oficina'];
+        $DigitoControl = $this->datosPeticion['DigitoControl'];
+        $Cuenta = $this->datosPeticion['Cuenta'];
+
+        //if (!$this->existeUsuario($email)) {  
+        /* $query = $this->_conn->prepare("INSERT into clasedirigida(idClaseDirigida,SolicitudClaseDirigida,Titular,IBAN,Entidad,Oficina,DigitoControl,Cuenta) 
+          VALUES (:idClaseDirigida,:SolicitudClaseDirigida,:Titular,:IBAN,:Entidad,:Oficina,:DigitoControl,:Cuenta)");
+          $query->bindValue(":idClaseDirigida", $idClaseDirigida);
+          $query->bindValue(":SolicitudClaseDirigida", $SolicitudClaseDirigida);
+          $query->bindValue(":Titular", $Titular);
+          $query->bindValue(":IBAN", $IBAN);
+          $query->bindValue(":Entidad", $Entidad);
+          $query->bindValue(":Oficina", $Oficina);
+          $query->bindValue(":DigitoControl", $DigitoControl);
+          $query->bindValue(":Cuenta", $Cuenta);
+          $query->execute(); */
+
+        $this->con = ConexionBD::getInstance();
+        $datosSolicitudClaseDirigida = new DatosolicitudclasedirigidaModel();
+
+        //$datosSolicitudClaseDirigida->setIdSolicitud($idSolicitud);
+        $datosSolicitudClaseDirigida->setTitular(base64_encode($Titular));
+        $datosSolicitudClaseDirigida->setIban(base64_encode($IBAN));
+        $datosSolicitudClaseDirigida->setEntidad(base64_encode($Entidad));
+        $datosSolicitudClaseDirigida->setOficina(base64_encode($Oficina));
+        $datosSolicitudClaseDirigida->setDigitoControl(base64_encode($DigitoControl));
+        $datosSolicitudClaseDirigida->setCuenta(base64_encode($Cuenta));
+
+        $result = $datosSolicitudClaseDirigida->insertIntoDatabase($this->con);
+
+        if (count($result) == 1) {
+
+            //$id = $this->_conn->lastInsertId();  
+            $respuesta['estado'] = 'correcto';
+            $respuesta['msg'] = 'clase dirigida creada correctamente';
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        else
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
+        //}  
+        //else  
+        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(8)), 400);  
+        //} else {  
+        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);  
+        //}  
+    }
+
+    private function codigoQR() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        
+        $Localizador = $this->datosPeticion['Localizador'];        
+        $Nombre = $this->datosPeticion['Nombre'];
+        $Apellidos = $this->datosPeticion['Apellidos'];
+		$EMail = $this->datosPeticion['EMail'];
+		
+        
+        //set it to writable location, a place for temp generated PNG files
+        $PNG_TEMP_DIR = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'temp' . DIRECTORY_SEPARATOR;
+
+        //html PNG location prefix
+        $PNG_WEB_DIR = 'temp/';
+
+        include "phpqrcode/qrlib.php";
+
+        //ofcourse we need rights to create temp dir
+        if (!file_exists($PNG_TEMP_DIR))
+            mkdir($PNG_TEMP_DIR);
+
+
+        $filename = $PNG_TEMP_DIR.''.$Localizador.'.png';
+        $nom = $Localizador. '.png';
+        
+
+        //echo $filename;
+
+        $data = 'http://pfgreservas.rightwatch.es/frontaladministrador/Inicio.php';
+
+        //processing form input
+        //remember to sanitize user input in real-life solution !!!
+        $errorCorrectionLevel = 'L';
+        if (isset($_REQUEST['level']) && in_array($_REQUEST['level'], array('L', 'M', 'Q', 'H')))
+            $errorCorrectionLevel = $_REQUEST['level'];
+
+        $matrixPointSize = 10;
+        if (isset($_REQUEST['size']))
+            $matrixPointSize = min(max((int) $_REQUEST['size'], 1), 10);
+
+        // user data
+        //$filename = $PNG_TEMP_DIR.'test'.md5($data.'|'.$errorCorrectionLevel.'|'.$matrixPointSize).'.png';
+        QRcode::png($data, $filename, $errorCorrectionLevel, $matrixPointSize, 2);
+        //echo $PNG_WEB_DIR.$nombre;
+        if($this->enviarMail($PNG_WEB_DIR.''.$nom, $Nombre, $Apellidos, $EMail, $Localizador));
+			delete($filename);
+    }
+
+    private function enviarMail($file, $nom, $ape, $Email, $loc) {
+        require("class.phpmailer.php");
+		
+        $mail = new PHPMailer();
+        $mail->Host = "localhost";
+
+        $mail->From = $Email;//"mariosgsg@gmail.com";
+        $mail->FromName = $nom;//"Nombre del Remitente";
+        $mail->Subject = "Reserva ".$loc;
+        $mail->AddAddress($Email, $nom);//"mariosgsg@gmail.com", "Nombre 01");
+        //$mail->AddAddress("mariosgsg@gmail.com", "Nombre 02");
+        //$mail->AddCC("mariosgsg@gmail.com");
+        //$mail->AddBCC("mariosgsg@gmail.com");
+
+        $body = "Hola <strong>amigo</strong><br>";
+        //$body .= "probando <i>PHPMailer<i>.<br><br>";
+        //$body .= "<font color='red'>Saludos</font>";
+        $mail->Body = $body;
+        $mail->AltBody = "Hola amigo\nprobando PHPMailer\n\nSaludos";
+        //$mail->AddAttachment("temp/localizador.jpg", "codigoQR.jpg");
+        $mail->AddAttachment($file, $loc.'.png');//"temp/Mario.png", "Mario.png");//"localizador.png");
+        //$mail->AddAttachment($filename, "localizador.png");
+        $result = $mail->Send();
+		return  $result;
+    }
+
+    private function generarLocalizador($nom, $ape, $fecha, $dni) {
+        return substr($nom, 0, 2) . substr($ape, 0, 2) . str_replace('/','',substr($fecha, 0, 8)) . str_replace(':','',substr($fecha, 9, 5)) . $dni;
     }
 
 }
