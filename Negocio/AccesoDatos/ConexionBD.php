@@ -21,9 +21,9 @@ class ConexionBD extends PDO {
         $opciones = array(
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
         );
-        $dsn = SELF::ENGINE . ':host=' . SELF::HOST . ';dbname=' . SELF::DATABASE;
+        $dsn = ENGINE . ':host=' . HOST . ';dbname=' . DATABASE;
         try {
-            parent::__construct($dsn, SELF::USER, SELF::PASSWORD, $opciones);
+            parent::__construct($dsn, USER, PASSWORD, $opciones);
         } catch (PDOException $e) {
             echo 'Error en Conexión a la Base de Datos. Detalle: ' . $e->getMessage();
             exit;
