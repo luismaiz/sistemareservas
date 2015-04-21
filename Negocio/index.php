@@ -1,48 +1,46 @@
 <?php
 $no_visible_elements = true;
-include('Frontal/Cabecera.php'); ?>
-<?php require('headerReservas.php'); ?>
+include('../Frontal/Cabecera.php'); ?>
+<?php require('../Frontal/headerReservas.php'); ?>
 <script>
-           
-            var Ajax = new AjaxObj();
-                
-            function login() {
-                var Url = "http://localhost/PFC/sistemareservas/Negocio/LoginBO.php?url=iniciarSesion";
-                var Params = 'NombreUsuario='+ document.getElementById("NombreUsuario").value + '&Password=' + document.getElementById("Password").value;
-	
-                Ajax.open("POST", Url, false);
-                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-                Ajax.send(Params); // Enviamos los datos
-	
-                var RespTxt = Ajax.responseText;
-	
-               // alert("Resultado:" + RespTxt);
-	
-                //alert(eval('(' + RespTxt + ')'));
-                //alert("Prueba: " + $.parseJSON(RespTxt));
-                //var Clase = eval('(' + RespTxt + ')');
-                var Clase = eval('(' + RespTxt + ')');	
-	
-                //eval('(' + RespTxt + ')');
-               /* alert(Clase);
-                alert('NombreUsuario: '+ Clase.NombreUsuario);
-                alert('Password: '+ Clase.Password);
-                alert('TipoUsuario: '+ Clase.TipoUsuario);*/
-                var tipo = parseInt((Clase.TipoUsuario));
-                switch(tipo){
-                    case 1:
-                        location.href ="Frontal\InicioAdministrador.php";
-                        break;
-                    case 2:
-                        location.href ="Frontal\InicioMonitor.php";
-                        break;
-                    case 3:
-                        location.href ="Frontal\InicioGestor.php";
-                        break;
-                }
+
+    var Ajax = new AjaxObj();
+
+    function login() {
+        var Url = "http://localhost/PFC/sistemareservas/Negocio/LoginBO.php?url=iniciarSesion";
+        var Params = 'NombreUsuario=' + document.getElementById("NombreUsuario").value + '&Password=' + document.getElementById("Password").value;
+
+        Ajax.open("POST", Url, false);
+        Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        Ajax.send(Params); // Enviamos los datos
+
+        var RespTxt = Ajax.responseText;
+
+        alert(RespTxt);
+
+        var Clase = eval('(' + RespTxt + ')');
+        
+        if (Clase) {
+            var tipo = parseInt((Clase.Usuario[0].TipoUsuario));
+            switch (tipo) {
+                case 1:
+                    window.location = 'Frontal\\InicioAdministrador.php';
+                    return false;
+                    break;
+                case 2:
+                    window.location = 'Frontal\\InicioMonitor.php';
+                    return false;
+                    break;
+                case 3:
+                    window.location = 'Frontal\\InicioGestor.php';
+                    return false;
+                    break;
             }
-            
-        </script>
+        }
+        return false;
+    }
+
+</script>
 
     <div class="row">
         <div class="col-md-12 center login-header">
@@ -83,4 +81,4 @@ include('Frontal/Cabecera.php'); ?>
         </div>
         <!--/span-->
     </div><!--/row-->
-<?php require('Frontal/Pie.php'); ?>
+<?php require('../Frontal/Pie.php'); ?>

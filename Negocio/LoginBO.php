@@ -5,6 +5,7 @@ require_once("AccesoDatos/ConexionBD.php");
 require_once("Entidades/UsuarioModel.class.php");
 require_once("Entidades/helpers/DFC.class.php");
 require_once("Entidades/helpers/DSC.class.php");
+require_once("BLOWFISH.php");
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -72,45 +73,41 @@ class LoginBO extends Rest {
 
     private function iniciarSesion() {
         //var_dump($SERVER);
-         if ($_SERVER['REQUEST_METHOD'] != "POST") {
-          $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-          }
-          session_start();
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        session_start();
 
         $nom = $this->datosPeticion['NombreUsuario'];
         $pas = $this->datosPeticion['Password'];
+        //$pas = crypt_blowfish_bydinvaders($pas);
 
         $this->con = ConexionBD::getInstance();
         $sort = array(
             new DSC(UsuarioModel::FIELD_NOMBREUSUARIO, DSC::ASC),
-            new DSC(UsuarioModel::FIELD_PASSWORD,  DSC::ASC)
+            new DSC(UsuarioModel::FIELD_PASSWORD, DSC::ASC)
         );
 
         $usuario = new UsuarioModel();
         $usuario->setNombreUsuario($nom);
         $usuario->setPassword($pas);
         $fila = UsuarioModel::findByExample($this->con, $usuario, true, $sort);
-        var_dump($fila);
-        $fila = $fila[0];
-        $respuesta = "";
-        if ($fila) {
-            $respuesta['estado'] = 'correcto';
-            $respuesta['usuario']['idUsuario'] = $fila->getIdUsuario();
-            $respuesta['usuario']['NombreUsuario'] = $fila->getNombreUsuario();
-            $respuesta['usuario']['Password'] = $fila->getPassword();
-            $respuesta['usuario']['TipoUsuario'] = $fila->getTipoUsuario();
 
-            $_SESSION['User'] =  $fila->getNombreUsuario();
-            
+        $num = count($fila);
+        if ($num > 0) {
+            $respuesta['estado'] = 'correcto';
+
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $fila[$i]->toHash();
+            }
+            $respuesta['Usuario'] = $array;
+            $_SESSION['User'] = $fila[0]->getNombreUsuario();
 
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
-
-        //}
     }
 }
 
 $loginBO = new LoginBO();
 $loginBO->procesarLLamada();
-

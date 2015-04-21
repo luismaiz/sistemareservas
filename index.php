@@ -17,24 +17,28 @@ include('Frontal/CabeceraInicio.php');
 
         var RespTxt = Ajax.responseText;
 
-        alert("Resultado:" + RespTxt);
+        alert(RespTxt);
 
         var Clase = eval('(' + RespTxt + ')');
+        
         if (Clase) {
-            alert(Clase);
-            var tipo = parseInt((Clase.TipoUsuario));
+            var tipo = parseInt((Clase.Usuario[0].TipoUsuario));
             switch (tipo) {
                 case 1:
-                    location.href = "Frontal\InicioAdministrador.php";
+                    window.location = 'Frontal\\InicioAdministrador.php';
+                    return false;
                     break;
                 case 2:
-                    location.href = "Frontal\InicioMonitor.php";
+                    window.location = 'Frontal\\InicioMonitor.php';
+                    return false;
                     break;
                 case 3:
-                    location.href = "Frontal\InicioGestor.php";
+                    window.location = 'Frontal\\InicioGestor.php';
+                    return false;
                     break;
             }
         }
+        return false;
     }
 
 </script>
@@ -51,7 +55,7 @@ include('Frontal/CabeceraInicio.php');
         <div class="alert alert-info">
             Introduzca el usuario y contraseña.
         </div>
-        <form class="form-horizontal">
+        <form class="form-horizontal" onsubmit="return login();">
             <fieldset>
                 <div class="input-group input-group-lg">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-user red"></i></span>
@@ -71,7 +75,8 @@ include('Frontal/CabeceraInicio.php');
                 <div class="clearfix"></div>
 
                 <p class="center col-md-5">
-                    <button class="btn btn-primary" onclick="login()">Login</button>
+                    <button class="btn btn-primary" >Login</button>
+                    
                 </p>
             </fieldset>
         </form>
