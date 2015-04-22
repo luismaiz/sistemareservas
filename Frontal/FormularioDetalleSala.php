@@ -15,7 +15,7 @@
             
             function crearSala() {
                 //alert("crear");
-                var Url = "http://localhost/PFC/sistemareservas/AdministradorBO.php?url=crearSala";		
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSala";		
                 var Params ='&NombreSala='+ document.getElementById('NombreSala').value +
                     '&CapacidadSala='+ document.getElementById('CapacidadSala').value +
                     '&DescripcionSala='+ document.getElementById('DescripcionSala').value +

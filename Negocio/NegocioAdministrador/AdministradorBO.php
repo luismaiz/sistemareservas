@@ -1,18 +1,18 @@
 <?php
 
-require_once("ComunicacionesREST/Rest.php");
-require_once("Negocio/AccesoDatos/ConexionBD.php");
-require_once("Negocio/Entidades/SalaModel.class.php");
-require_once("Negocio/Entidades/ActividadModel.class.php");
-require_once("Negocio/Entidades/ClaseModel.class.php");
-require_once("Negocio/Entidades/TipotarifaModel.class.php");
-require_once("Negocio/Entidades/PrecioModel.class.php");
-require_once("Negocio/Entidades/TiposolicitudModel.class.php");
-require_once("Negocio/Entidades/SolicitudModel.class.php");
-require_once("Negocio/Entidades/TipoabonoModel.class.php");
-require_once("Negocio/Entidades/helpers/DFC.class.php");
-require_once("Negocio/Entidades/DatosolicitudclasedirigidaModel.class.php");
-require_once("Negocio/Entidades/UsuarioModel.class.php");
+require_once("../../ComunicacionesREST/Rest.php");
+require_once("../../Negocio/AccesoDatos/ConexionBD.php");
+require_once("../../Negocio/Entidades/SalaModel.class.php");
+require_once("../../Negocio/Entidades/ActividadModel.class.php");
+require_once("../../Negocio/Entidades/ClaseModel.class.php");
+require_once("../../Negocio/Entidades/TipotarifaModel.class.php");
+require_once("../../Negocio/Entidades/PrecioModel.class.php");
+require_once("../../Negocio/Entidades/TiposolicitudModel.class.php");
+require_once("../../Negocio/Entidades/SolicitudModel.class.php");
+require_once("../../Negocio/Entidades/TipoabonoModel.class.php");
+require_once("../../Negocio/Entidades/helpers/DFC.class.php");
+require_once("../../Negocio/Entidades/DatosolicitudclasedirigidaModel.class.php");
+require_once("../../Negocio/Entidades/UsuarioModel.class.php");
 
 /*
  * To change this license header, choose License Headers in Project Properties.
