@@ -1,0 +1,580 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="StyleSheet.css" rel="stylesheet" />
+<script>
+function AjaxObj()
+{
+  var xmlhttp = null;
+
+  if (window.XMLHttpRequest)
+  {
+    xmlhttp = new XMLHttpRequest();
+
+    if (xmlhttp.overrideMimeType)
+    {
+      xmlhttp.overrideMimeType('text/xml');
+    }
+  }
+  else if (window.ActiveXObject)
+  { 
+    // Internet Explorer    
+    try
+    {
+      xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+    }
+    catch (e)
+    {
+      try
+      {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      catch (e)
+      {
+        xmlhttp = null;
+      }
+    }
+	
+    if (!xmlhttp && typeof XMLHttpRequest!='undefined')
+    {
+      xmlhttp = new XMLHttpRequest();
+	  
+      if (!xmlhttp)
+      {
+        failed = true;
+      }
+    }
+  }
+  return xmlhttp;
+}
+
+var Ajax = new AjaxObj();
+
+function crearDatosSolicitudClaseDirigida() {		
+	var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=crearDatosSolicitudClaseDirigida";
+		
+	var Params = '&Titular='+ document.getElementById('Titular').value +
+		     '&IBAN='+ document.getElementById('IBAN').value +
+		     '&Entidad='+ document.getElementById('Entidad').value +
+		     '&Oficina='+ document.getElementById('Oficina').value +
+		     '&DigitoControl='+ document.getElementById('DigitoControl').value +
+		     '&Cuenta='+ document.getElementById('Cuenta').value;
+		     
+	//alert(Params);
+		     
+	Ajax.open("POST", Url, true);
+	Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
+	Ajax.send(Params); // Enviamos los datos
+}
+
+
+function obtenerDatosSolicitudClaseDirigida() {
+	var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerDatosSolicitudClaseDirigida";
+	var Params = 'idDatosSolicitudClaseDirigida='+ document.getElementById('idDatosSolicitudClaseDirigida').value;
+	
+	Ajax.open("POST", Url, false);
+	Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
+	Ajax.send(Params); // Enviamos los datos
+	
+	var RespTxt = Ajax.responseText;	
+	
+	//alert(RespTxt);
+	
+	var Clase = eval('(' + RespTxt + ')');
+	  //alert('Estado: '+ Clase.estado);
+	  //alert('idSala: '+ Clase.sala.idSala);
+	  //alert('Nombre: '+ Clase.sala.Nombre);
+	  //alert('Capacidad: '+ Clase.sala.Capacidad);
+	  //alert('Descripcion: '+ Clase.sala.Descripcion);  
+	  
+	  document.getElementById('idDatosSolicitudClaseDirigida').value=Clase.clase.idDatosSolicitudClaseDirigida;
+	  document.getElementById('idSolicitud').value=Clase.clase.idSolicitud;
+	  document.getElementById('Titular').value=Clase.clase.Titular;
+	  document.getElementById('IBAN').value=Clase.clase.IBAN;
+	  document.getElementById('Entidad').value=Clase.clase.Entidad;
+	  document.getElementById('Oficina').value=Clase.clase.Oficina;
+	  document.getElementById('DigitoControl').value=Clase.clase.DigitoControl;
+	  document.getElementById('Cuenta').value=Clase.clase.Cuenta;
+}
+
+//Metodos CRUD Solicitud Clase Dirigida
+function crearActividadSolicitudClaseDirigida() {		
+	var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=crearActividadSolicitudClaseDirigida";
+		
+	var Params = 'idSolicitud='+ document.getElementById('idSolicitud').value +
+		     '&idActividad='+ document.getElementById('idActividad').value;
+		     
+	//alert(Params);
+		     
+	Ajax.open("POST", Url, true);
+	Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
+	Ajax.send(Params); // Enviamos los datos
+}
+
+function actualizarActividadSolicitudClaseDirigida() {
+	var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=actualizarActividadSolicitudClaseDirigida";
+	var Params = 'IdActividadesSolicitudClaseDirigida='+ document.getElementById('IdActividadesSolicitudClaseDirigida').value +
+		     '&idSolicitud='+ document.getElementById('idSolicitud:').value +
+		     '&idActivida='+ document.getElementById('idActivida').value;
+
+	//alert(Params);
+	
+	Ajax.open("PUT", Url, false);
+	Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
+	Ajax.send(Params); // Enviamos los datos
+}
+
+
+function obtenerActividadesSolicitudClasDirigida() {
+	var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerActividadesSolicitudClasDirigida";
+	var Params = '';
+
+	
+	Ajax.open("GET", Url, false);
+	Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
+	Ajax.send(Params); // Enviamos los datos
+	
+	var RespTxt = Ajax.responseText;		
+	
+	var Clase = eval('(' + RespTxt + ')');	
+	
+	var contenido = "";		    
+	var div = document.getElementById("solicitudes");
+	contenido = contenido + '<form>';
+	
+	for(i=0; i<Clase.solicitudes.length; i++){		
+		contenido = contenido + 'IdActividadesSolicitudClaseDirigida: <input type="text" id="IdActividadesSolicitudClaseDirigida" name="IdActividadesSolicitudClaseDirigida" value=' + Clase.solicitudes[i].IdSolicitudClaseDirigida + '/>';
+		contenido = contenido + 'idSolicitud: <input type="text" id="idSolicitud" name="idSolicitud" value=' + Clase.solicitudes[i].Solicitud + '/>';
+		contenido = contenido + 'idActividad: <input type="text" id="idActividad" name="idActividad" value=' + Clase.solicitudes[i].Clase + '/>';		
+		contenido = contenido + "<br>";
+	}
+	contenido = contenido + '</form>';
+	
+	div.innerHTML = contenido;
+	
+	  //alert('Estado: '+ Clase.estado);
+	  //alert('idSala: '+ Clase.salas.length);
+	  //alert('idSala: '+ Clase.salas[0].idSala);
+	  //alert('Nombre: '+ Clase.salas[0].Nombre);
+	  //alert('Capacidad: '+ Clase.salas[0].Capacidad);
+	  //alert('Descripcion: '+ Clase.salas[0].Descripcion);
+	  
+	  //document.getElementById('idSala').value=Clase.salas[0].idSala;
+	  //document.getElementById('Nombre').value=Clase.salas[0].Nombre;
+	  //document.getElementById('Capacidad').value=Clase.salas[0].Capacidad;
+	  //document.getElementById('Descripcion').value=Clase.salas[0].Descripcion;
+}
+
+function obtenerActividadSolicitudClaseDirigida() {
+	var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerActividadSolicitudClaseDirigida";
+	var Params = 'IdActividadesSolicitudClaseDirigida='+ document.getElementById('IdActividadesSolicitudClaseDirigida').value;
+	
+	Ajax.open("POST", Url, false);
+	Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
+	Ajax.send(Params); // Enviamos los datos
+	
+	var RespTxt = Ajax.responseText;	
+	
+	//alert(RespTxt);
+	
+	var Clase = eval('(' + RespTxt + ')');
+	  //alert('Estado: '+ Clase.estado);
+	  //alert('idSala: '+ Clase.sala.idSala);
+	  //alert('Nombre: '+ Clase.sala.Nombre);
+	  //alert('Capacidad: '+ Clase.sala.Capacidad);
+	  //alert('Descripcion: '+ Clase.sala.Descripcion);
+	  	  
+	  document.getElementById('IdActividadesSolicitudClaseDirigida').value=Clase.solicitud.IdActividadesSolicitudClaseDirigida;
+	  document.getElementById('idSolicitud').value=Clase.solicitud.idSolicitud;
+	  document.getElementById('idActividad').value=Clase.solicitud.idActividad;
+}
+</script>
+<script>
+function AjaxObj()
+{
+  var xmlhttp = null;
+
+  if (window.XMLHttpRequest)
+  {
+    xmlhttp = new XMLHttpRequest();
+
+    if (xmlhttp.overrideMimeType)
+    {
+      xmlhttp.overrideMimeType('text/xml');
+    }
+  }
+  else if (window.ActiveXObject)
+  { 
+    // Internet Explorer    
+    try
+    {
+      xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+    }
+    catch (e)
+    {
+      try
+      {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      catch (e)
+      {
+        xmlhttp = null;
+      }
+    }
+	
+    if (!xmlhttp && typeof XMLHttpRequest!='undefined')
+    {
+      xmlhttp = new XMLHttpRequest();
+	  
+      if (!xmlhttp)
+      {
+        failed = true;
+      }
+    }
+  }
+  return xmlhttp;
+}
+
+var Ajax = new AjaxObj();
+
+
+function crearSolicitud() {		
+	var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=crearSolicitud";
+		
+	var Params = '&idTipoSolicitud='+ document.getElementById('idTipoSolicitud').value +
+		     '&Nombre='+ document.getElementById('Nombre').value +
+		     '&Apellidos='+ document.getElementById('Apellidos').value +		     
+		     '&DNI='+ document.getElementById('DNI').value +
+		     '&EMail='+ document.getElementById('EMail').value +
+		     '&Direccion='+ document.getElementById('Direccion').value +		     
+		     '&CP='+ document.getElementById('CP').value +
+		     '&Sexo=V'+ document.getElementById('Sexo').value +
+		     '&FechaNacimiento='+ document.getElementById('FechaNacimiento').value +
+		     '&TutorLegal='+ document.getElementById('TutorLegal').value +
+		     '&Localidad='+ document.getElementById('Localidad').value +
+		     '&Telefono1='+ document.getElementById('Telefono1').value +
+		     '&Telefono2='+ document.getElementById('Telefono2').value +
+		     '&Provincia='+ document.getElementById('Provincia').value +		     
+		     '&DescripcionSolicitud='+ document.getElementById('DescripcionSolicitud').value +
+		     '&Otros='+ document.getElementById('Otros').value;
+		
+		     
+	alert(Params);
+		     
+	Ajax.open("POST", Url, true);
+	Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
+	Ajax.send(Params); // Enviamos los datos
+        
+       var Clase = eval('(' + RespTxt + ')');
+       var IdSolicitud = Clase.solicitud.idSolicitud;
+       var Localizador = Clase.solicitud.Localizador;
+}
+
+
+
+
+</script>
+<link id="bs-css" href="css/bootstrap-cerulean.min.css" rel="stylesheet">
+
+    <link href="css/charisma-app.css" rel="stylesheet">
+    <link href='bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>
+    <link href='bower_components/fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print'>
+    <link href='bower_components/chosen/chosen.min.css' rel='stylesheet'>
+    <link href='bower_components/colorbox/example3/colorbox.css' rel='stylesheet'>
+    <link href='bower_components/responsive-tables/responsive-tables.css' rel='stylesheet'>
+    <link href='bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css' rel='stylesheet'>
+    <link href='css/jquery.noty.css' rel='stylesheet'>
+    <link href='css/noty_theme_default.css' rel='stylesheet'>
+    <link href='css/elfinder.min.css' rel='stylesheet'>
+    <link href='css/elfinder.theme.css' rel='stylesheet'>
+    <link href='css/jquery.iphone.toggle.css' rel='stylesheet'>
+    <link href='css/uploadify.css' rel='stylesheet'>
+    <link href='css/animate.min.css' rel='stylesheet'>
+
+    <!-- jQuery -->
+    <script src="bower_components/jquery/jquery.min.js"></script>
+
+   
+    <link rel="shortcut icon" href="img/favicon.ico">
+</head>
+<body>
+  <!-- topbar starts -->
+    <div class="navbar navbar-default" role="navigation">
+
+        <div class="navbar-inner">
+            <button type="button" class="navbar-toggle pull-left animated flip">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html"> <img alt="FMN Logo" src="img/FMN.jpg" class="hidden-xs"/>
+                <span>M-86</span></a>
+
+            <!-- user dropdown starts -->
+            <div class="btn-group pull-right">
+                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <i class="glyphicon glyphicon-user"></i><span class="hidden-sm hidden-xs"> administrador</span>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Profile</a></li>
+                    <li class="divider"></li>
+                    <li><a href="login.html">Logout</a></li>
+                </ul>
+            </div>
+            <!-- user dropdown ends -->
+
+            <!-- theme selector starts -->
+            
+            <ul class="collapse navbar-collapse nav navbar-nav top-menu">
+              
+                
+                <li>
+                    <form class="navbar-search pull-left">
+                        <input placeholder="Search" class="search-query form-control col-md-10" name="query"
+                               type="text">
+                    </form>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+    <!-- topbar ends -->
+<div class="ch-container">
+    <div class="row">
+        
+        <!-- left menu starts -->
+        <div class="col-sm-2 col-lg-2">
+            <div class="sidebar-nav">
+                <div class="nav-canvas">
+                    <div class="nav-sm nav nav-stacked">
+
+                    </div>
+                    <ul class="nav nav-pills nav-stacked main-menu">
+                       
+                       
+                        
+                        </li>
+                    </ul>
+                    
+                </div>
+            </div>
+        </div>
+       
+
+        <noscript>
+            
+        </noscript>
+
+        <div id="content" class="col-lg-10 col-sm-10">
+            <!-- content starts -->
+            <div>
+    <ul class="breadcrumb">
+        <li>
+            <a href="#">Home</a>
+        </li>
+        <li>
+            <a href="#">Forms</a>
+        </li>
+    </ul>
+</div>
+
+<div class="row">
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-edit"></i> Formulario Bancario</h2>
+
+                <div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i
+                            class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                            class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+                
+
+                <form class="form-inline" role="form">
+                    <div class="form-group has-success has-feedback">
+                        
+                        <label class="control-label" >Titular</label>
+                        <input type="text" required pattern="^[a-zA-Z0-9]{4,12}$" placeholder="2804" id="Titular"></input>
+                        
+                         <label class="control-label" >IBAN</label>
+                        <input type="text" required pattern="^[a-zA-Z0-9]{4,12}$" placeholder="2804" id="IBAN">
+                        
+                        <label class="control-label" >Entidad</label>
+                        <input type="text" required pattern="^[a-zA-Z0-9]{4,12}$" placeholder="2804" id="Entidad">
+                      <!--  <span class="glyphicon glyphicon-ok form-control-feedback"></span></br></p>-->
+				 
+                      		
+			<label class="control-label" >Oficina</label>
+                        <input type="text" required pattern="^[a-zA-Z0-9]{4,12}$" placeholder="2804" id="Oficina">
+                       <!-- <span class="glyphicon glyphicon-ok form-control-feedback"></span></br></p>-->
+					   
+					   
+			 <label class="control-label" >DigitoControl</label>
+                        <input type="text" required pattern="^[a-zA-Z0-9]{4,12}$" placeholder="2804" id="DigitoControl">
+                       <!-- <span class="glyphicon glyphicon-ok form-control-feedback"></span></br></p>-->
+					   
+			<label class="control-label" >CTA/Libreta</label>
+                        <input type="text" required pattern="^[a-zA-Z0-9]{4,12}$" placeholder="2804" id="Cuenta"></br></p></br></p>
+                      <!--  <span class="glyphicon glyphicon-ok form-control-feedback"></span></br></p>-->
+                    </div>
+			<div class="form-group has-success has-feedback">
+                       
+                      <!--  <span class="glyphicon glyphicon-ok form-control-feedback"></span></br></p>-->
+						
+						
+                    </div>
+				</div>
+				
+				
+				<input type="button" value="Aceptar" onClick=" crearSolicitud();crearDatosSolicitudClaseDirigida();"/>
+				
+                </form>
+           
+
+                <br>
+
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+
+
+</div><!--/row-->
+
+    <!-- content ends -->
+    </div><!--/#content.col-md-0-->
+</div><!--/fluid-row-->
+
+    <!-- Ad, you can remove it -->
+    <div class="row">
+        <div class="col-md-9 col-lg-9 col-xs-9  hidden-xs">
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- Charisma Demo 2 -->
+            <ins class="adsbygoogle"
+                 style="display:inline-block;width:728px;height:90px"
+                 data-ad-client="ca-pub-5108790028230107"
+                 data-ad-slot="3193373905"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+        <div class="col-md-2 col-lg-3 col-sm-12 col-xs-12 donate">
+           
+           
+        </div>
+
+    </div>
+    <!-- Ad ends -->
+
+    <hr>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h3>Settings</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Here settings can be configured...</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-default" data-dismiss="modal">Close</a>
+                    <a href="#" class="btn btn-primary" data-dismiss="modal">Save changes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="row">
+      
+    </footer>
+
+</div><!--/.fluid-container-->
+
+<!-- external javascript -->
+
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- library for cookie management -->
+<script src="js/jquery.cookie.js"></script>
+<!-- calender plugin -->
+<script src='bower_components/moment/min/moment.min.js'></script>
+<script src='bower_components/fullcalendar/dist/fullcalendar.min.js'></script>
+<!-- data table plugin -->
+<script src='js/jquery.dataTables.min.js'></script>
+
+<!-- select or dropdown enhancer -->
+<script src="bower_components/chosen/chosen.jquery.min.js"></script>
+<!-- plugin for gallery image view -->
+<script src="bower_components/colorbox/jquery.colorbox-min.js"></script>
+<!-- notification plugin -->
+<script src="js/jquery.noty.js"></script>
+<!-- library for making tables responsive -->
+<script src="bower_components/responsive-tables/responsive-tables.js"></script>
+<!-- tour plugin -->
+<script src="bower_components/bootstrap-tour/build/js/bootstrap-tour.min.js"></script>
+<!-- star rating plugin -->
+<script src="js/jquery.raty.min.js"></script>
+<!-- for iOS style toggle switch -->
+<script src="js/jquery.iphone.toggle.js"></script>
+<!-- autogrowing textarea plugin -->
+<script src="js/jquery.autogrow-textarea.js"></script>
+<!-- multiple file upload plugin -->
+<script src="js/jquery.uploadify-3.1.min.js"></script>
+<!-- history.js for cross-browser state change on ajax -->
+<script src="js/jquery.history.js"></script>
+<!-- application script for Charisma demo -->
+<script src="js/charisma.js"></script>
+<script>
+// Validate the Entered input aganist the generated security code function
+function check(input) {
+  var cap =removeSpaces(document.getElementById('txtCaptcha').value);
+if (input.value != cap ) {
+  input.setCustomValidity("Error in code Please Check!");
+  } else {
+  // input is fine -- reset the error message
+  input.setCustomValidity('');
+  }
+  }
+ </script>
+
+<?php
+
+   $postre = $_POST['postre'];
+   $idTipoSolicitud = $_POST ['idTipoSolicitud'];
+   $Nombre = $_POST ['Nombre'];
+   $Apellidos = $_POST ['Apellidos'];
+   $Nombre = $_POST ['Nombre'];
+   $DNI = $_POST ['DNI'];
+   $EMail = $_POST ['EMail'];		  
+   $Direccion = $_POST ['Direccion'];			     
+   $CP = $_POST ['CP'];			   	     
+   $Sexo = $_POST ['Sexo'];		     
+   $FechaNacimiento = $_POST ['FechaNacimiento'];		     
+		     
+		     $TutorLegal= $_POST ['TutorLegal']
+		     $Localidad= $_POST ['Localidad'];
+		     $Telefono1= $_POST ['Telefono1']
+		     $Telefono2= $_POST ['Telefono2'];
+		     $Provincia= $_POST ['Provincia'];		     
+		     $DescripcionSolicitud= $_POST ['DescripcionSolicitud'];
+		     $Otros= $_POST ['Otros'];
+		
+
+?>
+</body>
+</html>

@@ -4,24 +4,36 @@
 <script>
            
             var Ajax = new AjaxObj();
-                
+            
+            function Sala(){      
+                //alert(document.getElementById("idSala"));
+                if(document.getElementById("idSala").value == "")
+                    crearSala();
+                else
+                    actualizarSala();
+            }
+            
             function crearSala() {
-                var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=crearSala";		
+                //alert("crear");
+                var Url = "http://localhost/PFC/sistemareservas/AdministradorBO.php?url=crearSala";		
                 var Params ='&NombreSala='+ document.getElementById('NombreSala').value +
                     '&CapacidadSala='+ document.getElementById('CapacidadSala').value +
                     '&DescripcionSala='+ document.getElementById('DescripcionSala').value +
                     '&FechaAlta='+ document.getElementById('FechaAlta').value +
                     '&FechaBaja='+ document.getElementById('FechaBaja').value;
 
-                alert(Params);
+                //alert(Params);
 	
 	
                 Ajax.open("POST", Url, true);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
+                
+                mostrarRespuesta(Ajax.responseText);
             }
 
             function actualizarSala() {
+                //alert("actualizar");
                 var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=actualizarSala";
                 var Params = 'idSala='+ document.getElementById('idSala').value +
                     '&NombreSala='+ document.getElementById('NombreSala').value +
@@ -30,10 +42,13 @@
                     '&FechaAlta='+ document.getElementById('FechaAlta').value +
                     '&FechaBaja='+ document.getElementById('FechaBaja').value;
 
-	
+                //alert(Params);
+                
                 Ajax.open("PUT", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
+                
+                mostrarRespuesta(Ajax.responseText);
             }
 
             function borrarSala() {
@@ -44,33 +59,7 @@
                 Ajax.open("DELETE", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-            }
-            //coge una variable dada(por su número empezando desde 0 o su nombre)             
-            function getVariable(variable){ 
-		             
-                var tipo = typeof variable; 
-                var direccion = location.href; 
-		                 
-                if (tipo == "string"){ 
-                    var posicion = direccion.indexOf("?"); 
-                    posicion = direccion.indexOf(variable,posicion) + variable.length; 
-                } 
-                else if (tipo == "number"){ 
-                    var posicion=0; 
-                    for (var contador = 0 ; contador < variable + 1 ; contador++){ 
-                        posicion = direccion.indexOf("=",++posicion); 
-                        if (posicion == -1)posicion=999; 
-                    } 
-                } 
-                if (direccion.charAt(posicion) == "="){ 
-                    var ultima = direccion.indexOf("&",posicion); 
-                    if (ultima == -1){ultima=direccion.length;}; 
-                    return direccion.substring(posicion + 1,ultima); 
-                } 
-            } 
-
-            
-            
+            }            
         </script>
        
 <div>
@@ -79,7 +68,7 @@
             <a href="#">Inicio</a>
         </li>
         <li>
-            <a href="#">Salas</a>
+            <a href="Salas.php">Salas</a>
         </li>
         <li>
             <a href="#">Detalle Sala</a>
@@ -100,6 +89,7 @@
                         <div class="box-content">
                             
                             <form class="form-group">
+                                <input value = "" type="hidden" class="input-sm" name="idSala" id="idSala">
                                 <label class="control-label" >Nombre</label>
                                 <input value = "" type="text" class="input-sm" name="nombresala" id="NombreSala"></br></br>
                                 
@@ -116,7 +106,7 @@
                                 <input type="date" class="input-sm" name="FechaBaja" id="FechaBaja">
                                       
                                 <input class="box btn-primary " type="button" value="Cancelar" onClick=" window.location.href='Salas.php' " />
-                                <input class="box btn-primary " type="button" value="Aceptar" onclick="crearSala()"/>
+                                <input class="box btn-primary " type="button" value="Aceptar" onclick="Sala()"/>
                                
                             </form>
                         </div>
@@ -130,7 +120,7 @@
             function obtenerSala(idSala) {
 //                alert(idSala);
                 
-                var Url = "http://pfgreservas.rightwatch.es//Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerSala";
+                var Url = "http://localhost:8080/pfgreservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerSala";
                 var Params = 'idSala='+ idSala;
 
 	
@@ -155,7 +145,8 @@
 //                alert('CapacidadSala: '+ Clase.sala.CapacidadSala);
 //                alert('DescripcionSala: '+ Clase.sala.DescripcionSala);
                 
-                document.getElementById('NombreSala').value= Clase.sala.idSala;
+                document.getElementById('idSala').value= Clase.sala.idSala;
+                document.getElementById('NombreSala').value= Clase.sala.NombreSala;
                 document.getElementById('CapacidadSala').value= Clase.sala.CapacidadSala;
                 document.getElementById('DescripcionSala').value= Clase.sala.DescripcionSala;
                 document.getElementById('FechaAlta').value= Clase.sala.FechaAlta;

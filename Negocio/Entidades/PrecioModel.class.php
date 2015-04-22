@@ -14,6 +14,7 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `precio` (`idTipoSolicitud`,`idTipoAbono`,`idActividad`,`NombrePrecio`,`DescripcionPrecio`,`Precio`,`FechaAlta`,`FechaBaja`) VALUES (?,?,?,?,?,?,?,?)';
 	const SQL_UPDATE='UPDATE `precio` SET `idPrecio`=?,`idTipoSolicitud`=?,`idTipoAbono`=?,`idActividad`=?,`NombrePrecio`=?,`DescripcionPrecio`=?,`Precio`=?,`FechaAlta`=?,`FechaBaja`=? WHERE `idPrecio`=?';
 	const SQL_SELECT_PK='SELECT * FROM `precio` WHERE `idPrecio`=?';
+	const SQL_SELECT='SELECT * FROM `precio`';
 	const SQL_DELETE_PK='DELETE FROM `precio` WHERE `idPrecio`=?';
 	const FIELD_IDPRECIO=1851537897;
 	const FIELD_IDTIPOSOLICITUD=993437133;

@@ -14,6 +14,7 @@ class TipoabonoModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `tipoabono` (`NombreAbono`,`DescripcionAbono`,`FechaAlta`,`FechaBaja`) VALUES (?,?,?,?)';
 	const SQL_UPDATE='UPDATE `tipoabono` SET `idTipoAbono`=?,`NombreAbono`=?,`DescripcionAbono`=?,`FechaAlta`=?,`FechaBaja`=? WHERE `idTipoAbono`=?';
 	const SQL_SELECT_PK='SELECT * FROM `tipoabono` WHERE `idTipoAbono`=?';
+	const SQL_SELECT='SELECT * FROM `tipoabono`';
 	const SQL_DELETE_PK='DELETE FROM `tipoabono` WHERE `idTipoAbono`=?';
 	const FIELD_IDTIPOABONO=1292806029;
 	const FIELD_NOMBREABONO=341460691;

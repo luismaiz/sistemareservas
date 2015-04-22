@@ -192,5 +192,4 @@ class DFCAggregate extends ArrayObject implements DFCInterface {
     }
 
 }
-
 ?>

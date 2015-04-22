@@ -1,4 +1,5 @@
-<?php include 'config.php' ?>
+<?php session_start();
+include 'config.php' ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,7 +38,7 @@
     <!-- The fav icon -->
     <link rel="shortcut icon" href="img/favicon.ico">
 
-</head>
+
 <script>
 function AjaxObj()
             {
@@ -85,6 +86,7 @@ function AjaxObj()
             }
 
 </script>
+</head>
 <body>
 <?php if (!isset($no_visible_elements) || !$no_visible_elements) { ?>
     <!-- topbar starts -->
@@ -98,7 +100,7 @@ function AjaxObj()
             <!-- user dropdown starts -->
             <div class="btn-group pull-right">
                 <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    <i class="glyphicon glyphicon-user"></i><span class="hidden-sm hidden-xs"> administrador</span>
+                    <i class="glyphicon glyphicon-user"></i><span class="hidden-sm hidden-xs"><?php echo ''.$_SESSION['User'];?></span>
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">

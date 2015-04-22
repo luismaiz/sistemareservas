@@ -3,9 +3,13 @@
  var Ajax = new AjaxObj();
 
             function obtenerTiposAbono(){
-                alert(RespTxt);
+                //alert(RespTxt);
                 //var Url = "http://www.rightwatch.es/pfgreservas/Api.php?url=obtenerActividades";	
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerTiposAbono";		        
+<<<<<<< HEAD
+                var Url = "http://localhost:8080/pfgreservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerTiposAbono";		        
+=======
+                var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerTiposAbono";		        
+>>>>>>> 19a98ccee5b42517ff133f053273c0995768e5e6
                 var Params = '';
 
 	
@@ -15,7 +19,7 @@
 	
                 var RespTxt = Ajax.responseText;
                 
-                //alert(RespTxt);
+                alert(RespTxt);
 	
                 var Clase = eval('(' + RespTxt + ')');	
                 
@@ -32,7 +36,7 @@
                     contenido = contenido + '<td>' + Clase.tiposAbono[i].DescripcionAbono + '</td>';
                     contenido = contenido + '<td>' + Clase.tiposAbono[i].FechaAlta + '</td>';
                     contenido = contenido + '<td>' + Clase.tiposAbono[i].FechaBaja + '</td>';
-                    contenido = contenido + '<td class="center"><a class="btn btn-info2" href="#"><i class="glyphicon glyphicon-edit icon-white"></i>Edit</a></td>';	
+                    contenido = contenido + '<td class="center"><a href="FormularioDetalleAbono.php?idTipoAbono=' + Clase.tiposAbono[i].idTipoAbono + '" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>';	
                     contenido = contenido + '</tr>';
                 }
                 contenido = contenido + '</thead></table>';

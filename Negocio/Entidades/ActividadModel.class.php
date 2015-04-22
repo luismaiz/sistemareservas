@@ -14,7 +14,7 @@ class ActividadModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `actividad` (`NombreActividad`,`IntensidadActividad`,`EdadMinima`,`EdadMaxima`,`Grupo`,`Descripcion`,`FechaAlta`,`FechaBaja`) VALUES (?,?,?,?,?,?,?,?)';
 	const SQL_UPDATE='UPDATE `actividad` SET `idActividad`=?,`NombreActividad`=?,`IntensidadActividad`=?,`EdadMinima`=?,`EdadMaxima`=?,`Grupo`=?,`Descripcion`=?,`FechaAlta`=?,`FechaBaja`=? WHERE `idActividad`=?';
 	const SQL_SELECT_PK='SELECT * FROM `actividad` WHERE `idActividad`=?';
-        const SQL_SELECT='SELECT * FROM actividad';
+	const SQL_SELECT='SELECT * FROM `actividad`';
 	const SQL_DELETE_PK='DELETE FROM `actividad` WHERE `idActividad`=?';
 	const FIELD_IDACTIVIDAD=464536881;
 	const FIELD_NOMBREACTIVIDAD=80174755;

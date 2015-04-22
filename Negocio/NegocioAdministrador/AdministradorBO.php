@@ -1,18 +1,18 @@
 <?php
 
-require_once("../../ComunicacionesREST/rest.php");
-require_once("../AccesoDatos/ConexionBD.php");
-require_once("../Entidades/SalaModel.class.php");
-require_once("../Entidades/ActividadModel.class.php");
-require_once("../Entidades/ClaseModel.class.php");
-require_once("../Entidades/TipoTarifaModel.class.php");
-require_once("../Entidades/PrecioModel.class.php");
-require_once("../Entidades/TipoSolicitudModel.class.php");
-require_once("../Entidades/SolicitudModel.class.php");
-require_once("../Entidades/PrecioModel.class.php");
-require_once("../Entidades/TipoabonoModel.class.php");
-require_once("../Entidades/DatosolicitudclasedirigidaModel.class.php");
-require_once("../Entidades/ActividadsolicitudclasedirigidaModel.class.php");
+require_once("ComunicacionesREST/Rest.php");
+require_once("Negocio/AccesoDatos/ConexionBD.php");
+require_once("Negocio/Entidades/SalaModel.class.php");
+require_once("Negocio/Entidades/ActividadModel.class.php");
+require_once("Negocio/Entidades/ClaseModel.class.php");
+require_once("Negocio/Entidades/TipotarifaModel.class.php");
+require_once("Negocio/Entidades/PrecioModel.class.php");
+require_once("Negocio/Entidades/TiposolicitudModel.class.php");
+require_once("Negocio/Entidades/SolicitudModel.class.php");
+require_once("Negocio/Entidades/TipoabonoModel.class.php");
+require_once("Negocio/Entidades/helpers/DFC.class.php");
+require_once("Negocio/Entidades/DatosolicitudclasedirigidaModel.class.php");
+require_once("Negocio/Entidades/UsuarioModel.class.php");
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -80,15 +80,6 @@ class AdministradorBO extends Rest {
         return json_encode($data);
     }
 
-    private function administradorBO() {
-        $clase = "Sala"; //$this->datosPeticion['metodo'];
-        $metodo = "crearSala";
-
-        //$reflexión = new SDO_Model_ReflectionDataObject($clase);
-        $myClassReflection = new ReflectionClass($clase);
-        $myClassReflection->getMethod($metodo)->invoke();
-    }
-
     //Metodos CRUD Sala
     private function crearSala() {
         //var_dump($_SERVER);
@@ -96,7 +87,7 @@ class AdministradorBO extends Rest {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
         $this->con = ConexionBD::getInstance();
-        var_dump($this->con);
+        //var_dump($this->con);
         $sala = new SalaModel();
 
         //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {  
@@ -113,7 +104,7 @@ class AdministradorBO extends Rest {
         $sala->setFechaAlta($FechaAlta);
         $sala->setFechaBaja($FechaBaja);
 
-        var_dump($sala);
+        //var_dump($sala);
         //echo gettype($con);
         $result = $sala->insertIntoDatabase($this->con);
 
@@ -174,7 +165,7 @@ class AdministradorBO extends Rest {
                 //var_dump(count($sala));
                 if (count($filasActualizadas) == 1) {
                     $resp = array('estado' => "correcto", "msg" => "sala actualizada");
-                    var_dump($resp);
+                    //var_dump($resp);
                     $this->mostrarRespuesta($this->convertirJson($resp), 200);
                 } else {
                     $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
@@ -226,12 +217,11 @@ class AdministradorBO extends Rest {
         $num = count($filas);
         if ($num > 0) {
             $respuesta['estado'] = 'correcto';
-                      
-        for ($i = 0; $i < $num; $i++) 
-        {
-            $array[] = $filas[$i]->toHash();
-        }
-            
+
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
             $respuesta['salas'] = $array;
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
@@ -244,38 +234,59 @@ class AdministradorBO extends Rest {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
         //el constructor del padre ya se encarga de sanear los datos de entrada  
-//            echo($this->datosPeticion['idSala']);
-//        if (isset($this->datosPeticion['idSala'])) {
-//            $idSala = isset($this->datosPeticion['idSala']);
 
-        $this->con = ConexionBD::getInstance();
 
-        //$sala->setIdSala($idSala);
-        $fila = SalaModel::findById($this->con, $this->datosPeticion['idSala']);
+        if (isset($this->datosPeticion['idSala'])) {
+            $idSala = isset($this->datosPeticion['idSala']);
 
-        $respuesta = "";
-        if ($fila) {
-            $respuesta['estado'] = 'correcto';
-            $respuesta['sala'] = $fila->toHash();
+            $this->con = ConexionBD::getInstance();
+            $sala = new SalaModel();
 
-            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+            $sala->setIdSala($idSala);
+            $fila = $sala->findById($this->con, $idSala);
+
+            /* echo "datos de la consulta";
+              echo $fila->getIdSala();
+              echo $fila->getNombre();
+              echo $fila->getCapacidad();
+              echo $fila->getDescripcion(); */
+
+            //var_dump($fila);
+            //echo "Despues de fila";
+            //consulta preparada ya hace mysqli_real_escape()  
+            //$query = $this->_conn->prepare("SELECT idSala, Nombre, Capacidad, Descripcion FROM sala WHERE idSala=:idSala");
+            //$query->bindValue(":idSala", $idSala);
+            //$fila = $query->execute();
+            //var_dump($fila);
+            //$query->execute();
+            $respuesta = "";
+            if ($fila) {
+                $respuesta['estado'] = 'correcto';
+                $respuesta['sala']['idSala'] = $fila->getIdSala();
+                $respuesta['sala']['NombreSala'] = $fila->getNombreSala();
+                $respuesta['sala']['CapacidadSala'] = $fila->getCapacidadSala();
+                $respuesta['sala']['DescripcionSala'] = $fila->getDescripcionSala();
+                $respuesta['sala']['FechaAlta'] = $fila->getFechaAlta();
+                $respuesta['sala']['FechaBaja'] = $fila->getFechaAlta();
+                //var_dump($respuesta);
+                $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+            }
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
         }
-        $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
-        //}
     }
 
     //Metodos CRUD Actividad    
     private function crearActividad() {
 
-        if ($_SERVER['REQUEST_METHOD'] != "POST") {
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-        }
+        //if ($_SERVER['REQUEST_METHOD'] != "POST") {
+        //  $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        //}
         //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {  
         //$idActividad = $this->datosPeticion['idActividad'];  
         $NombreActividad = $this->datosPeticion['NombreActividad'];
         $IntensidadActividad = $this->datosPeticion['IntensidadActividad'];
-        $Edad_Minima = $this->datosPeticion['Edad_Minima'];
-        $Edad_Maxima = $this->datosPeticion['Edad_Maxima'];
+        $EdadMinima = $this->datosPeticion['EdadMinima'];
+        $EdadMaxima = $this->datosPeticion['EdadMaxima'];
         $Grupo = $this->datosPeticion['Grupo'];
         $Descripcion = $this->datosPeticion['Descripcion'];
         $FechaAlta = $this->datosPeticion['FechaAlta'];
@@ -304,8 +315,8 @@ class AdministradorBO extends Rest {
 
         $actividad->setNombreActividad($NombreActividad);
         $actividad->setIntensidadActividad($IntensidadActividad);
-        $actividad->setEdadMinima($Edad_Minima);
-        $actividad->setEdadMaxima($Edad_Maxima);
+        $actividad->setEdadMinima($EdadMinima);
+        $actividad->setEdadMaxima($EdadMaxima);
         $actividad->setGrupo($Grupo);
         $actividad->setDescripcion($Descripcion);
         $actividad->setFechaAlta($FechaAlta);
@@ -349,12 +360,11 @@ class AdministradorBO extends Rest {
         $num = count($filas);
         if ($num > 0) {
             $respuesta['estado'] = 'correcto';
-                      
-        for ($i = 0; $i < $num; $i++) 
-        {
-            $array[] = $filas[$i]->toHash();
-        }
-            
+
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
             $respuesta['actividades'] = $array;
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
@@ -370,8 +380,8 @@ class AdministradorBO extends Rest {
             $idActividad = $this->datosPeticion['idActividad'];
             $NombreActividad = $this->datosPeticion['NombreActividad'];
             $IntensidadActividad = $this->datosPeticion['IntensidadActividad'];
-            $Edad_Minima = $this->datosPeticion['Edad_Minima'];
-            $Edad_Maxima = $this->datosPeticion['Edad_Maxima'];
+            $EdadMinima = $this->datosPeticion['EdadMinima'];
+            $EdadMaxima = $this->datosPeticion['EdadMaxima'];
             $Grupo = $this->datosPeticion['Grupo'];
             $Descripcion = $this->datosPeticion['Descripcion'];
             $FechaAlta = $this->datosPeticion['FechaAlta'];
@@ -384,8 +394,8 @@ class AdministradorBO extends Rest {
                 $actividad->setIdActividad($idActividad);
                 $actividad->setNombreActividad($NombreActividad);
                 $actividad->setIntensidadActividad($IntensidadActividad);
-                $actividad->setEdadMinima($Edad_Minima);
-                $actividad->setEdadMaxima($Edad_Maxima);
+                $actividad->setEdadMinima($EdadMinima);
+                $actividad->setEdadMaxima($EdadMaxima);
                 $actividad->setGrupo($Grupo);
                 $actividad->setDescripcion($Descripcion);
                 $actividad->setFechaAlta($FechaAlta);
@@ -561,12 +571,11 @@ class AdministradorBO extends Rest {
         $num = count($filas);
         if ($num > 0) {
             $respuesta['estado'] = 'correcto';
-                      
-        for ($i = 0; $i < $num; $i++) 
-        {
-            $array[] = $filas[$i]->toHash();
-        }
-            
+
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
             $respuesta['clases'] = $array;
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
@@ -757,12 +766,11 @@ class AdministradorBO extends Rest {
         $num = count($filas);
         if ($num > 0) {
             $respuesta['estado'] = 'correcto';
-                      
-        for ($i = 0; $i < $num; $i++) 
-        {
-            $array[] = $filas[$i]->toHash();
-        }
-            
+
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
             $respuesta['tiposTarifa'] = $array;
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
@@ -836,11 +844,11 @@ class AdministradorBO extends Rest {
 
         if ($fila) {
             $respuesta['estado'] = 'correcto';
-            $respuesta['sala']['idTipoTarifa'] = $fila->getIdTipoTarifa();
-            $respuesta['sala']['NombreTarifa'] = $fila->getNombreTarifa();
-            $respuesta['sala']['DescripcionTarifa'] = $fila->getDescripcionTarifa();
-            $respuesta['sala']['FechaAlta'] = $fila->getFechaAlta();
-            $respuesta['sala']['FechaBaja'] = $fila->getFechaBaja();
+            $respuesta['tipoTarifa']['idTipoTarifa'] = $fila->getIdTipoTarifa();
+            $respuesta['tipoTarifa']['NombreTarifa'] = $fila->getNombreTarifa();
+            $respuesta['tipoTarifa']['DescripcionTarifa'] = $fila->getDescripcionTarifa();
+            $respuesta['tipoTarifa']['FechaAlta'] = $fila->getFechaAlta();
+            $respuesta['tipoTarifa']['FechaBaja'] = $fila->getFechaBaja();
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
@@ -851,7 +859,7 @@ class AdministradorBO extends Rest {
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-        //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {        
+        //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {
 
         $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
         $idTipoAbono = $this->datosPeticion['idTipoAbono'];
@@ -861,22 +869,7 @@ class AdministradorBO extends Rest {
         $Precio = $this->datosPeticion['Precio'];
         $FechaAlta = $this->datosPeticion['FechaAlta'];
         $FechaBaja = $this->datosPeticion['FechaBaja'];
-
-
-        //if (!$this->existeUsuario($email)) {  
-        /* $query = $this->_conn->prepare("INSERT into maestraprecios(idPrecio, NombrePrecio, DescripcionPrecio, Precio, TipoSolicitud, TipoAbono, FechaAlta, FechaBaja)
-          VALUES (:idPrecio, :NombrePrecio, :DescripcionPrecio, :Precio, :TipoSolicitud, :TipoAbono, :FechaAlta, :FechaBaja)");
-          $query->bindValue(":idPrecio", $idPrecio);
-          $query->bindValue(":NombrePrecio", $NombrePrecio);
-          $query->bindValue(":DescripcionPrecio", $DescripcionPrecio);
-          $query->bindValue(":Precio", $Precio);
-          $query->bindValue(":TipoSolicitud", $TipoSolicitud);
-          $query->bindValue(":TipoAbono", $TipoAbono);
-          $query->bindValue(":FechaAlta", $FechaAlta);
-          $query->bindValue(":FechaBaja", $FechaBaja);
-          $query->execute(); */
-
-
+     
         $this->con = ConexionBD::getInstance();
         $precio = new PrecioModel();
         $precio->setIdTipoSolicitud($idTipoSolicitud);
@@ -888,11 +881,7 @@ class AdministradorBO extends Rest {
         $precio->setFechaAlta($FechaAlta);
         $precio->setFechaBaja($FechaBaja);
 
-        var_dump($precio);
-
         $result = $precio->insertIntoDatabase($this->con);
-
-        var_dump($result);
 
         if ($result) {
             //$id = $this->_conn->lastInsertId();  
@@ -901,42 +890,42 @@ class AdministradorBO extends Rest {
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         else
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
-        //}  
-        //else  
-        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(8)), 400);  
-        //} else {  
-        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);  
-        //}  
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);        
     }
 
     private function obtenerPrecios() {
-        //if ($_SERVER['REQUEST_METHOD'] != "GET") {
-        //  $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-        //}
-        /* $query = $this->_conn->query("SELECT idSala,Nombre,Capacidad,Descripcion FROM sala");
-          $filas = $query->fetchAll(PDO::FETCH_ASSOC);
-          $num = count($filas); */
+        if ($_SERVER['REQUEST_METHOD'] != "GET") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        //$query = $this->_conn->query("SELECT idSala,Nombre,Capacidad,Descripcion FROM sala");  
+        //$filas = $query->fetchAll(PDO::FETCH_ASSOC);  
 
         $this->con = ConexionBD::getInstance();
         $precio = new PrecioModel();
 
-        $result = $precio->findBySql($this->con, "Select * from precio");
+        $filas = $precio->findBySql($this->con, PrecioModel::SQL_SELECT);
 
-        if (count($result) > 0) {
+        $num = count($filas);
+        if ($num > 0) {
             $respuesta['estado'] = 'correcto';
-            $respuesta['salas'] = $filas;
+
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
+            $respuesta['precios'] = $array;
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->devolverError(2), 204);
     }
 
     private function actualizarPrecio() {
-        //if ($_SERVER['REQUEST_METHOD'] != "PUT") {
-        //  $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-        //}
+        if ($_SERVER['REQUEST_METHOD'] != "PUT") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
         //echo $idUsuario . "<br/>";  
-        if (isset($this->datosPeticion['Precio'])) {
+        if (isset($this->datosPeticion['idPrecio'])) {
+            $idPrecio = $this->datosPeticion['idPrecio'];
             $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
             $idTipoAbono = $this->datosPeticion['idTipoAbono'];
             $idActividad = $this->datosPeticion['idActividad'];
@@ -946,7 +935,7 @@ class AdministradorBO extends Rest {
             $FechaAlta = $this->datosPeticion['FechaAlta'];
             $FechaBaja = $this->datosPeticion['FechaBaja'];
 
-            if (!empty($Precio)) {
+            if (!empty($idSala)) {
                 /* $query = $this->_conn->prepare("update sala set Nombre=:Nombre, Capacidad=:Capacidad, Descripcion=:Descripcion WHERE idSala =:idSala");
                   $query->bindValue(":Nombre", $Nombre);
                   $query->bindValue(":Capacidad", $Capacidad);
@@ -960,13 +949,14 @@ class AdministradorBO extends Rest {
                 $precio = new PrecioModel();
                 $precio->setIdTipoSolicitud($idTipoSolicitud);
                 $precio->setIdTipoAbono($idTipoAbono);
+                $precio->setIdActividad($idActividad);
                 $precio->setNombrePrecio($NombrePrecio);
                 $precio->setDescripcionPrecio($DescripcionPrecio);
                 $precio->setPrecio($Precio);
                 $precio->setFechaAlta($FechaAlta);
                 $precio->setFechaBaja($FechaBaja);
 
-                $result = $precio->insertIntoDatabase($this->con);
+                $result = $precio->updateToDatabase($this->con);
 
                 if (count($result) == 1) {
                     $resp = array('estado' => "correcto", "msg" => "precio actualizado");
@@ -987,8 +977,6 @@ class AdministradorBO extends Rest {
         //el constructor del padre ya se encarga de sanear los datos de entrada  
         $idPrecio = $this->datosPeticion['idPrecio'];
 
-        var_dump($idPrecio);
-
         //consulta preparada ya hace mysqli_real_escape()  
         /* $query = $this->_conn->prepare("SELECT idSala, Nombre, Capacidad, Descripcion FROM sala WHERE idSala=:idSala");
           $query->bindValue(":idSala", $idSala);
@@ -1000,8 +988,6 @@ class AdministradorBO extends Rest {
         $precio = new PrecioModel();
 
         $fila = $precio->findById($this->con, $idPrecio);
-
-        //var_dump($fila);
 
 
         if ($fila) {
@@ -1182,9 +1168,14 @@ class AdministradorBO extends Rest {
         }
         //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {          
 
+        $this->con = ConexionBD::getInstance();
+        $solicitud = new SolicitudModel();
+
+        //echo $solicitud->getIdSolicitud();
         $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
         $idTipoTarifa = $this->datosPeticion['idTipoTarifa'];
-        $FechaSolicitud = $this->datosPeticion['FechaSolicitud'];
+        date_default_timezone_set("Europe/Madrid");
+        $FechaSolicitud = date("y/m/d H:i:s");
         $Nombre = $this->datosPeticion['Nombre'];
         $Apellidos = $this->datosPeticion['Apellidos'];
         $DNI = $this->datosPeticion['DNI'];
@@ -1200,7 +1191,7 @@ class AdministradorBO extends Rest {
         $Provincia = $this->datosPeticion['Provincia'];
         $DescripcionSolicitud = $this->datosPeticion['DescripcionSolicitud'];
         $Otros = $this->datosPeticion['Otros'];
-        $Localizador = $this->datosPeticion['Localizador'];
+        $Localizador = $this->generarLocalizador($Nombre, $Apellidos, $FechaSolicitud, $DNI);
 
 
         //if (!$this->existeUsuario($email)) {  
@@ -1230,12 +1221,10 @@ class AdministradorBO extends Rest {
           $query->bindValue(":Localizador", $Localizador);
           $query->execute(); */
 
-        $this->con = ConexionBD::getInstance();
-        $solicitud = new SolicitudModel();
+
 
         //var_dump($solicitud);
-
-
+        //$solicitud->setIdTipoSolicitud($idSolicitud);
         $solicitud->setIdTipoSolicitud($idTipoSolicitud);
         $solicitud->setIdTipoTarifa($idTipoTarifa);
         $solicitud->setFechaSolicitud($FechaSolicitud);
@@ -1260,10 +1249,13 @@ class AdministradorBO extends Rest {
 
         $result = $solicitud->insertIntoDatabase($this->con);
 
+
         if (count($result) == 1) {
 
             //$id = $this->_conn->lastInsertId();  
             $respuesta['estado'] = 'correcto';
+            $respuesta['solicitud']['IdSolicitud'] = $solicitud->getIdSolicitud();
+            $respuesta['solicitud']['Localizador'] = $solicitud->getLocalizador();
             $respuesta['msg'] = 'solicitud creada correctamente';
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
@@ -1278,24 +1270,47 @@ class AdministradorBO extends Rest {
     }
 
     private function obtenerSolicitudes() {
-        if ($_SERVER['REQUEST_METHOD'] != "GET") {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-
-        /* $query = $this->_conn->query("SELECT idSolicitud,Fecha,Nombre,Apellido1,Apellido2,DNI,EMail,Calle,Piso,CP,Sexo,FechaNacimiento,
-          TutorLegal,Localidad,Telefono1,Telefono2,Provincia,TipoSolicitud,TipoPrecio,Descripcion,Otros,Localizador
-          FROM solicitud");
-          $filas = $query->fetchAll(PDO::FETCH_ASSOC);
-          $num = count($filas); */
+        //$query = $this->_conn->query("SELECT idSala,Nombre,Capacidad,Descripcion FROM sala");  
+        //$filas = $query->fetchAll(PDO::FETCH_ASSOC);             		
 
         $this->con = ConexionBD::getInstance();
         $solicitud = new SolicitudModel();
 
-        $filas = $solicitud->findBySql($this->con, "Select * from solicitud");
+        $filter = array();
+        $i = 0;
+        if (isset($this->datosPeticion['Localizador']))
+            $filter[$i+=1] = new DFC(SolicitudModel::FIELD_LOCALIZADOR, $this->datosPeticion['Localizador'], DFC::EXACT);
+        if (isset($this->datosPeticion['Nombre']))
+            $filter[$i+=1] = new DFC(SolicitudModel::FIELD_NOMBRE, $this->datosPeticion['Nombre'], DFC::CONTAINS);
+        if (isset($this->datosPeticion['Apellidos']))
+            $filter[$i+=1] = new DFC(SolicitudModel::FIELD_APELLIDOS, $this->datosPeticion['Apellidos'], DFC::CONTAINS);
+        if (isset($this->datosPeticion['DNI']))
+            $filter[$i+=1] = new DFC(SolicitudModel::FIELD_DNI, $this->datosPeticion['DNI'], DFC::EXACT);
+        if (isset($this->datosPeticion['EMail']))
+            $filter[$i+=1] = new DFC(SolicitudModel::FIELD_EMAIL, $this->datosPeticion['EMail'], DFC::EXACT);
+        if (isset($this->datosPeticion['FechaSolicitud']))
+            $filter[$i+=1] = new DFC(SolicitudModel::FIELD_FECHASOLICITUD, $this->datosPeticion['FechaSolicitud'], DFC::CONTAINS);
 
-        if (count($filas) > 0) {
+        //var_dump($filter);
+
+        $filas = SolicitudModel::findByFilter($this->con, $filter, true, $sort);
+
+        //var_dump($filas);
+
+        $num = count($filas);
+        if ($num > 0) {
             $respuesta['estado'] = 'correcto';
-            $respuesta['solicitudes'] = $filas;
+
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
+            //var_dump($array);
+
+            $respuesta['solicitudes'] = $array;
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->devolverError(2), 204);
@@ -1500,22 +1515,26 @@ class AdministradorBO extends Rest {
     }
 
     private function obtenerTiposAbono() {
-        //if ($_SERVER['REQUEST_METHOD'] != "GET") {
-        //  $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-        //}
-
-        /* $query = $this->_conn->query("SELECT idTipoSolicitud, NombreSolicitud, DescripcionSolicitud, FechaAlta, FechaBaja FROM tiposolicitud");
-          $filas = $query->fetchAll(PDO::FETCH_ASSOC);
-          $num = count($filas); */
+        if ($_SERVER['REQUEST_METHOD'] != "GET") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        //$query = $this->_conn->query("SELECT idSala,Nombre,Capacidad,Descripcion FROM sala");  
+        //$filas = $query->fetchAll(PDO::FETCH_ASSOC);  
 
         $this->con = ConexionBD::getInstance();
-        $tipoabono = new TipoabonoModel();
+        $tipoAbono = new TipoAbonoModel();
 
-        $filas = $tipoabono->findBySql($this->con, "Select * from tipoabono");
+        $filas = $tipoAbono->findBySql($this->con, TipoAbonoModel::SQL_SELECT);
 
-        if (count($filas) > 0) {
+        $num = count($filas);
+        if ($num > 0) {
             $respuesta['estado'] = 'correcto';
-            $respuesta['tiposAbono'] = $filas;
+
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
+            $respuesta['tiposAbono'] = $array;
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->devolverError(2), 204);
@@ -1606,8 +1625,7 @@ class AdministradorBO extends Rest {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
         //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {       	 	
-
-        $idSolicitud = $this->datosPeticion['idSolicitud'];
+        //$idSolicitud = $this->datosPeticion['idSolicitud'];
         $Titular = $this->datosPeticion['Titular'];
         $IBAN = $this->datosPeticion['IBAN'];
         $Entidad = $this->datosPeticion['Entidad'];
@@ -1631,7 +1649,7 @@ class AdministradorBO extends Rest {
         $this->con = ConexionBD::getInstance();
         $datosSolicitudClaseDirigida = new DatosolicitudclasedirigidaModel();
 
-        $datosSolicitudClaseDirigida->setIdSolicitud($idSolicitud);
+        //$datosSolicitudClaseDirigida->setIdSolicitud($idSolicitud);
         $datosSolicitudClaseDirigida->setTitular(base64_encode($Titular));
         $datosSolicitudClaseDirigida->setIban(base64_encode($IBAN));
         $datosSolicitudClaseDirigida->setEntidad(base64_encode($Entidad));
@@ -1658,198 +1676,98 @@ class AdministradorBO extends Rest {
         //}  
     }
 
-    private function actualizarDatosSolicitudClaseDirigida() {
-
-        if ($_SERVER['REQUEST_METHOD'] != "POST") {
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-        }
-        //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {       	 	    	
-
-        $idDatosSolicitudClaseDirigida = $this->datosPeticion['idDatosSolicitudClaseDirigida'];
-        $idSolicitud = $this->datosPeticion['idSolicitud'];
-        $Titular = $this->datosPeticion['Titular'];
-        $IBAN = $this->datosPeticion['IBAN'];
-        $Entidad = $this->datosPeticion['Entidad'];
-        $Oficina = $this->datosPeticion['Oficina'];
-        $DigitoControl = $this->datosPeticion['DigitoControl'];
-        $Cuenta = $this->datosPeticion['Cuenta'];
-
-        //if (!$this->existeUsuario($email)) {  
-        /* $query = $this->_conn->prepare("UPDATE clasedirigida set SolicitudClaseDirigida=:SolicitudClaseDirigida,Titular=:Titular,IBAN=:IBAN,Entidad=:Entidad,
-          Oficina=:Oficina,DigitoControl=:DigitoControl,Cuenta=:Cuenta
-          WHERE idClaseDirigida=:idClaseDirigida");
-          $query->bindValue(":idClaseDirigida", $idClaseDirigida);
-          $query->bindValue(":SolicitudClaseDirigida", $SolicitudClaseDirigida);
-          $query->bindValue(":Titular", $Titular);
-          $query->bindValue(":IBAN", $IBAN);
-          $query->bindValue(":Entidad", $Entidad);
-          $query->bindValue(":Oficina", $Oficina);
-          $query->bindValue(":DigitoControl", $DigitoControl);
-          $query->bindValue(":Cuenta", $Cuenta);
-          $query->execute();
-          $filasActualizadas = $query->rowCount(); */
-
-        $this->con = ConexionBD::getInstance();
-        $datosSolicitudClaseDirigida = new DatosolicitudclasedirigidaModel();
-
-        $datosSolicitudClaseDirigida->setIdDatosSolicitudClaseDirigida($idDatosSolicitudClaseDirigida);
-        $datosSolicitudClaseDirigida->setIdSolicitud($idSolicitud);
-        $datosSolicitudClaseDirigida->setTitular(base64_encode($Titular));
-        $datosSolicitudClaseDirigida->setIban(base64_encode($IBAN));
-        $datosSolicitudClaseDirigida->setEntidad(base64_encode($Entidad));
-        $datosSolicitudClaseDirigida->setOficina(base64_encode($Oficina));
-        $datosSolicitudClaseDirigida->setDigitoControl(base64_encode($DigitoControl));
-        $datosSolicitudClaseDirigida->setCuenta(base64_encode($Cuenta));
-
-        $result = $datosSolicitudClaseDirigida->updateToDatabase($this->con);
-
-        if (count($result) == 1) {
-            $resp = array('estado' => "correcto", "msg" => "clase dirigida actualizada");
-            $this->mostrarRespuesta($this->convertirJson($resp), 200);
-        } else {
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
-        }
-        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
-    }
-
-    private function obtenerDatosSolicitudClaseDirigida() {
-        if ($_SERVER['REQUEST_METHOD'] != "POST") {
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-        }
-
-        //el constructor del padre ya se encarga de sanear los datos de entrada  
-        $idDatosSolicitudClaseDirigida = $this->datosPeticion['idDatosSolicitudClaseDirigida'];
-
-        //consulta preparada ya hace mysqli_real_escape()  
-        /* $query = $this->_conn->prepare("SELECT idClaseDirigida,SolicitudClaseDirigida,Titular,IBAN,Entidad,Oficina,DigitoControl,Cuenta 
-          FROM clasedirigida WHERE idClaseDirigida=:idClaseDirigida");
-          $query->bindValue(":idClaseDirigida", $idClaseDirigida);
-          $fila = $query->execute();
-          $query->execute();
-         */
-
-
-        $this->con = ConexionBD::getInstance();
-        $datosSolicitudClaseDirigida = new DatosolicitudclasedirigidaModel();
-
-        $fila = $datosSolicitudClaseDirigida->findById($this->con, $idDatosSolicitudClaseDirigida);
-
-        if ($fila) {
-            $respuesta['estado'] = 'correcto';
-            $respuesta['clase']['idDatosSolicitudClaseDirigida'] = $fila->getIdDatosSolicitudClaseDirigida();
-            $respuesta['clase']['idSolicitud'] = $fila->getIdSolicitud();
-            $respuesta['clase']['Titular'] = base64_decode($fila->getTitular());
-            $respuesta['clase']['IBAN'] = base64_decode($fila->getIban());
-            $respuesta['clase']['Entidad'] = base64_decode($fila->getEntidad());
-            $respuesta['clase']['Oficina'] = base64_decode($fila->getOficina());
-            $respuesta['clase']['DigitoControl'] = base64_decode($fila->getDigitoControl());
-            $respuesta['clase']['Cuenta'] = base64_decode($fila->getCuenta());
-            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
-        }
-        $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
-    }
-
-    //Metodos CRUD Solicitud Clase Dirigida
-    private function crearActividadSolicitudClaseDirigida() {
-
-        if ($_SERVER['REQUEST_METHOD'] != "POST") {
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-        }
-        //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {       	 	
-
-        $IdActividadesSolicitudClaseDirigida = $this->datosPeticion['IdActividadesSolicitudClaseDirigida'];
-        $idSolicitud = $this->datosPeticion['idSolicitud'];
-        $idActividad = $this->datosPeticion['idActividad'];
-
-        //if (!$this->existeUsuario($email)) {  
-        /* $query = $this->_conn->prepare("INSERT into solicitudclasedirigida(IdSolicitudClaseDirigida, Solicitud, Clase) 
-          VALUES (:IdSolicitudClaseDirigida, :Solicitud, :Clase)");
-          $query->bindValue(":IdSolicitudClaseDirigida", $IdSolicitudClaseDirigida);
-          $query->bindValue(":Solicitud", $Solicitud);
-          $query->bindValue(":Clase", $Clase);
-
-          $query->execute(); */
-
-
-        $this->con = ConexionBD::getInstance();
-        $actividadSolicitudClaseDirigida = new ActividadsolicitudclasedirigidaModel();
-        $actividadSolicitudClaseDirigida->setIdSolicitud($idSolicitud);
-        $actividadSolicitudClaseDirigida->setIdActividad($idActividad);
-
-        $result = $actividadSolicitudClaseDirigida->insertIntoDatabase($this->con);
-
-        if ($query->rowCount() == 1) {
-
-            //$id = $this->_conn->lastInsertId();  
-            $respuesta['estado'] = 'correcto';
-            $respuesta['msg'] = 'solicitud clase dirigida creada correctamente';
-            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
-        }
-        else
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
-        //}  
-        //else  
-        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(8)), 400);  
-        //} else {  
-        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);  
-        //}  
-    }
-
-    private function obtenerSolicitudesClasesDirigidas() {
+    //Metodos CRUD Usuario
+    private function obtenerUsuarios() {
         if ($_SERVER['REQUEST_METHOD'] != "GET") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-
-        /* $query = $this->_conn->query("SELECT IdSolicitudClaseDirigida, Solicitud, Clase FROM solicitudclasedirigida");
-          $filas = $query->fetchAll(PDO::FETCH_ASSOC);
-          $num = count($filas); */
+        //$query = $this->_conn->query("SELECT idSala,Nombre,Capacidad,Descripcion FROM sala");  
+        //$filas = $query->fetchAll(PDO::FETCH_ASSOC);  
 
         $this->con = ConexionBD::getInstance();
-        $actividadSolicitudClaseDirigida = new ActividadsolicitudclasedirigidaModel();
+        $usuario = new UsuarioModel();
 
-        $filas = $actividadSolicitudClaseDirigida->findBySql($this->con, "Select * from actividadsolicitudclasedirigida");
+        $filas = $usuario->findBySql($this->con, UsuarioModel::SQL_SELECT);
 
-        if (count($filas) > 0) {
+        $num = count($filas);
+        if ($num > 0) {
             $respuesta['estado'] = 'correcto';
-            $respuesta['solicitudes'] = $filas;
+
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
+            $respuesta['usuarios'] = $array;
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->devolverError(2), 204);
     }
 
-    private function actualizarActividadSolicitudClaseDirigida() {
+    private function crearUsuario() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {
+
+        $NombreUsuario = $this->datosPeticion['NombreUsuario'];
+        $Password = md5($this->datosPeticion['Password']);
+        $TipoUsuario = $this->datosPeticion['TipoUsuario'];
+        date_default_timezone_set("Europe/Madrid");
+        $FechaAlta = date("y/m/d H:i:s");
+
+        $this->con = ConexionBD::getInstance();
+        $usuario = new UsuarioModel();
+
+        $usuario->setNombreUsuario($NombreUsuario);
+        $usuario->setPassword($Password);
+        $usuario->setTipoUsuario($TipoUsuario);
+        $usuario->setFechaAlta($FechaAlta);
+
+        $result = $usuario->insertIntoDatabase($this->con);
+
+        if ($result) {
+            //$id = $this->_conn->lastInsertId();  
+            $respuesta['estado'] = 'correcto';
+            $respuesta['msg'] = 'usuario creado correctamente';
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        else
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
+    }
+
+    private function actualizarUsuario() {
         if ($_SERVER['REQUEST_METHOD'] != "PUT") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-
         //echo $idUsuario . "<br/>";  
-        if (isset($this->datosPeticion['IdActividadesSolicitudClaseDirigida'])) {
-            $IdActividadesSolicitudClaseDirigida = $this->datosPeticion['IdActividadesSolicitudClaseDirigida'];
-            $IdSolicitud = $this->datosPeticion['IdSolicitud'];
-            $IdActividad = $this->datosPeticion['IdActividad'];
+        if (isset($this->datosPeticion['idUsuario'])) {
+            $idUsuario = $this->datosPeticion['idUsuario'];
+            $NombreUsuario = $this->datosPeticion['NombreUsuario'];
+            $Password = $this->datosPeticion['Password'];
+            $TipoUsuario = $this->datosPeticion['TipoUsuario'];
 
-            if (!empty($IdActividadesSolicitudClaseDirigida)) {
-                /* $query = $this->_conn->prepare("update tiposolicitud set NombreSolicitud=:NombreSolicitud, DescripcionSolicitud=:DescripcionSolicitud, FechaAlta=:FechaAlta, FechaBaja=:FechaBaja  
-                  WHERE idTipoSolicitud=:idTipoSolicitud");
-                  $query->bindValue(":idTipoSolicitud", $idTipoSolicitud);
-                  $query->bindValue(":NombreSolicitud", $NombreSolicitud);
-                  $query->bindValue(":DescripcionSolicitud", $DescripcionSolicitud);
-                  $query->bindValue(":FechaAlta", $FechaAlta);
-                  $query->bindValue(":FechaBaja", $FechaBaja);
-                  $query->execute();
-                  $filasActualizadas = $query->rowCount(); */
+            date_default_timezone_set("Europe/Madrid");
+            $Fecha = date("y/m/d H:i:s");
 
-
+            if (!empty($idUsuario)) {
                 $this->con = ConexionBD::getInstance();
-                $actividadSolicitudClaseDirigida = new ActividadsolicitudclasedirigidaModel();
-                $actividadSolicitudClaseDirigida->setIdActividadesSolicitudClaseDirigida($IdActividadesSolicitudClaseDirigida);
-                $actividadSolicitudClaseDirigida->setIdSolicitud($IdSolicitud);
-                $actividadSolicitudClaseDirigida->setIdActividad($IdActividad);
+                $usuario = new UsuarioModel();
 
-                $result = $actividadSolicitudClaseDirigida->updateToDatabase($this->con);
+                $usuario->setIdUsuario($idUsuario);
+                $usuario->setFechaBaja($Fecha);
 
-                if (count($result) == 1) {
-                    $resp = array('estado' => "correcto", "msg" => "tipo de solicitud actualizada");
+                $resultUpdate = $usuario->updateToDatabase($this->con);
+
+                $usuario->setIdUsuario($idUsuario);
+                $usuario->setNombreUsuario($NombreUsuario);
+                $usuario->setPassword($Password);
+                $usuario->setTipoUsuario($TipoUsuario);
+                $usuario->setFechaAlta($Fecha);
+
+                $resultInsert = $usuario->insertIntoDatabase($this->con);
+
+                if (count($resultUpdate) == 1 && count($resultInsert) == 1) {
+                    $resp = array('estado' => "correcto", "msg" => "precio actualizado");
                     $this->mostrarRespuesta($this->convertirJson($resp), 200);
                 } else {
                     $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
@@ -1858,36 +1776,121 @@ class AdministradorBO extends Rest {
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
     }
-
-    private function obtenerActividadSolicitudClaseDirigida() {
+    
+    private function obtenerUsuario() {
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
 
         //el constructor del padre ya se encarga de sanear los datos de entrada  
-        $idActividadesSolicitudClaseDirigida = $this->datosPeticion['idActividadesSolicitudClaseDirigida'];
+        $idUsuario = $this->datosPeticion['idUsuario'];
 
         //consulta preparada ya hace mysqli_real_escape()  
-        /* $query = $this->_conn->prepare("SELECT IdSolicitudClaseDirigida, Solicitud, Clase FROM solicitudclasedirigida WHERE IdSolicitudClaseDirigida=:IdSolicitudClaseDirigida");
-          $query->bindValue(":IdSolicitudClaseDirigida", $IdSolicitudClaseDirigida);
+        /* $query = $this->_conn->prepare("SELECT idSala, Nombre, Capacidad, Descripcion FROM sala WHERE idSala=:idSala");
+          $query->bindValue(":idSala", $idSala);
           $fila = $query->execute();
-          $query->execute();
-         */
+
+          $query->execute(); */
 
         $this->con = ConexionBD::getInstance();
-        $actividadSolicitudClaseDirigida = new ActividadsolicitudclasedirigidaModel();
+        $usuario = new UsuarioModel();
 
-        $fila = $actividadSolicitudClaseDirigida->findById($this->con, $idActividadesSolicitudClaseDirigida);
+        $fila = $usuario->findById($this->con, $idUsuario);
+
 
         if ($fila) {
             $respuesta['estado'] = 'correcto';
-            $respuesta['solicitud']['idActividadesSolicitudClaseDirigida'] = $fila->getIdActividadesSolicitudClaseDirigida();
-            $respuesta['solicitud']['idSolicitud'] = $fila->getIdSolicitud();
-            $respuesta['solicitud']['idActividad'] = $fila->getIdActividad();
+            $respuesta['usuario']['idUsuario'] = $fila->getIdUsuario();
+            $respuesta['usuario']['NombreUsuario'] = $fila->getNombreUsuario();
+            $respuesta['usuario']['Password'] = $fila->getPassword();
+            $respuesta['usuario']['TipoUsuario'] = $fila->getTipoUsuario();
+            $respuesta['usuario']['FechaAlta'] = $fila->getFechaAlta();
+            $respuesta['usuario']['FechaBaja'] = $fila->getFechaBaja();
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
-    }    
+    }
+
+    private function codigoQR() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+
+        $Localizador = $this->datosPeticion['Localizador'];
+        $Nombre = $this->datosPeticion['Nombre'];
+        $Apellidos = $this->datosPeticion['Apellidos'];
+        $EMail = $this->datosPeticion['EMail'];
+
+
+        //set it to writable location, a place for temp generated PNG files
+        $PNG_TEMP_DIR = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'temp' . DIRECTORY_SEPARATOR;
+
+        //html PNG location prefix
+        $PNG_WEB_DIR = 'temp/';
+
+        include "phpqrcode/qrlib.php";
+
+        //ofcourse we need rights to create temp dir
+        if (!file_exists($PNG_TEMP_DIR))
+            mkdir($PNG_TEMP_DIR);
+
+
+        $filename = $PNG_TEMP_DIR . '' . $Localizador . '.png';
+        $nom = $Localizador . '.png';
+
+
+        //echo $filename;
+
+        $data = 'http://pfgreservas.rightwatch.es/frontaladministrador/Inicio.php';
+
+        //processing form input
+        //remember to sanitize user input in real-life solution !!!
+        $errorCorrectionLevel = 'L';
+        if (isset($_REQUEST['level']) && in_array($_REQUEST['level'], array('L', 'M', 'Q', 'H')))
+            $errorCorrectionLevel = $_REQUEST['level'];
+
+        $matrixPointSize = 10;
+        if (isset($_REQUEST['size']))
+            $matrixPointSize = min(max((int) $_REQUEST['size'], 1), 10);
+
+        // user data
+        //$filename = $PNG_TEMP_DIR.'test'.md5($data.'|'.$errorCorrectionLevel.'|'.$matrixPointSize).'.png';
+        QRcode::png($data, $filename, $errorCorrectionLevel, $matrixPointSize, 2);
+        //echo $PNG_WEB_DIR.$nombre;
+        if ($this->enviarMail($PNG_WEB_DIR . '' . $nom, $Nombre, $Apellidos, $EMail, $Localizador))
+            delete($filename);
+    }
+
+    private function enviarMail($file, $nom, $ape, $Email, $loc) {
+        require("class.phpmailer.php");
+
+        $mail = new PHPMailer();
+        $mail->Host = "localhost";
+
+        $mail->From = $Email; //"mariosgsg@gmail.com";
+        $mail->FromName = $nom; //"Nombre del Remitente";
+        $mail->Subject = "Reserva " . $loc;
+        $mail->AddAddress($Email, $nom); //"mariosgsg@gmail.com", "Nombre 01");
+        //$mail->AddAddress("mariosgsg@gmail.com", "Nombre 02");
+        //$mail->AddCC("mariosgsg@gmail.com");
+        //$mail->AddBCC("mariosgsg@gmail.com");
+
+        $body = "Hola <strong>amigo</strong><br>";
+        //$body .= "probando <i>PHPMailer<i>.<br><br>";
+        //$body .= "<font color='red'>Saludos</font>";
+        $mail->Body = $body;
+        $mail->AltBody = "Hola amigo\nprobando PHPMailer\n\nSaludos";
+        //$mail->AddAttachment("temp/localizador.jpg", "codigoQR.jpg");
+        $mail->AddAttachment($file, $loc . '.png'); //"temp/Mario.png", "Mario.png");//"localizador.png");
+        //$mail->AddAttachment($filename, "localizador.png");
+        $result = $mail->Send();
+        return $result;
+    }
+
+    private function generarLocalizador($nom, $ape, $fecha, $dni) {
+        return substr($nom, 0, 2) . substr($ape, 0, 2) . str_replace('/', '', substr($fecha, 0, 8)) . str_replace(':', '', substr($fecha, 9, 5)) . $dni;
+    }
+
 }
 
 $administradorBO = new AdministradorBO();

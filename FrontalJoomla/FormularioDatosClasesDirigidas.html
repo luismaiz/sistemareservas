@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="StyleSheet.css" rel="stylesheet" />
+<script type="text/javascript">
+
+ function DrawCaptcha()
+  {
+  var a = Math.ceil(Math.random() * 6)+ '';
+  var b = Math.ceil(Math.random() * 6)+ '';
+  var c = Math.ceil(Math.random() * 6)+ '';
+  var d = Math.ceil(Math.random() * 6)+ '';
+  var e = Math.ceil(Math.random() * 6)+ '';
+  var f = Math.ceil(Math.random() * 6)+ '';
+  var g = Math.ceil(Math.random() * 6)+ '';
+  var code = a + ' ' + b + ' ' + ' ' + c + ' ' + d + ' ' + e + ' '+ f ;
+  document.getElementById("txtCaptcha").value = code
+  }
+</script>
+ <script type="text/javascript">
+
+ function removeSpaces(string){
+  return string.split(' ').join('');
+ }
+</script>
+
+    <meta charset="utf-8">
+    <title>Formulario Clases dirigidas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">
+    <meta name="author" content="Muhammad Usman">
+
+    <!-- The styles -->
+    <link id="bs-css" href="css/bootstrap-cerulean.min.css" rel="stylesheet">
+
+    <link href="css/charisma-app.css" rel="stylesheet">
+    <link href='bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>
+    <link href='bower_components/fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print'>
+    <link href='bower_components/chosen/chosen.min.css' rel='stylesheet'>
+    <link href='bower_components/colorbox/example3/colorbox.css' rel='stylesheet'>
+    <link href='bower_components/responsive-tables/responsive-tables.css' rel='stylesheet'>
+    <link href='bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css' rel='stylesheet'>
+    <link href='css/jquery.noty.css' rel='stylesheet'>
+    <link href='css/noty_theme_default.css' rel='stylesheet'>
+    <link href='css/elfinder.min.css' rel='stylesheet'>
+    <link href='css/elfinder.theme.css' rel='stylesheet'>
+    <link href='css/jquery.iphone.toggle.css' rel='stylesheet'>
+    <link href='css/uploadify.css' rel='stylesheet'>
+    <link href='css/animate.min.css' rel='stylesheet'>
+
+    <!-- jQuery -->
+    <script src="bower_components/jquery/jquery.min.js"></script>
+
+   
+    <link rel="shortcut icon" href="img/favicon.ico">
+<script>
+function AjaxObj()
+{
+  var xmlhttp = null;
+
+  if (window.XMLHttpRequest)
+  {
+    xmlhttp = new XMLHttpRequest();
+
+    if (xmlhttp.overrideMimeType)
+    {
+      xmlhttp.overrideMimeType('text/xml');
+    }
+  }
+  else if (window.ActiveXObject)
+  { 
+    // Internet Explorer    
+    try
+    {
+      xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+    }
+    catch (e)
+    {
+      try
+      {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      catch (e)
+      {
+        xmlhttp = null;
+      }
+    }
+	
+    if (!xmlhttp && typeof XMLHttpRequest!='undefined')
+    {
+      xmlhttp = new XMLHttpRequest();
+	  
+      if (!xmlhttp)
+      {
+        failed = true;
+      }
+    }
+  }
+  return xmlhttp;
+}
+
+var Ajax = new AjaxObj();
+
+
+function crearSolicitud() {		
+	var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=crearSolicitud";
+		
+	var Params = '&idTipoSolicitud='+ document.getElementById('idTipoSolicitud').value +
+		     '&Nombre='+ document.getElementById('Nombre').value +
+		     '&Apellidos='+ document.getElementById('Apellidos').value +		     
+		     '&DNI='+ document.getElementById('DNI').value +
+		     '&EMail='+ document.getElementById('EMail').value +
+		     '&Direccion='+ document.getElementById('Direccion').value +		     
+		     '&CP='+ document.getElementById('CP').value +
+		     '&Sexo=V'+ document.getElementById('Sexo').value +
+		     '&FechaNacimiento='+ document.getElementById('FechaNacimiento').value +
+		     '&TutorLegal='+ document.getElementById('TutorLegal').value +
+		     '&Localidad='+ document.getElementById('Localidad').value +
+		     '&Telefono1='+ document.getElementById('Telefono1').value +
+		     '&Telefono2='+ document.getElementById('Telefono2').value +
+		     '&Provincia='+ document.getElementById('Provincia').value +		     
+		     '&DescripcionSolicitud='+ document.getElementById('DescripcionSolicitud').value +
+		     '&Otros='+ document.getElementById('Otros').value;
+		
+		     
+	alert(Params);
+		     
+	Ajax.open("POST", Url, true);
+	Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
+	Ajax.send(Params); // Enviamos los datos
+        
+       var Clase = eval('(' + RespTxt + ')');
+       var IdSolicitud = Clase.solicitud.idSolicitud;
+       var Localizador = Clase.solicitud.Localizador;
+}
+
+
+
+
+</script>
+
+</head>
+
+<body onload="DrawCaptcha();">
+    <!-- topbar starts -->
+    <div class="navbar navbar-default" role="navigation">
+
+        <div class="navbar-inner">
+            <button type="button" class="navbar-toggle pull-left animated flip">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html"> <img alt="FMN Logo" src="img/FMN.jpg" class="hidden-xs"/>
+                <span>M-86</span></a>
+
+            <!-- user dropdown starts -->
+            <div class="btn-group pull-right">
+                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <i class="glyphicon glyphicon-user"></i><span class="hidden-sm hidden-xs"> admin</span>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Profile</a></li>
+                    <li class="divider"></li>
+                    <li><a href="login.html">Logout</a></li>
+                </ul>
+            </div>
+            <!-- user dropdown ends -->
+
+            <!-- theme selector starts -->
+            
+            <ul class="collapse navbar-collapse nav navbar-nav top-menu">
+              
+                
+                <li>
+                    <form class="navbar-search pull-left">
+                        <input placeholder="Search" class="search-query form-control col-md-10" name="query"
+                               type="text">
+                    </form>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+    <!-- topbar ends -->
+<div class="ch-container">
+    <div class="row">
+        
+        <!-- left menu starts -->
+        <div class="col-sm-2 col-lg-2">
+            <div class="sidebar-nav">
+                <div class="nav-canvas">
+                    <div class="nav-sm nav nav-stacked">
+
+                    </div>
+                    <ul class="nav nav-pills nav-stacked main-menu">
+                       
+                          </li>
+                    </ul>
+                    
+                </div>
+            </div>
+        </div>
+       
+
+       
+        <div id="content" class="col-lg-10 col-sm-10">
+            <!-- content starts -->
+            <div>
+    <ul class="breadcrumb">
+        <li>
+            <a href="#">Home</a>
+        </li>
+        <li>
+            <a href="#">Forms</a>
+        </li>
+    </ul>
+</div>
+
+<div class="row">
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-edit"></i> Formulario datos</h2>
+
+                <div class="box-icon">
+                   
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    
+                </div>
+            </div>
+            <div class="box-content">
+                
+
+                <form class="form-inline" role="form" method="post" action="FormularioBancoClasesDirigidas.html">
+                    <div class="form-group has-success has-feedback">
+                  
+ <input type="text" name="idTipoSolicitud" style="visibility:hidden" id="idTipoSolicitud" value="1">  </br>                      
+<label class="control-label" >Nombre</label>   <input type="text" name="Nombre" id="Nombre" required  value="" placeholder="Blanca" autofocus="autofocus"/> 
+<label class="control-label" >&nbsp Apellidos</label> <input type="text" name="Apellidos" id="Apellidos" required value="" placeholder="Garcia Lopez" /></br> </p> 
+  <label class="control-label" >DNI  &nbsp  &nbsp &nbsp </label>  <input type="text" id="DNI" name="DNI"  required  value="" placeholder="05330762y" /> 
+<label class="control-label" >E-mail &nbsp </label>  <input type="text" Name="EMail" required pattern="[a-z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}" value="" placeholder="info@developerji.com" id="EMail"/></br>  
+ <label class="control-label" >Direccion  &nbsp  </label>  <input type="text" name="Direccion" required  value="" placeholder="Calle los Emigrantes  16" id="Direccion" />  
+<label class="control-label" >Codigo Postal &nbsp </label><input type="text" name="cp" size="5" maxlength="5"id="CP"/>
+<label class="control-label" > &nbsp Mujer</label>  <input type="radio" name="Sexo" value=""  id="Sexo"/>
+<label class="control-label" > &nbsp Hombre</label>  <input type="radio" name="Sexo" value="" checked="checked" id="Sexo"/></br> </p>
+ <label class="control-label" > Fecha nacimiento</label><input type="date" name="FechaNacimiento"id="FechaNacimiento">
+<label class="control-label" >Tutor legal</label> <input type= "text" required name="TutorLegal"  value="" placeholder="Alberto Fernandez" id="TutorLegal"/></br>
+<label class="control-label" >Localidad &nbsp </label><input type="text" name="Localidad" required  value="" placeholder="Madrid" id="Localidad"/>
+ 
+<label class="control-label" >&nbsp  Telefono 1 &nbsp </label> <input type="tel" name="telefono1" required pattern="[0-9]{9}"id="Telefono1"><br/><br/></p>
+<label class="control-label" >&nbsp  Telefono 2 &nbsp </label> <input type="tel" name="telefono2" required pattern="[0-9]{9}" value="Telefono" placeholder="60007287"id="Telefono2"/><br/><br/></p>
+    
+
+  <!-- <label class="control-label" >&nbsp Bloque &nbsp </label>   <input type="text" required  pattern="[0-9]{3}"  value="" placeholder="15"size="3"maxlength="3"/>
+  <label class="control-label" >Piso &nbsp </label>     <input type="text" required  pattern="[0-9]{2}" value="" placeholder ="3º" size="2"maxlength="3"id="Bloque"/>
+   <label class="control-label" >Letra &nbsp </label>   <input type = "text" requiered  pattern="[A-Z]{1}" value="" placeholder= "A"size="2"maxlength="3"id="Letra"/>  <br/><br/> -->
+ 
+  <label class="control-label" > &nbsp Provincia</label> <input type="text" required  value="" placeholder="Madrid"id="Provincia"/><br/><br/> 
+  <input type="text" name="Descripcion de la solicitud" style="visibility:hidden"id="DescripcionSolicitud"value="Algo"> 
+<input type="text" name="Otros" style="visibility:hidden"id="Otros"value="Algo mas"> 
+ 
+       <label class="control-label" > Escribe el nuemero que ves:</label>
+
+<input type="text" id="txtCaptcha" style=" text-align:center; border:none; font-weight: bold; font-family:Modern" /> &nbsp &nbsp
+
+ <input type="button" id="btnrefresh" value="Refresh" onclick="DrawCaptcha();" /> 
+ <input type="text"  oninput="check(this)" required  id="txtInput"/> <br/><br/> <p></p> 
+
+ 
+ <input type="reset" name="limpiar" value="Cancelar"onClick=" window.location.href='file:///D:/SistemaReservas/FrontalJoomla/FormularioActividadesClasesDirigidas.html'" />
+ <input type="submit" name="enviar" value="Aceptar" id="Enviar" >
+
+                </form>
+           
+
+                <br>
+
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+
+
+</div><!--/row-->
+
+    <!-- content ends -->
+    </div><!--/#content.col-md-0-->
+</div><!--/fluid-row-->
+
+    <!-- Ad, you can remove it -->
+    <div class="row">
+        <div class="col-md-9 col-lg-9 col-xs-9  hidden-xs">
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- Charisma Demo 2 -->
+            <ins class="adsbygoogle"
+                 style="display:inline-block;width:728px;height:90px"
+                 data-ad-client="ca-pub-5108790028230107"
+                 data-ad-slot="3193373905"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+        <div class="col-md-2 col-lg-3 col-sm-12 col-xs-12 donate">
+           
+           
+        </div>
+
+    </div>
+    <!-- Ad ends -->
+
+    <hr>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h3>Settings</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Here settings can be configured...</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-default" data-dismiss="modal">Close</a>
+                    <a href="#" class="btn btn-primary" data-dismiss="modal">Save changes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="row">
+      
+    </footer>
+
+</div><!--/.fluid-container-->
+
+<!-- external javascript -->
+
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- library for cookie management -->
+<script src="js/jquery.cookie.js"></script>
+<!-- calender plugin -->
+<script src='bower_components/moment/min/moment.min.js'></script>
+<script src='bower_components/fullcalendar/dist/fullcalendar.min.js'></script>
+<!-- data table plugin -->
+<script src='js/jquery.dataTables.min.js'></script>
+
+<!-- select or dropdown enhancer -->
+<script src="bower_components/chosen/chosen.jquery.min.js"></script>
+<!-- plugin for gallery image view -->
+<script src="bower_components/colorbox/jquery.colorbox-min.js"></script>
+<!-- notification plugin -->
+<script src="js/jquery.noty.js"></script>
+<!-- library for making tables responsive -->
+<script src="bower_components/responsive-tables/responsive-tables.js"></script>
+<!-- tour plugin -->
+<script src="bower_components/bootstrap-tour/build/js/bootstrap-tour.min.js"></script>
+<!-- star rating plugin -->
+<script src="js/jquery.raty.min.js"></script>
+<!-- for iOS style toggle switch -->
+<script src="js/jquery.iphone.toggle.js"></script>
+<!-- autogrowing textarea plugin -->
+<script src="js/jquery.autogrow-textarea.js"></script>
+<!-- multiple file upload plugin -->
+<script src="js/jquery.uploadify-3.1.min.js"></script>
+<!-- history.js for cross-browser state change on ajax -->
+<script src="js/jquery.history.js"></script>
+<!-- application script for Charisma demo -->
+<script src="js/charisma.js"></script>
+<script>
+// Validate the Entered input aganist the generated security code function
+function check(input) {
+  var cap =removeSpaces(document.getElementById('txtCaptcha').value);
+if (input.value != cap ) {
+  input.setCustomValidity("Error in code Please Check!");
+  } else {
+  // input is fine -- reset the error message
+  input.setCustomValidity('');
+  }
+  }
+ </script>
+<script type="text/javascript">
+function redireccionar(){
+  window.location.href='FormularioBancoClasesDirigidas.html';
+} 
+</script>
+
+</body>
+</html>
+
