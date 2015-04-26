@@ -1,4 +1,4 @@
-<?php require('headerReservas.php'); ?>
+<?php require('Cabecera.php'); ?>
 <script>
            
             var Ajax = new AjaxObj();
