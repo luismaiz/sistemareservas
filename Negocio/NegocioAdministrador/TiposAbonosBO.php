@@ -209,6 +209,46 @@ class TiposAbonosBO extends Rest{
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
     }
+    
+    
+    private function obtenerTiposAbonosFiltro() {
+        
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+                
+        $nomtipoabono = $this->datosPeticion['NombreAbono'];
+        $destipoabomo = $this->datosPeticion['DescripcionAbono'];
+        
+        $this->con = ConexionBD::getInstance();
+        $sort = array(
+            new DSC(TipoabonoModel::FIELD_NOMBREABONO, DSC::ASC),
+            new DSC(TipoabonoModel::FIELD_DESCRIPCIONABONO, DSC::ASC)
+        );
+        
+        $tipoabono = new TipoabonoModel();
+        
+        if($nomtipoabono != '')
+            $tipoabono->setNombreAbono($nomtipoabono);
+        if($destipoabomo != '')
+            $tipoabono->setDescripcionAbono($destipoabomo);
+        
+        $filas = TipoabonoModel::findByExample($this->con,$tipoabono,$sort);
+                                
+        $num = count($filas);
+        if ($num > 0) {
+            $respuesta['estado'] = 'correcto';
+
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
+            $respuesta['tiposabonos'] = $array;
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+    }
+    
 }
 $tiposabonoBO = new TiposAbonosBO();
 $tiposabonoBO->procesarLLamada();

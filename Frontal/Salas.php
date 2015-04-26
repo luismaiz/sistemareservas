@@ -54,9 +54,8 @@
                 <div class="alert alert-info" id="divSinResultados" style='display:none;'>
                     <strong></strong>No se han encontrado resultados para los filtros introducidos.
                 </div>
-            
-            <div class="box-content">
-                            <div class="row">
+                <div class="box-content">
+                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -100,6 +99,6 @@
         </div>
     </div>
 
-</div>
+
 
 <?php require('Pie.php'); ?>

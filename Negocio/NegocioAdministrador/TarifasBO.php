@@ -2,7 +2,7 @@
 
 require_once("../../ComunicacionesREST/Rest.php");
 require_once("../../Negocio/AccesoDatos/ConexionBD.php");
-require_once("../../Negocio/Entidades/TarifaModel.class.php");
+require_once("../../Negocio/Entidades/TipotarifaModel.class.php");
 require_once("../../Negocio/Entidades/helpers/DSC.class.php");
 class TarifasBO extends Rest{
     //put your code hereç
@@ -211,6 +211,45 @@ class TarifasBO extends Rest{
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
     }
+    
+    private function obtenerTiposTarifasFiltro() {
+        
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+                
+        $nomtipotarifa = $this->datosPeticion['NombreTarifa'];
+        $destipotarifa = $this->datosPeticion['DescripcionTarifa'];
+        
+        $this->con = ConexionBD::getInstance();
+        $sort = array(
+            new DSC(TipotarifaModel::FIELD_NOMBRETARIFA, DSC::ASC),
+            new DSC(TipotarifaModel::FIELD_DESCRIPCIONTARIFA, DSC::ASC)
+        );
+        
+        $tipotarifa = new TipotarifaModel();
+        
+        if($nomtipotarifa != '')
+            $tipotarifa->setNombreTarifa($nomtipotarifa);
+        if($destipotarifa != '')
+            $tipotarifa->setDescripcionTarifa($destipotarifa);
+        
+        $filas = TipotarifaModel::findByExample($this->con,$tipotarifa,$sort);
+                                
+        $num = count($filas);
+        if ($num > 0) {
+            $respuesta['estado'] = 'correcto';
+
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
+            $respuesta['tipostarifas'] = $array;
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+    }
+    
 }
 $tarifasBO = new TarifasBO();
 $tarifasBO->procesarLLamada();
