@@ -15,7 +15,7 @@
             
             function crearSala() {
                 //alert("crear");
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSala";		
+                var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSala";		
                 var Params ='&NombreSala='+ document.getElementById('NombreSala').value +
                     '&CapacidadSala='+ document.getElementById('CapacidadSala').value +
                     '&DescripcionSala='+ document.getElementById('DescripcionSala').value +
@@ -34,7 +34,7 @@
 
             function actualizarSala() {
                 //alert("actualizar");
-                var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=actualizarSala";
+                var Url = "http://localhost/Sistemareservas/AdministradorBO.php?url=actualizarSala";
                 var Params = 'idSala='+ document.getElementById('idSala').value +
                     '&NombreSala='+ document.getElementById('NombreSala').value +
                     '&CapacidadSala='+ document.getElementById('CapacidadSala').value +
@@ -52,7 +52,7 @@
             }
 
             function borrarSala() {
-                var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=borrarSala";
+                var Url = "http://localhost/Sistemareservas/AdministradorBO.php?url=borrarSala";
                 var Params = 'idSala='+ document.getElementById('idSala').value;
 
 	

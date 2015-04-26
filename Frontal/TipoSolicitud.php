@@ -4,7 +4,7 @@
     var Ajax = new AjaxObj();
                 
     function obtenerTiposSolicitud() {	
-        var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerTiposSolicitud";		
+        var Url = "http://localhost/Sistemareservas/AdministradorBO.php?url=obtenerTiposSolicitud";		
         //var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerTiposSolicitud";
         var Params = '';
 

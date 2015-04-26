@@ -15,7 +15,7 @@
     
     function crearTipoTarifa() {	
         //alert("crear");
-        var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=crearTipoTarifa";
+        var Url = "http://localhost/Sistemareservas/AdministradorBO.php?url=crearTipoTarifa";
         //var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearTipoTarifa";		
         var Params = 'idTipoTarifa='+ document.getElementById('idTipoTarifa').value +
             '&NombreTarifa='+ document.getElementById('NombreTarifa').value +
@@ -34,7 +34,7 @@
 
     function actualizarTipoTarifa() {
         //alert("actualizar");
-        var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=actualizarTipoTarifa";
+        var Url = "http://localhost/Sistemareservas/AdministradorBO.php?url=actualizarTipoTarifa";
         //var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=actualizarTipoTarifa";
         var Params = 'idTipoTarifa='+ document.getElementById('idTipoTarifa').value +
             '&NombreTarifa='+ document.getElementById('NombreTarifa').value +

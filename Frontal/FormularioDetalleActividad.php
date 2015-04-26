@@ -14,7 +14,7 @@
     function crearActividad() {	        
         //alert("crear");
         //var Url = "http://www.rightwatch.es/pfgreservas/Api.php?url=crearActividad";		
-        var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=crearActividad";		        
+        var Url = "http://localhost/Sistemareservas/AdministradorBO.php?url=crearActividad";		        
 	
         var Params = '&NombreActividad='+ document.getElementById('NombreActividad').value +
             '&IntensidadActividad='+ document.getElementById('IntensidadActividad').value +

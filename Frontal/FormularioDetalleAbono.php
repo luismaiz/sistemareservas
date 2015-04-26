@@ -15,7 +15,7 @@
 
     function crearTipoAbono() {
         //alert("crear");
-        var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=crearTipoAbono";
+        var Url = "http://localhost/Sistemareservas/AdministradorBO.php?url=crearTipoAbono";
         //var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearTipoAbono";	
         var Params = 'NombreAbono='+ document.getElementById('NombreAbono').value +
             '&DescripcionAbono='+ document.getElementById('DescripcionAbono').value +

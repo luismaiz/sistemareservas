@@ -5,8 +5,8 @@
     var Ajax = new AjaxObj();
     
     function obtenerUsuarios() {	
-        var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerUsuarios";
-        //var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerPrecios";
+        //var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerUsuarios";
+        var Url = "http://localhost/Sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerPrecios";
         var Params = '';
 
 	

@@ -6,7 +6,7 @@
             function obtenerSalas() {
                 
                 //var Url = "http://www.rightwatch.es/pfgreservas/Api.php?url=obtenerSalas";
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerSalas";
+                var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerSalas";
 
                 //var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerSalas";
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerSalas";

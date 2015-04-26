@@ -8,7 +8,7 @@ include('Frontal/CabeceraInicio.php');
     var Ajax = new AjaxObj();
 
     function login() {
-        var Url = "http://localhost:8080/sistemareservas/Negocio/LoginBO.php?url=iniciarSesion";
+        var Url = "http://localhost/sistemareservas/Negocio/LoginBO.php?url=iniciarSesion";
         var Params = 'NombreUsuario=' + document.getElementById("NombreUsuario").value + '&Password=' + document.getElementById("Password").value;
 
         Ajax.open("POST", Url, false);

@@ -4,7 +4,7 @@
             var Ajax = new AjaxObj();
                 
             function crearSala() {
-                var Url = "http://localhost/PFC/sistemareservas/AdministradorBO.php?url=crearSala";		
+                var Url = "http://localhost/sistemareservas/AdministradorBO.php?url=crearSala";		
                 var Params ='&NombreSala='+ document.getElementById('NombreSala').value +
                     '&CapacidadSala='+ document.getElementById('CapacidadSala').value +
                     '&DescripcionSala='+ document.getElementById('DescripcionSala').value +

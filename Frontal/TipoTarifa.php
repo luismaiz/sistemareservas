@@ -2,17 +2,11 @@
 <script>
     var Ajax = new AjaxObj();
 
-<<<<<<< HEAD
-            function obtenerTiposTarifa(){
-                //var Url = "http://www.rightwatch.es/pfgreservas/Api.php?url=obtenerActividades";	
-                var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerTiposTarifa";		        
-                var Params = '';
-=======
     function obtenerTiposTarifa(){
-        var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerTiposTarifa";	
+        var Url = "http://localhost/Sistemareservas/AdministradorBO.php?url=obtenerTiposTarifa";	
         //var Url = "http://pfgreservas.rightwatch.es/Negocio/AdministradorBO.php?url=obtenerTiposTarifa";		        
         var Params = '';
->>>>>>> 19a98ccee5b42517ff133f053273c0995768e5e6
+
 
 	
         Ajax.open("GET", Url, false);

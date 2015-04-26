@@ -14,7 +14,7 @@
     
     function crearUsuario() {
         alert("crear");
-        var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=crearUsuario";		
+        var Url = "http://localhost/Sistemareservas/AdministradorBO.php?url=crearUsuario";		
         //var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearPrecio";
         
         var Params = 'NombreUsuario='+ document.getElementById('NombreUsuario').value +
