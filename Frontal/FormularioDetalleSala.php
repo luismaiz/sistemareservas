@@ -1,65 +1,100 @@
-<?php require('Cabecera.php'); ?>
-
-
+<?php require('Cabecera.php'); ?> 
 <script>
            
             var Ajax = new AjaxObj();
+            var app = angular.module('DetalleSala', [])            
+                     .config(function($locationProvider) {
+                          $locationProvider.html5Mode(true);
+                      });
+                
+            function CargaDetalleSala($scope, $http, $location) {
+       
+            $scope.sala = [];
+            $scope.estado = [];
+            $scope.msg = [];
+            $scope.obtenerSalas = function(idSala) {
+                
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSala";
+                var Params = 'idSala='+ idSala;
+
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                    
+                $scope.sala = JSON.parse(Ajax.responseText).sala;
+                $scope.sala.CapacidadSala = parseInt($scope.sala.CapacidadSala);
+        
+            };
+            if (typeof($location.search().idSala) !== "undefined")
+                $scope.obtenerSalas($location.search().idSala);
             
-            function Sala(){      
-                //alert(document.getElementById("idSala"));
-                if(document.getElementById("idSala").value == "")
-                    crearSala();
+            $scope.guardarSala = function() {
+                if (typeof($location.search().idSala) !== "undefined")
+                    $scope.actualizarSala();    
                 else
-                    actualizarSala();
-            }
+                    $scope.crearSala();            
+        
+            };
             
-            function crearSala() {
-                //alert("crear");
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSala";		
+            $scope.crearSala = function() {
+                                
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=crearSala";		
                 var Params ='&NombreSala='+ document.getElementById('NombreSala').value +
                     '&CapacidadSala='+ document.getElementById('CapacidadSala').value +
                     '&DescripcionSala='+ document.getElementById('DescripcionSala').value +
                     '&FechaAlta='+ document.getElementById('FechaAlta').value +
                     '&FechaBaja='+ document.getElementById('FechaBaja').value;
 
-                //alert(Params);
-	
-	
+                
                 Ajax.open("POST", Url, true);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-                mostrarRespuesta(Ajax.responseText);
-            }
-
-            function actualizarSala() {
-                //alert("actualizar");
-                var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=actualizarSala";
-                var Params = 'idSala='+ document.getElementById('idSala').value +
+                //$scope.estado = JSON.parse(Ajax.responseText).sala;
+                
+//                if ($scope.estado === 'correcto')
+//                {
+//                    document.getElementById('divCorrecto').style.display = 'block';
+//                }
+//                else
+//                {
+//                    document.getElementById('divError').style.display = 'block';
+//                }
+        
+            };
+//            
+            $scope.actualizarSala = function(){
+                                   
+             
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala";
+                var Params = 'idSala='+ $location.search().idSala +
                     '&NombreSala='+ document.getElementById('NombreSala').value +
                     '&CapacidadSala='+ document.getElementById('CapacidadSala').value +
                     '&DescripcionSala='+ document.getElementById('DescripcionSala').value +
                     '&FechaAlta='+ document.getElementById('FechaAlta').value +
                     '&FechaBaja='+ document.getElementById('FechaBaja').value;
 
-                //alert(Params);
-                
+               
                 Ajax.open("PUT", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
+             
+            
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
-                mostrarRespuesta(Ajax.responseText);
-            }
-
-            function borrarSala() {
-                var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=borrarSala";
-                var Params = 'idSala='+ document.getElementById('idSala').value;
-
-	
-                Ajax.open("DELETE", Url, false);
-                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-                Ajax.send(Params); // Enviamos los datos
-            }            
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divCorrecto').style.display = 'block';
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
+            };
+            
+            
+        }
+                       
         </script>
        
 <div>
@@ -75,7 +110,8 @@
         </li>
     </ul>
 </div>
-<div class=" row">
+<div class=" row" ng-app="DetalleSala">
+<div ng_controller="CargaDetalleSala">
 <div class="box col-md-12">
                         <div class="box-inner">
                         <div class="box-header well" data-original-title="">
@@ -86,84 +122,58 @@
                         
                         </div>
                         </div>
+                            <div class="box-content alerts">
+                                <div class="alert alert-danger" id="divError" style='display:none;'>
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <strong>Error</strong> Se ha producido un error al realizar la operación.
+                                </div>
+                            <div class="alert alert-success" id="divCorrecto" style='display:none;'>
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <strong>Correcto.</strong>  Operación realizada con éxito.
+                            </div>
+                            </div>
                         <div class="box-content">
                             
-                            <form class="form-group">
-                                <input value = "" type="hidden" class="input-sm" name="idSala" id="idSala">
-                                <label class="control-label" >Nombre</label>
-                                <input value = "" type="text" class="input-sm" name="nombresala" id="NombreSala"></br></br>
+                            <form name="formulario" >
+                                <input ng-model="sala.idSala" type="hidden" class="input-sm" name="idSala" id="idSala">
+                                <label class="control-label col-md-2" >Nombre Sala</label>
+                                <input ng-model="sala.NombreSala"  type="text" class="input-sm col-md-4" name="nombresala" id="NombreSala" required >
+                                <span style="color:red" ng-show="formulario.nombresala.$dirty && formulario.nombresala.$invalid">
+                                <span ng-show="formulario.nombresala.$error.required">Nombre de sala obligatorio.</span>
+                                 </span>
+                                </br></br>
                                 
-                                <label class="control-label" >Descripcion</label>
-                                <input type="text" class="input-sm"  id="DescripcionSala"></br></br>
+                                <label class="control-label col-md-2" >Descripción</label>
+                                <input ng-model="sala.DescripcionSala" ng-required=true" type="text" class="input-sm col-md-4"  name="descripcionsala" id="DescripcionSala">
+                                <span style="color:red" ng-show="formulario.descripcionsala.$dirty && formulario.descripcionsala.$invalid">
+                                <span ng-show="formulario.descripcionsala.$error.required">Descripción de sala obligatorio.</span>
+                                 </span>
+                                </br></br>
                                 
-                                <label class="control-label" >Capacidad</label>
-                                <input type="text" class="input-sm" id="CapacidadSala"></br></br>
+                                <label class="control-label col-md-2" >Capacidad</label>
+                                <input ng-model="sala.CapacidadSala" ng-required=true" type="number" class="input-sm col-md-2" name="capacidadsala" id="CapacidadSala">
+                                <span style="color:red" ng-show="formulario.capacidadsala.$dirty && formulario.capacidadsala.$invalid">
+                                <span ng-show="formulario.capacidadsala.$error.required">Capacidad de sala obligatoria y numérica.</span>
+                                 </span>
+                                
+                                </br></br>
                                             
                                 <label class="control-label" >Fecha Alta</label>
-                                <input type="date" class="input-sm" name="FechaAlta" id="FechaAlta">
+                                <input ng-model="sala.FechaAlta" type="date" class="input-sm" name="FechaAlta" id="FechaAlta">
                                 
                                 <label class="control-label" >Fecha Baja</label>
-                                <input type="date" class="input-sm" name="FechaBaja" id="FechaBaja">
-                                      
+                                <input ng-model="sala.FechaBaja" type="date" class="input-sm" name="FechaBaja" id="FechaBaja">                                     
                                 <input class="box btn-primary " type="button" value="Cancelar" onClick=" window.location.href='Salas.php' " />
-                                <input class="box btn-primary " type="button" value="Aceptar" onclick="Sala()"/>
-                               
+                                <input class="box btn-primary " type="submit" value="Aceptar" ng-click="guardarSala();" ng-disabled="formulario.$invalid" />
                             </form>
                         </div>
                         </div>
 
 
                         </div>
+    </div>
                        
 </div>
-        <script>
-            function obtenerSala(idSala) {
-//                alert(idSala);
-                
-                var Url = "http://localhost:8080/pfgreservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerSala";
-                var Params = 'idSala='+ idSala;
 
-	
-                Ajax.open("POST", Url, false);
-                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-                Ajax.send(Params); // Enviamos los datos
-	
-                var RespTxt = Ajax.responseText;
-	
-//                alert("Resultado:" + RespTxt);
-	
-                //alert(eval('(' + RespTxt + ')'));
-                //alert("Prueba: " + $.parseJSON(RespTxt));
-                //var Clase = eval('(' + RespTxt + ')');
-                var Clase = eval('(' + RespTxt + ')');	
-	
-                //eval('(' + RespTxt + ')');
-//                alert(Clase);
-//                alert('Estado: '+ Clase.estado);
-//                alert('idSala: '+ Clase.sala.idSala);
-//                alert('NombreSala: '+ Clase.sala.NombreSala);
-//                alert('CapacidadSala: '+ Clase.sala.CapacidadSala);
-//                alert('DescripcionSala: '+ Clase.sala.DescripcionSala);
-                
-                document.getElementById('idSala').value= Clase.sala.idSala;
-                document.getElementById('NombreSala').value= Clase.sala.NombreSala;
-                document.getElementById('CapacidadSala').value= Clase.sala.CapacidadSala;
-                document.getElementById('DescripcionSala').value= Clase.sala.DescripcionSala;
-                document.getElementById('FechaAlta').value= Clase.sala.FechaAlta;
-                document.getElementById('FechaBaja').value= Clase.sala.FechaBaja;                
-            }
-                         
-        </script>
- <?php  
-if(isset($_GET['idSala'])) {
-    $test = $_GET['idSala'];
-    echo '<script>
-           var varjs="'.$test.'";
-           obtenerSala(varjs);
-           </script>';
-} else {
-    $test = '';
-}
-?>        
         
 <?php require('Pie.php'); ?>

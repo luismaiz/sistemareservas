@@ -3,6 +3,57 @@
 <script>
     
     var Ajax = new AjaxObj();
+            var app = angular.module('BusquedaReservas', [])            
+                     .config(function($locationProvider) {
+                          $locationProvider.html5Mode(true);
+                      });
+    
+    function CargaBusquedaReservas($scope, $http, $location) {
+      
+      
+        alert($location.search().abonos);
+        alert($location.search().solicitudes);
+        $scope.obtenerReservasSolicitudesPendientes = function() {
+                
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesPendientes";
+                var Params = 'TipoSolicitud=1';    
+                
+	        Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                    alert(Ajax.responseText);
+                $scope.solicitudes = JSON.parse(Ajax.responseText).solicitudes;
+        
+            };
+            if (typeof($location.search().abonos) !== "undefined")
+                $scope.obtenerReservasSolicitudesPendientes();
+                    
+            
+            
+            $scope.obtenerAbonosPendientes = function() {
+                
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes";
+                var Params = 'TipoSolicitud=3';    
+                
+	        Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                
+                alert(Ajax.responseText);
+                $scope.abonos = JSON.parse(Ajax.responseText).abonos;
+        
+            };
+            if (typeof($location.search().solicitudes) !== "undefined")
+                $scope.obtenerAbonosPendientes();
+        
+    }
+    
+    
+    
+    
+    
+    
+    var Ajax = new AjaxObj();
     
     function obtenerSolicitudes() {	
         var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerSolicitudes";
@@ -125,7 +176,8 @@
         </li>
     </ul>
 </div>
-<div class=" row">
+<div class=" row" ng-app="BusquedaReservas">
+<div ng_controller="CargaBusquedaReservas">
     <div class="box col-md-12">
         <div class="box-inner">
             <div class="box-header well" data-original-title="">
@@ -182,6 +234,32 @@
                     </div>
                 </div>
                 <div class="box-content" id="reservas">
+                    <table class="table table-striped table-bordered responsive">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nombre</h6></th>
+                                                    <th>Apellidos</th>
+                                                    <th>Localizador</th>
+                                                    <th>Fecha Solicitud</th>
+                                                    <th></th>
+                                                    
+                                                </tr>
+                                                <tr ng_repeat="solicitud in solicitudes">
+                                                    <td>{{solicitud.Nombre}}</td>
+                                                    <td>{{solicitud.Apellidos}}</td>
+                                                    <td>{{solicitud.Localizador}}</td>
+                                                    <td>{{solicitud.FechaSolicitud}}</td>
+                                                    <td class="center"><a href="FormularioDetalleSolicitudClasesDirigidas.php?idSolicitud={{solicitud.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
+                                                </tr>
+                                                <tr ng_repeat="abono in abonos">
+                                                    <td>{{abono.Nombre}}</td>
+                                                    <td>{{abono.Apellidos}}</td>
+                                                    <td>{{abono.Localizador}}</td>
+                                                    <td>{{abono.FechaSolicitud}}</td>
+                                                    <td class="center"><a href="FormularioDetalleSolicitudAbonoDiario.php?idSolicitud={{abono.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
+                                                </tr>
+                                            </thead>
+                                        </table>
                 </div>
             </div>
             <br>
@@ -189,5 +267,5 @@
 
     </div>
 </div>
-
+</div>
 <?php require('Pie.php'); ?>

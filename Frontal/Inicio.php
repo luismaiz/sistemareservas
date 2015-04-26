@@ -1,4 +1,75 @@
 <?php require('Cabecera.php'); ?>
+<script>
+            var Ajax = new AjaxObj();
+            var app = angular.module('BusquedaSolicitudes', []);
+            
+            function CargaSolicitudes($scope, $http) {
+            
+            $scope.solicitudes = [];
+            $scope.abonos = [];
+            $scope.obtenersolicitudes = function() {
+                
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesPendientes";
+                var Params = 'TipoSolicitud=1';    
+                
+	        Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                
+                alert(Ajax.responseText);
+	
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                $scope.numerosolicitudes = parseInt(JSON.parse(Ajax.responseText).numerosolicitudes);
+                
+                if ($scope.estado === 'correcto')
+                {
+                    $scope.solicitudes = JSON.parse(Ajax.responseText).solicitudes;
+                    //document.getElementById('divSinResultados').style.display = 'none';
+                }
+                else
+                {
+                    $scope.solicitudes = [];
+                    //document.getElementById('divSinResultados').style.display = 'block';
+                }
+        
+            };
+            
+            $scope.obtenersolicitudes();
+            
+            $scope.obtenerabonos = function() {
+                
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes";
+                var Params = 'TipoSolicitud=3';    
+                
+	        Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                
+                alert(Ajax.responseText);
+	
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                $scope.numeroabonos = parseInt(JSON.parse(Ajax.responseText).numeroabonos);
+                
+                if ($scope.estado === 'correcto')
+                {
+                    $scope.abonos = JSON.parse(Ajax.responseText).abonos;
+                    //document.getElementById('divSinResultados').style.display = 'none';
+                }
+                else
+                {
+                    $scope.abonos = [];
+                    //document.getElementById('divSinResultados').style.display = 'block';
+                }
+        
+            };
+
+                $scope.obtenerabonos();
+}
+        </script>
+
+
 <div>
     <ul class="breadcrumb">
         <li>
@@ -7,44 +78,29 @@
         
     </ul>
 </div>
-<div class=" row">
-   <div class="col-md-4 col-sm-3 col-xs-6">
-        <a data-toggle="tooltip" title="3 nuevas solicitudes." class="well top-block" href="Reservas.php">
-            <i class="glyphicon glyphicon-user blue"></i>
-
-            <div>Abonos diarios</div>
-            <div>7</div>
-            <span class="notification">7</span>
-        </a>
-    </div>
-    <div class="col-md-4 col-sm-3 col-xs-6">
-        <a data-toggle="tooltip" title="14 nuevas solicitudes." class="well top-block" href="Reservas.php">
-            <i class="glyphicon glyphicon-user blue"></i>
-
-            <div>Clase Dirigidas</div>
-            <div>14</div>
-            <span class="notification">14</span>
-        </a>
-    </div>
-
-    <div class="col-md-4 col-sm-3 col-xs-6">
-        <a data-toggle="tooltip" title="28 nuevas solicitudes." class="well top-block" href="Reservas.php">
-            <i class="glyphicon glyphicon-user blue"></i>
-
-            <div>Abonos mensuales</div>
-            <div>28</div>
-            <span class="notification">28</span>
-        </a>
-    </div>
-</div>
-
-<div class="row">
+<div class=" row" ng-app="BusquedaSolicitudes">
+    <div ng_controller="CargaSolicitudes">
     
+        <div class="col-md-6 col-sm-3 col-xs-6">
+            <a  id="enlace" data-toggle="tooltip" title="{{numerosolicitudes}} nuevas solicitudes." class="well top-block" href="Reservas.php?solicitudes=1">
+                    <i class="glyphicon glyphicon-user blue"></i>
+                    <div id="abonosdiarios">Abonos diarios</div>
+                    <div>{{numerosolicitudes}}</div>
+                    <span class="notification" ng-bind="numerosolicitudes"></span>
+                </a>
+        </div>
+        <div class="col-md-6 col-sm-3 col-xs-6">
+            <a data-toggle="tooltip" title="{{numeroabonos}} nuevas solicitudes." class="well top-block" href="Reservas.php?abonos=1">
+                <i class="glyphicon glyphicon-user blue"></i>
+                <div>Clase Dirigidas</div>
+                <div>{{numeroabonos}}</div>
+                <span class="notification" ng-bind="numeroabonos"></span>
+            </a>
+        </div>
 </div>
-
-<div class="row">
-
-</div><!--/row-->
+</div>
+<div class="row"></div>
+<div class="row"></div><!--/row-->
 
 <div class="row">
    
@@ -127,9 +183,9 @@
             <div id="donutchart" style="height: 300px;">
         </div>
     </div>
+        </div>
     <!--/span-->    
 </div><!--/row-->
-
 
 <!-- chart libraries start -->
 <!--<script src="bower_components/flot/excanvas.min.js"></script>-->

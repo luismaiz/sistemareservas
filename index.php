@@ -8,7 +8,7 @@ include('Frontal/CabeceraInicio.php');
     var Ajax = new AjaxObj();
 
     function login() {
-        var Url = "http://localhost:8080/sistemareservas/Negocio/LoginBO.php?url=iniciarSesion";
+        var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/LoginBO.php?url=iniciarSesion";
         var Params = 'NombreUsuario=' + document.getElementById("NombreUsuario").value + '&Password=' + document.getElementById("Password").value;
 
         Ajax.open("POST", Url, false);
@@ -29,7 +29,7 @@ include('Frontal/CabeceraInicio.php');
                     return false;
                     break;
                 case 2:
-                    window.location = 'Frontal\\InicioMonitor.php';
+                    window.location = 'Frontal\\Inicio.php';
                     return false;
                     break;
                 case 3:

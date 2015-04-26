@@ -2,12 +2,7 @@
 require_once 'helpers/Db2PhpEntityBase.class.php';
 require_once 'helpers/Db2PhpEntityModificationTracking.class.php';
 require_once 'helpers/DFCAggregate.class.php';
-/**
- * 
- *
- * @version 1.105
- * @package entity
- */
+
 class UsuarioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTracking {
 	private static $CLASS_NAME='UsuarioModel';
 	const SQL_IDENTIFIER_QUOTE='`';

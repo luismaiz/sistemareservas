@@ -31,10 +31,13 @@ include 'config.php'
         <link href='css/jquery.iphone.toggle.css' rel='stylesheet'>
         <link href='css/uploadify.css' rel='stylesheet'>
         <link href='css/animate.min.css' rel='stylesheet'>
-
+        <link href="css/Angular.css" rel="stylesheet" type="text/css"/>
+        <script src="js/angular-1.2.9/angular-1.2.9/angular.js" type="text/javascript"></script>
         <!-- jQuery -->
         <script src="bower_components/jquery/jquery.min.js"></script>
-
+        <!--<script src="js/angular-1.0.1.min.js" type="text/javascript"></script>-->
+        <!--<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>--> 
+        <!--<script src="js/angular.min.js" type="text/javascript"></script>-->
         <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
