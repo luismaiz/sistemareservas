@@ -17,7 +17,7 @@ include('Frontal/CabeceraInicio.php');
 
         var RespTxt = Ajax.responseText;
 
-        alert(RespTxt);
+        //alert(RespTxt);
 
         var Clase = eval('(' + RespTxt + ')');
         

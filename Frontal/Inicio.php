@@ -16,7 +16,7 @@
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-                alert(Ajax.responseText);
+                //alert(Ajax.responseText);
 	
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
@@ -46,7 +46,7 @@
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-                alert(Ajax.responseText);
+                //alert(Ajax.responseText);
 	
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
@@ -189,10 +189,10 @@
 
 <!-- chart libraries start -->
 <!--<script src="bower_components/flot/excanvas.min.js"></script>-->
-<script src="bower_components/flot/jquery.flot.js"></script>
-<script src="bower_components/flot/jquery.flot.pie.js"></script>
+<script src="Utilidades/bower_components/flot/jquery.flot.js"></script>
+<script src="Utilidades/bower_components/flot/jquery.flot.pie.js"></script>
 <!--<script src="bower_components/flot/jquery.flot.stack.js"></script>-->
 <!--<script src="bower_components/flot/jquery.flot.resize.js"></script>-->
 <!-- chart libraries end -->
-<script src="js/init-chart.js"></script>
+<script src="Utilidades/js/init-chart.js"></script>
 <?php require('Pie.php'); ?>

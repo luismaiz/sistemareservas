@@ -9,24 +9,24 @@
     
 
     <!-- The styles -->
-    <link href="Frontal/css/bootstrap-cerulean.min.css" rel="stylesheet">
-    <link href="Frontal/css/charisma-app.css" rel="stylesheet">
-    <link href='Frontal/bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>
-    <link href='Frontal/bower_components/fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print'>
-    <link href='Frontal/bower_components/chosen/chosen.min.css' rel='stylesheet'>
-    <link href='Frontal/bower_components/colorbox/example3/colorbox.css' rel='stylesheet'>
-    <link href='Frontal/bower_components/responsive-tables/responsive-tables.css' rel='stylesheet'>
-    <link href='Frontal/bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css' rel='stylesheet'>
-    <link href='Frontal/css/jquery.noty.css' rel='stylesheet'>
-    <link href='Frontal/css/noty_theme_default.css' rel='stylesheet'>
-    <link href='Frontal/css/elfinder.min.css' rel='stylesheet'>
-    <link href='Frontal/css/elfinder.theme.css' rel='stylesheet'>
-    <link href='Frontal/css/jquery.iphone.toggle.css' rel='stylesheet'>
-    <link href='Frontal/css/uploadify.css' rel='stylesheet'>
-    <link href='Frontal/css/animate.min.css' rel='stylesheet'>
+    <link href="Frontal/Utilidades/css/bootstrap-cerulean.min.css" rel="stylesheet">
+    <link href="Frontal/Utilidades/css/charisma-app.css" rel="stylesheet">
+    <link href='Frontal/Utilidades/bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>
+    <link href='Frontal/Utilidades/bower_components/fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print'>
+    <link href='Frontal/Utilidades/bower_components/chosen/chosen.min.css' rel='stylesheet'>
+    <link href='Frontal/Utilidades/bower_components/colorbox/example3/colorbox.css' rel='stylesheet'>
+    <link href='Frontal/Utilidades/bower_components/responsive-tables/responsive-tables.css' rel='stylesheet'>
+    <link href='Frontal/Utilidades/bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css' rel='stylesheet'>
+    <link href='Frontal/Utilidades/css/jquery.noty.css' rel='stylesheet'>
+    <link href='Frontal/Utilidades/css/noty_theme_default.css' rel='stylesheet'>
+    <link href='Frontal/Utilidades/css/elfinder.min.css' rel='stylesheet'>
+    <link href='Frontal/Utilidades/css/elfinder.theme.css' rel='stylesheet'>
+    <link href='Frontal/Utilidades/css/jquery.iphone.toggle.css' rel='stylesheet'>
+    <link href='Frontal/Utilidades/css/uploadify.css' rel='stylesheet'>
+    <link href='Frontal/Utilidades/css/animate.min.css' rel='stylesheet'>
 
     <!-- jQuery -->
-    <script src="Frontal/bower_components/jquery/jquery.min.js"></script>
+    <script src="Frontal/Utilidades/bower_components/jquery/jquery.min.js"></script>
 
     <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -34,7 +34,7 @@
     <![endif]-->
 
     <!-- The fav icon -->
-    <link rel="shortcut icon" href="Frontal/img/favicon.ico">
+    <link rel="shortcut icon" href="Frontal/Utilidades/img/favicon.ico">
 
 </head>
 <script>
