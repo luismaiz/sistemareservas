@@ -10,9 +10,6 @@
     
     function CargaBusquedaReservas($scope, $http, $location) {
       
-      
-//        alert($location.search().abonos);
-//        alert($location.search().solicitudes);
         $scope.obtenerReservasSolicitudesPendientes = function() {
                 
                 var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesPendientes";
@@ -27,10 +24,8 @@
             };
             if (typeof($location.search().solicitudes) !== "undefined")
                 $scope.obtenerReservasSolicitudesPendientes();
-                    
             
-            
-            $scope.obtenerAbonosPendientes = function() {
+        $scope.obtenerAbonosPendientes = function() {
                 
                 var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes";
                 var Params = 'TipoSolicitud=3';    
@@ -45,6 +40,49 @@
             };
             if (typeof($location.search().abonos) !== "undefined")
                 $scope.obtenerAbonosPendientes();
+            
+            
+        $scope.obtenerTipoSolicitud = function(){
+        
+        var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitud";		
+        var Params = '';
+
+        Ajax.open("GET", Url, false);
+        Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
+        Ajax.send(Params); // Enviamos los datos
+	
+        alert(Ajax.responseText);
+        
+        $scope.tiposSolicitudes = JSON.parse(Ajax.responseText).tiposSolicitudes;
+        
+        alert($scope.tiposSolicitudes);
+        };   
+        $scope.obtenerTipoSolicitud();    
+            
+            
+            
+            
+//        $scope.obtenerReservas = function() {
+//                
+//                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerReservasFiltro";
+//                var Params = 'localizador=' + document.getElementById("filtrolocalizador").value + 
+//                '&Nombre=' + document.getElementById("filtroNombre").value +    
+//                '&Apellidos='+ document.getElementById("filtroApellidos").value +
+//                '&DNI=' + document.getElementById("filtroDni").value +
+//                '&Email=' + document.getElementById("filtroEmail").value +
+//                '&FechaSolicitud=' + document.getElementById("filtroFechaSolicitud").value;
+//                
+//	        Ajax.open("POST", Url, false);
+//                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+//                Ajax.send(Params); // Enviamos los datos
+//                
+//  //              alert(Ajax.responseText);
+//                $scope.reservas = JSON.parse(Ajax.responseText).reservas;
+//            };
+            
+            
+       
+        
         
     }
     
@@ -193,11 +231,9 @@
                             <div class="form-group">
                                 <label class="control-label" >Localizador</label>
                                 <input type="text" class="input-sm" id="filtroLocalizador" name="filtroLocalizador" value="">	
-                                <label class="control-label" >Tipo Abono</label>
-                                <select id="filtroTipoAbono" class="input-sm" >	
-                                    <option>Abono Diario</option>
-                                    <option>Abono Mensual</option>
-                                    <option>Clase Dirigida</option>
+                                <label class="control-label" >Tipo Solicitud</label>
+                                <select  id="filtroTipoSolicitud" class="input-sm" >	
+                                    <option ng_repeat="tiposolicitud in tiposSolicitudes" value="">{{tiposolicitud.NombreSolicitud}}</option>
                                 </select>
                             </div>
                             <div class="form-group">

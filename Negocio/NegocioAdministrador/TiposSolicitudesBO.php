@@ -110,20 +110,20 @@ class TiposSolicitudesBO extends Rest{
         if ($_SERVER['REQUEST_METHOD'] != "GET") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-
-        /* $query = $this->_conn->query("SELECT idTipoSolicitud, NombreSolicitud, DescripcionSolicitud, FechaAlta, FechaBaja FROM tiposolicitud");
-          $filas = $query->fetchAll(PDO::FETCH_ASSOC);
-          $num = count($filas); */
-
         $this->con = ConexionBD::getInstance();
         $tiposolicitud = new TiposolicitudModel();
 
-        $filas = $tiposolicitud->findBySql($this->con, "Select * from tiposolicitud");
+        $filas = $tiposolicitud->findBySql($this->con, TiposolicitudModel::SQL_SELECT);
 
-
-        if (count($filas) > 0) {
+        $num = count($filas);
+        if ($num > 0) {
             $respuesta['estado'] = 'correcto';
-            $respuesta['tiposSolicitudes'] = $filas;
+
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
+            $respuesta['tiposSolicitudes'] = $array;
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->devolverError(2), 204);

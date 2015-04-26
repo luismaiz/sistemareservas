@@ -11,6 +11,7 @@ class TiposolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModific
 	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `tiposolicitud` (`NombreSolicitud`,`DescripcionSolicitud`,`FechaAlta`,`FechaBaja`) VALUES (?,?,?,?)';
 	const SQL_UPDATE='UPDATE `tiposolicitud` SET `idTipoSolicitud`=?,`NombreSolicitud`=?,`DescripcionSolicitud`=?,`FechaAlta`=?,`FechaBaja`=? WHERE `idTipoSolicitud`=?';
 	const SQL_SELECT_PK='SELECT * FROM `tiposolicitud` WHERE `idTipoSolicitud`=?';
+        const SQL_SELECT='SELECT * FROM tiposolicitud';
 	const SQL_DELETE_PK='DELETE FROM `tiposolicitud` WHERE `idTipoSolicitud`=?';
 	const FIELD_IDTIPOSOLICITUD=686305399;
 	const FIELD_NOMBRESOLICITUD=388414653;

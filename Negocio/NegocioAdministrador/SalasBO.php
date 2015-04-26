@@ -173,9 +173,6 @@ class SalasBO  extends Rest {
         if ($_SERVER['REQUEST_METHOD'] != "GET") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-        //$query = $this->_conn->query("SELECT idSala,Nombre,Capacidad,Descripcion FROM sala");  
-        //$filas = $query->fetchAll(PDO::FETCH_ASSOC);  
-
         $this->con = ConexionBD::getInstance();
         $sala = new SalaModel();
 
