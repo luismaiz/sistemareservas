@@ -55,13 +55,11 @@
                         <div class="box-inner">
                             <div class="box-header well" data-original-title="">
                                 <h2><i class="glyphicon glyphicon-edit"></i> Buscador Actividades</h2>
-                                <div class="box-icon">
-                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
-                                </div>
+                            </div>
                                 <div class="alert alert-info" id="divSinResultados" style='display:none;'>
                                     <strong></strong>No se han encontrado resultados para los filtros introducidos.
                                 </div>
-                            </div>
+                            
                             <div class="box-content">
                                 <div class="row">
                                     <div class="form-group">
@@ -100,6 +98,7 @@
                                     </div>
                                             </div>
                                         </div>
+                                    </div>
                                     </div>
                                </div>
                             </div>

@@ -1,6 +1,7 @@
 <?php
 
 require_once 'DFCInterface.class.php';
+require_once 'DFC.class.php';
 /**
  * Copyright (c) 2009, Andreas Schnaiter
  *

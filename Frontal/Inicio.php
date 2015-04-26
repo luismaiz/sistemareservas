@@ -84,7 +84,7 @@
         <div class="col-md-6 col-sm-3 col-xs-6">
             <a  id="enlace" data-toggle="tooltip" title="{{numerosolicitudes}} nuevas solicitudes." class="well top-block" href="Reservas.php?solicitudes=1">
                     <i class="glyphicon glyphicon-user blue"></i>
-                    <div id="abonosdiarios">Abonos diarios</div>
+                    <div id="abonosdiarios">Solicitudes Clases pendientes</div>
                     <div>{{numerosolicitudes}}</div>
                     <span class="notification" ng-bind="numerosolicitudes"></span>
                 </a>
@@ -92,7 +92,7 @@
         <div class="col-md-6 col-sm-3 col-xs-6">
             <a data-toggle="tooltip" title="{{numeroabonos}} nuevas solicitudes." class="well top-block" href="Reservas.php?abonos=1">
                 <i class="glyphicon glyphicon-user blue"></i>
-                <div>Clase Dirigidas</div>
+                <div>Abonos diarios pendientes</div>
                 <div>{{numeroabonos}}</div>
                 <span class="notification" ng-bind="numeroabonos"></span>
             </a>

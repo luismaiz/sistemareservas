@@ -1,5 +1,5 @@
 <?php require('Cabecera.php'); ?>
-<script>
+<!--<script>
            
             var Ajax = new AjaxObj();
                 
@@ -10,9 +10,10 @@
                       
             function CargaDetalleAbonoDiario($scope, $http, $location) {
                 
+                alert('hola');
             }          
                         
-        </script>
+        </script>-->
 <div>
     <ul class="breadcrumb">
         <li>
@@ -50,9 +51,9 @@
                             </div>
                         <div class="box-content" >
                             
-                            <form class="form-group" name="formulario">
+<!--                            <form class="form-group" name="formulario">
                                
-                            </form>
+                            </form>-->
                         </div>
                         </div>
 

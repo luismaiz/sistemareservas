@@ -50,9 +50,6 @@
             <div class="box-inner">
                 <div class="box-header well" data-original-title="">
                     <h2><i class="glyphicon glyphicon-edit"></i> Buscador Salas</h2>
-                    <div class="box-icon">
-                       <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
-                    </div>
                 </div>
                 <div class="alert alert-info" id="divSinResultados" style='display:none;'>
                     <strong></strong>No se han encontrado resultados para los filtros introducidos.
@@ -80,6 +77,7 @@
                                                     <th></th>
                                                     
                                                 </tr>
+                                              </thead>
                                                 <tr ng_repeat="sala in salas">
                                                     <td>{{sala.NombreSala}}</td>
                                                     <td>{{sala.CapacidadSala}}</td>
@@ -88,7 +86,7 @@
                                                     <td>{{sala.FechaBaja}}</td>
                                                     <td class="center"><a href="FormularioDetalleSala.php?idSala={{sala.idSala}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
                                                 </tr>
-                                            </thead>
+                                            
                                         </table>
                                     </div>
                                 <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleSala.php' "/>

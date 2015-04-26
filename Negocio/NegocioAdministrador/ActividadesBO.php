@@ -302,7 +302,7 @@ class ActividadesBO extends Rest {
         if($intensidad != '')
             $actividad->setIntensidadActividad($intensidad);
         if($grupo != '')
-            $actividad->setGrupo ($grupo);
+            $actividad->setGrupo($grupo);
         
         $filas = ActividadModel::findByExample($this->con,$actividad,$sort);
                                 
