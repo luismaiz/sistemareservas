@@ -186,14 +186,9 @@ class TiposSolicitudesBO extends Rest{
         }
 
         //el constructor del padre ya se encarga de sanear los datos de entrada  
+        
+        if (isset($this->datosPeticion['idTipoSolicitud'])) {
         $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
-
-        //consulta preparada ya hace mysqli_real_escape()  
-        /* $query = $this->_conn->prepare("SELECT idTipoSolicitud,NombreSolicitud,DescripcionSolicitud,FechaAlta,FechaBaja FROM tiposolicitud WHERE idTipoSolicitud=:idTipoSolicitud");
-          $query->bindValue(":idTipoSolicitud", $idTipoSolicitud);
-          $fila = $query->execute();
-
-          $query->execute(); */
 
         $this->con = ConexionBD::getInstance();
         $tiposolicitud = new TiposolicitudModel();
@@ -211,6 +206,48 @@ class TiposSolicitudesBO extends Rest{
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
     }
+    
+        }
+    
+    
+    private function obtenerTiposSolicitudesFiltro() {
+        
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+                
+        $nomtiposolicitud = $this->datosPeticion['NombreSolicitud'];
+        $destiposolicitud = $this->datosPeticion['DescripcionSolicitud'];
+        
+        $this->con = ConexionBD::getInstance();
+        $sort = array(
+            new DSC(TiposolicitudModel::FIELD_NOMBRESOLICITUD, DSC::ASC),
+            new DSC(TiposolicitudModel::FIELD_DESCRIPCIONSOLICITUD, DSC::ASC)
+        );
+        
+        $tiposolicitud = new TiposolicitudModel();
+        
+        if($nomtiposolicitud != '')
+            $tiposolicitud->setNombreSolicitud($nomtiposolicitud);
+        if($destiposolicitud != '')
+            $tiposolicitud->setDescripcionSolicitud($destiposolicitud);
+        
+        $filas = TiposolicitudModel::findByExample($this->con,$tiposolicitud,$sort);
+                                
+        $num = count($filas);
+        if ($num > 0) {
+            $respuesta['estado'] = 'correcto';
+
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
+            $respuesta['tipossolicitudes'] = $array;
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+    }
+    
 }
 
 $tipossolicitudesBO = new TiposSolicitudesBO();

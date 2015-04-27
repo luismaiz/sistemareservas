@@ -186,14 +186,6 @@ class TarifasBO extends Rest{
         //el constructor del padre ya se encarga de sanear los datos de entrada  
         $idTipoTarifa = $this->datosPeticion['idTipoTarifa'];
 
-        //consulta preparada ya hace mysqli_real_escape()  
-        /* $query = $this->_conn->prepare("SELECT idSala, Nombre, Capacidad, Descripcion FROM sala WHERE idSala=:idSala");
-          $query->bindValue(":idSala", $idSala);
-          $fila = $query->execute();
-
-          $query->execute(); */
-
-
         $this->con = ConexionBD::getInstance();
         $tipotarifa = new TipotarifaModel();
 
@@ -202,11 +194,11 @@ class TarifasBO extends Rest{
 
         if ($fila) {
             $respuesta['estado'] = 'correcto';
-            $respuesta['tipoTarifa']['idTipoTarifa'] = $fila->getIdTipoTarifa();
-            $respuesta['tipoTarifa']['NombreTarifa'] = $fila->getNombreTarifa();
-            $respuesta['tipoTarifa']['DescripcionTarifa'] = $fila->getDescripcionTarifa();
-            $respuesta['tipoTarifa']['FechaAlta'] = $fila->getFechaAlta();
-            $respuesta['tipoTarifa']['FechaBaja'] = $fila->getFechaBaja();
+            $respuesta['tipotarifa']['idTipoTarifa'] = $fila->getIdTipoTarifa();
+            $respuesta['tipotarifa']['NombreTarifa'] = $fila->getNombreTarifa();
+            $respuesta['tipotarifa']['DescripcionTarifa'] = $fila->getDescripcionTarifa();
+            $respuesta['tipotarifa']['FechaAlta'] = $fila->getFechaAlta();
+            $respuesta['tipotarifa']['FechaBaja'] = $fila->getFechaBaja();
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);

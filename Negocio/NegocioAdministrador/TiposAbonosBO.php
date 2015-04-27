@@ -200,11 +200,11 @@ class TiposAbonosBO extends Rest{
 
         if ($fila) {
             $respuesta['estado'] = 'correcto';
-            $respuesta['tipoSolicitud']['idTipoAbono'] = $fila->getIdTipoAbono();
-            $respuesta['tipoSolicitud']['NombreAbono'] = $fila->getNombreAbono();
-            $respuesta['tipoSolicitud']['DescripcionAbono'] = $fila->getDescripcionAbono();
-            $respuesta['tipoSolicitud']['FechaAlta'] = $fila->getFechaAlta();
-            $respuesta['tipoSolicitud']['FechaBaja'] = $fila->getFechaBaja();
+            $respuesta['tipoabono']['idTipoAbono'] = $fila->getIdTipoAbono();
+            $respuesta['tipoabono']['NombreAbono'] = $fila->getNombreAbono();
+            $respuesta['tipoabono']['DescripcionAbono'] = $fila->getDescripcionAbono();
+            $respuesta['tipoabono']['FechaAlta'] = $fila->getFechaAlta();
+            $respuesta['tipoabono']['FechaBaja'] = $fila->getFechaBaja();
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);

@@ -140,6 +140,8 @@ include 'config.php'
                                     <li><a class="ajax-link" href="Salas.php"><i  class="glyphicon glyphicon-edit"></i><span> Salas</span></a></li>
                                     <li><a class="ajax-link" href="Actividades.php"><i class="glyphicon glyphicon-edit"></i><span> Actividades</span></a>
                                     </li>
+                                    <li><a class="ajax-link" href="TipoSolicitud.php"><i class="glyphicon glyphicon-edit"></i><span> Solicitudes</span></a>
+                                    </li>
                                     <li><a class="ajax-link" href="TipoAbono.php"><i class="glyphicon glyphicon-edit"></i><span> Abonos</span></a>
                                     </li>
                                     <li><a class="ajax-link" href="TipoTarifa.php"><i class="glyphicon glyphicon-edit"></i><span> Tarifas</span></a>

@@ -1,6 +1,6 @@
 <?php
 
-/require_once("helpers/Db2PhpEntityBase.class.php");
+require_once("helpers/Db2PhpEntityBase.class.php");
 require_once("helpers/Db2PhpEntityModificationTracking.class.php");
 require_once 'helpers/DFCAggregate.class.php';
 class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTracking {
@@ -461,10 +461,11 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 		if(self::isCacheStatements()) {
 			if (in_array($statement, array(self::SQL_INSERT, self::SQL_INSERT_AUTOINCREMENT, self::SQL_UPDATE, self::SQL_SELECT_PK, self::SQL_DELETE_PK))) {
 				$dbInstanceId=spl_object_hash($db);
-				if (null===self::$stmts[$statement][$dbInstanceId]) {
-					self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
-				}
-				return self::$stmts[$statement][$dbInstanceId];
+//				if (null===self::$stmts[$statement][$dbInstanceId]) {
+//					self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
+//				}
+//				return self::$stmts[$statement][$dbInstanceId];
+                                self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
 			}
 		}
 		return $db->prepare($statement);
