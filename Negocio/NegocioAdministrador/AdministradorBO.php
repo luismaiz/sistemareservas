@@ -12,7 +12,6 @@ require_once("Negocio/Entidades/SolicitudModel.class.php");
 require_once("Negocio/Entidades/TipoabonoModel.class.php");
 require_once("Negocio/Entidades/helpers/DFC.class.php");
 require_once("Negocio/Entidades/DatosolicitudclasedirigidaModel.class.php");
-require_once("Negocio/Entidades/UsuarioModel.class.php");
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -856,9 +855,9 @@ class AdministradorBO extends Rest {
 
     //Metodos CRUD Precios
     private function crearPrecio() {
-        if ($_SERVER['REQUEST_METHOD'] != "POST") {
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-        }
+        //if ($_SERVER['REQUEST_METHOD'] != "POST") {
+        //  $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        //}
         //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {
 
         $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
@@ -869,7 +868,21 @@ class AdministradorBO extends Rest {
         $Precio = $this->datosPeticion['Precio'];
         $FechaAlta = $this->datosPeticion['FechaAlta'];
         $FechaBaja = $this->datosPeticion['FechaBaja'];
-     
+
+        //if (!$this->existeUsuario($email)) {  
+        /* $query = $this->_conn->prepare("INSERT into maestraprecios(idPrecio, NombrePrecio, DescripcionPrecio, Precio, TipoSolicitud, TipoAbono, FechaAlta, FechaBaja)
+          VALUES (:idPrecio, :NombrePrecio, :DescripcionPrecio, :Precio, :TipoSolicitud, :TipoAbono, :FechaAlta, :FechaBaja)");
+          $query->bindValue(":idPrecio", $idPrecio);
+          $query->bindValue(":NombrePrecio", $NombrePrecio);
+          $query->bindValue(":DescripcionPrecio", $DescripcionPrecio);
+          $query->bindValue(":Precio", $Precio);
+          $query->bindValue(":TipoSolicitud", $TipoSolicitud);
+          $query->bindValue(":TipoAbono", $TipoAbono);
+          $query->bindValue(":FechaAlta", $FechaAlta);
+          $query->bindValue(":FechaBaja", $FechaBaja);
+          $query->execute(); */
+
+
         $this->con = ConexionBD::getInstance();
         $precio = new PrecioModel();
         $precio->setIdTipoSolicitud($idTipoSolicitud);
@@ -890,13 +903,19 @@ class AdministradorBO extends Rest {
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         else
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);        
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
+        //}  
+        //else  
+        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(8)), 400);  
+        //} else {  
+        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);  
+        //}  
     }
 
     private function obtenerPrecios() {
-        if ($_SERVER['REQUEST_METHOD'] != "GET") {
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-        }
+        /* if ($_SERVER['REQUEST_METHOD'] != "GET") {
+          $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+          } */
         //$query = $this->_conn->query("SELECT idSala,Nombre,Capacidad,Descripcion FROM sala");  
         //$filas = $query->fetchAll(PDO::FETCH_ASSOC);  
 
@@ -1164,8 +1183,8 @@ class AdministradorBO extends Rest {
     private function crearSolicitud() {
 
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-        }
+          $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+          } 
         //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {          
 
         $this->con = ConexionBD::getInstance();
@@ -1676,152 +1695,17 @@ class AdministradorBO extends Rest {
         //}  
     }
 
-    //Metodos CRUD Usuario
-    private function obtenerUsuarios() {
-        if ($_SERVER['REQUEST_METHOD'] != "GET") {
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-        }
-        //$query = $this->_conn->query("SELECT idSala,Nombre,Capacidad,Descripcion FROM sala");  
-        //$filas = $query->fetchAll(PDO::FETCH_ASSOC);  
-
-        $this->con = ConexionBD::getInstance();
-        $usuario = new UsuarioModel();
-
-        $filas = $usuario->findBySql($this->con, UsuarioModel::SQL_SELECT);
-
-        $num = count($filas);
-        if ($num > 0) {
-            $respuesta['estado'] = 'correcto';
-
-            for ($i = 0; $i < $num; $i++) {
-                $array[] = $filas[$i]->toHash();
-            }
-
-            $respuesta['usuarios'] = $array;
-            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
-        }
-        $this->mostrarRespuesta($this->devolverError(2), 204);
-    }
-
-    private function crearUsuario() {
-        if ($_SERVER['REQUEST_METHOD'] != "POST") {
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-        }
-        //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {
-
-        $NombreUsuario = $this->datosPeticion['NombreUsuario'];
-        $Password = md5($this->datosPeticion['Password']);
-        $TipoUsuario = $this->datosPeticion['TipoUsuario'];
-        date_default_timezone_set("Europe/Madrid");
-        $FechaAlta = date("y/m/d H:i:s");
-
-        $this->con = ConexionBD::getInstance();
-        $usuario = new UsuarioModel();
-
-        $usuario->setNombreUsuario($NombreUsuario);
-        $usuario->setPassword($Password);
-        $usuario->setTipoUsuario($TipoUsuario);
-        $usuario->setFechaAlta($FechaAlta);
-
-        $result = $usuario->insertIntoDatabase($this->con);
-
-        if ($result) {
-            //$id = $this->_conn->lastInsertId();  
-            $respuesta['estado'] = 'correcto';
-            $respuesta['msg'] = 'usuario creado correctamente';
-            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
-        }
-        else
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
-    }
-
-    private function actualizarUsuario() {
-        if ($_SERVER['REQUEST_METHOD'] != "PUT") {
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-        }
-        //echo $idUsuario . "<br/>";  
-        if (isset($this->datosPeticion['idUsuario'])) {
-            $idUsuario = $this->datosPeticion['idUsuario'];
-            $NombreUsuario = $this->datosPeticion['NombreUsuario'];
-            $Password = $this->datosPeticion['Password'];
-            $TipoUsuario = $this->datosPeticion['TipoUsuario'];
-
-            date_default_timezone_set("Europe/Madrid");
-            $Fecha = date("y/m/d H:i:s");
-
-            if (!empty($idUsuario)) {
-                $this->con = ConexionBD::getInstance();
-                $usuario = new UsuarioModel();
-
-                $usuario->setIdUsuario($idUsuario);
-                $usuario->setFechaBaja($Fecha);
-
-                $resultUpdate = $usuario->updateToDatabase($this->con);
-
-                $usuario->setIdUsuario($idUsuario);
-                $usuario->setNombreUsuario($NombreUsuario);
-                $usuario->setPassword($Password);
-                $usuario->setTipoUsuario($TipoUsuario);
-                $usuario->setFechaAlta($Fecha);
-
-                $resultInsert = $usuario->insertIntoDatabase($this->con);
-
-                if (count($resultUpdate) == 1 && count($resultInsert) == 1) {
-                    $resp = array('estado' => "correcto", "msg" => "precio actualizado");
-                    $this->mostrarRespuesta($this->convertirJson($resp), 200);
-                } else {
-                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
-                }
-            }
-        }
-        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
-    }
-    
-    private function obtenerUsuario() {
-        if ($_SERVER['REQUEST_METHOD'] != "POST") {
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-        }
-
-        //el constructor del padre ya se encarga de sanear los datos de entrada  
-        $idUsuario = $this->datosPeticion['idUsuario'];
-
-        //consulta preparada ya hace mysqli_real_escape()  
-        /* $query = $this->_conn->prepare("SELECT idSala, Nombre, Capacidad, Descripcion FROM sala WHERE idSala=:idSala");
-          $query->bindValue(":idSala", $idSala);
-          $fila = $query->execute();
-
-          $query->execute(); */
-
-        $this->con = ConexionBD::getInstance();
-        $usuario = new UsuarioModel();
-
-        $fila = $usuario->findById($this->con, $idUsuario);
-
-
-        if ($fila) {
-            $respuesta['estado'] = 'correcto';
-            $respuesta['usuario']['idUsuario'] = $fila->getIdUsuario();
-            $respuesta['usuario']['NombreUsuario'] = $fila->getNombreUsuario();
-            $respuesta['usuario']['Password'] = $fila->getPassword();
-            $respuesta['usuario']['TipoUsuario'] = $fila->getTipoUsuario();
-            $respuesta['usuario']['FechaAlta'] = $fila->getFechaAlta();
-            $respuesta['usuario']['FechaBaja'] = $fila->getFechaBaja();
-            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
-        }
-        $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
-    }
-
     private function codigoQR() {
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-
-        $Localizador = $this->datosPeticion['Localizador'];
+        
+        $Localizador = $this->datosPeticion['Localizador'];        
         $Nombre = $this->datosPeticion['Nombre'];
         $Apellidos = $this->datosPeticion['Apellidos'];
-        $EMail = $this->datosPeticion['EMail'];
-
-
+		$EMail = $this->datosPeticion['EMail'];
+		
+        
         //set it to writable location, a place for temp generated PNG files
         $PNG_TEMP_DIR = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'temp' . DIRECTORY_SEPARATOR;
 
@@ -1835,9 +1719,9 @@ class AdministradorBO extends Rest {
             mkdir($PNG_TEMP_DIR);
 
 
-        $filename = $PNG_TEMP_DIR . '' . $Localizador . '.png';
-        $nom = $Localizador . '.png';
-
+        $filename = $PNG_TEMP_DIR.''.$Localizador.'.png';
+        $nom = $Localizador. '.png';
+        
 
         //echo $filename;
 
@@ -1857,20 +1741,20 @@ class AdministradorBO extends Rest {
         //$filename = $PNG_TEMP_DIR.'test'.md5($data.'|'.$errorCorrectionLevel.'|'.$matrixPointSize).'.png';
         QRcode::png($data, $filename, $errorCorrectionLevel, $matrixPointSize, 2);
         //echo $PNG_WEB_DIR.$nombre;
-        if ($this->enviarMail($PNG_WEB_DIR . '' . $nom, $Nombre, $Apellidos, $EMail, $Localizador))
-            delete($filename);
+        if($this->enviarMail($PNG_WEB_DIR.''.$nom, $Nombre, $Apellidos, $EMail, $Localizador));
+			delete($filename);
     }
 
     private function enviarMail($file, $nom, $ape, $Email, $loc) {
         require("class.phpmailer.php");
-
+		
         $mail = new PHPMailer();
         $mail->Host = "localhost";
 
-        $mail->From = $Email; //"mariosgsg@gmail.com";
-        $mail->FromName = $nom; //"Nombre del Remitente";
-        $mail->Subject = "Reserva " . $loc;
-        $mail->AddAddress($Email, $nom); //"mariosgsg@gmail.com", "Nombre 01");
+        $mail->From = $Email;//"mariosgsg@gmail.com";
+        $mail->FromName = $nom;//"Nombre del Remitente";
+        $mail->Subject = "Reserva ".$loc;
+        $mail->AddAddress($Email, $nom);//"mariosgsg@gmail.com", "Nombre 01");
         //$mail->AddAddress("mariosgsg@gmail.com", "Nombre 02");
         //$mail->AddCC("mariosgsg@gmail.com");
         //$mail->AddBCC("mariosgsg@gmail.com");
@@ -1881,14 +1765,14 @@ class AdministradorBO extends Rest {
         $mail->Body = $body;
         $mail->AltBody = "Hola amigo\nprobando PHPMailer\n\nSaludos";
         //$mail->AddAttachment("temp/localizador.jpg", "codigoQR.jpg");
-        $mail->AddAttachment($file, $loc . '.png'); //"temp/Mario.png", "Mario.png");//"localizador.png");
+        $mail->AddAttachment($file, $loc.'.png');//"temp/Mario.png", "Mario.png");//"localizador.png");
         //$mail->AddAttachment($filename, "localizador.png");
         $result = $mail->Send();
-        return $result;
+		return  $result;
     }
 
     private function generarLocalizador($nom, $ape, $fecha, $dni) {
-        return substr($nom, 0, 2) . substr($ape, 0, 2) . str_replace('/', '', substr($fecha, 0, 8)) . str_replace(':', '', substr($fecha, 9, 5)) . $dni;
+        return substr($nom, 0, 2) . substr($ape, 0, 2) . str_replace('/','',substr($fecha, 0, 8)) . str_replace(':','',substr($fecha, 9, 5)) . $dni;
     }
 
 }
