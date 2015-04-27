@@ -14,13 +14,10 @@ function CargaTiposTarifas($scope, $http) {
                 var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifasFiltro";
                 var Params = 'NombreTarifa=' + document.getElementById("filtronombretarifa").value + '&DescripcionTarifa=' + document.getElementById("filtrodescripciontarifa").value;    
                 
-                alert(Params);
-                
 	        Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
 	
-                alert(Ajax.responseText);
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')

@@ -110,8 +110,6 @@ class TiposAbonosBO extends Rest{
         if ($_SERVER['REQUEST_METHOD'] != "GET") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-        //$query = $this->_conn->query("SELECT idSala,Nombre,Capacidad,Descripcion FROM sala");  
-        //$filas = $query->fetchAll(PDO::FETCH_ASSOC);  
 
         $this->con = ConexionBD::getInstance();
         $tipoAbono = new TipoAbonoModel();
@@ -126,7 +124,7 @@ class TiposAbonosBO extends Rest{
                 $array[] = $filas[$i]->toHash();
             }
 
-            $respuesta['tiposAbono'] = $array;
+            $respuesta['tiposAbonos'] = $array;
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->devolverError(2), 204);
@@ -146,16 +144,7 @@ class TiposAbonosBO extends Rest{
             $FechaBaja = $this->datosPeticion['FechaBaja'];
 
             if (!empty($idTipoAbono)) {
-                /* $query = $this->_conn->prepare("update tiposolicitud set NombreSolicitud=:NombreSolicitud, DescripcionSolicitud=:DescripcionSolicitud, FechaAlta=:FechaAlta, FechaBaja=:FechaBaja  
-                  WHERE idTipoSolicitud=:idTipoSolicitud");
-                  $query->bindValue(":idTipoSolicitud", $idTipoSolicitud);
-                  $query->bindValue(":NombreSolicitud", $NombreSolicitud);
-                  $query->bindValue(":DescripcionSolicitud", $DescripcionSolicitud);
-                  $query->bindValue(":FechaAlta", $FechaAlta);
-                  $query->bindValue(":FechaBaja", $FechaBaja);
-                  $query->execute();
-                  $filasActualizadas = $query->rowCount(); */
-
+                
                 $this->con = ConexionBD::getInstance();
                 $tipoabono = new TipoabonoModel();
 

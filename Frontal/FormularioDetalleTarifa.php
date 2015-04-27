@@ -23,7 +23,7 @@
                 Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-                alert(Ajax.responseText);    
+                
                 $scope.tipotarifa = JSON.parse(Ajax.responseText).tipotarifa;
                 //$scope.sala.CapacidadSala = parseInt($scope.sala.CapacidadSala);
         

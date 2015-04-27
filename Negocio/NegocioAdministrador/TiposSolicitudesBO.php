@@ -143,29 +143,15 @@ class TiposSolicitudesBO extends Rest{
             $FechaBaja = $this->datosPeticion['FechaBaja'];
 
             if (!empty($idTipoSolicitud)) {
-                /* $query = $this->_conn->prepare("update tiposolicitud set NombreSolicitud=:NombreSolicitud, DescripcionSolicitud=:DescripcionSolicitud, FechaAlta=:FechaAlta, FechaBaja=:FechaBaja  
-                  WHERE idTipoSolicitud=:idTipoSolicitud");
-                  $query->bindValue(":idTipoSolicitud", $idTipoSolicitud);
-                  $query->bindValue(":NombreSolicitud", $NombreSolicitud);
-                  $query->bindValue(":DescripcionSolicitud", $DescripcionSolicitud);
-                  $query->bindValue(":FechaAlta", $FechaAlta);
-                  $query->bindValue(":FechaBaja", $FechaBaja);
-                  $query->execute();
-                  $filasActualizadas = $query->rowCount(); */
-
-
+                
                 $this->con = ConexionBD::getInstance();
                 $tiposolicitud = new TiposolicitudModel();
-
-                //var_dump($tiposolicitud);
 
                 $tiposolicitud->setIdTipoSolicitud($idTipoSolicitud);
                 $tiposolicitud->setNombreSolicitud($NombreSolicitud);
                 $tiposolicitud->setDescripcionSolicitud($DescripcionSolicitud);
                 $tiposolicitud->setFechaAlta($FechaAlta);
                 $tiposolicitud->setFechaBaja($FechaBaja);
-
-                //var_dump($tiposolicitud);
 
                 $result = $tiposolicitud->updateToDatabase($this->con);
 

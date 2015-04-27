@@ -20,7 +20,6 @@
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                                        
-                alert(Ajax.responseText);
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')

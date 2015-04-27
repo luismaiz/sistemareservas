@@ -16,14 +16,14 @@
         $scope.estado = [];
         
         $scope.obtenerTiposSolicitud = function(idTipoSolicitud) {
-                alert('hola');
+                
                 var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTipoSolicitud";
                 var Params = 'idTipoSolicitud='+ idTipoSolicitud;
 
                 Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-                    alert(Ajax.responseText);
+                
                 $scope.tiposolicitud = JSON.parse(Ajax.responseText).tipoSolicitud;
                 //$scope.sala.CapacidadSala = parseInt($scope.sala.CapacidadSala);
         

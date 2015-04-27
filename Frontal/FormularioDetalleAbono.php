@@ -23,7 +23,7 @@
                 Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-                alert(Ajax.responseText);    
+                
                 $scope.tipoabono = JSON.parse(Ajax.responseText).tipoabono;
                 //$scope.sala.CapacidadSala = parseInt($scope.sala.CapacidadSala);
         
@@ -54,7 +54,7 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
              
-            
+                
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')
@@ -68,53 +68,7 @@
             };
         
     }
-    
-    
-//    function TipoTarifa(){      
-//        //alert(document.getElementById("idSala"));
-//        if(document.getElementById("idTipoTarifa").value == "")
-//            crearTipoTarifa();
-//        else
-//            actualizarTipoTarifa();
-//    }
-//    
-//    function crearTipoTarifa() {	
-//        //alert("crear");
-//        var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=crearTipoTarifa";
-//        //var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearTipoTarifa";		
-//        var Params = 'idTipoTarifa='+ document.getElementById('idTipoTarifa').value +
-//            '&NombreTarifa='+ document.getElementById('NombreTarifa').value +
-//            '&DescripcionTarifa='+ document.getElementById('DescripcionTarifa').value +
-//            '&FechaAlta='+ document.getElementById('FechaAlta').value +
-//            '&FechaBaja='+ document.getElementById('FechaBaja').value;
-//
-//        //alert(Params);
-//	
-//        Ajax.open("POST", Url, false);
-//        Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
-//        Ajax.send(Params); // Enviamos los datos
-//        
-//        mostrarRespuesta(Ajax.responseText);
-//    }   
-//
-//    function actualizarTipoTarifa() {
-//        //alert("actualizar");
-//        var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=actualizarTipoTarifa";
-//        //var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=actualizarTipoTarifa";
-//        var Params = 'idTipoTarifa='+ document.getElementById('idTipoTarifa').value +
-//            '&NombreTarifa='+ document.getElementById('NombreTarifa').value +
-//            '&DescripcionTarifa='+ document.getElementById('DescripcionTarifa').value +
-//            '&FechaAlta='+ document.getElementById('FechaAlta').value +
-//            '&FechaBaja='+ document.getElementById('FechaBaja').value;
-//
-//        //alert(Params);
-//	
-//        Ajax.open("PUT", Url, false);
-//        Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
-//        Ajax.send(Params); // Enviamos los datos
-//        
-//        mostrarRespuesta(Ajax.responseText);
-//    }            
+
 </script>
 
 <div>
@@ -157,7 +111,7 @@
                 <form class="form-group" name="formulario">
                     <input ng-model="tipoabono.idTipoAbono" type="hidden" class="input-sm" name="idTipoAbono" id="idTipoAbono">
                                 <label class="control-label col-md-2" >Nombre Abono</label>
-                                <input ng-model="tipoabono.NombreAbono"  type="text" class="input-sm col-md-4" name="nombreabono" id="NombreAbonp" required >
+                                <input ng-model="tipoabono.NombreAbono"  type="text" class="input-sm col-md-4" name="nombrebono" id="NombreAbono" required >
                                 <span style="color:red" ng-show="formulario.nombreabono.$dirty && formulario.nombreabono.$invalid">
                                 <span ng-show="formulario.nombreabono.$error.required">Nombre de abono obligatorio.</span>
                                  </span>

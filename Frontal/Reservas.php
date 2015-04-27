@@ -50,32 +50,45 @@
         Ajax.open("GET", Url, false);
         Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
         Ajax.send(Params); // Enviamos los datos
-	
-        alert(Ajax.responseText);
-        
+               
         $scope.tiposSolicitudes = JSON.parse(Ajax.responseText).tiposSolicitudes;
         
-        alert($scope.tiposSolicitudes);
         };   
-        $scope.obtenerTipoSolicitud();    
+        $scope.obtenerTipoSolicitud();
+        
+        
                      
-//        $scope.obtenerReservas = function() {
-//                
-//                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerReservasFiltro";
-//                var Params = 'localizador=' + document.getElementById("filtrolocalizador").value + 
-//                '&Nombre=' + document.getElementById("filtroNombre").value +    
-//                '&Apellidos='+ document.getElementById("filtroApellidos").value +
-//                '&DNI=' + document.getElementById("filtroDni").value +
-//                '&Email=' + document.getElementById("filtroEmail").value +
-//                '&FechaSolicitud=' + document.getElementById("filtroFechaSolicitud").value;
-//                
-//	        Ajax.open("POST", Url, false);
-//                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-//                Ajax.send(Params); // Enviamos los datos
-//                
-//  //              alert(Ajax.responseText);
-//                $scope.reservas = JSON.parse(Ajax.responseText).reservas;
-//            };
+        $scope.obtenerReservas = function() {
+            
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerReservasFiltro";
+                var Params =  'Localizador=' + document.getElementById("filtroLocalizador").value + 
+                '&Nombre=' + document.getElementById("filtroNombre").value +    
+                '&Apellidos='+ document.getElementById("filtroApellidos").value +
+                '&DNI=' + document.getElementById("filtroDni").value +
+                '&Email=' + document.getElementById("filtroEmail").value +
+                '&FechaSolicitud=' + document.getElementById("filtroFechaSolicitud").value +
+                '&TipoSolicitud=' + document.getElementById("filtroTipoSolicitud").value;
+                
+	        Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                
+  
+                $scope.solicitudes = JSON.parse(Ajax.responseText).solicitudes;
+                
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    $scope.salas = JSON.parse(Ajax.responseText).salas;    
+                    document.getElementById('divSinResultados').style.display = 'none';
+                }
+                else
+                {
+                    $scope.salas = [];
+                    document.getElementById('divSinResultados').style.display = 'block';
+                }
+            };
           
     }
       
@@ -99,7 +112,7 @@
             </div>
             <div class="alert alert-info" id="divSinResultados" style='display:none;'>
                     <strong></strong>No se han encontrado resultados para los filtros introducidos.
-                </div>
+            </div>
             <div class="box-content">
                 <div class="row">
                     <div class="form-group">
@@ -109,7 +122,10 @@
                                 <input type="text" class="input-sm" id="filtroLocalizador" name="filtroLocalizador" value="">	
                                 <label class="control-label" >Tipo Solicitud</label>
                                 <select  id="filtroTipoSolicitud" class="input-sm" >	
-                                    <option ng_repeat="tiposolicitud in tiposSolicitudes" value="">{{tiposolicitud.NombreSolicitud}}</option>
+                                    <option ng_repeat="tiposolicitud in tiposSolicitudes" value="{{tiposolicitud.idTipoSolicitud}}">{{tiposolicitud.NombreSolicitud}}</option>
+                                </select>
+                                
+                                    
                                 </select>
                             </div>
                             <div class="form-group">
@@ -123,10 +139,10 @@
                                 <input type="email" class="input-sm" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" id="filtroEmail" name="filtroEmail"/><br>
                                 <label class="control-label" >Fecha Solicitud</label>
                                 <input type="datetime-local" class="input-sm" id="filtroFechaSolicitud" name="filtroFechaSolicitud"/>
-                                <input class="box btn-primary" type="button" value="Buscar" onclick="obtenerSolicitudes()"/>
+                                <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerReservas()"/>
                             </div>
                             <div class="box-content" id="reservas">
-                    <table class="table table-striped table-bordered responsive">
+                            <table class="table table-striped table-bordered responsive">
                                             <thead>
                                                 <tr>
                                                     <th>Nombre</h6></th>
@@ -141,15 +157,14 @@
                                                     <td>{{solicitud.Apellidos}}</td>
                                                     <td>{{solicitud.Localizador}}</td>
                                                     <td>{{solicitud.FechaSolicitud}}</td>
-                                                    <td class="center"><a href="../Frontal/FormularioDetalleSolicitudAbonoDiario.php" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
-                                                    <td class="center"><a href="FormularioDetalleSala.php?idSala={{solicitud.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
+                                                    <td class="center"><a href="http://localhost:8080/SistemaReservas/Frontal/FormularioDetalleSolicitudAbonoDiario.php?idSolicitud={{solicitud.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
                                                 </tr>
                                                 <tr ng_repeat="abono in abonos">
                                                     <td>{{abono.Nombre}}</td>
                                                     <td>{{abono.Apellidos}}</td>
                                                     <td>{{abono.Localizador}}</td>
                                                     <td>{{abono.FechaSolicitud}}</td>
-                                                    <td class="center"><a href="FormularioDetalleSolicitudAbonoDiario.php" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
+                                                    <td class="center"><a href="http://localhost:8080/SistemaReservas/Frontal/FormularioDetalleSolicitudAbonoDiario.php" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
                                                 </tr>
                                             
                                         </table>

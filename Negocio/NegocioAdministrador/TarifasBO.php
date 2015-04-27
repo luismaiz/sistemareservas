@@ -113,8 +113,7 @@ class TarifasBO extends Rest{
         if ($_SERVER['REQUEST_METHOD'] != "GET") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-        //$query = $this->_conn->query("SELECT idSala,Nombre,Capacidad,Descripcion FROM sala");  
-        //$filas = $query->fetchAll(PDO::FETCH_ASSOC);  
+      
 
         $this->con = ConexionBD::getInstance();
         $tipoTarifa = new TipoTarifaModel();
@@ -129,7 +128,7 @@ class TarifasBO extends Rest{
                 $array[] = $filas[$i]->toHash();
             }
 
-            $respuesta['tiposTarifa'] = $array;
+            $respuesta['tiposTarifas'] = $array;
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->devolverError(2), 204);
@@ -148,14 +147,6 @@ class TarifasBO extends Rest{
             $FechaBaja = $this->datosPeticion['FechaBaja'];
 
             if (!empty($idTipoTarifa)) {
-                /* $query = $this->_conn->prepare("update sala set Nombre=:Nombre, Capacidad=:Capacidad, Descripcion=:Descripcion WHERE idSala =:idSala");
-                  $query->bindValue(":Nombre", $Nombre);
-                  $query->bindValue(":Capacidad", $Capacidad);
-                  $query->bindValue(":Descripcion", $Descripcion);
-                  $query->bindValue(":idSala", $idSala);
-                  $query->execute();
-                  $filasActualizadas = $query->rowCount(); */
-
 
                 $this->con = ConexionBD::getInstance();
                 $tipotarifa = new TipotarifaModel();

@@ -136,6 +136,62 @@ class ReservasBO extends Rest{
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
     }
     
+    
+    private function obtenerReservasFiltro() {
+        
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+                
+        $loc = $this->datosPeticion['Localizador'];
+        $nom = $this->datosPeticion['Nombre'];
+        $ape = $this->datosPeticion['Apellidos'];
+        $dni = $this->datosPeticion['DNI'];
+        $mail = $this->datosPeticion['Email'];
+        $fsolicitud = $this->datosPeticion['FechaSolicitud'];
+        $tsolicitud = $this->datosPeticion['TipoSolicitud'];
+        
+        
+        $this->con = ConexionBD::getInstance();
+        $sort = array(
+            new DSC(SolicitudModel::FIELD_FECHASOLICITUD, DSC::ASC),
+            new DSC(SolicitudModel::FIELD_APELLIDOS, DSC::ASC)
+        );
+        
+        $solicitud = new SolicitudModel();
+        
+        if($loc != '')
+            $solicitud->setLocalizador($loc);
+        if($nom != '')
+            $solicitud->setNombre($nom);
+        if($ape != '')
+            $solicitud->setApellidos($ape);
+        if($dni != '')
+            $solicitud->setDni($dni);
+        if($mail != '')
+            $solicitud->setEMail($mail);
+        if($fsolicitud != '')
+            $solicitud->setFechaSolicitud($fsolicitud);
+        if($tsolicitud != '')
+            $solicitud->setIdTipoSolicitud($tsolicitud);
+        
+        
+        $filas = SolicitudModel::findByExample($this->con,$solicitud,$sort);
+                                
+        $num = count($filas);
+        if ($num > 0) {
+            $respuesta['estado'] = 'correcto';
+
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
+            $respuesta['solicitudes'] = $array;
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+    }
+    
 }
 
 $reservasBO = new ReservasBO();
