@@ -212,9 +212,9 @@
                                               </thead>      
                                                 </tr>
                                                 <tr ng_repeat="precio in precios">
-                                                    <td>{{precio.TipoSolicitud}}</td>
-                                                    <td>{{precio.TipoAbono}}</td>
-                                                    <td>{{precio.NombreTarifa}}</td>
+                                                    <td>{{precio.idTipoSolicitud}}</td>
+                                                    <td>{{precio.idTipoAbono}}</td>
+                                                    <td>{{precio.idTipoTarifa}}</td>
                                                     <td>{{precio.Precio}}</td>
                                                     <td class="center"><a href="FormularioDetallePrecio.php?idPrecio={{precio.idPrecio}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
                                                 </tr>
