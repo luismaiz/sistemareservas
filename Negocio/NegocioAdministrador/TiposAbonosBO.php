@@ -110,8 +110,6 @@ class TiposAbonosBO extends Rest{
         if ($_SERVER['REQUEST_METHOD'] != "GET") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-        //$query = $this->_conn->query("SELECT idSala,Nombre,Capacidad,Descripcion FROM sala");  
-        //$filas = $query->fetchAll(PDO::FETCH_ASSOC);  
 
         $this->con = ConexionBD::getInstance();
         $tipoAbono = new TipoAbonoModel();
@@ -126,7 +124,7 @@ class TiposAbonosBO extends Rest{
                 $array[] = $filas[$i]->toHash();
             }
 
-            $respuesta['tiposAbono'] = $array;
+            $respuesta['tiposAbonos'] = $array;
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->devolverError(2), 204);
@@ -146,16 +144,7 @@ class TiposAbonosBO extends Rest{
             $FechaBaja = $this->datosPeticion['FechaBaja'];
 
             if (!empty($idTipoAbono)) {
-                /* $query = $this->_conn->prepare("update tiposolicitud set NombreSolicitud=:NombreSolicitud, DescripcionSolicitud=:DescripcionSolicitud, FechaAlta=:FechaAlta, FechaBaja=:FechaBaja  
-                  WHERE idTipoSolicitud=:idTipoSolicitud");
-                  $query->bindValue(":idTipoSolicitud", $idTipoSolicitud);
-                  $query->bindValue(":NombreSolicitud", $NombreSolicitud);
-                  $query->bindValue(":DescripcionSolicitud", $DescripcionSolicitud);
-                  $query->bindValue(":FechaAlta", $FechaAlta);
-                  $query->bindValue(":FechaBaja", $FechaBaja);
-                  $query->execute();
-                  $filasActualizadas = $query->rowCount(); */
-
+                
                 $this->con = ConexionBD::getInstance();
                 $tipoabono = new TipoabonoModel();
 
@@ -200,15 +189,56 @@ class TiposAbonosBO extends Rest{
 
         if ($fila) {
             $respuesta['estado'] = 'correcto';
-            $respuesta['tipoSolicitud']['idTipoAbono'] = $fila->getIdTipoAbono();
-            $respuesta['tipoSolicitud']['NombreAbono'] = $fila->getNombreAbono();
-            $respuesta['tipoSolicitud']['DescripcionAbono'] = $fila->getDescripcionAbono();
-            $respuesta['tipoSolicitud']['FechaAlta'] = $fila->getFechaAlta();
-            $respuesta['tipoSolicitud']['FechaBaja'] = $fila->getFechaBaja();
+            $respuesta['tipoabono']['idTipoAbono'] = $fila->getIdTipoAbono();
+            $respuesta['tipoabono']['NombreAbono'] = $fila->getNombreAbono();
+            $respuesta['tipoabono']['DescripcionAbono'] = $fila->getDescripcionAbono();
+            $respuesta['tipoabono']['FechaAlta'] = $fila->getFechaAlta();
+            $respuesta['tipoabono']['FechaBaja'] = $fila->getFechaBaja();
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
     }
+    
+    
+    private function obtenerTiposAbonosFiltro() {
+        
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+                
+        $nomtipoabono = $this->datosPeticion['NombreAbono'];
+        $destipoabomo = $this->datosPeticion['DescripcionAbono'];
+        
+        $this->con = ConexionBD::getInstance();
+        $sort = array(
+            new DSC(TipoabonoModel::FIELD_NOMBREABONO, DSC::ASC),
+            new DSC(TipoabonoModel::FIELD_DESCRIPCIONABONO, DSC::ASC)
+        );
+        
+        $tipoabono = new TipoabonoModel();
+        
+        if($nomtipoabono != '')
+            $tipoabono->setNombreAbono($nomtipoabono);
+        if($destipoabomo != '')
+            $tipoabono->setDescripcionAbono($destipoabomo);
+        
+        $filas = TipoabonoModel::findByExample($this->con,$tipoabono,$sort);
+                                
+        $num = count($filas);
+        if ($num > 0) {
+            $respuesta['estado'] = 'correcto';
+
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
+            $respuesta['tiposabonos'] = $array;
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+    }
+    
 }
 $tiposabonoBO = new TiposAbonosBO();
+>>>>>>> 4f7a419ccaab99d17143b3a3490a8a51850fac6a
 $tiposabonoBO->procesarLLamada();

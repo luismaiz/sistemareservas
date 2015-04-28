@@ -35,16 +35,10 @@
                     $scope.crearSala();            
         
             };
-            
-<<<<<<< HEAD
-            function crearSala() {
-                //alert("crear");
-                var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSala";		
-=======
+
             $scope.crearSala = function() {
                                 
                 var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=crearSala";		
->>>>>>> 2d0608445159c82d4e918578dcf6eb0173a078f7
                 var Params ='&NombreSala='+ document.getElementById('NombreSala').value +
                     '&CapacidadSala='+ document.getElementById('CapacidadSala').value +
                     '&DescripcionSala='+ document.getElementById('DescripcionSala').value +
@@ -56,15 +50,6 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-<<<<<<< HEAD
-                mostrarRespuesta(Ajax.responseText);
-            }
-
-            function actualizarSala() {
-                //alert("actualizar");
-                var Url = "http://localhost/Sistemareservas/AdministradorBO.php?url=actualizarSala";
-                var Params = 'idSala='+ document.getElementById('idSala').value +
-=======
                 //$scope.estado = JSON.parse(Ajax.responseText).sala;
                 
 //                if ($scope.estado === 'correcto')
@@ -83,7 +68,6 @@
              
                 var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala";
                 var Params = 'idSala='+ $location.search().idSala +
->>>>>>> 2d0608445159c82d4e918578dcf6eb0173a078f7
                     '&NombreSala='+ document.getElementById('NombreSala').value +
                     '&CapacidadSala='+ document.getElementById('CapacidadSala').value +
                     '&DescripcionSala='+ document.getElementById('DescripcionSala').value +
@@ -98,20 +82,6 @@
             
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
-<<<<<<< HEAD
-                mostrarRespuesta(Ajax.responseText);
-            }
-
-            function borrarSala() {
-                var Url = "http://localhost/Sistemareservas/AdministradorBO.php?url=borrarSala";
-                var Params = 'idSala='+ document.getElementById('idSala').value;
-
-	
-                Ajax.open("DELETE", Url, false);
-                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-                Ajax.send(Params); // Enviamos los datos
-            }            
-=======
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
@@ -125,7 +95,6 @@
             
         }
                        
->>>>>>> 2d0608445159c82d4e918578dcf6eb0173a078f7
         </script>
        
 <div>
@@ -173,7 +142,7 @@
                                 <span ng-show="formulario.nombresala.$error.required">Nombre de sala obligatorio.</span>
                                  </span>
                                 </br></br>
-                                
+                               
                                 <label class="control-label col-md-2" >Descripción</label>
                                 <input ng-model="sala.DescripcionSala" ng-required=true" type="text" class="input-sm col-md-4"  name="descripcionsala" id="DescripcionSala">
                                 <span style="color:red" ng-show="formulario.descripcionsala.$dirty && formulario.descripcionsala.$invalid">

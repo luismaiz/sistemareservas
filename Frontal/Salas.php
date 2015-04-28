@@ -12,23 +12,9 @@
                 var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSalasFiltro";
                 var Params = 'NombreSala=' + document.getElementById("filtronombresala").value + '&CapacidadSala=' + document.getElementById("filtrocapacidadsala").value;    
                 
-<<<<<<< HEAD
-                //var Url = "http://www.rightwatch.es/pfgreservas/Api.php?url=obtenerSalas";
-                var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerSalas";
-
-                //var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerSalas";
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerSalas";
-
-                var Params = '';
-
-	alert('hola');
-                Ajax.open("GET", Url, false);
-                Ajax.setRequestHeader("Content-Type","application/json");
-                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");                
-=======
 	        Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
->>>>>>> 2d0608445159c82d4e918578dcf6eb0173a078f7
+
                 Ajax.send(Params); // Enviamos los datos
 	
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
@@ -69,9 +55,8 @@
                 <div class="alert alert-info" id="divSinResultados" style='display:none;'>
                     <strong></strong>No se han encontrado resultados para los filtros introducidos.
                 </div>
-            
-            <div class="box-content">
-                            <div class="row">
+                <div class="box-content">
+                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -115,6 +100,6 @@
         </div>
     </div>
 
-</div>
+
 
 <?php require('Pie.php'); ?>

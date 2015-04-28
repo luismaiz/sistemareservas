@@ -208,6 +208,50 @@ class PreciosBO extends Rest{
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
     }
+    
+    private function obtenerPreciosFiltro() {
+        
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+                
+        $tsolicitud = $this->datosPeticion['TipoSolicitud'];
+        $tabono = $this->datosPeticion['TipoAbono'];
+        $ttarifa = $this->datosPeticion['TipoTarifa'];
+        
+        
+        $this->con = ConexionBD::getInstance();
+        $sort = array(
+            new DSC(PrecioModel:: FIELD_PRECIO, DSC::ASC)
+            
+        );
+        
+        $precio = new PrecioModel();
+        
+        if($tsolicitud != '')
+            $precio->setIdTipoSolicitud($tsolicitud);
+        if($tabono != '')
+            $precio->setIdTipoAbono($tabono);
+        if($ttarifa != '')
+            $precio->setIdTipoTarifa($ttarifa);
+        
+        
+        $filas = PrecioModel::findByExample($this->con,$precio,$sort);
+                                
+        $num = count($filas);
+        if ($num > 0) {
+            $respuesta['estado'] = 'correcto';
+
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
+            $respuesta['precios'] = $array;
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+    }
 }
 $preciosBO = new PreciosBO();
+>>>>>>> 4f7a419ccaab99d17143b3a3490a8a51850fac6a
 $preciosBO->procesarLLamada();

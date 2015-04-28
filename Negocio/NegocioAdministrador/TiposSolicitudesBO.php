@@ -110,20 +110,20 @@ class TiposSolicitudesBO extends Rest{
         if ($_SERVER['REQUEST_METHOD'] != "GET") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-
-        /* $query = $this->_conn->query("SELECT idTipoSolicitud, NombreSolicitud, DescripcionSolicitud, FechaAlta, FechaBaja FROM tiposolicitud");
-          $filas = $query->fetchAll(PDO::FETCH_ASSOC);
-          $num = count($filas); */
-
         $this->con = ConexionBD::getInstance();
         $tiposolicitud = new TiposolicitudModel();
 
-        $filas = $tiposolicitud->findBySql($this->con, "Select * from tiposolicitud");
+        $filas = $tiposolicitud->findBySql($this->con, TiposolicitudModel::SQL_SELECT);
 
-
-        if (count($filas) > 0) {
+        $num = count($filas);
+        if ($num > 0) {
             $respuesta['estado'] = 'correcto';
-            $respuesta['tiposSolicitudes'] = $filas;
+
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
+            $respuesta['tiposSolicitudes'] = $array;
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->devolverError(2), 204);
@@ -143,29 +143,15 @@ class TiposSolicitudesBO extends Rest{
             $FechaBaja = $this->datosPeticion['FechaBaja'];
 
             if (!empty($idTipoSolicitud)) {
-                /* $query = $this->_conn->prepare("update tiposolicitud set NombreSolicitud=:NombreSolicitud, DescripcionSolicitud=:DescripcionSolicitud, FechaAlta=:FechaAlta, FechaBaja=:FechaBaja  
-                  WHERE idTipoSolicitud=:idTipoSolicitud");
-                  $query->bindValue(":idTipoSolicitud", $idTipoSolicitud);
-                  $query->bindValue(":NombreSolicitud", $NombreSolicitud);
-                  $query->bindValue(":DescripcionSolicitud", $DescripcionSolicitud);
-                  $query->bindValue(":FechaAlta", $FechaAlta);
-                  $query->bindValue(":FechaBaja", $FechaBaja);
-                  $query->execute();
-                  $filasActualizadas = $query->rowCount(); */
-
-
+                
                 $this->con = ConexionBD::getInstance();
                 $tiposolicitud = new TiposolicitudModel();
-
-                //var_dump($tiposolicitud);
 
                 $tiposolicitud->setIdTipoSolicitud($idTipoSolicitud);
                 $tiposolicitud->setNombreSolicitud($NombreSolicitud);
                 $tiposolicitud->setDescripcionSolicitud($DescripcionSolicitud);
                 $tiposolicitud->setFechaAlta($FechaAlta);
                 $tiposolicitud->setFechaBaja($FechaBaja);
-
-                //var_dump($tiposolicitud);
 
                 $result = $tiposolicitud->updateToDatabase($this->con);
 
@@ -186,14 +172,9 @@ class TiposSolicitudesBO extends Rest{
         }
 
         //el constructor del padre ya se encarga de sanear los datos de entrada  
+        
+        if (isset($this->datosPeticion['idTipoSolicitud'])) {
         $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
-
-        //consulta preparada ya hace mysqli_real_escape()  
-        /* $query = $this->_conn->prepare("SELECT idTipoSolicitud,NombreSolicitud,DescripcionSolicitud,FechaAlta,FechaBaja FROM tiposolicitud WHERE idTipoSolicitud=:idTipoSolicitud");
-          $query->bindValue(":idTipoSolicitud", $idTipoSolicitud);
-          $fila = $query->execute();
-
-          $query->execute(); */
 
         $this->con = ConexionBD::getInstance();
         $tiposolicitud = new TiposolicitudModel();
@@ -211,7 +192,50 @@ class TiposSolicitudesBO extends Rest{
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
     }
+    
+        }
+    
+    
+    private function obtenerTiposSolicitudesFiltro() {
+        
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+                
+        $nomtiposolicitud = $this->datosPeticion['NombreSolicitud'];
+        $destiposolicitud = $this->datosPeticion['DescripcionSolicitud'];
+        
+        $this->con = ConexionBD::getInstance();
+        $sort = array(
+            new DSC(TiposolicitudModel::FIELD_NOMBRESOLICITUD, DSC::ASC),
+            new DSC(TiposolicitudModel::FIELD_DESCRIPCIONSOLICITUD, DSC::ASC)
+        );
+        
+        $tiposolicitud = new TiposolicitudModel();
+        
+        if($nomtiposolicitud != '')
+            $tiposolicitud->setNombreSolicitud($nomtiposolicitud);
+        if($destiposolicitud != '')
+            $tiposolicitud->setDescripcionSolicitud($destiposolicitud);
+        
+        $filas = TiposolicitudModel::findByExample($this->con,$tiposolicitud,$sort);
+                                
+        $num = count($filas);
+        if ($num > 0) {
+            $respuesta['estado'] = 'correcto';
+
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
+            $respuesta['tipossolicitudes'] = $array;
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+    }
+    
 }
 
 $tipossolicitudesBO = new TiposSolicitudesBO();
+>>>>>>> 4f7a419ccaab99d17143b3a3490a8a51850fac6a
 $tipossolicitudesBO->procesarLLamada();

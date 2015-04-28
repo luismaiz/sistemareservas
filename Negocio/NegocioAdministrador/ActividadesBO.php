@@ -323,3 +323,4 @@ class ActividadesBO extends Rest {
 
 $actividadesBO = new ActividadesBO();
 $actividadesBO->procesarLLamada();
+>>>>>>> 4f7a419ccaab99d17143b3a3490a8a51850fac6a
