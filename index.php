@@ -8,7 +8,7 @@ include('Frontal/CabeceraInicio.php');
     var Ajax = new AjaxObj();
 
     function login() {
-        var Url = "http://localhost/sistemareservas/Negocio/LoginBO.php?url=iniciarSesion";
+        var Url = "http://localhost/SistemaReservas/NegocioAdministrador/LoginBO.php?url=iniciarSesion";
         var Params = 'NombreUsuario=' + document.getElementById("NombreUsuario").value + '&Password=' + document.getElementById("Password").value;
 
         Ajax.open("POST", Url, false);
@@ -17,10 +17,10 @@ include('Frontal/CabeceraInicio.php');
 
         var RespTxt = Ajax.responseText;
 
-        alert(RespTxt);
+        //alert(RespTxt);
 
         var Clase = eval('(' + RespTxt + ')');
-        
+
         if (Clase) {
             var tipo = parseInt((Clase.Usuario[0].TipoUsuario));
             switch (tipo) {
@@ -29,7 +29,7 @@ include('Frontal/CabeceraInicio.php');
                     return false;
                     break;
                 case 2:
-                    window.location = 'Frontal\\InicioMonitor.php';
+                    window.location = 'Frontal\\Inicio.php';
                     return false;
                     break;
                 case 3:
@@ -76,7 +76,7 @@ include('Frontal/CabeceraInicio.php');
 
                 <p class="center col-md-5">
                     <button class="btn btn-primary" >Login</button>
-                    
+
                 </p>
             </fieldset>
         </form>

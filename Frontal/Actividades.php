@@ -1,63 +1,40 @@
 <?php require('Cabecera.php'); ?>
 <script>
     var Ajax = new AjaxObj();
-    function obtenerActividades() {
-        //var Url = "http://www.rightwatch.es/pfgreservas/Api.php?url=obtenerActividades";	
-        var Url = "http://localhost/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerActividades";
-        //var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerActividades";	
-        //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerActividades";		        
+    var app = angular.module('BusquedaActividades', []);
+    
+    function CargaActividades($scope, $http) {
+            
+            $scope.actividades = [];
 
-        var Params = '';
+            $scope.obtenerActividades = function() {
+                
+                
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividadesFiltro";
+                var Params = 'NombreActividad=' + document.getElementById("filtroactividad").value + 
+                        '&IntensidadActividad=' + document.getElementById("filtrointensidad").value +    
+                        '&Grupo=' + document.getElementById("filtrogrupo").value;        
+	        Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                                       
+                alert(Ajax.responseText);
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    $scope.actividades = JSON.parse(Ajax.responseText).actividades;    
+                    document.getElementById('divSinResultados').style.display = 'none';
+                }
+                else
+                {
+                    $scope.actividades = [];
+                    document.getElementById('divSinResultados').style.display = 'block';
+                }
+        
+            };
 
-        Ajax.open("GET", Url, false);
-        Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        Ajax.send(Params); // Enviamos los datos
-
-        var RespTxt = Ajax.responseText;
-
-        //alert(RespTxt);
-
-
-        var Clase = eval('(' + RespTxt + ')');
-
-        //alert(Clase);
-
-        var contenido = '<table class="table table-striped table-bordered responsive"><thead><tr><th>Actividad</th><th>Intensidad</th><th>Edad Minima</th><th>Edad Maxima</th><th>Grupo</th><th>Descripcion</th><th>Fecha Alta</th><th>Fecha Baja</th></th><th></th></tr>';
-
-        var div = document.getElementById("actividades");
-
-        for (i = 0; i < Clase.actividades.length; i++) {
-            //contenido = contenido + '<th>' + Clase.actividades[i].idActividad + '</th>';
-            contenido = contenido + '<tr>';
-            contenido = contenido + '<td>' + Clase.actividades[i].NombreActividad + '</td>';
-            contenido = contenido + '<td>' + Clase.actividades[i].IntensidadActividad + '</td>';
-            contenido = contenido + '<td>' + Clase.actividades[i].EdadMinima + '</td>';
-            contenido = contenido + '<td>' + Clase.actividades[i].EdadMaxima + '</td>';
-            contenido = contenido + '<td>' + Clase.actividades[i].Grupo + '</td>';
-            contenido = contenido + '<td>';
-            contenido = contenido + '<input type="color" disabled="false" class="input-sm" id="Descripcion" name="Descripcion" value="' + Clase.actividades[i].Descripcion + '"/>';
-            contenido = contenido + '</td>';
-            contenido = contenido + '<td>' + Clase.actividades[i].FechaAlta + '</td>';
-            contenido = contenido + '<td>' + Clase.actividades[i].FechaBaja + '</td>';
-            contenido = contenido + '<td class="center"><a href="FormularioDetalleActividad.php?idActividad=' + Clase.actividades[i].idActividad + '" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>';
-            contenido = contenido + '</tr>';
-        }
-        contenido = contenido + '</thead></table>';
-
-        div.innerHTML = contenido;
-
-        //alert('Estado: '+ Clase.estado);
-        //alert('idSala: '+ Clase.salas.length);
-        //alert('idSala: '+ Clase.salas[0].idSala);
-        //alert('NombreActividad: '+ Clase.salas[0].NombreActividad);
-        //alert('Capacidad: '+ Clase.salas[0].Capacidad);
-        //alert('Descripcion: '+ Clase.salas[0].Descripcion);
-
-        //document.getElementById('idSala').value=Clase.salas[0].idSala;
-        //document.getElementById('NombreActividad').value=Clase.salas[0].NombreActividad;
-        //document.getElementById('Capacidad').value=Clase.salas[0].Capacidad;
-        //document.getElementById('Descripcion').value=Clase.salas[0].Descripcion;
-    }
+}
 </script>
 <div>
     <ul class="breadcrumb">
@@ -69,60 +46,63 @@
         </li>
     </ul>
 </div>
-<div class=" row">
-    <div class="box col-md-12">
-        <div class="box-inner">
-            <div class="box-header well" data-original-title="">
-                <h2><i class="glyphicon glyphicon-edit"></i> Buscador Actividades</h2>
-                <div class="box-icon">
-
-                    <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
-
-                </div>
-            </div>
-            <div class="box-content">
-                <div class="row">
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label" >Actividad</label>
-                                <input type="text" class="input-sm"  id="filtroactividad">
-                                <label class="control-label" >Intensidad</label>
-                                <input type="text" class="input-sm"  id="filtrointensidad">
-                                <label class="control-label" >Grupo</label>
-                                <input type="text" class="input-sm"  id="filtrogrupo">
-                                <input class="box btn-primary" type="button" value="Buscar" onClick="obtenerActividades();"/>
-
+<div class=" row" ng-app="BusquedaActividades">
+    <div ng_controller="CargaActividades">
+        <div class="box col-md-12">
+                        <div class="box-inner">
+                            <div class="box-header well" data-original-title="">
+                                <h2><i class="glyphicon glyphicon-edit"></i> Buscador Actividades</h2>
+                            </div>
+                                <div class="alert alert-info" id="divSinResultados" style='display:none;'>
+                                    <strong></strong>No se han encontrado resultados para los filtros introducidos.
+                                </div>
+                            
+                            <div class="box-content">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="control-label" >Actividad</label>
+                                                <input type="text" class="input-sm"  id="filtroactividad">
+                                                <label class="control-label" >Intensidad</label>
+                                                <input type="text" class="input-sm"  id="filtrointensidad">
+                                                <label class="control-label" >Grupo</label>
+                                                <input type="text" class="input-sm"  id="filtrogrupo">
+                                                <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerActividades();"/>
+                                                 <div class="box-content" id="actividades">
+                                        <table class="table table-striped table-bordered responsive">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nombre</th>
+                                                    <th>Descripción</th>
+                                                    <th>Intensidad</th>
+                                                    <th>Edad Mínima</th>
+                                                    <th>Edad Máxima</th>
+                                                    <th></th>
+                                                    
+                                                </tr>
+                                                <tr ng_repeat="actividad in actividades">
+                                                    <td>{{actividad.NombreActividad}}</td>
+                                                    <td>{{actividad.Descripcion}}</td>
+                                                    <td>{{actividad.IntensidadActividad}}</td>
+                                                    <td>{{actividad.EdadMinima}}</td>
+                                                    <td>{{actividad.EdadMaxima}}</td>
+                                                    <td class="center"><a href="FormularioDetalleActividad.php?idSala={{actividad.idActividad}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                                     <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleActividad.php' "/>
+                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                               </div>
                             </div>
                         </div>
-
-                    </div>
-
-                </div>
             </div>
+                       
         </div>
-
-
-    </div>
-    <div class="row">
-        <div class="box col-md-12">
-            <div class="box-inner">
-                <div class="box-header well" data-original-title="">
-                    <h2><i class="glyphicon glyphicon-th"></i> Actividades </h2>
-
-                    <div class="box-icon">
-                        <a href="#" class="btn btn-minimize btn-round btn-default"><i
-                                class="glyphicon glyphicon-chevron-up"></i></a>
-                    </div>
-                </div>
-                <div class="box-content" id="actividades"></div>
-            </div>
-            <br>
-            <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href = 'FormularioDetalleActividad.php'"/>
-
-        </div>
-
-    </div>
 </div>
 
 <?php require('Pie.php'); ?>

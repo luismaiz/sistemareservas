@@ -1,5 +1,5 @@
 <?php ?>
- <html lang="es-es"><head>
+<html lang="es-es"><head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,6 +20,52 @@
         <link rel="stylesheet" href="lib/bootstrap-wizard/css/custom.css">
         <script src="templates/yoo_subway/warp/js/warp.js"></script>
     </head>
+    <script>
+        function AjaxObj()
+        {
+            var xmlhttp = null;
+
+            if (window.XMLHttpRequest)
+            {
+                xmlhttp = new XMLHttpRequest();
+
+                if (xmlhttp.overrideMimeType)
+                {
+                    xmlhttp.overrideMimeType('text/xml');
+                }
+            }
+            else if (window.ActiveXObject)
+            {
+                // Internet Explorer    
+                try
+                {
+                    xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+                }
+                catch (e)
+                {
+                    try
+                    {
+                        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    catch (e)
+                    {
+                        xmlhttp = null;
+                    }
+                }
+
+                if (!xmlhttp && typeof XMLHttpRequest != 'undefined')
+                {
+                    xmlhttp = new XMLHttpRequest();
+
+                    if (!xmlhttp)
+                    {
+                        failed = true;
+                    }
+                }
+            }
+            return xmlhttp;
+        }
+    </script>
     <body id="page" class="page  noblog  transparency-25 system-transparent">
         <div id="page-body">
             <div class="wrapper">
@@ -30,5 +76,3 @@
                     </div>
                 </header>
                 <div class="row">
-            
-

@@ -7,7 +7,7 @@
      $this->tratarEntrada();  
    }  
    public function mostrarRespuesta($data, $estado) {  
-     $this->_codEstado = ($estado) ? $estado : 200;//si no se envía $estado por defecto será 200  
+     $this->_codEstado = ($estado) ? $estado : 200;//si no se envï¿½a $estado por defecto serï¿½ 200  
      $this->setCabecera();  
      echo $data;  
      exit;  
@@ -25,8 +25,8 @@
      } else {  
        if (get_magic_quotes_gpc()) {  
          //Quitamos las barras de un string con comillas escapadas  
-         //Aunque actualmente se desaconseja su uso, muchos servidores tienen activada la extensión magic_quotes_gpc.   
-         //Cuando esta extensión está activada, PHP añade automáticamente caracteres de escape (\) delante de las comillas que se escriban en un campo de formulario.   
+         //Aunque actualmente se desaconseja su uso, muchos servidores tienen activada la extensiï¿½n magic_quotes_gpc.   
+         //Cuando esta extensiï¿½n estï¿½ activada, PHP aï¿½ade automï¿½ticamente caracteres de escape (\) delante de las comillas que se escriban en un campo de formulario.   
          $data = trim(stripslashes($data));  
        }  
        //eliminamos etiquetas html y php  
@@ -46,9 +46,9 @@
        case "POST":  
          $this->datosPeticion = $this->limpiarEntrada($_POST);  
          break;  
-       case "DELETE"://"falling though". Se ejecutará el case siguiente  
+       case "DELETE"://"falling though". Se ejecutarï¿½ el case siguiente  
        case "PUT":  
-         //php no tiene un método propiamente dicho para leer una petición PUT o DELETE por lo que se usa un "truco":  
+         //php no tiene un mï¿½todo propiamente dicho para leer una peticiï¿½n PUT o DELETE por lo que se usa un "truco":  
          //leer el stream de entrada file_get_contents("php://input") que transfiere un fichero a una cadena.  
          //Con ello obtenemos una cadena de pares clave valor de variables (variable1=dato1&variable2=data2...)
          //que evidentemente tendremos que transformarla a un array asociativo.  

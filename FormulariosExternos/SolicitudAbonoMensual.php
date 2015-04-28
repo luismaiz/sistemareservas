@@ -11,19 +11,15 @@
                             <li class="active"><a href="#tab1" data-toggle="tab" aria-expanded="false"><span class="label">1</span>Abono Mensual</a></li>
                             <li class=""><a href="#tab2" data-toggle="tab" aria-expanded="false"><span class="label">2</span>Datos Personales</a></li>
                             <li class=""><a href="#tab3" data-toggle="tab" aria-expanded="false"><span class="label">3</span>Datos Dirección</a></li>
-                            <li class=""><a href="#tab4" data-toggle="tab" aria-expanded="false"><span class="label">4</span>Datos Pago</a></li>
-                        </ul>
+                                                </ul>
                     </div>
                     <div class="tab-content">
-                        <div class="tab-pane active" id="tab1">
+                        <div class="tab-pane active" id="tab1" onload="obtenerTiposAbono();">
                             <fieldset>
                                 <div class="form-group has-success has-feedback">
                                     <div class="col-md-12 col-sm-12 input-group-lg">
-                                        <div>
-                                            <h3>Tipo de abono </h3>
-                                            <input type="checkbox" name="Abono club adultos (18 a 55 años)"id="1" value="" />Abono club adultos (18 a 55 años) <br />
-                                            <input type="checkbox" name="Abono club mayores (55 a 65 años)" id="2"value="" />Abono club mayores (55 a 65 años)<br />
-                                            <input type="checkbox" name="Abono club senior (65 años y más )" id="3"value="" />Abono club senior (65 años y más )<br />
+                                        <h3>Tipo de abono </h3>
+                                        <div id="tiposAbono">
                                         </div>
                                         </fieldset>
                                         <div class="col-md-offset-1">
@@ -47,6 +43,7 @@
                                                     <label class="control-label" >E-mail</label><input type="text" class="form-control" required pattern="^[a-zA-Z0-9-\_.]+@[a-zA-Z0-9-\_.]+\.[a-zA-Z0-9.]{2,5}$" value="" placeholder="info@developerji.com" /><br />   
                                                 </div>
                                                 <br />
+                                                <!--
                                                 <div class="col-md-3 col-sm-3 input-group-lg">
                                                     <label class="control-label">Escribe el número que ves:</label>
                                                     <input type="text" class="form-control" id="txtCaptcha"  />
@@ -58,11 +55,44 @@
                                                 <div class="col-md-5 col-sm-5 input-group-lg">
                                                     <label class="control-label">&nbsp;</label>
                                                     <input type="text" class="form-control" id="resCaptcha">
+                                                </div>-->
+                                                <div class="col-md-5 col-sm-5 input-group-lg">
+                                                    <label class="control-label" > &nbsp Mujer</label>  <input type="radio"  name="Sexo" value="M"  id="Sexo"/>
+                                                    <label class="control-label" > &nbsp Hombre</label>  <input type="radio" name="Sexo" value="H" checked="checked" id="Sexo"/>
                                                 </div>
+                                                <div class="col-md-5 col-sm-5 input-group-lg">
+                                                    <label class="control-label" > Fecha nacimiento</label><input type="date" class="form-control" name="FechaNacimiento"id="FechaNacimiento">
+                                                </div>
+                                                <div class="col-md-5 col-sm-5 input-group-lg">
+                                                    <label class="control-label" >Tutor legal</label> <input type= "text" class="form-control" required name="TutorLegal"  value="" placeholder="Alberto Fernandez" id="TutorLegal"/>
+                                                </div> 
                                             </div>
+
                                             <div class="col-md-12 col-sm-12 input-group-lg">
                                                 <label class="control-label">
                                                     <input type="checkbox" name="aceptado" value="aceptado" />Acepto los términos y condiciones</label>
+                                            </div>
+                                        </fieldset>
+                                        <div class="col-md-offset-1">
+                                            <button class="btn btn-default" type="submit">Enviar</button>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tab3">
+                                        <fieldset>
+                                            <div class="col-md-5 col-sm-5 input-group-lg">
+                                                <label class="control-label" >Direccion  &nbsp  </label><input type="text" name="Direccion" required  value="" placeholder="Calle los Emigrantes  16" id="Direccion" />  
+                                            </div>
+                                            <div class="col-md-5 col-sm-5 input-group-lg">
+                                                <label class="control-label" >Localidad &nbsp </label><input type="text" name="Localidad" required  value="" placeholder="Madrid" id="Localidad"/>
+                                            </div>
+                                            <div class="col-md-5 col-sm-5 input-group-lg">
+                                                <label class="control-label" >Codigo Postal &nbsp </label><input type="text" name="cp" size="5" maxlength="5"id="CP"/>
+                                            </div>
+                                            <div class="col-md-5 col-sm-5 input-group-lg">
+                                                <label class="control-label" >&nbsp  Telefono 1 &nbsp </label> <input type="tel" name="telefono1" required pattern="[0-9]{9}"id="Telefono1">
+                                            </div>
+                                            <div class="col-md-5 col-sm-5 input-group-lg">
+                                                <label class="control-label" >&nbsp  Telefono 2 &nbsp </label> <input type="tel" name="telefono2" required pattern="[0-9]{9}" value="Telefono" placeholder="60007287"id="Telefono2"/>   
                                             </div>
                                         </fieldset>
                                         <div class="col-md-offset-1">

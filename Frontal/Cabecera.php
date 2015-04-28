@@ -15,33 +15,36 @@ include 'config.php'
 
 
         <!-- The styles -->
-        <link id="bs-css" href="css/bootstrap-cerulean.min.css" rel="stylesheet">
+        <link id="bs-css" href="Utilidades/css/bootstrap-cerulean.min.css" rel="stylesheet">
 
-        <link href="css/charisma-app.css" rel="stylesheet">
-        <link href='bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>
-        <link href='bower_components/fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print'>
-        <link href='bower_components/chosen/chosen.min.css' rel='stylesheet'>
-        <link href='bower_components/colorbox/example3/colorbox.css' rel='stylesheet'>
-        <link href='bower_components/responsive-tables/responsive-tables.css' rel='stylesheet'>
-        <link href='bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css' rel='stylesheet'>
-        <link href='css/jquery.noty.css' rel='stylesheet'>
-        <link href='css/noty_theme_default.css' rel='stylesheet'>
-        <link href='css/elfinder.min.css' rel='stylesheet'>
-        <link href='css/elfinder.theme.css' rel='stylesheet'>
-        <link href='css/jquery.iphone.toggle.css' rel='stylesheet'>
-        <link href='css/uploadify.css' rel='stylesheet'>
-        <link href='css/animate.min.css' rel='stylesheet'>
-
+        <link href="Utilidades/css/charisma-app.css" rel="stylesheet">
+        <link href='Utilidades/bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>
+        <link href='Utilidades/bower_components/fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print'>
+        <link href='Utilidades/bower_components/chosen/chosen.min.css' rel='stylesheet'>
+        <link href='Utilidades/bower_components/colorbox/example3/colorbox.css' rel='stylesheet'>
+        <link href='Utilidades/bower_components/responsive-tables/responsive-tables.css' rel='stylesheet'>
+        <link href='Utilidades/bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css' rel='stylesheet'>
+        <link href='Utilidades/css/jquery.noty.css' rel='stylesheet'>
+        <link href='Utilidades/css/noty_theme_default.css' rel='stylesheet'>
+        <link href='Utilidades/css/elfinder.min.css' rel='stylesheet'>
+        <link href='Utilidades/css/elfinder.theme.css' rel='stylesheet'>
+        <link href='Utilidades/css/jquery.iphone.toggle.css' rel='stylesheet'>
+        <link href='Utilidades/css/uploadify.css' rel='stylesheet'>
+        <link href='Utilidades/css/animate.min.css' rel='stylesheet'>
+        <link href="Utilidades/css/Angular.css" rel="stylesheet" type="text/css"/>
+        <script src="Utilidades/js/angular-1.2.9/angular-1.2.9/angular.js" type="text/javascript"></script>
         <!-- jQuery -->
-        <script src="bower_components/jquery/jquery.min.js"></script>
-
+        <script src="Utilidades/bower_components/jquery/jquery.min.js"></script>
+        <!--<script src="js/angular-1.0.1.min.js" type="text/javascript"></script>-->
+        <!--<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>--> 
+        <!--<script src="js/angular.min.js" type="text/javascript"></script>-->
         <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 
         <!-- The fav icon -->
-        <link rel="shortcut icon" href="img/favicon.ico">
+        <link rel="shortcut icon" href="Utilidades/img/favicon.ico">
 
     </head>
     <script>

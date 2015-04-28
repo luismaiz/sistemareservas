@@ -1,11 +1,7 @@
 <?php
-
-/**
- * 
- *
- * @version 1.105
- * @package entity
- */
+require_once("helpers/Db2PhpEntityBase.class.php");
+require_once("helpers/Db2PhpEntityModificationTracking.class.php");
+require_once 'helpers/DFCAggregate.class.php';
 class DatosolicitudclasedirigidaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTracking {
 	private static $CLASS_NAME='DatosolicitudclasedirigidaModel';
 	const SQL_IDENTIFIER_QUOTE='`';

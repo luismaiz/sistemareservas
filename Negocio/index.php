@@ -28,7 +28,7 @@ include('../Frontal/Cabecera.php'); ?>
                     return false;
                     break;
                 case 2:
-                    window.location = 'Frontal\\InicioMonitor.php';
+                    window.location = 'Frontal\\Inicio.php';
                     return false;
                     break;
                 case 3:

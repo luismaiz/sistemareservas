@@ -23,7 +23,7 @@
                         <br />
                         <div class="col-md-3 col-sm-3 input-group-lg">
                             <label class="control-label">Escribe el número que ves:</label>
-                            <input type="text" class="form-control" id="txtCaptcha"  />
+                            <input type="text" class="form-control" id="txtCaptcha" style=" text-align:center; border:none; font-weight: bold; font-family:Modern"  />
                         </div>
                         <div class="col-md-2 col-sm-2 input-group-lg">
                             <label class="control-label">&nbsp;</label>
@@ -33,8 +33,8 @@
                             <label class="control-label">&nbsp;</label>
                             <input type="text" class="form-control" id="resCaptcha">
                         </div>
-                                                    </div>
-                            <div class="col-md-12 col-sm-12 input-group-lg">
+                    </div>
+                    <div class="col-md-12 col-sm-12 input-group-lg">
                         <label class="control-label">
                             <input type="checkbox" name="aceptado" value="aceptado" />Acepto los términos y condiciones</label>
                     </div>

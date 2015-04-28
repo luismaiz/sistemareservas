@@ -2,6 +2,7 @@
 
 require_once("helpers/Db2PhpEntityBase.class.php");
 require_once("helpers/Db2PhpEntityModificationTracking.class.php");
+require_once 'helpers/DFCAggregate.class.php';
 
 /**
  * 
@@ -368,10 +369,12 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 		if(self::isCacheStatements()) {
 			if (in_array($statement, array(self::SQL_INSERT, self::SQL_INSERT_AUTOINCREMENT, self::SQL_UPDATE, self::SQL_SELECT_PK, self::SQL_DELETE_PK))) {
                                 $dbInstanceId=spl_object_hash($db);
-                                if (null===self::$stmts[$statement][$dbInstanceId]) {
-					self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
-				}
-				return self::$stmts[$statement][$dbInstanceId];
+//                                if (null===self::$stmts[$statement][$dbInstanceId]) {
+//					self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
+//				}
+//				return self::$stmts[$statement][$dbInstanceId];
+                                
+                                self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
 			}
 		}
 		return $db->prepare($statement);
@@ -594,7 +597,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 */
 	public static function findById(PDO $db,$idSala) {
 		$stmt=self::prepareStatement($db,self::SQL_SELECT_PK);
-		$stmt->bindValue(1,$idSala);
+                $stmt->bindValue(1,$idSala);
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();
@@ -633,6 +636,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 * @return mixed
 	 */
 	public function insertIntoDatabase(PDO $db) {
+            
 		if (null===$this->getIdSala()) {
 			$stmt=self::prepareStatement($db,self::SQL_INSERT_AUTOINCREMENT);
 			$stmt->bindValue(1,$this->getNombreSala());

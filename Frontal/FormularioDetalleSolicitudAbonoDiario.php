@@ -1,8 +1,9 @@
 <?php require('Cabecera.php'); ?>
-<script>
+<!--<script>
            
             var Ajax = new AjaxObj();
                 
+<<<<<<< HEAD
             function crearSala() {
                 var Url = "http://localhost/sistemareservas/AdministradorBO.php?url=crearSala";		
                 var Params ='&NombreSala='+ document.getElementById('NombreSala').value +
@@ -105,53 +106,65 @@
             }
             
         </script>
+=======
+            var app = angular.module('DetalleAbonoDiario', [])            
+                     .config(function($locationProvider) {
+                          $locationProvider.html5Mode(true);
+                      });
+                      
+            function CargaDetalleAbonoDiario($scope, $http, $location) {
+                
+                alert('hola');
+            }          
+                        
+        </script>-->
+>>>>>>> 2d0608445159c82d4e918578dcf6eb0173a078f7
 <div>
     <ul class="breadcrumb">
         <li>
             <a href="#">Inicio</a>
         </li>
         <li>
-            <a href="#">Detalle Sala</a>
+            <a href="Reservas.php">Reservas</a>
+        </li>
+        <li>
+            <a href="#">Detalle Abono Diario</a>
         </li>
     </ul>
 </div>
-<div class=" row">
+<div class=" row" ng-app="DetalleAbonoDiario">
+    <div ng_controller="CargaDetalleAbonoDiario">
 <div class="box col-md-12">
                         <div class="box-inner">
                         <div class="box-header well" data-original-title="">
-                        <h2><i class="glyphicon glyphicon-edit"></i> Detalle Sala</h2>
+                        <h2><i class="glyphicon glyphicon-edit"></i> Detalle Abono</h2>
                         <div class="box-icon">
 
                         <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
                         
                         </div>
                         </div>
-                        <div class="box-content">
+                            <div class="box-content alerts">
+                                <div class="alert alert-danger" id="divError" style='display:none;'>
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <strong>Error</strong> Se ha producido un error al realizar la operación.
+                                </div>
+                            <div class="alert alert-success" id="divCorrecto" style='display:none;'>
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <strong>Correcto.</strong>  Operación realizada con éxito.
+                            </div>
+                            </div>
+                        <div class="box-content" >
                             
-                            <form class="form-group">
-                                <label class="control-label" >Nombre</label>
-                                <input type="text"  id="NombreSala"></br></br>
-                                
-                                <label class="control-label" >Descripcion</label>
-                                <input type="text"  id="DescripcionSala"></br></br>
-                                
-                                <label class="control-label" >Capacidad</label>
-                                <input type="text" id="CapacidadSala"></br></br>
-                                            
-                                <label class="control-label" >Fecha Alta</label>
-                                <input type="date" name="FechaAlta" id="FechaAlta">
-                                
-                                <label class="control-label" >Fecha Baja</label>
-                                <input type="date" name="FechaBaja" id="FechaBaja">
-                                
-                                <input class="btn btn-default" type="button" value="Crear Sala" onclick="crearSala()"/>
-                            </form>
+<!--                            <form class="form-group" name="formulario">
+                               
+                            </form>-->
                         </div>
                         </div>
 
 
                         </div>
-                       
+    </div>
 </div>
 
 <?php require('Pie.php'); ?>
