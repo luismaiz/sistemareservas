@@ -68,6 +68,34 @@
                     document.getElementById('divError').style.display = 'block';
                 }
             };
+            
+            $scope.crearTipoSolicitud = function(){
+                                   
+             
+                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=actualizarTipoSolicitud";
+                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=crearTipoSolicitud";
+                var Params = 'NombreSolicitud='+ document.getElementById('NombreSolicitud').value +
+                    '&DescripcionSolicitud='+ document.getElementById('DescripcionSolicitud').value +
+                    '&FechaAlta='+ document.getElementById('FechaAlta').value +
+                    '&FechaBaja='+ document.getElementById('FechaBaja').value;
+
+               
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+             
+            
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divCorrecto').style.display = 'block';
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
+            };
         
     }    
           

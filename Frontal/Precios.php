@@ -38,8 +38,7 @@
         Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
         Ajax.send(Params); // Enviamos los datos
         
-        alert(Ajax.responseText);
-               
+                       
         $scope.tiposAbonos = JSON.parse(Ajax.responseText).tiposAbonos;
         
         };   
@@ -77,7 +76,6 @@
                 Ajax.send(Params); // Enviamos los datos
                 
   
-                alert(Ajax.responseText);
                 $scope.precios = JSON.parse(Ajax.responseText).precios;
                 
                 $scope.estado = JSON.parse(Ajax.responseText).estado;

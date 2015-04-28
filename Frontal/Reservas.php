@@ -165,14 +165,14 @@
                                                     <td>{{solicitud.Apellidos}}</td>
                                                     <td>{{solicitud.Localizador}}</td>
                                                     <td>{{solicitud.FechaSolicitud}}</td>
-                                                    <td class="center"><a href="http://localhost:8080/SistemaReservas/Frontal/FormularioDetalleSolicitudAbonoDiario.php?idSolicitud={{solicitud.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
+                                                    <td class="center"><a href="FormularioDetalleSolicitudAbonoDiario.php?idSolicitud={{solicitud.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
                                                 </tr>
                                                 <tr ng_repeat="abono in abonos">
                                                     <td>{{abono.Nombre}}</td>
                                                     <td>{{abono.Apellidos}}</td>
                                                     <td>{{abono.Localizador}}</td>
                                                     <td>{{abono.FechaSolicitud}}</td>
-                                                    <td class="center"><a href="http://localhost:8080/SistemaReservas/Frontal/FormularioDetalleSolicitudAbonoDiario.php" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
+                                                    <td class="center"><a href="FormularioDetalleSolicitudAbonoDiario.php" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
                                                 </tr>
                                             
                                         </table>

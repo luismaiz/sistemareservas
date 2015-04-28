@@ -63,22 +63,13 @@ class TiposAbonosBO extends Rest{
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-        //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {       	 	
+            	 	
 
         $NombreAbono = $this->datosPeticion['NombreAbono'];
         $DescripcionAbono = $this->datosPeticion['DescripcionAbono'];
         $FechaAlta = $this->datosPeticion['FechaAlta'];
         $FechaBaja = $this->datosPeticion['FechaBaja'];
-        //if (!$this->existeUsuario($email)) {  
-        /* $query = $this->_conn->prepare("INSERT into tiposolicitud(idTipoSolicitud, NombreSolicitud, DescripcionSolicitud, FechaAlta, FechaBaja) 
-          VALUES (:idTipoSolicitud, :NombreSolicitud, :DescripcionSolicitud, :FechaAlta, :FechaBaja)");
-          $query->bindValue(":idTipoSolicitud", $idTipoSolicitud);
-          $query->bindValue(":NombreSolicitud", $NombreSolicitud);
-          $query->bindValue(":DescripcionSolicitud", $DescripcionSolicitud);
-          $query->bindValue(":FechaAlta", $FechaAlta);
-          $query->bindValue(":FechaBaja", $FechaBaja);
-          $query->execute(); */
-
+        
         $this->con = ConexionBD::getInstance();
         $tipoabono = new TipoabonoModel();
 
@@ -91,19 +82,13 @@ class TiposAbonosBO extends Rest{
 
         if (count($result) == 1) {
 
-            //$id = $this->_conn->lastInsertId();  
             $respuesta['estado'] = 'correcto';
             $respuesta['msg'] = 'tipo abono creado correctamente';
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         else
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
-        //}  
-        //else  
-        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(8)), 400);  
-        //} else {  
-        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);  
-        //}  
+        
     }
 
     private function obtenerTiposAbono() {

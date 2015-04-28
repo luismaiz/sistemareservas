@@ -69,6 +69,37 @@
                     document.getElementById('divError').style.display = 'block';
                 }
             };
+            
+            $scope.crearActividad = function(){
+                                   
+             
+                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=actualizarActividad";
+                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=crearActividad";
+                var Params = 'NombreActividad='+ document.getElementById('NombreActividad').value +
+                    '&IntensidadActividad='+ document.getElementById('IntensidadActividad').value +
+                    '&Descripcion='+ document.getElementById('Descripcion').value +
+                    '&Grupo='+ document.getElementById('Grupo').value +
+                    '&EdadMinima='+ document.getElementById('EdadMinima').value +
+                    '&EdadMaxima='+ document.getElementById('EdadMaxima').value +
+                    '&FechaAlta='+ document.getElementById('FechaAlta').value +
+                    '&FechaBaja='+ document.getElementById('FechaBaja').value;
+               
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+             
+                
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divCorrecto').style.display = 'block';
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
+            };
         
     }
        
@@ -152,7 +183,7 @@
                     </div>
                     <div class="form-group col-md-12">
                     <label class="control-label col-md-2" >Descripcion</label>
-                    <input ng-model="actividad.DescripcionActividad" type="color" class="input-sm col-md-6" id="Descripcion" name="Descripcion" required/>
+                    <input ng-model="actividad.DescripcionActividad" type="text" class="input-sm col-md-6" id="Descripcion" name="Descripcion" required/>
                     <span style="color:red" ng-show="formulario.Descripcion.$dirty && formulario.Descripcion.$invalid">
                                 <span ng-show="formulario.Descripcion.$error.required">Descripción de actividad obligatorio.</span>
                     </span>

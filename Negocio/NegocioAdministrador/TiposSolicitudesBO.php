@@ -63,21 +63,12 @@ class TiposSolicitudesBO extends Rest{
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-        //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {       	 	
+        
         $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
         $NombreSolicitud = $this->datosPeticion['NombreSolicitud'];
         $DescripcionSolicitud = $this->datosPeticion['DescripcionSolicitud'];
         $FechaAlta = $this->datosPeticion['FechaAlta'];
         $FechaBaja = $this->datosPeticion['FechaBaja'];
-        //if (!$this->existeUsuario($email)) {  
-        /* $query = $this->_conn->prepare("INSERT into tiposolicitud(idTipoSolicitud, NombreSolicitud, DescripcionSolicitud, FechaAlta, FechaBaja) 
-          VALUES (:idTipoSolicitud, :NombreSolicitud, :DescripcionSolicitud, :FechaAlta, :FechaBaja)");
-          $query->bindValue(":idTipoSolicitud", $idTipoSolicitud);
-          $query->bindValue(":NombreSolicitud", $NombreSolicitud);
-          $query->bindValue(":DescripcionSolicitud", $DescripcionSolicitud);
-          $query->bindValue(":FechaAlta", $FechaAlta);
-          $query->bindValue(":FechaBaja", $FechaBaja);
-          $query->execute(); */
 
         $this->con = ConexionBD::getInstance();
         $tiposolicitud = new TiposolicitudModel();

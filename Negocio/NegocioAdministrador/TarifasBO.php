@@ -69,20 +69,6 @@ class TarifasBO extends Rest{
         $FechaAlta = $this->datosPeticion['FechaAlta'];
         $FechaBaja = $this->datosPeticion['FechaBaja'];
 
-        //if (!$this->existeUsuario($email)) {  
-        /* $query = $this->_conn->prepare("INSERT into maestraprecios(idPrecio, NombrePrecio, DescripcionPrecio, Precio, TipoSolicitud, TipoAbono, FechaAlta, FechaBaja)
-          VALUES (:idPrecio, :NombrePrecio, :DescripcionPrecio, :Precio, :TipoSolicitud, :TipoAbono, :FechaAlta, :FechaBaja)");
-          $query->bindValue(":idPrecio", $idPrecio);
-          $query->bindValue(":NombrePrecio", $NombrePrecio);
-          $query->bindValue(":DescripcionPrecio", $DescripcionPrecio);
-          $query->bindValue(":Precio", $Precio);
-          $query->bindValue(":TipoSolicitud", $TipoSolicitud);
-          $query->bindValue(":TipoAbono", $TipoAbono);
-          $query->bindValue(":FechaAlta", $FechaAlta);
-          $query->bindValue(":FechaBaja", $FechaBaja);
-          $query->execute(); */
-
-
         $this->con = ConexionBD::getInstance();
         $tipotarifa = new TipotarifaModel();
 

@@ -40,7 +40,8 @@
             
             $scope.obtenerabonos = function() {
                 
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes";
+                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes";
+                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes";
                 var Params = 'TipoSolicitud=3';    
                 
 	        Ajax.open("POST", Url, false);

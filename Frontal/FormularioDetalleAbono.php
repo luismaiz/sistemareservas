@@ -68,6 +68,36 @@
                     document.getElementById('divError').style.display = 'block';
                 }
             };
+            
+            
+            $scope.crearTipoAbono = function(){
+                                   
+             
+                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=actualizarTipoAbono";
+                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=crearTipoAbono";
+                var Params = 'NombreAbono='+ document.getElementById('NombreAbono').value +
+                    '&DescripcionAbono='+ document.getElementById('DescripcionAbono').value +
+                    '&FechaAlta='+ document.getElementById('FechaAlta').value +
+                    '&FechaBaja='+ document.getElementById('FechaBaja').value;
+
+               
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+             
+                
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divCorrecto').style.display = 'block';
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
+            };
+            
         
     }
 

@@ -22,6 +22,7 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                     
+                    
                 $scope.sala = JSON.parse(Ajax.responseText).sala;
                 $scope.sala.CapacidadSala = parseInt($scope.sala.CapacidadSala);
         
@@ -41,7 +42,7 @@
                                 
                 //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=crearSala";		
                 var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=crearSala";		
-                var Params ='&NombreSala='+ document.getElementById('NombreSala').value +
+                var Params ='NombreSala='+ document.getElementById('NombreSala').value +
                     '&CapacidadSala='+ document.getElementById('CapacidadSala').value +
                     '&DescripcionSala='+ document.getElementById('DescripcionSala').value +
                     '&FechaAlta='+ document.getElementById('FechaAlta').value +
@@ -52,16 +53,18 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-                //$scope.estado = JSON.parse(Ajax.responseText).sala;
+                alert(Ajax.responseText);
                 
-//                if ($scope.estado === 'correcto')
-//                {
-//                    document.getElementById('divCorrecto').style.display = 'block';
-//                }
-//                else
-//                {
-//                    document.getElementById('divError').style.display = 'block';
-//                }
+                $scope.estado = JSON.parse(Ajax.responseText).sala;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divCorrecto').style.display = 'block';
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
         
             };
 //            
@@ -81,7 +84,7 @@
                 Ajax.open("PUT", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-             
+             alert(Ajax.responseText);
             
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
