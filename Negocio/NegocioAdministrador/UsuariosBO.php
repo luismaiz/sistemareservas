@@ -192,5 +192,4 @@ class UsuariosBO extends Rest{
     }
 }
 $usuarioBO = new UsuariosBO();
->>>>>>> 4f7a419ccaab99d17143b3a3490a8a51850fac6a
 $usuariosBO->procesarLLamada();

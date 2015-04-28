@@ -253,5 +253,4 @@ class PreciosBO extends Rest{
     }
 }
 $preciosBO = new PreciosBO();
->>>>>>> 4f7a419ccaab99d17143b3a3490a8a51850fac6a
 $preciosBO->procesarLLamada();

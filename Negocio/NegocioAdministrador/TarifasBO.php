@@ -235,5 +235,4 @@ class TarifasBO extends Rest{
     
 }
 $tarifasBO = new TarifasBO();
->>>>>>> 4f7a419ccaab99d17143b3a3490a8a51850fac6a
 $tarifasBO->procesarLLamada();

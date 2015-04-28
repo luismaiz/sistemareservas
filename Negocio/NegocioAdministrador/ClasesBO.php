@@ -266,5 +266,4 @@ class ClasesBO extends Rest{
 }
 
 $clasesBO = new ClasesBO();
->>>>>>> 4f7a419ccaab99d17143b3a3490a8a51850fac6a
 $clasesBO->procesarLLamada();

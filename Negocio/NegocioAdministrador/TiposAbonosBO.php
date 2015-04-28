@@ -240,5 +240,4 @@ class TiposAbonosBO extends Rest{
     
 }
 $tiposabonoBO = new TiposAbonosBO();
->>>>>>> 4f7a419ccaab99d17143b3a3490a8a51850fac6a
 $tiposabonoBO->procesarLLamada();

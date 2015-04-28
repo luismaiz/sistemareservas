@@ -320,7 +320,5 @@ class ActividadesBO extends Rest {
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
     }
 }
-
 $actividadesBO = new ActividadesBO();
 $actividadesBO->procesarLLamada();
->>>>>>> 4f7a419ccaab99d17143b3a3490a8a51850fac6a

@@ -79,20 +79,20 @@
                                     </div>
                                     <div class="tab-pane" id="tab3">
                                         <fieldset>
-                                            <div class="col-md-5 col-sm-5 input-group-lg">
-                                                <label class="control-label" >Direccion  &nbsp  </label><input type="text" name="Direccion" required  value="" placeholder="Calle los Emigrantes  16" id="Direccion" />  
+                                            <div class="col-md-10 col-sm-10 input-group-lg">
+                                                <label class="control-label" >Direccion  &nbsp  </label><input type="text" class="form-control" name="Direccion" required  value="" placeholder="Calle los Emigrantes  16" id="Direccion" />  
                                             </div>
                                             <div class="col-md-5 col-sm-5 input-group-lg">
-                                                <label class="control-label" >Localidad &nbsp </label><input type="text" name="Localidad" required  value="" placeholder="Madrid" id="Localidad"/>
+                                                <label class="control-label" >Localidad &nbsp </label><input type="text" class="form-control" name="Localidad" required  value="" placeholder="Madrid" id="Localidad"/>
                                             </div>
                                             <div class="col-md-5 col-sm-5 input-group-lg">
-                                                <label class="control-label" >Codigo Postal &nbsp </label><input type="text" name="cp" size="5" maxlength="5"id="CP"/>
+                                                <label class="control-label" >Codigo Postal &nbsp </label><input type="text" class="form-control" name="cp" size="5" maxlength="5"id="CP"/>
                                             </div>
                                             <div class="col-md-5 col-sm-5 input-group-lg">
-                                                <label class="control-label" >&nbsp  Telefono 1 &nbsp </label> <input type="tel" name="telefono1" required pattern="[0-9]{9}"id="Telefono1">
+                                                <label class="control-label" >&nbsp  Telefono 1 &nbsp </label> <input type="tel" class="form-control" name="telefono1" required pattern="[0-9]{9}"id="Telefono1">
                                             </div>
                                             <div class="col-md-5 col-sm-5 input-group-lg">
-                                                <label class="control-label" >&nbsp  Telefono 2 &nbsp </label> <input type="tel" name="telefono2" required pattern="[0-9]{9}" value="Telefono" placeholder="60007287"id="Telefono2"/>   
+                                                <label class="control-label" >&nbsp  Telefono 2 &nbsp </label> <input type="tel" class="form-control" name="telefono2" required pattern="[0-9]{9}" value="Telefono" placeholder="60007287"id="Telefono2"/>   
                                             </div>
                                         </fieldset>
                                         <div class="col-md-offset-1">
