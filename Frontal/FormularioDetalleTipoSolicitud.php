@@ -17,7 +17,8 @@
         
         $scope.obtenerTiposSolicitud = function(idTipoSolicitud) {
                 
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTipoSolicitud";
+                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTipoSolicitud";
+                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTipoSolicitud";
                 var Params = 'idTipoSolicitud='+ idTipoSolicitud;
 
                 Ajax.open("POST", Url, false);
@@ -42,7 +43,8 @@
             $scope.actualizarTipoSolicitud = function(){
                                    
              
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=actualizarTipoSolicitud";
+                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=actualizarTipoSolicitud";
+                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=actualizarTipoSolicitud";
                 var Params = 'idTipoSolicitud='+ $location.search().idTipoSolicitud +
                     '&NombreSolicitud='+ document.getElementById('NombreSolicitud').value +
                     '&DescripcionSolicitud='+ document.getElementById('DescripcionSolicitud').value +

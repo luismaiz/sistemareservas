@@ -17,7 +17,8 @@
         
         $scope.obtenerTiposTarifa = function(idTipoTarifa) {
                 
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTipoTarifa";
+                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTipoTarifa";
+                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTipoTarifa";
                 var Params = 'idTipoTarifa='+ idTipoTarifa;
 
                 Ajax.open("POST", Url, false);
@@ -42,7 +43,8 @@
             $scope.actualizarTipoTarifa = function(){
                                    
              
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=actualizarTipoTarifa";
+                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=actualizarTipoTarifa";
+                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=actualizarTipoTarifa";
                 var Params = 'idTipoTarifa='+ $location.search().idTipoTarifa +
                     '&NombreTarifa='+ document.getElementById('NombreTarifa').value +
                     '&DescripcionTarifa='+ document.getElementById('DescripcionTarifa').value +

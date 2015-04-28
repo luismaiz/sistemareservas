@@ -12,7 +12,9 @@
         
         $scope.obtenerTipoSolicitud = function(){
         
-        var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitud";		
+        //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitud";
+        var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitud";
+        
         var Params = '';
 
         Ajax.open("GET", Url, false);
@@ -27,7 +29,9 @@
         
         $scope.obtenerTipoAbono = function(){
         
-        var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbono";		
+        //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbono";		
+        var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbono";		
+        
         var Params = '';
 
         Ajax.open("GET", Url, false);
@@ -44,7 +48,9 @@
         
         $scope.obtenerTipoTarifa = function(){
         
-        var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifa";		
+        //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifa";		
+        var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifa";		
+        
         var Params = '';
 
         Ajax.open("GET", Url, false);
@@ -59,7 +65,9 @@
         
         $scope.obtenerPrecios = function() {
             
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerPreciosFiltro";
+                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerPreciosFiltro";
+                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerPreciosFiltro";
+                
                 var Params =  'TipoSolicitud=' + document.getElementById("filtroTipoSolicitud").value +
                         '&TipoAbono=' + document.getElementById("filtroTipoAbono").value +
                         '&TipoTarifa=' + document.getElementById("filtroTipoTarifa").value;
