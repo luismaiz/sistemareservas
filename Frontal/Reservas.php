@@ -139,7 +139,7 @@
                                 <input type="email" class="input-sm col-md-2" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" id="filtroEmail" name="filtroEmail"/>
                                 <label class="control-label col-md-2" >Fecha Solicitud</label>
                                 <input type="datetime-local" class="input-sm col-md-2" id="filtroFechaSolicitud" name="filtroFechaSolicitud"/>
-                                <input class="box btn-primary col-lg-2" type="button" value="Buscar" ng_click="obtenerReservas()"/>
+                                <input class="box btn-primary" type="submit" value="Buscar" ng_click="obtenerReservas()"/>
                             </div>
                             <div class="box-content" id="reservas">
                             <table class="table table-striped table-bordered responsive">

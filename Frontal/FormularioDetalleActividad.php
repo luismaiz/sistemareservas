@@ -120,17 +120,12 @@
         </li>
     </ul>
 </div>
-<div class=" row" ng-app="DetalleTipoAbono">
-    <div ng_controller="CargaDetalleTipoAbono">
+<div class=" row" ng-app="DetalleActividad">
+    <div ng_controller="CargaDetalleActividad">
     <div class="box col-md-12">
         <div class="box-inner">
             <div class="box-header well" data-original-title="">
                 <h2><i class="glyphicon glyphicon-edit"></i> Detalle Actividad</h2>
-                <div class="box-icon">
-
-                    <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
-
-                </div>
             </div>
             <div class="box-content alerts">
                                 <div class="alert alert-danger" id="divError" style='display:none;'>
@@ -144,54 +139,61 @@
                             </div>
             <div class="box-content">
 
-                <form class="form-group" name="formulario">
-                    <label class="control-label" >Nombre Actividad</label>
-                    <input ng-model="actividad.idActividad" value = "" type="hidden" class="input-sm" name="idActividad" id="idActividad">                    
-                    <input ng-model="actividad.NombreActividad" type="text" class="input-sm"  id="NombreActividad" name="NombreActividad"/><br><br>
+                <form role="form"  name="formulario">
+                    <div class="form-group col-md-12">
+                    <label class="control-label col-md-2" >Nombre Actividad</label>
+                    <input ng-model="actividad.idActividad" type="hidden" class="input-sm col-md-4" name="idActividad" id="idActividad">                    
+                    <input ng-model="actividad.NombreActividad" type="text" class="input-sm"  id="NombreActividad" name="NombreActividad" required/>
                     <span style="color:red" ng-show="formulario.NombreActividad.$dirty && formulario.NombreActividad.$invalid">
                                 <span ng-show="formulario.NombreActividad.$error.required">Nombre de actividad obligatorio.</span>
                     </span>
-                    
-                    <label class="control-label" >Descripcion</label>
-                    <input ng-model="actividad.DescripcionActividad" type="color" class="input-sm" id="Descripcion" name="Descripcion"/><br><br>
+                    </div>
+                    <div class="form-group col-md-12">
+                    <label class="control-label col-md-2" >Descripcion</label>
+                    <input ng-model="actividad.DescripcionActividad" type="color" class="input-sm col-md-6" id="Descripcion" name="Descripcion" required/>
                     <span style="color:red" ng-show="formulario.Descripcion.$dirty && formulario.Descripcion.$invalid">
                                 <span ng-show="formulario.Descripcion.$error.required">Descripción de actividad obligatorio.</span>
                     </span>
-                    
-                    <label class="control-label" >Intensidad Actividad</label>
-                    <input type="color" class="input-sm"  id="IntensidadActividad" name="IntensidadActividad"/><br><br>
+                    </div>
+                    <div class="form-group col-md-12">
+                    <label class="control-label col-md-2" >Intensidad Actividad</label>
+                    <input ng-model="actividad.IntensidadActividad" type="color" class="input-sm"  id="IntensidadActividad" name="IntensidadActividad" required/>
                     <span style="color:red" ng-show="formulario.IntensidadActividad.$dirty && formulario.IntensidadActividad.$invalid">
                                 <span ng-show="formulario.IntensidadActividad.$error.required">Intensidad de actividad obligatorio.</span>
                     </span>
-
-                    <label class="control-label" >Edad Mínima</label>
-                    <input type="number" class="input-sm" name="EdadMinima" id="EdadMinima"/>
+                    </div>    
+                    <div class="form-group col-md-12">
+                    <label class="control-label col-md-2" >Edad Mínima</label>
+                    <input ng-model="actividad.EdadMinima" type="number" class="input-sm" name="EdadMinima" id="EdadMinima"/>
                     <span style="color:red" ng-show="formulario.EdadMinima.$dirty && formulario.EdadMinima.$invalid">
                                 <span ng-show="formulario.EdadMinima.$error.required">Edad mínima debe ser un valor numérico</span>
                     </span>
-
-                    <label class="control-label" >Edad Máxima</label>
-                    <input type="number" class="input-sm" name="EdadMaxima" id="EdadMaxima"/>
+                    </div>    
+                    <div class="form-group col-md-12">
+                    <label class="control-label col-md-2" >Edad Máxima</label>
+                    <input ng-model="actividad.EdadMaxima" type="number" class="input-sm" name="EdadMaxima" id="EdadMaxima"/>
                     <span style="color:red" ng-show="formulario.EdadMaxima.$dirty && formulario.EdadMaxima.$invalid">
                                 <span ng-show="formulario.EdadMaxima.$error.required">Edad máxima debe ser un valor numérico</span>
                     </span>
-
-                    <label class="control-label" >Grupo</label>
-                    <input type="text" class="input-sm" id="Grupo" name="Grupo"/><br><br>
+                    </div>
+                    <div class="form-group col-md-12">
+                    <label class="control-label col-md-2" >Grupo</label>
+                    <input ng-model="actividad.Grupo" type="text" class="input-sm" id="Grupo" name="Grupo"/>
+                    </div>
+                    <div class="form-group col-md-12">
+                    <label class="control-label col-md-2" >Fecha Alta</label>
+                    <input ng-model="actividad.FechaAlta" type="date" class="input-sm" name="FechaAlta" id="FechaAlta"/>
+                    </div>    
+                    <div class="form-group col-md-12">
+                    <label class="control-label col-md-2" >Fecha Baja</label>
+                    <input ng-model="actividad.FechaBaja" type="date" class="input-sm" name="FechaBaja" id="FechaBaja"/>
+                    </div>
                     
-                    <label class="control-label" >Fecha Alta</label>
-                    <input type="date" class="input-sm" name="FechaAlta" id="FechaAlta"/>
-
-                    <label class="control-label" >Fecha Baja</label>
-                    <input type="date" class="input-sm" name="FechaBaja" id="FechaBaja"/>
-
                     <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Actividades.php' " />
                     <input class="box btn-primary" type="button" value="Aceptar" ng-click="guardarActividad()"/>
                 </form>
             </div>
         </div>
-
-
     </div>
     </div>
 </div>
