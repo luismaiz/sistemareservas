@@ -89,7 +89,7 @@ function CargaTiposSolicitudes($scope, $http) {
                                         </table>
                                         </div>
                                
-                                <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleAbono.php' "/>
+                                <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleTipoSolicitud.php' "/>
                             </div>
                             </div>
                         </div>

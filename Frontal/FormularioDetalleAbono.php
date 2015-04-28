@@ -90,11 +90,6 @@
         <div class="box-inner">
             <div class="box-header well" data-original-title="">
                 <h2><i class="glyphicon glyphicon-edit"></i> Detalle Abono</h2>
-                <div class="box-icon">
-
-                    <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
-
-                </div>
             </div>
             <div class="box-content alerts">
                                 <div class="alert alert-danger" id="divError" style='display:none;'>
@@ -108,29 +103,33 @@
                             </div>
             <div class="box-content">
 
-                <form class="form-group" name="formulario">
+                <form role="form"  name="formulario">
+                    
                     <input ng-model="tipoabono.idTipoAbono" type="hidden" class="input-sm" name="idTipoAbono" id="idTipoAbono">
+                    <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Nombre Abono</label>
-                                <input ng-model="tipoabono.NombreAbono"  type="text" class="input-sm col-md-4" name="nombrebono" id="NombreAbono" required >
+                                <input ng-model="tipoabono.NombreAbono"  type="text" class="input-sm col-md-4" name="nombreabono" id="NombreAbono" required>
                                 <span style="color:red" ng-show="formulario.nombreabono.$dirty && formulario.nombreabono.$invalid">
                                 <span ng-show="formulario.nombreabono.$error.required">Nombre de abono obligatorio.</span>
                                  </span>
-                                </br></br>
+                      </div>          
+                      <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Descripción Abono</label>
-                                <input ng-model="tipoabono.DescripcionAbono" ng-required=true" type="text" class="input-sm col-md-4"  name="descripcionabono" id="DescripcionAbono">
+                                <input ng-model="tipoabono.DescripcionAbono" ng-required=true" type="textarea" class="input-sm col-md-6"  name="descripcionabono" id="DescripcionAbono">
                                 <span style="color:red" ng-show="formulario.descripcionabono.$dirty && formulario.descripcionabono.$invalid">
                                 <span ng-show="formulario.descripcionabono.$error.required">Descripción de abono obligatorio.</span>
                                  </span>
-                                </br></br>
-                                <label class="control-label" >Fecha Alta</label>
+                      </div>
+                                <div class="form-group col-md-12">
+                                <label class="control-label col-md-2 " >Fecha Alta</label>
                                 <input ng-model="tipoabono.FechaAlta" type="date" class="input-sm" name="FechaAlta" id="FechaAlta">
-                                </br></br>
-                                <label class="control-label" >Fecha Baja</label>
+                                </div>
+                                <div class="form-group col-md-12">
+                                <label class="control-label col-md-2" >Fecha Baja</label>
                                 <input ng-model="tipoabono.FechaBaja" type="date" class="input-sm" name="FechaBaja" id="FechaBaja">                                     
-                                
-                                <input class="box btn-primary " type="button" value="Cancelar" onClick=" window.location.href='TipoAbono.php' " />
-                                <input class="box btn-primary " type="submit" value="Aceptar" ng-click="guardarTipoAbono();" ng-disabled="formulario.$invalid" />
-
+                                </div>
+                                <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='TipoAbono.php' " />
+                                <input class="box btn-primary" type="submit" value="Aceptar" ng-click="guardarTipoAbono();" ng-disabled="formulario.$invalid" />
                 </form>
             </div>
         </div>

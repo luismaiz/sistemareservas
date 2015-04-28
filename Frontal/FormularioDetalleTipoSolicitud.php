@@ -116,10 +116,10 @@
             <a href="#">Inicio</a>
         </li>
         <li>
-            <a href="Salas.php">Salas</a>
+            <a href="Salas.php">Solicitudes</a>
         </li>
-        <li>
-            <a href="#">Detalle Sala</a>
+        <li>    
+            <a href="#">Detalle Tipo Solicitud</a>
         </li>
     </ul>
 </div>
@@ -147,29 +147,30 @@
                             </div>
             <div class="box-content">
 
-                <form class="form-group" name="formulario">
-                    <input ng-model="tiposolicitud.idTipoSolicitud" type="hidden" class="input-sm" name="idTipoSolicitud" id="idTipoSolicitud">
+                <form role="form"  name="formulario">
+                    <div class="form-group col-md-12">
+                                <input ng-model="tiposolicitud.idTipoSolicitud" type="hidden" class="input-sm" name="idTipoSolicitud" id="idTipoSolicitud">
                                 <label class="control-label col-md-2" >Nombre Solicitud</label>
                                 <input ng-model="tiposolicitud.NombreSolicitud"  type="text" class="input-sm col-md-4" name="nombresolicitud" id="NombreSolicitud" required >
                                 <span style="color:red" ng-show="formulario.nombresolicitud.$dirty && formulario.nombresolicitud.$invalid">
                                 <span ng-show="formulario.nombresolicitud.$error.required">Nombre de solicitud obligatorio.</span>
                                  </span>
-                                </br></br>
-                                
+                    </div>
+                                <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Descripción Solicitud</label>
-                                <input ng-model="tiposolicitud.DescripcionSolicitud" ng-required=true" type="text" class="input-sm col-md-4"  name="descripcionsolicitud" id="DescripcionSolicitud">
+                                <input ng-model="tiposolicitud.DescripcionSolicitud" ng-required=true" type="text" class="input-sm col-md-6"  name="descripcionsolicitud" id="DescripcionSolicitud">
                                 <span style="color:red" ng-show="formulario.descripcionsolicitud.$dirty && formulario.descripcionsolicitud.$invalid">
                                 <span ng-show="formulario.descripcionsolicitud.$error.required">Descripción de solicitud obligatorio.</span>
                                  </span>
-                                </br></br>
-                                
-                                </br></br>
-                                            
-                                <label class="control-label" >Fecha Alta</label>
-                                <input ng-model="tiposolicitud.FechaAlta" type="date" class="input-sm" name="FechaAlta" id="FechaAlta">
-                                
-                                <label class="control-label" >Fecha Baja</label>
-                                <input ng-model="tiposolicitud.FechaBaja" type="date" class="input-sm" name="FechaBaja" id="FechaBaja">                                     
+                                </div>
+                                <div class="form-group col-md-12">
+                                <label class="control-label col-md-2" >Fecha Alta</label>
+                                <input ng-model="tiposolicitud.FechaAlta" type="date" class="input-sm col-md-2" name="FechaAlta" id="FechaAlta">
+                                </div>
+                                <div class="form-group col-md-12">
+                                <label class="control-label col-md-2" >Fecha Baja</label>
+                                <input ng-model="tiposolicitud.FechaBaja" type="date" class="input-sm col-md-2" name="FechaBaja" id="FechaBaja">                                     
+                                </div>
                                 <input class="box btn-primary " type="button" value="Cancelar" onClick=" window.location.href='TipoSolicitud.php' " />
                                 <input class="box btn-primary " type="submit" value="Aceptar" ng-click="guardarTipoSolicitud();" ng-disabled="formulario.$invalid" />
 

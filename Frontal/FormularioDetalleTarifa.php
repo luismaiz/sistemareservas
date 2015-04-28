@@ -154,29 +154,30 @@
                             </div>
             <div class="box-content">
 
-                <form class="form-group" name="formulario">
-                    <input ng-model="tipotarifa.idTipoTarifa" type="hidden" class="input-sm" name="idTipoTarifa" id="idTipoTarifa">
+                <form role="form"  name="formulario">
+                                <div class="form-group col-md-12">
+                                <input ng-model="tipotarifa.idTipoTarifa" type="hidden" class="input-sm" name="idTipoTarifa" id="idTipoTarifa">
                                 <label class="control-label col-md-2" >Nombre Tarifa</label>
                                 <input ng-model="tipotarifa.NombreTarifa"  type="text" class="input-sm col-md-4" name="nombretarifa" id="NombreTarifa" required >
                                 <span style="color:red" ng-show="formulario.nombretarifa.$dirty && formulario.nombretarifa.$invalid">
                                 <span ng-show="formulario.nombretarifa.$error.required">Nombre de tarifa obligatorio.</span>
                                  </span>
-                                </br></br>
-                                
+                                </div>
+                                <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Descripción Tarifa</label>
-                                <input ng-model="tipotarifa.DescripcionTarifa" ng-required=true" type="text" class="input-sm col-md-4"  name="descripciontarifa" id="DescripcionTarifa">
+                                <input ng-model="tipotarifa.DescripcionTarifa" ng-required=true" type="text" class="input-sm col-md-6"  name="descripciontarifa" id="DescripcionTarifa">
                                 <span style="color:red" ng-show="formulario.descripciontarifa.$dirty && formulario.descripciontarifa.$invalid">
                                 <span ng-show="formulario.descripciontarifa.$error.required">Descripción de tarifa obligatorio.</span>
                                  </span>
-                                </br></br>
-                                
-                                </br></br>
-                                            
-                                <label class="control-label" >Fecha Alta</label>
+                                </div>
+                                <div class="form-group col-md-12">
+                                <label class="control-label col-md-2" >Fecha Alta</label>
                                 <input ng-model="tipotarifa.FechaAlta" type="date" class="input-sm" name="FechaAlta" id="FechaAlta">
-                                
-                                <label class="control-label" >Fecha Baja</label>
+                                </div>
+                                <div class="form-group col-md-12">
+                                <label class="control-label col-md-2" >Fecha Baja</label>
                                 <input ng-model="tipotarifa.FechaBaja" type="date" class="input-sm" name="FechaBaja" id="FechaBaja">                                     
+                                </div>
                                 <input class="box btn-primary " type="button" value="Cancelar" onClick=" window.location.href='TipoTarifa.php' " />
                                 <input class="box btn-primary " type="submit" value="Aceptar" ng-click="guardarTipoTarifa();" ng-disabled="formulario.$invalid" />
 

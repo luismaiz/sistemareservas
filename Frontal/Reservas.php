@@ -117,29 +117,29 @@
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label" >Localizador</label>
-                                <input type="text" class="input-sm" id="filtroLocalizador" name="filtroLocalizador" value="">	
-                                <label class="control-label" >Tipo Solicitud</label>
-                                <select  id="filtroTipoSolicitud" class="input-sm" >	
+                            <div class="form-group col-md-12">
+                                <label class="control-label col-md-2" >Localizador</label>
+                                <input type="text" class="input-sm col-md-2" id="filtroLocalizador" name="filtroLocalizador" value="">	
+                                <label class="control-label col-md-2" >Tipo Solicitud</label>
+                                <select  id="filtroTipoSolicitud" class="input-sm col-md-2" >	
                                     <option ng_repeat="tiposolicitud in tiposSolicitudes" value="{{tiposolicitud.idTipoSolicitud}}">{{tiposolicitud.NombreSolicitud}}</option>
                                 </select>
-                                
-                                    
-                                </select>
                             </div>
-                            <div class="form-group">
-                                <label class="control-label">Nombre</label>
-                                <input type="text" class="input-sm" pattern="^[a-zA-Z0-9]{4,12}$" id="filtroNombre" name="filtroNombre" value="" />
-                                <label class="control-label" >Apellidos</label>
-                                <input type="text" class="input-sm" pattern="[A-Za-z]" id="filtroApellidos" name="filtroApellidos" value="" />
-                                <label class="control-label" >DNI</label>
-                                <input type="text" class="input-sm" pattern="^[a-zA-Z0-9]{4,12}$" id="filtroDni" name="filtroDni"/>
-                                <label class="control-label" >eMail</label>
-                                <input type="email" class="input-sm" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" id="filtroEmail" name="filtroEmail"/><br>
-                                <label class="control-label" >Fecha Solicitud</label>
-                                <input type="datetime-local" class="input-sm" id="filtroFechaSolicitud" name="filtroFechaSolicitud"/>
-                                <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerReservas()"/>
+                            <div class="form-group col-md-12">
+                                <label class="control-label col-md-1 ">Nombre</label>
+                                <input type="text" class="input-sm col-md-2" pattern="^[a-zA-Z0-9]{4,12}$" id="filtroNombre" name="filtroNombre" value="" />
+                                <label class="control-label col-md-1" >Apellidos</label>
+                                <input type="text" class="input-sm col-md-2" pattern="[A-Za-z]" id="filtroApellidos" name="filtroApellidos" value="" />
+                                <label class="control-label col-md-1" >DNI</label>
+                                <input type="text" class="input-sm col-md-2" pattern="^[a-zA-Z0-9]{4,12}$" id="filtroDni" name="filtroDni"/>
+                            </div>
+                            <div class="form-group col-md-12">
+                                
+                                <label class="control-label col-md-1" >eMail</label>
+                                <input type="email" class="input-sm col-md-2" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" id="filtroEmail" name="filtroEmail"/>
+                                <label class="control-label col-md-2" >Fecha Solicitud</label>
+                                <input type="datetime-local" class="input-sm col-md-2" id="filtroFechaSolicitud" name="filtroFechaSolicitud"/>
+                                <input class="box btn-primary col-lg-2" type="button" value="Buscar" ng_click="obtenerReservas()"/>
                             </div>
                             <div class="box-content" id="reservas">
                             <table class="table table-striped table-bordered responsive">
