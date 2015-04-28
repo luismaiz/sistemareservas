@@ -174,13 +174,15 @@ class TarifasBO extends Rest{
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-        //el constructor del padre ya se encarga de sanear los datos de entrada  
+        
+
+        if (isset($this->datosPeticion['idTipoTarifa'])) {
         $idTipoTarifa = $this->datosPeticion['idTipoTarifa'];
 
         $this->con = ConexionBD::getInstance();
         $tipotarifa = new TipotarifaModel();
 
-        $fila = $tipotarifa->findById($this->con, $idTipoTarifa);
+        $fila = $tipotarifa->findById($this->con, $this->datosPeticion['idTipoTarifa']);
 
 
         if ($fila) {
@@ -193,6 +195,7 @@ class TarifasBO extends Rest{
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+    }
     }
     
     private function obtenerTiposTarifasFiltro() {

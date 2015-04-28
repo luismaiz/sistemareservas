@@ -8,7 +8,7 @@ and open the template in the editor.
     Author     : Luis
 */
 
-form[novalidate].input{
+/*form[novalidate].input{
     
     border-left-width: 20px;
     border-color: #3498db;
@@ -31,4 +31,10 @@ input.ng-valid.ng-dirty
 {
     border-color: #2ecc71;
     
-}
+}*/
+
+input.ng-pristine { border:1px solid; }
+input.ng-dirty.ng-valid { border:1px solid Green; }
+input.ng-dirty.ng-invalid { border:1px solid Red; }
+input .ng-dirty.ng-valid ~ span.ok { color:green; display:inline; }
+input .ng-dirty.ng-invalid ~ span.ko { color:red; display:inline; }

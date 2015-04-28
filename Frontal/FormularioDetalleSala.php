@@ -116,11 +116,6 @@
                         <div class="box-inner">
                         <div class="box-header well" data-original-title="">
                         <h2><i class="glyphicon glyphicon-edit"></i> Detalle Sala</h2>
-                        <div class="box-icon">
-
-                        <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
-                        
-                        </div>
                         </div>
                             <div class="box-content alerts">
                                 <div class="alert alert-danger" id="divError" style='display:none;'>
@@ -133,45 +128,51 @@
                             </div>
                             </div>
                         <div class="box-content">
-                            
-                            <form name="formulario" >
-                                <input ng-model="sala.idSala" type="hidden" class="input-sm" name="idSala" id="idSala">
+                            <form class="form-group" name="formulario" novalidate="true">
+                                 <input ng-model="sala.idSala" type="hidden" class="input-sm" name="idSala" id="idSala">
                                 <label class="control-label col-md-2" >Nombre Sala</label>
                                 <input ng-model="sala.NombreSala"  type="text" class="input-sm col-md-4" name="nombresala" id="NombreSala" required >
                                 <span style="color:red" ng-show="formulario.nombresala.$dirty && formulario.nombresala.$invalid">
                                 <span ng-show="formulario.nombresala.$error.required">Nombre de sala obligatorio.</span>
                                  </span>
                                 </br></br>
-                                
                                 <label class="control-label col-md-2" >Descripción</label>
-                                <input ng-model="sala.DescripcionSala" ng-required=true" type="text" class="input-sm col-md-4"  name="descripcionsala" id="DescripcionSala">
+                                <input ng-model="sala.DescripcionSala" type="text" class="input-sm col-md-4"  name="descripcionsala" id="DescripcionSala" required>
+                                
                                 <span style="color:red" ng-show="formulario.descripcionsala.$dirty && formulario.descripcionsala.$invalid">
                                 <span ng-show="formulario.descripcionsala.$error.required">Descripción de sala obligatorio.</span>
-                                 </span>
+                                </span>
                                 </br></br>
-                                
                                 <label class="control-label col-md-2" >Capacidad</label>
-                                <input ng-model="sala.CapacidadSala" ng-required=true" type="number" class="input-sm col-md-2" name="capacidadsala" id="CapacidadSala">
+                                <input ng-model="sala.CapacidadSala" type="number" class="input-sm col-md-2" name="capacidadsala" id="CapacidadSala" required>
+                                
                                 <span style="color:red" ng-show="formulario.capacidadsala.$dirty && formulario.capacidadsala.$invalid">
                                 <span ng-show="formulario.capacidadsala.$error.required">Capacidad de sala obligatoria y numérica.</span>
-                                 </span>
-                                
+                                </span>
                                 </br></br>
-                                            
-                                <label class="control-label" >Fecha Alta</label>
-                                <input ng-model="sala.FechaAlta" type="date" class="input-sm" name="FechaAlta" id="FechaAlta">
                                 
-                                <label class="control-label" >Fecha Baja</label>
-                                <input ng-model="sala.FechaBaja" type="date" class="input-sm" name="FechaBaja" id="FechaBaja">                                     
-                                <input class="box btn-primary " type="button" value="Cancelar" onClick=" window.location.href='Salas.php' " />
-                                <input class="box btn-primary " type="submit" value="Aceptar" ng-click="guardarSala();" ng-disabled="formulario.$invalid" />
-                            </form>
+                                <label class="control-label col-md-2" >Fecha Alta</label>
+                                <input ng-model="sala.FechaAlta" type="date" class="input-sm col-md-2" name="FechaAlta" id="FechaAlta">
+                                </br></br>
+                                <label class="control-label col-md-2" >Fecha Baja</label>
+                                <input ng-model="sala.FechaBaja" type="date" class="input-sm col-md-2" name="FechaBaja" id="FechaBaja">                                     
+                                
+                                
+                                
+                                
+                             </form>
+                            
+                                </div>                                         
+                            
+                            <input class="box btn-primary float-right" type="button" value="Cancelar" onClick=" window.location.href='Salas.php' " />
+                                <input class="box btn-primary float-right" type="submit" value="Aceptar" ng-click="guardarSala();" ng-disabled="formulario.$invalid" />
+
                         </div>
                         </div>
                 </div>
     </div>
                        
-</div>
+
 
         
 <?php require('Pie.php'); ?>

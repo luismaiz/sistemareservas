@@ -72,7 +72,6 @@ class SalasBO  extends Rest {
             $this->con = ConexionBD::getInstance();
             $sala = new SalaModel();
 
-            $idSala = $this->datosPeticion['idSala'];
             $NombreSala = $this->datosPeticion['NombreSala'];
             $CapacidadSala = $this->datosPeticion['CapacidadSala'];
             $DescripcionSala = $this->datosPeticion['DescripcionSala'];
@@ -80,15 +79,13 @@ class SalasBO  extends Rest {
             $FechaBaja = $this->datosPeticion['FechaBaja'];
 
             if (!empty($idSala)) {
-                echo "jadjfkajdjf";
-                $sala->setIdSala($idSala);
                 $sala->setNombreSala($NombreSala);
                 $sala->setCapacidadSala($CapacidadSala);
                 $sala->setDescripcionSala($DescripcionSala);
                 $sala->setFechaAlta($FechaAlta);
                 $sala->setFechaBaja($FechaBaja);
                 
-                $filasActualizadas = $sala->updateToDatabase($this->con);
+                $filasActualizadas = $sala->insertIntoDatabase($this->con);
                 
                 if (count($filasActualizadas) == 1) {
                     $resp = array('estado' => "correcto", "msg" => "sala actualizada");

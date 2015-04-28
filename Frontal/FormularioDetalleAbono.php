@@ -116,21 +116,18 @@
                                 <span ng-show="formulario.nombreabono.$error.required">Nombre de abono obligatorio.</span>
                                  </span>
                                 </br></br>
-                                
                                 <label class="control-label col-md-2" >Descripción Abono</label>
                                 <input ng-model="tipoabono.DescripcionAbono" ng-required=true" type="text" class="input-sm col-md-4"  name="descripcionabono" id="DescripcionAbono">
                                 <span style="color:red" ng-show="formulario.descripcionabono.$dirty && formulario.descripcionabono.$invalid">
                                 <span ng-show="formulario.descripcionabono.$error.required">Descripción de abono obligatorio.</span>
                                  </span>
                                 </br></br>
-                                
-                                </br></br>
-                                            
                                 <label class="control-label" >Fecha Alta</label>
                                 <input ng-model="tipoabono.FechaAlta" type="date" class="input-sm" name="FechaAlta" id="FechaAlta">
-                                
+                                </br></br>
                                 <label class="control-label" >Fecha Baja</label>
                                 <input ng-model="tipoabono.FechaBaja" type="date" class="input-sm" name="FechaBaja" id="FechaBaja">                                     
+                                
                                 <input class="box btn-primary " type="button" value="Cancelar" onClick=" window.location.href='TipoAbono.php' " />
                                 <input class="box btn-primary " type="submit" value="Aceptar" ng-click="guardarTipoAbono();" ng-disabled="formulario.$invalid" />
 
