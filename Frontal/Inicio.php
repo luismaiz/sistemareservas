@@ -9,8 +9,8 @@
             $scope.abonos = [];
             $scope.obtenersolicitudes = function() {
                 
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesPendientes";
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesPendientes";
+                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesPendientes";
+                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesPendientes";
                 var Params = 'TipoSolicitud=1';    
                 
 	        Ajax.open("POST", Url, false);
@@ -40,8 +40,8 @@
             
             $scope.obtenerabonos = function() {
                 
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes";
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes";
+                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes";
+                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes";
                 var Params = 'TipoSolicitud=3';    
                 
 	        Ajax.open("POST", Url, false);
@@ -82,7 +82,7 @@
 <div class=" row" ng-app="BusquedaSolicitudes">
     <div ng_controller="CargaSolicitudes">
     
-        <div class="col-md-6 col-sm-3 col-xs-6">
+        <div class="col-md-6 col-sm-6 col-xs-12">
             <a  id="enlace" data-toggle="tooltip" title="{{numerosolicitudes}} nuevas solicitudes." class="well top-block" href="Reservas.php?solicitudes=1">
                     <i class="glyphicon glyphicon-user blue"></i>
                     <div id="abonosdiarios">Solicitudes Clases pendientes</div>
@@ -90,7 +90,7 @@
                     <span class="notification" ng-bind="numerosolicitudes"></span>
                 </a>
         </div>
-        <div class="col-md-6 col-sm-3 col-xs-6">
+        <div class="col-md-6 col-sm-6 col-xs-12">
             <a data-toggle="tooltip" title="{{numeroabonos}} nuevas solicitudes." class="well top-block" href="Reservas.php?abonos=1">
                 <i class="glyphicon glyphicon-user blue"></i>
                 <div>Abonos diarios pendientes</div>
