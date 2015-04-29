@@ -15,8 +15,8 @@ include 'config.php'
 
 
         <!-- The styles -->
-        <link id="bs-css" href="Utilidades/css/bootstrap-cerulean.min.css" rel="stylesheet">
-        <link href="Utilidades/css/charisma-app.css" rel="stylesheet" type="text/css"/>
+        <link href="Utilidades/css/bootstrap-cerulean.min.css" rel="stylesheet" type="text/css"/>
+        <!--<link id="bs-css" href="Utilidades/css/bootstrap-cerulean.min.css" rel="stylesheet">-->
         <link href="Utilidades/css/charisma-app.css" rel="stylesheet">
         <link href='Utilidades/bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>
         <link href='Utilidades/bower_components/fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print'>
