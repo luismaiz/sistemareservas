@@ -7,11 +7,11 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 	private static $CLASS_NAME='ClaseModel';
 	const SQL_IDENTIFIER_QUOTE='`';
 	const SQL_TABLE_NAME='clase';
-	const SQL_INSERT='INSERT INTO `clase` (`idClase`,`idActividad`,`idSala`,`HoraInicio`,`HoraFin`,`Ocupacion`,`Dia`,`Publicada`) VALUES (?,?,?,?,?,?,?,?)';
+	const SQL_INSERT='INSERT INTO `clase` (`idClase`,idActividad`,`idSala`,`HoraInicio`,`HoraFin`,`Ocupacion`,`Dia`,`Publicada`) VALUES (?,?,?,?,?,?,?,?)';
 	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `clase` (`idActividad`,`idSala`,`HoraInicio`,`HoraFin`,`Ocupacion`,`Dia`,`Publicada`) VALUES (?,?,?,?,?,?,?)';
 	const SQL_UPDATE='UPDATE `clase` SET `idClase`=?,`idActividad`=?,`idSala`=?,`HoraInicio`=?,`HoraFin`=?,`Ocupacion`=?,`Dia`=?,`Publicada`=? WHERE `idClase`=?';
 	const SQL_SELECT_PK='SELECT * FROM `clase` WHERE `idClase`=?';
-	const SQL_SELECT='SELECT * FROM `clase`';
+        const SQL_SELECT='SELECT * FROM `clase`';
 	const SQL_DELETE_PK='DELETE FROM `clase` WHERE `idClase`=?';
 	const FIELD_IDCLASE=766399627;
 	const FIELD_IDACTIVIDAD=1539203806;
@@ -52,8 +52,8 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 		self::FIELD_PUBLICADA=>Db2PhpEntity::PHP_TYPE_BOOL);
 	private static $FIELD_TYPES=array(
 		self::FIELD_IDCLASE=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
-		self::FIELD_IDACTIVIDAD=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,true),
-		self::FIELD_IDSALA=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,true),
+		self::FIELD_IDACTIVIDAD=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
+		self::FIELD_IDSALA=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
 		self::FIELD_HORAINICIO=>array(Db2PhpEntity::JDBC_TYPE_TIME,8,0,true),
 		self::FIELD_HORAFIN=>array(Db2PhpEntity::JDBC_TYPE_TIME,8,0,true),
 		self::FIELD_OCUPACION=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,true),
@@ -61,8 +61,8 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 		self::FIELD_PUBLICADA=>array(Db2PhpEntity::JDBC_TYPE_BIT,0,0,true));
 	private static $DEFAULT_VALUES=array(
 		self::FIELD_IDCLASE=>null,
-		self::FIELD_IDACTIVIDAD=>null,
-		self::FIELD_IDSALA=>null,
+		self::FIELD_IDACTIVIDAD=>0,
+		self::FIELD_IDSALA=>0,
 		self::FIELD_HORAINICIO=>null,
 		self::FIELD_HORAFIN=>null,
 		self::FIELD_OCUPACION=>null,
@@ -105,7 +105,7 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 	/**
 	 * set value for idActividad 
 	 *
-	 * type:INT,size:10,default:null,index,nullable
+	 * type:INT,size:10,default:null,index
 	 *
 	 * @param mixed $idActividad
 	 * @return ClaseModel
@@ -119,7 +119,7 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 	/**
 	 * get value for idActividad 
 	 *
-	 * type:INT,size:10,default:null,index,nullable
+	 * type:INT,size:10,default:null,index
 	 *
 	 * @return mixed
 	 */
@@ -130,7 +130,7 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 	/**
 	 * set value for idSala 
 	 *
-	 * type:INT,size:10,default:null,index,nullable
+	 * type:INT,size:10,default:null,index
 	 *
 	 * @param mixed $idSala
 	 * @return ClaseModel
@@ -144,7 +144,7 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 	/**
 	 * get value for idSala 
 	 *
-	 * type:INT,size:10,default:null,index,nullable
+	 * type:INT,size:10,default:null,index
 	 *
 	 * @return mixed
 	 */
@@ -428,10 +428,12 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 		if(self::isCacheStatements()) {
 			if (in_array($statement, array(self::SQL_INSERT, self::SQL_INSERT_AUTOINCREMENT, self::SQL_UPDATE, self::SQL_SELECT_PK, self::SQL_DELETE_PK))) {
 				$dbInstanceId=spl_object_hash($db);
-				if (null===self::$stmts[$statement][$dbInstanceId]) {
-					self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
-				}
-				return self::$stmts[$statement][$dbInstanceId];
+//				if (null===self::$stmts[$statement][$dbInstanceId]) {
+//					self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
+//				}
+//				return self::$stmts[$statement][$dbInstanceId];
+                                
+                                self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
 			}
 		}
 		return $db->prepare($statement);
@@ -765,20 +767,6 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 	}
 
 	/**
-	 * Fetch SalaModel which references this ClaseModel. Will return null in case reference is invalid.
-	 * `clase`.`idSala` -> `sala`.`idSala`
-	 *
-	 * @param PDO $db a PDO Database instance
-	 * @param array $sort array of DSC instances
-	 * @return SalaModel
-	 */
-	public function fetchSalaModel(PDO $db, $sort=null) {
-		$filter=array(SalaModel::FIELD_IDSALA=>$this->getIdSala());
-		$result=SalaModel::findByFilter($db, $filter, true, $sort);
-		return empty($result) ? null : $result[0];
-	}
-
-	/**
 	 * Fetch ActividadModel which references this ClaseModel. Will return null in case reference is invalid.
 	 * `clase`.`idActividad` -> `actividad`.`idActividad`
 	 *
@@ -789,6 +777,20 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 	public function fetchActividadModel(PDO $db, $sort=null) {
 		$filter=array(ActividadModel::FIELD_IDACTIVIDAD=>$this->getIdActividad());
 		$result=ActividadModel::findByFilter($db, $filter, true, $sort);
+		return empty($result) ? null : $result[0];
+	}
+
+	/**
+	 * Fetch SalaModel which references this ClaseModel. Will return null in case reference is invalid.
+	 * `clase`.`idSala` -> `sala`.`idSala`
+	 *
+	 * @param PDO $db a PDO Database instance
+	 * @param array $sort array of DSC instances
+	 * @return SalaModel
+	 */
+	public function fetchSalaModel(PDO $db, $sort=null) {
+		$filter=array(SalaModel::FIELD_IDSALA=>$this->getIdSala());
+		$result=SalaModel::findByFilter($db, $filter, true, $sort);
 		return empty($result) ? null : $result[0];
 	}
 

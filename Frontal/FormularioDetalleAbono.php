@@ -17,8 +17,8 @@
         
         $scope.obtenerTiposAbono = function(idTipoAbono) {
                 
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTipoAbono";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTipoAbono";
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTipoAbono";
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTipoAbono";
                 var Params = 'idTipoAbono='+ idTipoAbono;
 
                 Ajax.open("POST", Url, false);
@@ -43,8 +43,8 @@
             $scope.actualizarTipoAbono = function(){
                                    
              
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=actualizarTipoAbono";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=actualizarTipoAbono";
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=actualizarTipoAbono";
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=actualizarTipoAbono";
                 var Params = 'idTipoAbono='+ $location.search().idTipoAbono +
                     '&NombreAbono='+ document.getElementById('NombreAbono').value +
                     '&DescripcionAbono='+ document.getElementById('DescripcionAbono').value +
@@ -52,7 +52,7 @@
                     '&FechaBaja='+ document.getElementById('FechaBaja').value;
 
                
-                Ajax.open("PUT", Url, false);
+                Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
              
@@ -73,8 +73,8 @@
             $scope.crearTipoAbono = function(){
                                    
              
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=actualizarTipoAbono";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=crearTipoAbono";
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=crearTipoAbono";
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=crearTipoAbono";
                 var Params = 'NombreAbono='+ document.getElementById('NombreAbono').value +
                     '&DescripcionAbono='+ document.getElementById('DescripcionAbono').value +
                     '&FechaAlta='+ document.getElementById('FechaAlta').value +

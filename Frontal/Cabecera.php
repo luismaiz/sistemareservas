@@ -16,7 +16,7 @@ include 'config.php'
 
         <!-- The styles -->
         <link id="bs-css" href="Utilidades/css/bootstrap-cerulean.min.css" rel="stylesheet">
-
+        <link href="Utilidades/css/charisma-app.css" rel="stylesheet" type="text/css"/>
         <link href="Utilidades/css/charisma-app.css" rel="stylesheet">
         <link href='Utilidades/bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>
         <link href='Utilidades/bower_components/fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print'>
@@ -35,19 +35,17 @@ include 'config.php'
         <script src="Utilidades/js/angular-1.2.9/angular-1.2.9/angular.js" type="text/javascript"></script>
         <!-- jQuery -->
         <script src="Utilidades/bower_components/jquery/jquery.min.js"></script>
-        <!--<script src="js/angular-1.0.1.min.js" type="text/javascript"></script>-->
-        <!--<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>--> 
-        <!--<script src="js/angular.min.js" type="text/javascript"></script>-->
+        
+        <!--<script src="Utilidades/bower_components/jquery/jquery.min.js" type="text/javascript"></script>-->
         <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
-
+        
         <!-- The fav icon -->
         <link rel="shortcut icon" href="Utilidades/img/favicon.ico">
 
-    </head>
-    <script>
+        <script>
         function AjaxObj()
         {
             var xmlhttp = null;
@@ -94,14 +92,20 @@ include 'config.php'
         }
 
     </script>
+    </head>
+    
     <body>
-<?php if (!isset($no_visible_elements) || !$no_visible_elements) { ?>
+
             <!-- topbar starts -->
             <div class="navbar navbar-default" role="navigation">
-
                 <div class="navbar-inner">
-
-                    <a class="navbar-brand" href="Inicio.php"> <img alt="FMN Logo" src="img/FMN.jpg" class="hidden-xs"/>
+                    <button type="button" class="navbar-toggle pull-left animated flip">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="Inicio.php"> <img alt="FMN Logo" src="Utilidades/img/FMN.jpg" class="hidden-xs"/>
                         <span >M-86</span></a>
 
                     <!-- user dropdown starts -->
@@ -115,15 +119,57 @@ include 'config.php'
                         </ul>
                     </div>
                     <!-- user dropdown ends -->
+                    <!-- user dropdown ends -->
+
+            <!-- theme selector starts -->
+            <div class="btn-group pull-right theme-container animated tada">
+                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <i class="glyphicon glyphicon-tint"></i><span
+                        class="hidden-sm hidden-xs"> Change Theme / Skin</span>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" id="themes">
+                    <li><a data-value="classic" href="#"><i class="whitespace"></i> Classic</a></li>
+                    <li><a data-value="cerulean" href="#"><i class="whitespace"></i> Cerulean</a></li>
+                    <li><a data-value="cyborg" href="#"><i class="whitespace"></i> Cyborg</a></li>
+                    <li><a data-value="simplex" href="#"><i class="whitespace"></i> Simplex</a></li>
+                    <li><a data-value="darkly" href="#"><i class="whitespace"></i> Darkly</a></li>
+                    <li><a data-value="lumen" href="#"><i class="whitespace"></i> Lumen</a></li>
+                    <li><a data-value="slate" href="#"><i class="whitespace"></i> Slate</a></li>
+                    <li><a data-value="spacelab" href="#"><i class="whitespace"></i> Spacelab</a></li>
+                    <li><a data-value="united" href="#"><i class="whitespace"></i> United</a></li>
+                </ul>
+            </div>
+            <!-- theme selector ends -->
+
+            <ul class="collapse navbar-collapse nav navbar-nav top-menu">
+                <li><a href="#"><i class="glyphicon glyphicon-globe"></i> Visit Site</a></li>
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown"><i class="glyphicon glyphicon-star"></i> Dropdown <span
+                            class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">One more separated link</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <form class="navbar-search pull-left">
+                        <input placeholder="Search" class="search-query form-control col-md-10" name="query"
+                               type="text">
+                    </form>
+                </li>
+            </ul>
                 </div>
             </div>
             <!-- topbar ends -->
-                <?php } ?>
+
         <div class="ch-container">
             <div class="row">
-<?php if (!isset($no_visible_elements) || !$no_visible_elements) {
-    ?>
-
                     <!-- left menu starts -->
                     <div class="col-sm-2 col-lg-2">
                         <div class="sidebar-nav">
@@ -164,5 +210,5 @@ include 'config.php'
 
                     <div id="content" class="col-lg-10 col-sm-10">
                         <!-- content starts -->
-<?php } ?>
+
 

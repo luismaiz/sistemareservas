@@ -12,8 +12,8 @@
             $scope.obtenerActividades = function() {
                 
                 
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividadesFiltro";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividadesFiltro";
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividadesFiltro";
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividadesFiltro";
                 var Params = 'NombreActividad=' + document.getElementById("filtroactividad").value + 
                         '&IntensidadActividad=' + document.getElementById("filtrointensidad").value +    
                         '&Grupo=' + document.getElementById("filtrogrupo").value;        
@@ -90,7 +90,7 @@
                                                     <td>{{actividad.IntensidadActividad}}</td>
                                                     <td>{{actividad.EdadMinima}}</td>
                                                     <td>{{actividad.EdadMaxima}}</td>
-                                                    <td class="center"><a href="FormularioDetalleActividad.php?idSala={{actividad.idActividad}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
+                                                    <td class="center"><a href="FormularioDetalleActividad.php?idActividad={{actividad.idActividad}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
                                                 </tr>
                                             </thead>
                                         </table>

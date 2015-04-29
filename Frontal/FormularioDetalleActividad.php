@@ -14,9 +14,9 @@
         $scope.estado = [];
         
         $scope.obtenerActividad = function(idActividad) {
-                
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividad";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividad";
+                alert('vamos');
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividad";
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividad";
                 var Params = 'idActividad='+ idActividad;
 
                 Ajax.open("POST", Url, false);
@@ -27,11 +27,11 @@
                 //$scope.sala.CapacidadSala = parseInt($scope.sala.CapacidadSala);
         
             };
-            if (typeof($location.search().idTipoAbono) !== "undefined")
-                $scope.obtenerActividad($location.search().idTipoAbono);
+            if (typeof($location.search().idActividad) !== "undefined")
+                $scope.obtenerActividad($location.search().idActividad);
             
             $scope.guardarActividad = function() {
-                if (typeof($location.search().idTipoAbono) !== "undefined")
+                if (typeof($location.search().idActividad) !== "undefined")
                     $scope.actualizarActividad();    
                 else
                     $scope.crearActividad();            
@@ -41,8 +41,8 @@
             $scope.actualizarActividad = function(){
                                    
              
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=actualizarActividad";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=actualizarActividad";
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=actualizarActividad";
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=actualizarActividad";
                 var Params = 'idActividad='+ $location.search().idActividad +
                     '&NombreActividad='+ document.getElementById('NombreActividad').value +
                     '&IntensidadActividad='+ document.getElementById('IntensidadActividad').value +
@@ -53,7 +53,7 @@
                     '&FechaAlta='+ document.getElementById('FechaAlta').value +
                     '&FechaBaja='+ document.getElementById('FechaBaja').value;
                
-                Ajax.open("PUT", Url, false);
+                Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
              
@@ -73,8 +73,8 @@
             $scope.crearActividad = function(){
                                    
              
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=actualizarActividad";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=crearActividad";
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=crearActividad";
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=crearActividad";
                 var Params = 'NombreActividad='+ document.getElementById('NombreActividad').value +
                     '&IntensidadActividad='+ document.getElementById('IntensidadActividad').value +
                     '&Descripcion='+ document.getElementById('Descripcion').value +
@@ -106,28 +106,7 @@
     
     
                 
-    function crearActividad() {	        
-        //alert("crear");
-        //var Url = "http://www.rightwatch.es/pfgreservas/Api.php?url=crearActividad";		
-        var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=crearActividad";		        
-	
-        var Params = '&NombreActividad='+ document.getElementById('NombreActividad').value +
-            '&IntensidadActividad='+ document.getElementById('IntensidadActividad').value +
-            '&EdadMinima='+ document.getElementById('EdadMinima').value +
-            '&EdadMaxima='+ document.getElementById('EdadMaxima').value +
-            '&Grupo='+ document.getElementById('Grupo').value +
-            '&Descripcion='+ document.getElementById('Descripcion').value +
-            '&FechaAlta='+ document.getElementById('FechaAlta').value +
-            '&FechaBaja='+ document.getElementById('FechaBaja').value;
-		     
-        //alert(Params);
-		     
-        Ajax.open("POST", Url, true);
-        Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-        Ajax.send(Params); // Enviamos los datos
-        
-        mostrarRespuesta(Ajax.responseText);
-    }
+  
    
     function borrarActividad() {	
         //var Url = "http://www.rightwatch.es/pfgreservas/Api.php?url=borrarActividad";	
@@ -135,7 +114,7 @@
         var Params = 'idActividad='+ document.getElementById('idActividad').value;
 
 	
-        Ajax.open("DELETE", Url, false);
+        Ajax.open("POST", Url, false);
         Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
         Ajax.send(Params); // Enviamos los datos
     }

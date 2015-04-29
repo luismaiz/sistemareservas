@@ -103,8 +103,8 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		self::FIELD_GESTIONADO=>Db2PhpEntity::PHP_TYPE_BOOL);
 	private static $FIELD_TYPES=array(
 		self::FIELD_IDSOLICITUD=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
-		self::FIELD_IDTIPOSOLICITUD=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,true),
-		self::FIELD_IDTIPOTARIFA=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,true),
+		self::FIELD_IDTIPOSOLICITUD=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
+		self::FIELD_IDTIPOTARIFA=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
 		self::FIELD_FECHASOLICITUD=>array(Db2PhpEntity::JDBC_TYPE_TIMESTAMP,19,0,true),
 		self::FIELD_NOMBRE=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,150,0,true),
 		self::FIELD_APELLIDOS=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,45,0,true),
@@ -125,8 +125,8 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		self::FIELD_GESTIONADO=>array(Db2PhpEntity::JDBC_TYPE_BIT,1,0,false));
 	private static $DEFAULT_VALUES=array(
 		self::FIELD_IDSOLICITUD=>null,
-		self::FIELD_IDTIPOSOLICITUD=>null,
-		self::FIELD_IDTIPOTARIFA=>null,
+		self::FIELD_IDTIPOSOLICITUD=>0,
+		self::FIELD_IDTIPOTARIFA=>0,
 		self::FIELD_FECHASOLICITUD=>null,
 		self::FIELD_NOMBRE=>null,
 		self::FIELD_APELLIDOS=>null,
@@ -195,7 +195,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	/**
 	 * set value for idTipoSolicitud 
 	 *
-	 * type:INT,size:10,default:null,index,nullable
+	 * type:INT,size:10,default:null,index
 	 *
 	 * @param mixed $idTipoSolicitud
 	 * @return SolicitudModel
@@ -209,7 +209,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	/**
 	 * get value for idTipoSolicitud 
 	 *
-	 * type:INT,size:10,default:null,index,nullable
+	 * type:INT,size:10,default:null,index
 	 *
 	 * @return mixed
 	 */
@@ -220,7 +220,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	/**
 	 * set value for idTipoTarifa 
 	 *
-	 * type:INT,size:10,default:null,index,nullable
+	 * type:INT,size:10,default:null,index
 	 *
 	 * @param mixed $idTipoTarifa
 	 * @return SolicitudModel
@@ -234,7 +234,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	/**
 	 * get value for idTipoTarifa 
 	 *
-	 * type:INT,size:10,default:null,index,nullable
+	 * type:INT,size:10,default:null,index
 	 *
 	 * @return mixed
 	 */
