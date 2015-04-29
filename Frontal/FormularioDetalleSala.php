@@ -53,10 +53,6 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-                alert('hola1');
-                alert(Ajax.responseText);
-                alert('hola2');
-                
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')
@@ -86,7 +82,7 @@
                 Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-             alert(Ajax.responseText);
+             
             
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
