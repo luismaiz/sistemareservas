@@ -1,18 +1,15 @@
 <?php
 
-/**
- * 
- *
- * @version 1.105
- * @package entity
- */
+require_once("helpers/Db2PhpEntityBase.class.php");
+require_once("helpers/Db2PhpEntityModificationTracking.class.php");
+require_once 'helpers/DFCAggregate.class.php';
 class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTracking {
 	private static $CLASS_NAME='SolicitudModel';
 	const SQL_IDENTIFIER_QUOTE='`';
 	const SQL_TABLE_NAME='solicitud';
-	const SQL_INSERT='INSERT INTO `solicitud` (`idSolicitud`,`idTipoSolicitud`,`idTipoTarifa`,`FechaSolicitud`,`Nombre`,`Apellidos`,`DNI`,`EMail`,`Direccion`,`CP`,`Sexo`,`FechaNacimiento`,`TutorLegal`,`Localidad`,`Telefono1`,`Telefono2`,`Provincia`,`DescripcionSolicitud`,`Otros`,`Localizador`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
-	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `solicitud` (`idTipoSolicitud`,`idTipoTarifa`,`FechaSolicitud`,`Nombre`,`Apellidos`,`DNI`,`EMail`,`Direccion`,`CP`,`Sexo`,`FechaNacimiento`,`TutorLegal`,`Localidad`,`Telefono1`,`Telefono2`,`Provincia`,`DescripcionSolicitud`,`Otros`,`Localizador`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
-	const SQL_UPDATE='UPDATE `solicitud` SET `idSolicitud`=?,`idTipoSolicitud`=?,`idTipoTarifa`=?,`FechaSolicitud`=?,`Nombre`=?,`Apellidos`=?,`DNI`=?,`EMail`=?,`Direccion`=?,`CP`=?,`Sexo`=?,`FechaNacimiento`=?,`TutorLegal`=?,`Localidad`=?,`Telefono1`=?,`Telefono2`=?,`Provincia`=?,`DescripcionSolicitud`=?,`Otros`=?,`Localizador`=? WHERE `idSolicitud`=?';
+	const SQL_INSERT='INSERT INTO `solicitud` (`idSolicitud`,`idTipoSolicitud`,`idTipoTarifa`,`FechaSolicitud`,`Nombre`,`Apellidos`,`DNI`,`EMail`,`Direccion`,`CP`,`Sexo`,`FechaNacimiento`,`TutorLegal`,`Localidad`,`Telefono1`,`Telefono2`,`Provincia`,`DescripcionSolicitud`,`Otros`,`Localizador`,`Gestionado`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `solicitud` (`idTipoSolicitud`,`idTipoTarifa`,`FechaSolicitud`,`Nombre`,`Apellidos`,`DNI`,`EMail`,`Direccion`,`CP`,`Sexo`,`FechaNacimiento`,`TutorLegal`,`Localidad`,`Telefono1`,`Telefono2`,`Provincia`,`DescripcionSolicitud`,`Otros`,`Localizador`,`Gestionado`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+	const SQL_UPDATE='UPDATE `solicitud` SET `idSolicitud`=?,`idTipoSolicitud`=?,`idTipoTarifa`=?,`FechaSolicitud`=?,`Nombre`=?,`Apellidos`=?,`DNI`=?,`EMail`=?,`Direccion`=?,`CP`=?,`Sexo`=?,`FechaNacimiento`=?,`TutorLegal`=?,`Localidad`=?,`Telefono1`=?,`Telefono2`=?,`Provincia`=?,`DescripcionSolicitud`=?,`Otros`=?,`Localizador`=?,`Gestionado`=? WHERE `idSolicitud`=?';
 	const SQL_SELECT_PK='SELECT * FROM `solicitud` WHERE `idSolicitud`=?';
 	const SQL_DELETE_PK='DELETE FROM `solicitud` WHERE `idSolicitud`=?';
 	const FIELD_IDSOLICITUD=1447296895;
@@ -35,6 +32,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	const FIELD_DESCRIPCIONSOLICITUD=-2063103839;
 	const FIELD_OTROS=-2141661721;
 	const FIELD_LOCALIZADOR=-1900391240;
+	const FIELD_GESTIONADO=207962573;
 	private static $PRIMARY_KEYS=array(self::FIELD_IDSOLICITUD);
 	private static $AUTOINCREMENT_FIELDS=array(self::FIELD_IDSOLICITUD);
 	private static $FIELD_NAMES=array(
@@ -57,7 +55,8 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		self::FIELD_PROVINCIA=>'Provincia',
 		self::FIELD_DESCRIPCIONSOLICITUD=>'DescripcionSolicitud',
 		self::FIELD_OTROS=>'Otros',
-		self::FIELD_LOCALIZADOR=>'Localizador');
+		self::FIELD_LOCALIZADOR=>'Localizador',
+		self::FIELD_GESTIONADO=>'Gestionado');
 	private static $PROPERTY_NAMES=array(
 		self::FIELD_IDSOLICITUD=>'idSolicitud',
 		self::FIELD_IDTIPOSOLICITUD=>'idTipoSolicitud',
@@ -78,7 +77,8 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		self::FIELD_PROVINCIA=>'Provincia',
 		self::FIELD_DESCRIPCIONSOLICITUD=>'DescripcionSolicitud',
 		self::FIELD_OTROS=>'Otros',
-		self::FIELD_LOCALIZADOR=>'Localizador');
+		self::FIELD_LOCALIZADOR=>'Localizador',
+		self::FIELD_GESTIONADO=>'Gestionado');
 	private static $PROPERTY_TYPES=array(
 		self::FIELD_IDSOLICITUD=>Db2PhpEntity::PHP_TYPE_INT,
 		self::FIELD_IDTIPOSOLICITUD=>Db2PhpEntity::PHP_TYPE_INT,
@@ -99,7 +99,8 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		self::FIELD_PROVINCIA=>Db2PhpEntity::PHP_TYPE_STRING,
 		self::FIELD_DESCRIPCIONSOLICITUD=>Db2PhpEntity::PHP_TYPE_STRING,
 		self::FIELD_OTROS=>Db2PhpEntity::PHP_TYPE_STRING,
-		self::FIELD_LOCALIZADOR=>Db2PhpEntity::PHP_TYPE_STRING);
+		self::FIELD_LOCALIZADOR=>Db2PhpEntity::PHP_TYPE_STRING,
+		self::FIELD_GESTIONADO=>Db2PhpEntity::PHP_TYPE_BOOL);
 	private static $FIELD_TYPES=array(
 		self::FIELD_IDSOLICITUD=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
 		self::FIELD_IDTIPOSOLICITUD=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,true),
@@ -107,7 +108,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		self::FIELD_FECHASOLICITUD=>array(Db2PhpEntity::JDBC_TYPE_TIMESTAMP,19,0,true),
 		self::FIELD_NOMBRE=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,150,0,true),
 		self::FIELD_APELLIDOS=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,45,0,true),
-		self::FIELD_DNI=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,9,0,true),
+		self::FIELD_DNI=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,10,0,true),
 		self::FIELD_EMAIL=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,45,0,true),
 		self::FIELD_DIRECCION=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,150,0,true),
 		self::FIELD_CP=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,5,0,true),
@@ -120,7 +121,8 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		self::FIELD_PROVINCIA=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,150,0,true),
 		self::FIELD_DESCRIPCIONSOLICITUD=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,3000,0,true),
 		self::FIELD_OTROS=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,3000,0,true),
-		self::FIELD_LOCALIZADOR=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,45,0,true));
+		self::FIELD_LOCALIZADOR=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,45,0,true),
+		self::FIELD_GESTIONADO=>array(Db2PhpEntity::JDBC_TYPE_BIT,1,0,false));
 	private static $DEFAULT_VALUES=array(
 		self::FIELD_IDSOLICITUD=>null,
 		self::FIELD_IDTIPOSOLICITUD=>null,
@@ -141,7 +143,8 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		self::FIELD_PROVINCIA=>null,
 		self::FIELD_DESCRIPCIONSOLICITUD=>null,
 		self::FIELD_OTROS=>null,
-		self::FIELD_LOCALIZADOR=>null);
+		self::FIELD_LOCALIZADOR=>null,
+		self::FIELD_GESTIONADO=>'b\'0\'');
 	private $idSolicitud;
 	private $idTipoSolicitud;
 	private $idTipoTarifa;
@@ -162,6 +165,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	private $DescripcionSolicitud;
 	private $Otros;
 	private $Localizador;
+	private $Gestionado;
 
 	/**
 	 * set value for idSolicitud 
@@ -316,7 +320,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	/**
 	 * set value for DNI 
 	 *
-	 * type:VARCHAR,size:9,default:null,nullable
+	 * type:VARCHAR,size:10,default:null,nullable
 	 *
 	 * @param mixed $dni
 	 * @return SolicitudModel
@@ -330,7 +334,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	/**
 	 * get value for DNI 
 	 *
-	 * type:VARCHAR,size:9,default:null,nullable
+	 * type:VARCHAR,size:10,default:null,nullable
 	 *
 	 * @return mixed
 	 */
@@ -664,6 +668,31 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	}
 
 	/**
+	 * set value for Gestionado 
+	 *
+	 * type:BIT,size:1,default:b'0'
+	 *
+	 * @param mixed $Gestionado
+	 * @return SolicitudModel
+	 */
+	public function &setGestionado($Gestionado) {
+		$this->notifyChanged(self::FIELD_GESTIONADO,$this->Gestionado,$Gestionado);
+		$this->Gestionado=$Gestionado;
+		return $this;
+	}
+
+	/**
+	 * get value for Gestionado 
+	 *
+	 * type:BIT,size:1,default:b'0'
+	 *
+	 * @return mixed
+	 */
+	public function getGestionado() {
+		return $this->Gestionado;
+	}
+
+	/**
 	 * Get table name
 	 *
 	 * @return string
@@ -793,7 +822,8 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 			self::FIELD_PROVINCIA=>$this->getProvincia(),
 			self::FIELD_DESCRIPCIONSOLICITUD=>$this->getDescripcionSolicitud(),
 			self::FIELD_OTROS=>$this->getOtros(),
-			self::FIELD_LOCALIZADOR=>$this->getLocalizador());
+			self::FIELD_LOCALIZADOR=>$this->getLocalizador(),
+			self::FIELD_GESTIONADO=>$this->getGestionado());
 	}
 
 
@@ -1055,6 +1085,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		$this->setDescripcionSolicitud($result['DescripcionSolicitud']);
 		$this->setOtros($result['Otros']);
 		$this->setLocalizador($result['Localizador']);
+		$this->setGestionado($result['Gestionado']);
 	}
 
 	/**
@@ -1109,6 +1140,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		$stmt->bindValue(18,$this->getDescripcionSolicitud());
 		$stmt->bindValue(19,$this->getOtros());
 		$stmt->bindValue(20,$this->getLocalizador());
+		$stmt->bindValue(21,$this->getGestionado());
 	}
 
 
@@ -1140,6 +1172,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 			$stmt->bindValue(17,$this->getDescripcionSolicitud());
 			$stmt->bindValue(18,$this->getOtros());
 			$stmt->bindValue(19,$this->getLocalizador());
+			$stmt->bindValue(20,$this->getGestionado());
 		} else {
 			$stmt=self::prepareStatement($db,self::SQL_INSERT);
 			$this->bindValues($stmt);
@@ -1168,7 +1201,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	public function updateToDatabase(PDO $db) {
 		$stmt=self::prepareStatement($db,self::SQL_UPDATE);
 		$this->bindValues($stmt);
-		$stmt->bindValue(21,$this->getIdSolicitud());
+		$stmt->bindValue(22,$this->getIdSolicitud());
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();

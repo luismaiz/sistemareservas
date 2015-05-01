@@ -1,0 +1,40 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 25-abr-2015, 19:02:45
+    Author     : Luis
+*/
+
+/*form[novalidate].input{
+    
+    border-left-width: 20px;
+    border-color: #3498db;
+    border-style: solid;
+}
+
+input[required].ng-pristine
+{
+    border-color: #e74c3c;
+    
+}
+
+input.ng-invalid.ng-dirty
+{
+    border-color: #e74c3c;
+    
+}
+
+input.ng-valid.ng-dirty
+{
+    border-color: #2ecc71;
+    
+}*/
+
+input.ng-pristine { border:1px solid; }
+input.ng-dirty.ng-valid { border:1px solid Green; }
+input.ng-dirty.ng-invalid { border:1px solid Red; }
+input .ng-dirty.ng-valid ~ span.ok { color:green; display:inline; }
+input .ng-dirty.ng-invalid ~ span.ko { color:red; display:inline; }

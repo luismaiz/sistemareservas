@@ -1,11 +1,8 @@
 <?php
 
-/**
- * 
- *
- * @version 1.105
- * @package entity
- */
+require_once("helpers/Db2PhpEntityBase.class.php");
+require_once("helpers/Db2PhpEntityModificationTracking.class.php");
+require_once 'helpers/DFCAggregate.class.php';
 class TiposolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTracking {
 	private static $CLASS_NAME='TiposolicitudModel';
 	const SQL_IDENTIFIER_QUOTE='`';
@@ -14,6 +11,7 @@ class TiposolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModific
 	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `tiposolicitud` (`NombreSolicitud`,`DescripcionSolicitud`,`FechaAlta`,`FechaBaja`) VALUES (?,?,?,?)';
 	const SQL_UPDATE='UPDATE `tiposolicitud` SET `idTipoSolicitud`=?,`NombreSolicitud`=?,`DescripcionSolicitud`=?,`FechaAlta`=?,`FechaBaja`=? WHERE `idTipoSolicitud`=?';
 	const SQL_SELECT_PK='SELECT * FROM `tiposolicitud` WHERE `idTipoSolicitud`=?';
+        const SQL_SELECT='SELECT * FROM tiposolicitud';
 	const SQL_DELETE_PK='DELETE FROM `tiposolicitud` WHERE `idTipoSolicitud`=?';
 	const FIELD_IDTIPOSOLICITUD=686305399;
 	const FIELD_NOMBRESOLICITUD=388414653;
@@ -331,10 +329,11 @@ class TiposolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModific
 		if(self::isCacheStatements()) {
 			if (in_array($statement, array(self::SQL_INSERT, self::SQL_INSERT_AUTOINCREMENT, self::SQL_UPDATE, self::SQL_SELECT_PK, self::SQL_DELETE_PK))) {
 				$dbInstanceId=spl_object_hash($db);
-				if (null===self::$stmts[$statement][$dbInstanceId]) {
-					self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
-				}
-				return self::$stmts[$statement][$dbInstanceId];
+//				if (null===self::$stmts[$statement][$dbInstanceId]) {
+//					self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
+//				}
+//				return self::$stmts[$statement][$dbInstanceId];
+                                self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
 			}
 		}
 		return $db->prepare($statement);
