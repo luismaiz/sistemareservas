@@ -97,6 +97,12 @@ class ReservasBO extends Rest{
             $respuesta['numerosolicitudes'] = $num;
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
+        else
+        {
+            $respuesta['numerosolicitudes'] = 0;
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
     }
     
@@ -132,6 +138,11 @@ class ReservasBO extends Rest{
 
             $respuesta['abonos'] = $array;
             $respuesta['numeroabonos'] = $num;
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        else
+        {
+            $respuesta['numeroabonos'] = 0;
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);

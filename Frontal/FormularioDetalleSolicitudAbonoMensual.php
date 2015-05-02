@@ -276,8 +276,10 @@
                                 </div>
                     </div>
                     </div>
+                                <div class="form-group col-md-12">
                                 <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Reservas.php' " />
                                 <input style='display:none;' id="validacion" class="box btn-primary" type="submit" value="Validar Solicitud" ng-click="validarSolicitud();" ng-disabled="formulario.$invalid" />
+                                </div>
                              </form>
                            </div>                                         
                         </div>

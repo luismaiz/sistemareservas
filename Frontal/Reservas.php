@@ -156,7 +156,9 @@
                                 <input type="email" class="input-sm col-md-2 col-xs-6" required id="filtroEmail" name="filtroEmail"/>
                                 <label class="control-label col-md-2 col-xs-6" >Fecha Solicitud</label>
                                 <input type="datetime-local" class="input-sm col-md-2 col-xs-6" id="filtroFechaSolicitud" name="filtroFechaSolicitud"/>
-                                <input class="box btn-primary" type="submit" value="Buscar" ng_click="obtenerReservas()"/>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <input class="box btn-primary alignright" type="submit" value="Buscar" ng_click="obtenerReservas()"/>
                             </div>
                             <div class="box-content" id="reservas">
                             <table class="table table-striped table-bordered responsive">
@@ -185,7 +187,7 @@
                                                     <td>{{abono.Localizador}}</td>
                                                     <td>{{abono.FechaSolicitud}}</td>
                                                     <td class="center">
-                                                        <a target="_self" href="/Frontal/FormularioDetalleSolicitudAbonoDiario.php" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
+                                                        <a target="_self" href="FormularioDetalleSolicitudAbonoDiario.php?idSolicitud={{abono.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
                                                         <a target="_self" href="FormularioDetalleSolicitudAbonoDiario.php" class="btn btn-danger">Sin validar</a>
                                                     </td>
                                                 </tr>

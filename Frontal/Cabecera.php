@@ -152,7 +152,7 @@ include 'config.php'
                                     </li>
                                     <li><a class="ajax-link" href="Precios.php"><i class="glyphicon glyphicon-edit"></i><span> Precios</span></a>
                                     </li>
-                                    <li><a class="ajax-link" href="Informes.php"><i class="glyphicon glyphicon-eye-open"></i><span> Informe</span></a>
+                                    <li><a class="ajax-link" href="Informes.php"><i class="glyphicon glyphicon-eye-open"></i><span> Informes</span></a>
                                     </li>
                                 </ul>
                             </div>
