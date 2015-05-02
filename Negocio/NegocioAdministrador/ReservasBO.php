@@ -3,6 +3,7 @@
 require_once("../../ComunicacionesREST/Rest.php");
 require_once("../../Negocio/AccesoDatos/ConexionBD.php");
 require_once("../../Negocio/Entidades/SolicitudModel.class.php");
+require_once("../../Negocio/Entidades/ActividadsolicitudclasedirigidaModel.class.php");
 require_once("../../Negocio/Entidades/helpers/DFC.class.php");
 require_once("../../Negocio/Entidades/helpers/DSC.class.php");
 
@@ -135,7 +136,6 @@ class ReservasBO extends Rest{
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
     }
-    
     
     private function obtenerReservasFiltro() {
         
@@ -332,6 +332,65 @@ class ReservasBO extends Rest{
                 $respuesta['abonomensual']['Localidad'] = $fila->getLocalidad();
                 $respuesta['abonomensual']['Telefono1'] = $fila->getTelefono1();
                 $respuesta['abonomensual']['Telefono2'] = $fila->getTelefono2();
+                
+                
+                
+
+                $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+            }
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+        }
+    }
+    
+    private function obtenerSolicitudClasesDirigidas() {
+       // var_dump($SERVER);
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        //el constructor del padre ya se encarga de sanear los datos de entrada  
+
+        if (isset($this->datosPeticion['idSolicitud'])) {
+            $idSolicitud = isset($this->datosPeticion['idSolicitud']);
+            $this->con = ConexionBD::getInstance();
+            
+            $solicitud = new SolicitudModel();
+            $actividades = new ActividadsolicitudclasedirigidaModel();
+            
+            $sort = array(
+            new DSC(ActividadsolicitudclasedirigidaModel::FIELD_IDACTIVIDAD, DSC::ASC)
+            );
+            
+            $fila = $solicitud->findById($this->con,$this->datosPeticion['idSolicitud']);
+            $filaactividades = ActividadsolicitudclasedirigidaModel::findByExample($this->con,$actividades,$sort);
+            
+            $num = count($filaactividades);
+            if ($num > 0) {
+
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filaactividades[$i]->toHash();
+            }
+            }
+            
+            $respuesta = "";
+            if ($fila) {
+                $respuesta['estado'] = 'correcto';
+                $respuesta['clasesdirigidas']['Nombre'] = $fila->getNombre();
+                $respuesta['clasesdirigidas']['Apellidos'] = $fila->getApellidos();
+                $respuesta['clasesdirigidas']['Email'] = $fila->getEMail();
+                $respuesta['clasesdirigidas']['DNI'] = $fila->getDni();
+                $respuesta['clasesdirigidas']['Gestionado'] = $fila->getGestionado();
+                $respuesta['clasesdirigidas']['FechaSolicitud'] = $fila->getFechaSolicitud();
+                $respuesta['clasesdirigidas']['Localizador'] = $fila->getLocalizador();
+                $respuesta['clasesdirigidas']['Direccion'] = $fila->getDireccion();
+                $respuesta['clasesdirigidas']['FechaNacimiento'] = $fila->getFechaNacimiento();
+                $respuesta['clasesdirigidas']['Sexo'] = $fila->getSexo();
+                $respuesta['clasesdirigidas']['TutorLegal'] = $fila->getTutorLegal();
+                $respuesta['clasesdirigidas']['TipoTarifa'] = $fila->getIdTipoTarifa();
+                $respuesta['clasesdirigidas']['CodigoPostal'] = $fila->getCp();
+                $respuesta['clasesdirigidas']['Localidad'] = $fila->getLocalidad();
+                $respuesta['clasesdirigidas']['Telefono1'] = $fila->getTelefono1();
+                $respuesta['clasesdirigidas']['Telefono2'] = $fila->getTelefono2();
+                $respuesta['actividades'] = $array;
                 
                 
                 

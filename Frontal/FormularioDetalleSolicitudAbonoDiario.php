@@ -131,7 +131,7 @@
                         <div class="box-content">
                             <form role="form"  name="formulario">
                                 <div class="form-group col-md-12">
-                                <label class="control-label col-md-2" >Lozalizador</label>
+                                <label class="control-label col-md-2" >Localizador</label>
                                 <input ng-model="abonodiario.Localizador"  type="text" class="input-sm col-md-4" name="localizador" id="Localizador" required >
                                 <span style="color:red" ng-show="formulario.localizador.$dirty && formulario.localizador.$invalid">
                                 <span ng-show="formulario.localizador.$error.required">Localizador obligatorio.</span>

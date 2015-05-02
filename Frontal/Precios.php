@@ -3,17 +3,15 @@
 <script>
     
     var Ajax = new AjaxObj();
-            var app = angular.module('BusquedaPrecios', [])            
-                     .config(function($locationProvider) {
-                          $locationProvider.html5Mode(true);
-                      });
+            var app = angular.module('BusquedaPrecios', []);            
+                     
     
-    function CargaBusquedaPrecios($scope, $http, $location) {
+    function CargaBusquedaPrecios($scope, $http) {
         
         $scope.obtenerTipoSolicitud = function(){
         
-        //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitud";
-        var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitud";
+        var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitud";
+        //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitud";
         
         var Params = '';
 
@@ -29,8 +27,8 @@
         
         $scope.obtenerTipoAbono = function(){
         
-        //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbono";		
-        var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbono";		
+        var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbono";		
+        //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbono";		
         
         var Params = '';
 
@@ -47,8 +45,8 @@
         
         $scope.obtenerTipoTarifa = function(){
         
-        //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifa";		
-        var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifa";		
+        var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifa";		
+        //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifa";		
         
         var Params = '';
 
@@ -64,8 +62,8 @@
         
         $scope.obtenerPrecios = function() {
             
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerPreciosFiltro";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerPreciosFiltro";
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerPreciosFiltro";
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerPreciosFiltro";
                 
                 var Params =  'TipoSolicitud=' + document.getElementById("filtroTipoSolicitud").value +
                         '&TipoAbono=' + document.getElementById("filtroTipoAbono").value +
@@ -93,78 +91,7 @@
             };
         
     }
-    
-    
-    
-    
-    
-    
-    var Ajax = new AjaxObj();
-    
-    function obtenerPrecios() {	
-        var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerPrecios";		
-        //var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerPrecios";
-        var Params = '';
-
-	
-        Ajax.open("GET", Url, false);
-        Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
-        Ajax.send(Params); // Enviamos los datos
-	
-        var RespTxt = Ajax.responseText;
         
-        //alert(RespTxt);
-	
-        var Clase = eval('(' + RespTxt + ')');	              
-        
-        var contenido = '<table class="table table-striped table-bordered responsive"><thead><tr><th>NombreSolicitud</th><th>NombreAbono</th><th>NombreActividad</th><th>NombrePrecio</th><th>DescripcionPrecio</th><th>Precio</th><th>FechaAlta</th><th>FechaBaja</th><th></th></tr>';
-                                                    
-        var div = document.getElementById("precios");                
-	
-        for(i=0; i<Clase.precios.length; i++){		
-            //contenido = contenido + '<th>' + Clase.tiposTarifa[i].idTipoTarifa + '</th>';
-            contenido = contenido + '<tr>';
-            //contenido = contenido + '<td>' + Clase.precios[i].idPrecio + '</td>';
-            contenido = contenido + '<td>';
-            contenido = contenido + '<input type="hidden" id="idTipoSolicitud" name="idTipoSolicitud" value="' + Clase.precios[i].idTipoSolicitud + '"/>';
-            contenido = contenido + obtenerTipoSolicitud(Clase.precios[i].idTipoSolicitud);
-            contenido = contenido + '</td>';
-            
-            contenido = contenido + '<td>';
-            contenido = contenido + '<input type="hidden" id="idTipoAbono" name="idTipoAbono" value="' + Clase.precios[i].idTipoAbono + '"/>';
-            contenido = contenido + obtenerTipoAbono(Clase.precios[i].idTipoAbono);
-            contenido = contenido + '</td>';
-            
-            contenido = contenido + '<td>';
-            contenido = contenido + '<input type="hidden" id="idActividad" name="idActividad" value="' + Clase.precios[i].idActividad + '"/>';
-            contenido = contenido + obtenerActividad(Clase.precios[i].idActividad);
-            contenido = contenido + '</td>';            
-            
-            contenido = contenido + '<td>' + Clase.precios[i].NombrePrecio + '</td>';
-            contenido = contenido + '<td>' + Clase.precios[i].DescripcionPrecio + '</td>';
-            contenido = contenido + '<td>' + Clase.precios[i].Precio + '</td>';
-            contenido = contenido + '<td>' + Clase.precios[i].FechaAlta + '</td>';
-            contenido = contenido + '<td>' + Clase.precios[i].FechaBaja + '</td>';
-            contenido = contenido + '<td class="center"><a href="FormularioDetallePrecio.php?idPrecio=' + Clase.precios[i].idPrecio + '" class="btn btn-info2"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>';
-            contenido = contenido + '</tr>';
-        }
-        contenido = contenido + '</thead></table>';
-	
-        div.innerHTML = contenido;	
-	
-        //alert('Estado: '+ Clase.estado);
-        //alert('idSala: '+ Clase.salas.length);
-        //alert('idSala: '+ Clase.salas[0].idSala);
-        //alert('Nombre: '+ Clase.salas[0].Nombre);
-        //alert('Capacidad: '+ Clase.salas[0].Capacidad);
-        //alert('DescripcionTarifa: '+ Clase.salas[0].DescripcionTarifa);
-	  
-        //document.getElementById('idSala').value=Clase.salas[0].idSala;
-        //document.getElementById('Nombre').value=Clase.salas[0].Nombre;
-        //document.getElementById('Capacidad').value=Clase.salas[0].Capacidad;
-        //document.getElementById('DescripcionTarifa').value=Clase.salas[0].DescripcionTarifa;
-    }
-    
    
 </script>
 <div>

@@ -135,27 +135,27 @@
                     <div class="form-group">
                         <div class="col-md-12">
                             <div class="form-group col-md-12">
-                                <label class="control-label col-md-2" >Localizador</label>
-                                <input type="text" class="input-sm col-md-2" id="filtroLocalizador" name="filtroLocalizador" value="">	
-                                <label class="control-label col-md-2" >Tipo Solicitud</label>
-                                <select  id="filtroTipoSolicitud" class="input-sm col-md-2" >	
+                                <label class="control-label col-md-2 col-xs-6" >Localizador</label>
+                                <input type="text" class="input-sm col-md-2 col-xs-6" id="filtroLocalizador" name="filtroLocalizador" value="">	
+                                <label class="control-label col-md-2 col-xs-6" >Tipo Solicitud</label>
+                                <select  id="filtroTipoSolicitud" class="input-sm col-md-2 col-xs-6" >	
                                     <option ng_repeat="tiposolicitud in tiposSolicitudes" value="{{tiposolicitud.idTipoSolicitud}}">{{tiposolicitud.NombreSolicitud}}</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-12">
-                                <label class="control-label col-md-1 ">Nombre</label>
-                                <input type="text" class="input-sm col-md-2" id="filtroNombre" name="filtroNombre" />
-                                <label class="control-label col-md-1" >Apellidos</label>
-                                <input type="text" class="input-sm col-md-2" id="filtroApellidos" name="filtroApellidos"/>
-                                <label class="control-label col-md-1" >DNI</label>
-                                <input type="text" class="input-sm col-md-2" id="filtroDni" name="filtroDni"/>
+                                <label class="control-label col-md-2 col-sm-3 col-xs-6">Nombre</label>
+                                <input type="text" class="input-sm col-md-2 col-sm-4 col-xs-6" id="filtroNombre" name="filtroNombre" />
+                                <label class="control-label col-md-2 col-sm-3 col-xs-6" >Apellidos</label>
+                                <input type="text" class="input-sm col-md-2 col-sm-4 col-xs-6" id="filtroApellidos" name="filtroApellidos"/>
+                                <label class="control-label col-md-2 col-sm-3 col-xs-6" >DNI</label>
+                                <input type="text" class="input-sm col-md-2 col-sm-4 col-xs-6" id="filtroDni" name="filtroDni"/>
                             </div>
                             <div class="form-group col-md-12">
                                 
-                                <label class="control-label col-md-1" >eMail</label>
-                                <input type="email" class="input-sm col-md-2" required id="filtroEmail" name="filtroEmail"/>
-                                <label class="control-label col-md-2" >Fecha Solicitud</label>
-                                <input type="datetime-local" class="input-sm col-md-2" id="filtroFechaSolicitud" name="filtroFechaSolicitud"/>
+                                <label class="control-label col-md-1 col-xs-6" >eMail</label>
+                                <input type="email" class="input-sm col-md-2 col-xs-6" required id="filtroEmail" name="filtroEmail"/>
+                                <label class="control-label col-md-2 col-xs-6" >Fecha Solicitud</label>
+                                <input type="datetime-local" class="input-sm col-md-2 col-xs-6" id="filtroFechaSolicitud" name="filtroFechaSolicitud"/>
                                 <input class="box btn-primary" type="submit" value="Buscar" ng_click="obtenerReservas()"/>
                             </div>
                             <div class="box-content" id="reservas">
@@ -175,8 +175,8 @@
                                                     <td>{{solicitud.Localizador}}</td>
                                                     <td>{{solicitud.FechaSolicitud}}</td>
                                                     <td class="center">
-                                                        <a href="FormularioDetalleSolicitudAbonoDiario.php?idSolicitud={{solicitud.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
-                                                        <a href="FormularioDetalleSolicitudAbonoDiario.php" class="btn btn-danger">Sin validar</a>
+                                                        <a target="_self" href="FormularioDetalleSolicitudClasesDirigidas.php?idSolicitud={{solicitud.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
+                                                        <a target="_self" href="FormularioDetalleSolicitudClasesDirigidas.php" class="btn btn-danger">Sin validar</a>
                                                     </td>
                                                 </tr>
                                                 <tr ng_repeat="abono in abonos">
@@ -185,8 +185,8 @@
                                                     <td>{{abono.Localizador}}</td>
                                                     <td>{{abono.FechaSolicitud}}</td>
                                                     <td class="center">
-                                                        <a href="http://localhost:8080/sistemareservas/Frontal/FormularioDetalleSolicitudAbonoDiario.php" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
-                                                        <a href="FormularioDetalleSolicitudAbonoDiario.php" class="btn btn-danger">Sin validar</a>
+                                                        <a target="_self" href="/Frontal/FormularioDetalleSolicitudAbonoDiario.php" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
+                                                        <a target="_self" href="FormularioDetalleSolicitudAbonoDiario.php" class="btn btn-danger">Sin validar</a>
                                                     </td>
                                                 </tr>
                                                 
