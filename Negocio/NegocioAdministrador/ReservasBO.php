@@ -192,6 +192,155 @@ class ReservasBO extends Rest{
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
     }
     
+    private function obtenerSolicitudAbonoDiario() {
+       // var_dump($SERVER);
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        //el constructor del padre ya se encarga de sanear los datos de entrada  
+
+        if (isset($this->datosPeticion['idSolicitud'])) {
+            $idSolicitud = isset($this->datosPeticion['idSolicitud']);
+            $this->con = ConexionBD::getInstance();
+            
+            $solicitud = new SolicitudModel();
+            $fila = $solicitud->findById($this->con,$this->datosPeticion['idSolicitud']);
+
+          
+            $respuesta = "";
+            if ($fila) {
+                $respuesta['estado'] = 'correcto';
+                $respuesta['abonodiario']['Nombre'] = $fila->getNombre();
+                $respuesta['abonodiario']['Apellidos'] = $fila->getApellidos();
+                $respuesta['abonodiario']['Email'] = $fila->getEMail();
+                $respuesta['abonodiario']['DNI'] = $fila->getDni();
+                $respuesta['abonodiario']['Gestionado'] = $fila->getGestionado();
+                $respuesta['abonodiario']['FechaSolicitud'] = $fila->getFechaSolicitud();
+                $respuesta['abonodiario']['Localizador'] = $fila->getLocalizador();
+
+                $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+            }
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+        }
+    }
+    
+    private function validarSolicitud() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+
+        if (isset($this->datosPeticion['idSolicitud'])) {
+
+            $this->con = ConexionBD::getInstance();
+            $solicitud = new SolicitudModel();
+
+            $idSolicitud = $this->datosPeticion['idSolicitud'];
+                        
+            if (!empty($idSolicitud)) {
+                                 
+                $fila = $solicitud->findById($this->con,$this->datosPeticion['idSolicitud']);
+                
+                $idTipoSolicitud= $fila ->getIdTipoSolicitud();
+                $idTipoTarifa = $fila->getIdTipoTarifa();
+                $FechaSolicitud = $fila->getFechaSolicitud();
+                $Nombre = $fila->getNombre();
+                $Apellidos =$fila->getApellidos();
+                $DNI= $fila->getDni();
+                $EMail  = $fila->getEMail();
+                $Direccion  = $fila->getDireccion();
+                $CP = $fila->getCp();
+                $Sexo = $fila->getSexo();
+                $FechaNacimiento = $fila->getFechaNacimiento();
+                $TutorLegal = $fila->getTutorLegal();
+                $Localidad= $fila->getLocalidad();
+                $Telefono1 = $fila->getTelefono1();
+                $Telefono2= $fila->getTelefono2();
+                $Provincia= $fila->getProvincia();
+                $DescripcionSolicitud= $fila->getDescripcionSolicitud();
+                $Otros= $fila->getOtros();
+                $Localizador= $fila->getLocalizador();
+                                
+                $solicitud->setIdSolicitud($idSolicitud);
+                $solicitud->setIdTipoSolicitud($idTipoSolicitud);
+                $solicitud->setIdTipoTarifa($idTipoTarifa);
+                $solicitud->setFechaSolicitud($FechaSolicitud);
+                $solicitud->setNombre($Nombre);
+                $solicitud->setApellidos($Apellidos);
+                $solicitud->setDni($DNI);
+                $solicitud->setEMail($EMail);
+                $solicitud->setDireccion($Direccion);
+                $solicitud->setCp($CP);
+                $solicitud->setSexo($Sexo);
+                $solicitud->setFechaNacimiento($FechaNacimiento);
+                $solicitud->setTutorLegal($TutorLegal);
+                $solicitud->setLocalidad($Localidad);
+                $solicitud->setTelefono1($Telefono1);
+                $solicitud->setTelefono2($Telefono2);
+                $solicitud->setProvincia($Provincia);
+                $solicitud->setDescripcionSolicitud($DescripcionSolicitud);
+                $solicitud->setOtros($Otros);
+                $solicitud->setLocalizador($Localizador);
+                $solicitud->setGestionado(1);
+                
+                echo('Solicitud: ' + $Nombre);
+                echo('Solicitud: ' + $idTipoSolicitud);
+                echo('Tarifa: ' + $idTipoTarifa);
+                
+                $filasActualizadas = $solicitud->updateToDatabase($this->con);
+                
+                if (count($filasActualizadas) == 1) {
+                    $resp = array('estado' => "correcto", "msg" => "Solictud validada");
+                    $this->mostrarRespuesta($this->convertirJson($resp), 200);
+                } else {
+                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+                }
+            }
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+    }
+    
+    private function obtenerSolicitudAbonoMensual() {
+       // var_dump($SERVER);
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        //el constructor del padre ya se encarga de sanear los datos de entrada  
+
+        if (isset($this->datosPeticion['idSolicitud'])) {
+            $idSolicitud = isset($this->datosPeticion['idSolicitud']);
+            $this->con = ConexionBD::getInstance();
+            
+            $solicitud = new SolicitudModel();
+            $fila = $solicitud->findById($this->con,$this->datosPeticion['idSolicitud']);
+          
+            $respuesta = "";
+            if ($fila) {
+                $respuesta['estado'] = 'correcto';
+                $respuesta['abonomensual']['Nombre'] = $fila->getNombre();
+                $respuesta['abonomensual']['Apellidos'] = $fila->getApellidos();
+                $respuesta['abonomensual']['Email'] = $fila->getEMail();
+                $respuesta['abonomensual']['DNI'] = $fila->getDni();
+                $respuesta['abonomensual']['Gestionado'] = $fila->getGestionado();
+                $respuesta['abonomensual']['FechaSolicitud'] = $fila->getFechaSolicitud();
+                $respuesta['abonomensual']['Localizador'] = $fila->getLocalizador();
+                $respuesta['abonomensual']['Direccion'] = $fila->getDireccion();
+                $respuesta['abonomensual']['FechaNacimiento'] = $fila->getFechaNacimiento();
+                $respuesta['abonomensual']['Sexo'] = $fila->getSexo();
+                $respuesta['abonomensual']['TutorLegal'] = $fila->getTutorLegal();
+                $respuesta['abonomensual']['TipoTarifa'] = $fila->getIdTipoTarifa();
+                $respuesta['abonomensual']['CodigoPostal'] = $fila->getCp();
+                $respuesta['abonomensual']['Localidad'] = $fila->getLocalidad();
+                $respuesta['abonomensual']['Telefono1'] = $fila->getTelefono1();
+                $respuesta['abonomensual']['Telefono2'] = $fila->getTelefono2();
+                
+                
+                
+
+                $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+            }
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+        }
+    }
 }
 
 $reservasBO = new ReservasBO();
