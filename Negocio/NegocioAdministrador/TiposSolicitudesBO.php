@@ -89,12 +89,7 @@ class TiposSolicitudesBO extends Rest{
         }
         else
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
-        //}  
-        //else  
-        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(8)), 400);  
-        //} else {  
-        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);  
-        //}  
+         
     }
 
     private function obtenerTiposSolicitud() {
@@ -121,7 +116,7 @@ class TiposSolicitudesBO extends Rest{
     }
 
     private function actualizarTipoSolicitud() {
-        if ($_SERVER['REQUEST_METHOD'] != "PUT") {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
 
@@ -185,8 +180,7 @@ class TiposSolicitudesBO extends Rest{
     }
     
         }
-    
-    
+        
     private function obtenerTiposSolicitudesFiltro() {
         
         if ($_SERVER['REQUEST_METHOD'] != "POST") {

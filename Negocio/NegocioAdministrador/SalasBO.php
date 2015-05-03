@@ -61,14 +61,12 @@ class SalasBO  extends Rest {
     }
     
       //Metodos CRUD Sala
-    private function crearSala() {
-        
+    public function crearSala(){
+         
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
            return $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
    
-                if (isset($this->datosPeticion['idSala'])) {
-
             $this->con = ConexionBD::getInstance();
             $sala = new SalaModel();
 
@@ -78,7 +76,6 @@ class SalasBO  extends Rest {
             $FechaAlta = $this->datosPeticion['FechaAlta'];
             $FechaBaja = $this->datosPeticion['FechaBaja'];
 
-            if (!empty($idSala)) {
                 $sala->setNombreSala($NombreSala);
                 $sala->setCapacidadSala($CapacidadSala);
                 $sala->setDescripcionSala($DescripcionSala);
@@ -87,21 +84,16 @@ class SalasBO  extends Rest {
                 
                 $filasActualizadas = $sala->insertIntoDatabase($this->con);
                 
-                if (count($filasActualizadas) == 1) {
-                    $resp = array('estado' => "correcto", "msg" => "sala actualizada");
+                if (count($filasActualizadas) > 0) {
+                    $resp = array('estado' => "correcto", "msg" => "sala creada");
                     $this->mostrarRespuesta($this->convertirJson($resp), 200);
                 } else {
                     $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
                 }
-            }
-        }
-        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
-        
-        
     }
 
     private function actualizarSala() {
-        if ($_SERVER['REQUEST_METHOD'] != "PUT") {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
 
@@ -140,7 +132,7 @@ class SalasBO  extends Rest {
     }
 
     private function borrarSala() {
-        if ($_SERVER['REQUEST_METHOD'] != "DELETE") {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
         $idSala = $this->datosPeticion['idSala'];
@@ -151,11 +143,7 @@ class SalasBO  extends Rest {
 
             $sala->setIdSala($idSala);
             $result = $sala->deleteFromDatabase($this->con);
-            //$query = $this->_conn->prepare("delete from sala WHERE idSala =:idSala");  
-            //$query->bindValue(":idSala", $idSala);  
-            //$query->execute();  
-            //rowcount para insert, delete. update  
-            //$filasBorradas = $query->rowCount();  
+              
             if (count($result) == 1) {
                 $resp = array('estado' => "correcto", "msg" => "usuario borrado correctamente.");
                 $this->mostrarRespuesta($this->convertirJson($resp), 200);

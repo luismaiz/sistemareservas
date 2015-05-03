@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="421" orientation="Landscape" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="578900e3-0c5e-4102-8e31-dc6c573ab805">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="80"/>
+	<parameter name="parameter1" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new java.lang.Integer(0)]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     sala.`idSala` AS sala_idSala,
+     sala.`NombreSala` AS sala_NombreSala,
+     sala.`CapacidadSala` AS sala_CapacidadSala,
+     sala.`DescripcionSala` AS sala_DescripcionSala,
+     sala.`FechaAlta` AS sala_FechaAlta,
+     sala.`FechaBaja` AS sala_FechaBaja
+FROM
+     `sala` sala]]>
+	</queryString>
+	<field name="sala_idSala" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sala_NombreSala" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sala_CapacidadSala" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sala_DescripcionSala" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sala_FechaAlta" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+        <field name="sala_FechaBaja" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="total" class="java.lang.Integer" calculation="Sum"/>
+	<background>
+		<band height="381" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="d4e9ad60-460c-4fc0-b81f-e7282b9adb1d" x="0" y="110" width="555" height="244"/>
+			</rectangle>
+			<line>
+				<reportElement uuid="3749f14a-4d01-45a8-937f-781aeef9e0a5" x="50" y="110" width="1" height="244"/>
+			</line>
+			<line>
+				<reportElement uuid="66587396-6921-4d5c-abff-b4dba6fc578d" x="125" y="110" width="1" height="244"/>
+			</line>
+			<line>
+				<reportElement uuid="997e771e-3ff3-4bef-a712-d7760945c1dc" x="450" y="110" width="1" height="244"/>
+			</line>
+		</band>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="131" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="ad5b0d92-7ff8-4402-9166-05da6e0a84fc" x="0" y="110" width="50" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="affe03f3-b668-4f1a-8d39-94718b7827a9" x="51" y="110" width="69" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Capacidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fc9db07d-6f26-45d8-819c-b548a740c9a2" x="130" y="110" width="317" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripcion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="93ce04a6-cc27-41c2-ae4e-2e95f0f972bd" x="447" y="110" width="108" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[F. Alta]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="a00332d1-c789-4556-aefb-0495752995ac" x="0" y="125" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="a004d480-5e99-4dca-a7bd-424124e6fd68" x="93" y="0" width="414" height="41"/>
+				<textElement>
+					<font size="26" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Listado Salas]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="07eb9f30-8854-419a-adb4-fbe5322fb48e" x="7" y="4" width="76" height="67"/>
+				<imageExpression><![CDATA["./fmn.jpg"]]></imageExpression>
+			</image>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="b800fb54-f9e9-45d3-aa58-83be22f288da" x="447" y="51" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="914d893a-3d28-4e7e-9188-7a92439e732e" x="434" y="87" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="bf87de04-8d4e-4aba-8769-908d465660d2" x="514" y="87" width="41" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="27" splitType="Stretch">
+			<textField>
+				<reportElement uuid="a700271c-0c86-4819-923f-1beacc43a408" x="0" y="0" width="34" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{sala_NombreSala}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="609b2097-449d-460c-b140-a97a00e3424b" x="51" y="0" width="69" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{sala_CapacidadSala}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ecefeccd-525f-4937-b15b-8a4d5ac50d3a" x="130" y="0" width="354" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{sala_DescripcionSala}]]></textFieldExpression>
+			</textField>
+			<textField pattern="YYYY/MM/DD">
+				<reportElement uuid="48725a27-3053-4eb5-bbe0-3a295e90ba29" x="447" y="0" width="60" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{sala_FechaAlta}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="45" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="30bee12b-6c21-4697-bf1c-6c260a837581" x="5" y="16" width="429" height="20"/>
+				<textElement/>
+				<text><![CDATA[Sistema Reservas]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

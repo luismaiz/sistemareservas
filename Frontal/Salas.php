@@ -9,8 +9,8 @@
 
             $scope.obtenerSalas = function() {
                 
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSalasFiltro";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSalasFiltro";
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSalasFiltro";
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSalasFiltro";
                 
                 var Params = 'NombreSala=' + document.getElementById("filtronombresala").value + '&CapacidadSala=' + document.getElementById("filtrocapacidadsala").value;    
                 
@@ -64,7 +64,7 @@
 					<label class="control-label" >Nombre Sala</label>
                                         <input type="text" class="input-sm"  id="filtronombresala">	
                                         <label class="control-label" >Capacidad Sala</label>
-                                        <input type="text" class="input-sm"  id="filtrocapacidadsala">
+                                        <input type="text" class="input-sm "  id="filtrocapacidadsala">
                                         <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerSalas()"/></div>
                                         <div class="box-content" id="salas">
                                         <table class="table table-striped table-bordered responsive">

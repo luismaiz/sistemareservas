@@ -8,8 +8,8 @@ include('Frontal/CabeceraInicio.php');
     var Ajax = new AjaxObj();
 
     function login() {
-        //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/LoginBO.php?url=iniciarSesion";
-        var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/LoginBO.php?url=iniciarSesion";
+        var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/LoginBO.php?url=iniciarSesion";
+        //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/LoginBO.php?url=iniciarSesion";
         var Params = 'NombreUsuario=' + document.getElementById("NombreUsuario").value + '&Password=' + document.getElementById("Password").value;
 
         Ajax.open("POST", Url, false);
@@ -26,7 +26,7 @@ include('Frontal/CabeceraInicio.php');
             var tipo = parseInt((Clase.Usuario[0].TipoUsuario));
             switch (tipo) {
                 case 1:
-                    window.location = 'Frontal\\InicioAdministrador.php';
+                    window.location = 'Frontal\\Inicio.php';
                     return false;
                     break;
                 case 2:
@@ -34,7 +34,7 @@ include('Frontal/CabeceraInicio.php');
                     return false;
                     break;
                 case 3:
-                    window.location = 'Frontal\\InicioGestor.php';
+                    window.location = 'Frontal\\Inicio.php';
                     return false;
                     break;
             }

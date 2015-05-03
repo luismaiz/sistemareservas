@@ -113,7 +113,7 @@ class ActividadesBO extends Rest {
     }
 
     private function actualizarActividad() {
-        if ($_SERVER['REQUEST_METHOD'] != "PUT") {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
         //echo $idUsuario . "<br/>";  
@@ -156,7 +156,7 @@ class ActividadesBO extends Rest {
     }
 
     private function borrarActividad() {
-        if ($_SERVER['REQUEST_METHOD'] != "DELETE") {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
         $idActividad = $this->datosPeticion['idActividad'];

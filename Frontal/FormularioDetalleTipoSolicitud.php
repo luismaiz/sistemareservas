@@ -52,7 +52,7 @@
                     '&FechaBaja='+ document.getElementById('FechaBaja').value;
 
                
-                Ajax.open("PUT", Url, false);
+                Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
              
@@ -72,7 +72,7 @@
             $scope.crearTipoSolicitud = function(){
                                    
              
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=actualizarTipoSolicitud";
+                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=crearTipoSolicitud";
                 var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=crearTipoSolicitud";
                 var Params = 'NombreSolicitud='+ document.getElementById('NombreSolicitud').value +
                     '&DescripcionSolicitud='+ document.getElementById('DescripcionSolicitud').value +
@@ -96,48 +96,8 @@
                     document.getElementById('divError').style.display = 'block';
                 }
             };
-        
     }    
-          
-//    var Ajax = new AjaxObj();
-//            
-//    function TipoSolicitud(){      
-//        //alert(document.getElementById("idSala"));
-//        if(document.getElementById("idSala").value == "")
-//            crearTipoSolicitud();
-//        else
-//            actualizarTipoSolicitud();
-//    }
-//            
-//    function crearTipoSolicitud() {
-//        var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearTipoSolicitud";
-//        var Params = 'idTipoSolicitud='+ document.getElementById('idTipoSolicitud').value +
-//            '&NombreSolicitud='+ document.getElementById('NombreSolicitud').value +
-//            '&DescripcionSolicitud='+ document.getElementById('DescripcionSolicitud').value +
-//            '&FechaAlta='+ document.getElementById('FechaAlta').value +
-//            '&FechaBaja='+ document.getElementById('FechaBaja').value;
-//
-//        //alert(Params);
-//	
-//        Ajax.open("POST", Url, false);
-//        Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
-//        Ajax.send(Params); // Enviamos los datos
-//    }
-//
-//    function actualizarTipoSolicitud() {
-//        var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=actualizarTipoSolicitud";
-//        var Params = 'idTipoSolicitud='+ document.getElementById('idTipoSolicitud').value +
-//            '&NombreSolicitud='+ document.getElementById('NombreSolicitud').value +
-//            '&DescripcionSolicitud='+ document.getElementById('DescripcionSolicitud').value +
-//            '&FechaAlta='+ document.getElementById('FechaAlta').value +
-//            '&FechaBaja='+ document.getElementById('FechaBaja').value;
-//
-//        //alert(Params);
-//	
-//        Ajax.open("PUT", Url, false);
-//        Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
-//        Ajax.send(Params); // Enviamos los datos
-//    }   
+
 </script>
 
 <div>

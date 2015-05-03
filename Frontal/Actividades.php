@@ -90,7 +90,7 @@
                                                     <td>{{actividad.IntensidadActividad}}</td>
                                                     <td>{{actividad.EdadMinima}}</td>
                                                     <td>{{actividad.EdadMaxima}}</td>
-                                                    <td class="center"><a href="FormularioDetalleActividad.php?idSala={{actividad.idActividad}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
+                                                    <td class="center"><a href="FormularioDetalleActividad.php?idActividad={{actividad.idActividad}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
                                                 </tr>
                                             </thead>
                                         </table>

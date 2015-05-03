@@ -52,7 +52,7 @@
                     '&FechaBaja='+ document.getElementById('FechaBaja').value;
 
                
-                Ajax.open("PUT", Url, false);
+                Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
              
@@ -72,8 +72,8 @@
             $scope.crearTipoTarifa = function(){
                                    
              
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=actualizarTipoTarifa";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=actualizarTipoTarifa";
+                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=crearTipoTarifa";
+                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=crearTipoTarifa";
                 var Params = 'idTipoTarifa='+ $location.search().idTipoTarifa +
                     '&NombreTarifa='+ document.getElementById('NombreTarifa').value +
                     '&DescripcionTarifa='+ document.getElementById('DescripcionTarifa').value +
@@ -85,7 +85,7 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
              
-            
+           
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')

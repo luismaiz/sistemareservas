@@ -116,7 +116,7 @@ class TiposAbonosBO extends Rest{
     }
 
     private function actualizarTipoAbono() {
-        if ($_SERVER['REQUEST_METHOD'] != "PUT") {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
 
@@ -183,8 +183,7 @@ class TiposAbonosBO extends Rest{
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
     }
-    
-    
+        
     private function obtenerTiposAbonosFiltro() {
         
         if ($_SERVER['REQUEST_METHOD'] != "POST") {

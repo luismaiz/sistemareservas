@@ -100,8 +100,7 @@ class PreciosBO extends Rest{
         if ($_SERVER['REQUEST_METHOD'] != "GET") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-        //$query = $this->_conn->query("SELECT idSala,Nombre,Capacidad,Descripcion FROM sala");  
-        //$filas = $query->fetchAll(PDO::FETCH_ASSOC);  
+      
 
         $this->con = ConexionBD::getInstance();
         $precio = new PrecioModel();
@@ -123,7 +122,7 @@ class PreciosBO extends Rest{
     }
 
     private function actualizarPrecio() {
-        if ($_SERVER['REQUEST_METHOD'] != "PUT") {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
         //echo $idUsuario . "<br/>";  
@@ -139,16 +138,7 @@ class PreciosBO extends Rest{
             $FechaBaja = $this->datosPeticion['FechaBaja'];
 
             if (!empty($idSala)) {
-                /* $query = $this->_conn->prepare("update sala set Nombre=:Nombre, Capacidad=:Capacidad, Descripcion=:Descripcion WHERE idSala =:idSala");
-                  $query->bindValue(":Nombre", $Nombre);
-                  $query->bindValue(":Capacidad", $Capacidad);
-                  $query->bindValue(":Descripcion", $Descripcion);
-                  $query->bindValue(":idSala", $idSala);
-                  $query->execute();
-                  $filasActualizadas = $query->rowCount(); */
-
-
-                $this->con = ConexionBD::getInstance();
+                 $this->con = ConexionBD::getInstance();
                 $precio = new PrecioModel();
                 $precio->setIdTipoSolicitud($idTipoSolicitud);
                 $precio->setIdTipoAbono($idTipoAbono);
@@ -179,13 +169,6 @@ class PreciosBO extends Rest{
 
         //el constructor del padre ya se encarga de sanear los datos de entrada  
         $idPrecio = $this->datosPeticion['idPrecio'];
-
-        //consulta preparada ya hace mysqli_real_escape()  
-        /* $query = $this->_conn->prepare("SELECT idSala, Nombre, Capacidad, Descripcion FROM sala WHERE idSala=:idSala");
-          $query->bindValue(":idSala", $idSala);
-          $fila = $query->execute();
-
-          $query->execute(); */
 
         $this->con = ConexionBD::getInstance();
         $precio = new PrecioModel();

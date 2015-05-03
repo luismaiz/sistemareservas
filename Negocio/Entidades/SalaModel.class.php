@@ -637,6 +637,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 */
 	public function insertIntoDatabase(PDO $db) {
             
+            
 		if (null===$this->getIdSala()) {
 			$stmt=self::prepareStatement($db,self::SQL_INSERT_AUTOINCREMENT);
 			$stmt->bindValue(1,$this->getNombreSala());
@@ -648,6 +649,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 			$stmt=self::prepareStatement($db,self::SQL_INSERT);
 			$this->bindValues($stmt);
 		}
+                        
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();
