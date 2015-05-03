@@ -10,8 +10,8 @@ function CargaTiposAbono($scope, $http) {
     
     $scope.obtenerTiposAbonos = function() {
                 
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbonosFiltro";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbonosFiltro";
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbonosFiltro";
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbonosFiltro";
                 
                 var Params = 'NombreAbono=' + document.getElementById("filtronombreabono").value + '&DescripcionAbono=' + document.getElementById("filtrodescripcionabono").value;    
                 

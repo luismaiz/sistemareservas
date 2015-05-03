@@ -27,7 +27,7 @@
                 if ($scope.abonodiario.Gestionado=== '0')
                 {
                     document.getElementById('divPendiente').style.display = 'block';
-                    document.getElementById('validacion').style.display = 'block';
+                    document.getElementById('validacion').style.display = 'inline';
                 }
         
             };
@@ -75,7 +75,6 @@
                 Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-             alert(Ajax.responseText);
             
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
@@ -167,13 +166,14 @@
                                 <label class="control-label col-md-2" >Dni</label>
                                 <input ng-model="abonodiario.DNI" type="text" class="input-sm" name="dni" id="Dni" required ng-pattern='/^\d{7,8}(-?[a-z])?$/i'>
                                 <span style="color:red" ng-show="formulario.dni.$dirty && formulario.dni.$invalid">
+                                    <span ng-show="formulario.dni.$error.required">DNI obligatorio.</span>
                                 <span ng-show="formulario.dni.$error.pattern">Formato de DNI no válido 12345678-A</span>
                                 </span>
                                 </div>
-                                <div class="form-group col-md-12">
+                                
                                 <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Reservas.php' " />
                                 <input style='display:none;' id="validacion" class="box btn-primary" type="submit" value="Validar Solicitud" ng-click="validarSolicitud();" ng-disabled="formulario.$invalid" />
-                                </div>
+                                
                              </form>
                            </div>                                         
                         </div>

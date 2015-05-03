@@ -22,14 +22,12 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-                alert(Ajax.responseText);
-                               
                 $scope.clasesdirigidas = JSON.parse(Ajax.responseText).clasesdirigidas;
                 
                 if ($scope.clasesdirigidas.Gestionado=== '0')
                 {
                     document.getElementById('divPendiente').style.display = 'block';
-                    document.getElementById('validacion').style.display = 'block';
+                    document.getElementById('validacion').style.display = 'inline';
                 }
         
             };
@@ -77,7 +75,6 @@
                 Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-             alert(Ajax.responseText);
             
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
@@ -140,7 +137,6 @@
                 
                 if ($scope.estado === 'correcto')
                 {
-                    alert(Ajax.responseText);
                     $scope.actividades = JSON.parse(Ajax.responseText).actividades;    
                 }
                 
@@ -297,10 +293,10 @@
                                 </div>
                     </div>
                     </div>
-                                <div class="col-md-12">
+                                
                                 <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Reservas.php' " />
                                 <input style='display:none;' id="validacion" class="box btn-primary" type="submit" value="Validar Solicitud" ng-click="validarSolicitud();" ng-disabled="formulario.$invalid" />
-                                </div>
+                                
                                 
                              </form>
                            </div>                                         

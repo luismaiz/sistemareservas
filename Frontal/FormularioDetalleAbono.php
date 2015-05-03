@@ -17,8 +17,8 @@
         
         $scope.obtenerTiposAbono = function(idTipoAbono) {
                 
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTipoAbono";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTipoAbono";
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTipoAbono";
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTipoAbono";
                 var Params = 'idTipoAbono='+ idTipoAbono;
 
                 Ajax.open("POST", Url, false);
@@ -43,8 +43,8 @@
             $scope.actualizarTipoAbono = function(){
                                    
              
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=actualizarTipoAbono";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=actualizarTipoAbono";
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=actualizarTipoAbono";
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=actualizarTipoAbono";
                 var Params = 'idTipoAbono='+ $location.search().idTipoAbono +
                     '&NombreAbono='+ document.getElementById('NombreAbono').value +
                     '&DescripcionAbono='+ document.getElementById('DescripcionAbono').value +
@@ -73,8 +73,8 @@
             $scope.crearTipoAbono = function(){
                                    
              
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=crearTipoAbono";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=crearTipoAbono";
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=crearTipoAbono";
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=crearTipoAbono";
                 var Params = 'NombreAbono='+ document.getElementById('NombreAbono').value +
                     '&DescripcionAbono='+ document.getElementById('DescripcionAbono').value +
                     '&FechaAlta='+ document.getElementById('FechaAlta').value +
@@ -150,15 +150,21 @@
                                 <input ng-model="tipoabono.DescripcionAbono" ng-required=true" type="textarea" class="input-sm col-md-6"  name="descripcionabono" id="DescripcionAbono">
                                 <span style="color:red" ng-show="formulario.descripcionabono.$dirty && formulario.descripcionabono.$invalid">
                                 <span ng-show="formulario.descripcionabono.$error.required">Descripción de abono obligatorio.</span>
-                                 </span>
+                                </span>
                       </div>
                                 <div class="form-group col-md-12">
                                 <label class="control-label col-md-2 " >Fecha Alta</label>
                                 <input ng-model="tipoabono.FechaAlta" type="date" class="input-sm" name="FechaAlta" id="FechaAlta">
+                                <span style="color:red" ng-show="formulario.FechaAlta.$dirty && formulario.FechaAlta.$invalid">
+                                <span ng-show="formulario.FechaAlta.$error.date">Formato de fecha incorrecto.</span>
+                                </span>
                                 </div>
                                 <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Fecha Baja</label>
                                 <input ng-model="tipoabono.FechaBaja" type="date" class="input-sm" name="FechaBaja" id="FechaBaja">                                     
+                                <span style="color:red" ng-show="formulario.FechaBaja.$dirty && formulario.FechaBaja.$invalid">
+                                <span ng-show="formulario.FechaBaja.$error.date">Formato de fecha incorrecto.</span>
+                                </span>
                                 </div>
                                 <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='TipoAbono.php' " />
                                 <input class="box btn-primary" type="submit" value="Aceptar" ng-click="guardarTipoAbono();" ng-disabled="formulario.$invalid" />
