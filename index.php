@@ -26,15 +26,15 @@ include('Frontal/CabeceraInicio.php');
             var tipo = parseInt((Clase.Usuario[0].TipoUsuario));
             switch (tipo) {
                 case 1:
-                    window.location = 'Frontal\\InicioAdministrador.php';
-                    return false;
-                    break;
-                case 2:
                     window.location = 'Frontal\\Inicio.php';
                     return false;
                     break;
+                case 2:
+                    window.location = 'Frontal\\InicioMonitor.php';
+                    return false;
+                    break;
                 case 3:
-                    window.location = 'Frontal\\InicioGestor.php';
+                    window.location = 'Frontal\\Inicio.php';
                     return false;
                     break;
             }
