@@ -411,6 +411,67 @@ class ReservasBO extends Rest{
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
         }
     }
+    
+    private function obtenerSolicitudesSemana() {
+        
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+                
+                        
+        $this->con = ConexionBD::getInstance();
+        $sort = array(
+            new DSC(SolicitudModel::FIELD_FECHASOLICITUD, DSC::ASC),
+            new DSC(SolicitudModel:: FIELD_APELLIDOS, DSC::ASC)
+        );
+        
+        $solicitud = new SolicitudModel();
+        $solicitud->setIdTipoSolicitud(1);
+        
+        
+        $filas = SolicitudModel::findByExample($this->con,$solicitud,$sort);
+        $solicitud->setIdTipoSolicitud(2);
+        
+        
+        $filasmensual = SolicitudModel::findByExample($this->con,$solicitud,$sort);
+        $solicitud->setIdTipoSolicitud(3);
+        
+        
+        $filasdiario = SolicitudModel::findByExample($this->con,$solicitud,$sort);
+                                
+        $num = count($filas);
+        if ($num > 0) {
+            
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
+            //$respuesta['abonos'] = $array;
+            $respuesta['clases'] = $num;
+        }
+        
+        $num = count($filasmensual);
+        if ($num > 0) {
+            
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filasmensual[$i]->toHash();
+            }
+            //$respuesta['abonos'] = $array;
+            $respuesta['mensual'] = $num;
+        }
+        
+        $num = count($filasdiario);
+        if ($num > 0) {
+            
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filasdiario[$i]->toHash();
+            }
+            //$respuesta['abonos'] = $array;
+            $respuesta['diario'] = $num;
+        }
+        $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+    }
 }
 
 $reservasBO = new ReservasBO();

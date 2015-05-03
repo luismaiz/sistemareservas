@@ -16,9 +16,6 @@
 	        Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-                
-                
-	
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 $scope.numerosolicitudes = parseInt(JSON.parse(Ajax.responseText).numerosolicitudes);
@@ -67,6 +64,8 @@
         
             };
            $scope.obtenerabonos ();
+           
+ 
 }
         </script>
 
@@ -141,7 +140,7 @@
                     </li>
                 </ul>
             </div>
-            <div id="piechart" style="height:300px"></div>
+            <div id="piechart" style="height:300px" data-bind="data"></div>
         </div>
     </div>
     <!--/span-->
