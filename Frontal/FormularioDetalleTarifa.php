@@ -17,8 +17,8 @@
         
         $scope.obtenerTiposTarifa = function(idTipoTarifa) {
                 
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTipoTarifa";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTipoTarifa";
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTipoTarifa";
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTipoTarifa";
                 var Params = 'idTipoTarifa='+ idTipoTarifa;
 
                 Ajax.open("POST", Url, false);
@@ -43,8 +43,8 @@
             $scope.actualizarTipoTarifa = function(){
                                    
              
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=actualizarTipoTarifa";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=actualizarTipoTarifa";
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=actualizarTipoTarifa";
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=actualizarTipoTarifa";
                 var Params = 'idTipoTarifa='+ $location.search().idTipoTarifa +
                     '&NombreTarifa='+ document.getElementById('NombreTarifa').value +
                     '&DescripcionTarifa='+ document.getElementById('DescripcionTarifa').value +
@@ -72,8 +72,8 @@
             $scope.crearTipoTarifa = function(){
                                    
              
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=crearTipoTarifa";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=crearTipoTarifa";
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=crearTipoTarifa";
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=crearTipoTarifa";
                 var Params = 'idTipoTarifa='+ $location.search().idTipoTarifa +
                     '&NombreTarifa='+ document.getElementById('NombreTarifa').value +
                     '&DescripcionTarifa='+ document.getElementById('DescripcionTarifa').value +
@@ -99,53 +99,7 @@
             };
         
     }
-    
-    
-//    function TipoTarifa(){      
-//        //alert(document.getElementById("idSala"));
-//        if(document.getElementById("idTipoTarifa").value == "")
-//            crearTipoTarifa();
-//        else
-//            actualizarTipoTarifa();
-//    }
-//    
-//    function crearTipoTarifa() {	
-//        //alert("crear");
-//        var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=crearTipoTarifa";
-//        //var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearTipoTarifa";		
-//        var Params = 'idTipoTarifa='+ document.getElementById('idTipoTarifa').value +
-//            '&NombreTarifa='+ document.getElementById('NombreTarifa').value +
-//            '&DescripcionTarifa='+ document.getElementById('DescripcionTarifa').value +
-//            '&FechaAlta='+ document.getElementById('FechaAlta').value +
-//            '&FechaBaja='+ document.getElementById('FechaBaja').value;
-//
-//        //alert(Params);
-//	
-//        Ajax.open("POST", Url, false);
-//        Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
-//        Ajax.send(Params); // Enviamos los datos
-//        
-//        mostrarRespuesta(Ajax.responseText);
-//    }   
-//
-//    function actualizarTipoTarifa() {
-//        //alert("actualizar");
-//        var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=actualizarTipoTarifa";
-//        //var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=actualizarTipoTarifa";
-//        var Params = 'idTipoTarifa='+ document.getElementById('idTipoTarifa').value +
-//            '&NombreTarifa='+ document.getElementById('NombreTarifa').value +
-//            '&DescripcionTarifa='+ document.getElementById('DescripcionTarifa').value +
-//            '&FechaAlta='+ document.getElementById('FechaAlta').value +
-//            '&FechaBaja='+ document.getElementById('FechaBaja').value;
-//
-//        //alert(Params);
-//	
-//        Ajax.open("PUT", Url, false);
-//        Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
-//        Ajax.send(Params); // Enviamos los datos
-//        
-//        mostrarRespuesta(Ajax.responseText);
-//    }            
+     
 </script>
 
 <div>

@@ -40,8 +40,8 @@
             
             $scope.crearSala = function() {
                                 
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=crearSala";		
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=crearSala";		
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=crearSala";		
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=crearSala";		
                 var Params ='NombreSala='+ document.getElementById('NombreSala').value +
                     '&CapacidadSala='+ document.getElementById('CapacidadSala').value +
                     '&DescripcionSala='+ document.getElementById('DescripcionSala').value +
