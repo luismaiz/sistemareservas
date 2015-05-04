@@ -226,7 +226,7 @@
                 <form ole="form"  name="formulario" novalidate="true">
                     <div class="form-group col-md-12"> 
                                 <label class="control-label" >Tipo Solicitud</label>
-                                <select name="idTipoSolicitud" id="idTipoSolicitud  class="input-sm" >	
+                                <select name="idTipoSolicitud" id="idTipoSolicitud" class="input-sm" >	
                                     <option ng_repeat="tiposolicitud in tiposSolicitudes" value="{{tiposolicitud.idTipoSolicitud}}">{{tiposolicitud.NombreSolicitud}}</option>
                                 </select>
                     </div>

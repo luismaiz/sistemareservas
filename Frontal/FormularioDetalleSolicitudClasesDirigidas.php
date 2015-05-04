@@ -222,7 +222,7 @@
                         
                         <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Fecha Solicitud</label>
-                                <input ng-model="clasesdirigidas.FechaSolicitud" type="date" class="input-sm col-md-2 col-sm-4 col-xs-4" name="FechaSolicitud" id="FechaSolicitud" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required>
+                                <input ng-model="clasesdirigidas.FechaSolicitud" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="FechaSolicitud" id="FechaSolicitud" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required>
                                 <span class="col-md-6 col-sm-5 col-XS-12" style="color:red" ng-show="formulario.FechaSolicitud.$dirty && formulario.FechaSolicitud.$invalid">
                                      <span ng-show="formulario.FechaSolicitud.$error.pattern">* Formato de fecha no valido.</span>
                                     <span ng-show="formulario.FechaSolicitud.$error.required">* Fecha obligatoria.</span>
@@ -230,8 +230,8 @@
                                 </div>
                         <div class="form-group col-md-12 col-xs-12">
                             <div class="checkbox" >
-                                <label ng_repeat="actividad in actividades" class="control-label col-md-4">
-                                    <input   type="checkbox" checklist-model="actividades" checklist-value="actividad" >{{actividad.NombreActividad}}
+                                <label ng_repeat="actividad in actividades" class="control-label col-md-4 col-sm-4 col-xs-4">
+                                    <input  class="" type="checkbox" checklist-model="actividades" checklist-value="actividad" >{{actividad.NombreActividad}}
                                 </label>
                             </div>
                             </div>

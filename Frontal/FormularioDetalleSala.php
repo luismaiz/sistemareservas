@@ -169,7 +169,7 @@
                                  <input ng-model="sala.idSala" type="hidden" class="input-sm" name="idSala" id="idSala">
                                 <label class="control-label col-md-2 col-sm-3 col-xs-4" >Nombre Sala</label>
                                 <input type="text" ng-model="sala.NombreSala"   class="input-sm col-md-4 col-sm-4 col-xs-4" name="nombresala" id="NombreSala" required >
-                                <span class="col-md-6 col-sm-5 col-xs-12" style="color:red" ng-show="formulario.nombresala.$dirty && formulario.nombresala.$invalid">
+                                <span class="col-md-6 col-sm-5 col-xs-4" style="color:red" ng-show="formulario.nombresala.$dirty && formulario.nombresala.$invalid">
                                 <span ng-show="formulario.nombresala.$error.required">* Nombre de sala obligatorio.</span>
                                  </span>
                                 </div>
