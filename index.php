@@ -8,14 +8,14 @@ include('Frontal/CabeceraInicio.php');
     var Ajax = new AjaxObj();
 
     function login() {
-        var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/LoginBO.php?url=iniciarSesion";
-        //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/LoginBO.php?url=iniciarSesion";
+        //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/LoginBO.php?url=iniciarSesion";
+        var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/LoginBO.php?url=iniciarSesion";
         var Params = 'NombreUsuario=' + document.getElementById("NombreUsuario").value + '&Password=' + document.getElementById("Password").value;
 
         Ajax.open("POST", Url, false);
         Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         Ajax.send(Params); // Enviamos los datos
-
+        
         var RespTxt = Ajax.responseText;
 
         //alert(RespTxt);

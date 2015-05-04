@@ -66,7 +66,7 @@ class PreciosBO extends Rest{
 
         $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
         $idTipoAbono = $this->datosPeticion['idTipoAbono'];
-        $idActividad = $this->datosPeticion['idActividad'];
+        $idTipoTarifa = $this->datosPeticion['idTipoTarifa'];
         $NombrePrecio = $this->datosPeticion['NombrePrecio'];
         $DescripcionPrecio = $this->datosPeticion['DescripcionPrecio'];
         $Precio = $this->datosPeticion['Precio'];
@@ -77,7 +77,7 @@ class PreciosBO extends Rest{
         $precio = new PrecioModel();
         $precio->setIdTipoSolicitud($idTipoSolicitud);
         $precio->setIdTipoAbono($idTipoAbono);
-        $precio->setIdActividad($idActividad);
+        $precio->setIdTipoTarifa($idTipoTarifa);
         $precio->setNombrePrecio($NombrePrecio);
         $precio->setDescripcionPrecio($DescripcionPrecio);
         $precio->setPrecio($Precio);
@@ -100,7 +100,6 @@ class PreciosBO extends Rest{
         if ($_SERVER['REQUEST_METHOD'] != "GET") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-      
 
         $this->con = ConexionBD::getInstance();
         $precio = new PrecioModel();
@@ -130,7 +129,7 @@ class PreciosBO extends Rest{
             $idPrecio = $this->datosPeticion['idPrecio'];
             $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
             $idTipoAbono = $this->datosPeticion['idTipoAbono'];
-            $idActividad = $this->datosPeticion['idActividad'];
+            $idTipoTarifa = $this->datosPeticion['idTipoTarifa'];
             $NombrePrecio = $this->datosPeticion['NombrePrecio'];
             $DescripcionPrecio = $this->datosPeticion['DescripcionPrecio'];
             $Precio = $this->datosPeticion['Precio'];
@@ -142,7 +141,7 @@ class PreciosBO extends Rest{
                 $precio = new PrecioModel();
                 $precio->setIdTipoSolicitud($idTipoSolicitud);
                 $precio->setIdTipoAbono($idTipoAbono);
-                $precio->setIdActividad($idActividad);
+                $precio->setIdTipoTarifa($idTipoTarifa);
                 $precio->setNombrePrecio($NombrePrecio);
                 $precio->setDescripcionPrecio($DescripcionPrecio);
                 $precio->setPrecio($Precio);
@@ -178,15 +177,15 @@ class PreciosBO extends Rest{
 
         if ($fila) {
             $respuesta['estado'] = 'correcto';
-            $respuesta['sala']['idPrecio'] = $fila->getIdPrecio();
-            $respuesta['sala']['idTipoSolicitud'] = $fila->getIdTipoSolicitud();
-            $respuesta['sala']['idTipoAbono'] = $fila->getIdTipoAbono();
-            $respuesta['sala']['idActividad'] = $fila->getIdActividad();
-            $respuesta['sala']['NombrePrecio'] = $fila->getNombrePrecio();
-            $respuesta['sala']['DescripcionPrecio'] = $fila->getDescripcionPrecio();
-            $respuesta['sala']['Precio'] = $fila->getPrecio();
-            $respuesta['sala']['FechaAlta'] = $fila->getFechaAlta();
-            $respuesta['sala']['FechaBaja'] = $fila->getFechaBaja();
+            $respuesta['precio']['idPrecio'] = $fila->getIdPrecio();
+            $respuesta['precio']['idTipoSolicitud'] = $fila->getIdTipoSolicitud();
+            $respuesta['precio']['idTipoAbono'] = $fila->getIdTipoAbono();
+            $respuesta['precio']['idTipoTarifa'] = $fila->getIdTipoTarifa();
+            $respuesta['precio']['NombrePrecio'] = $fila->getNombrePrecio();
+            $respuesta['precio']['DescripcionPrecio'] = $fila->getDescripcionPrecio();
+            $respuesta['precio']['Precio'] = $fila->getPrecio();
+            $respuesta['precio']['FechaAlta'] = $fila->getFechaAlta();
+            $respuesta['precio']['FechaBaja'] = $fila->getFechaBaja();
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);

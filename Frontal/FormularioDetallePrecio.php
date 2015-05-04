@@ -3,51 +3,162 @@
 
 <script>
            
-    var Ajax = new AjaxObj();
+     var Ajax = new AjaxObj();
+            var app = angular.module('DetallePrecios', [])            
+                     .config(function($locationProvider) {
+                          $locationProvider.html5Mode(true);
+                      });  
 
+     function CargaDetallePrecios($scope, $http, $location) {
+      $scope.obtenerTipoSolicitud = function(){
+        
+        var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitud";
+        //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitud";
+        
+        var Params = '';
 
-    function crearPrecio() {	
-        //var Url = "http://www.rightwatch.es/pfgreservas/Api.php?url=crearPrecio";		
-        var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearPrecio";
-        var Params = 'idPrecio='+ document.getElementById('idPrecio').value +
-            '&idTipoSolicitud='+ document.getElementById('idTipoSolicitud').value +
-            '&idTipoAbono='+ document.getElementById('idTipoAbono').value +
-            '&idActividad='+ document.getElementById('idTipoAbono').value +
-            '&NombrePrecio='+ document.getElementById('NombrePrecio').value + 		     
-            '&DescripcionPrecio='+ document.getElementById('DescripcionPrecio').value +
-            '&Precio='+ document.getElementById('Precio').value + 		     
-            '&FechaAlta='+ document.getElementById('FechaAltaPrecio').value +
-            '&FechaBaja='+ document.getElementById('FechaBajaPrecio').value;
+        Ajax.open("GET", Url, false);
+        Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
+        Ajax.send(Params); // Enviamos los datos
+               
+        $scope.tiposSolicitudes = JSON.parse(Ajax.responseText).tiposSolicitudes;
+        
+        
+        
+        };   
+        $scope.obtenerTipoSolicitud();
+        
+        
+        $scope.obtenerTipoAbono = function(){
+        
+        var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbono";		
+        //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbono";		
+        
+        var Params = '';
 
-	
-        Ajax.open("POST", Url, false);
+        Ajax.open("GET", Url, false);
         Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
         Ajax.send(Params); // Enviamos los datos
         
-        mostrarRespuesta(Ajax.responseText);
-    }
+                       
+        $scope.tiposAbonos = JSON.parse(Ajax.responseText).tiposAbonos;
+        
+        };   
+        $scope.obtenerTipoAbono();
+        
+        
+        $scope.obtenerTipoTarifa = function(){
+        
+        var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifa";		
+        //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifa";		
+        
+        var Params = '';
 
-    function actualizarPrecio() {
-        var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=actualizarPrecio";
-        var Params = 'idPrecio='+ document.getElementById('idTipoTarifa').value +
-            '&idTipoSolicitud='+ document.getElementById('idTipoSolicitud').value +
-            '&idTipoAbono='+ document.getElementById('idTipoAbono').value +
-            '&idActividad='+ document.getElementById('idTipoAbono').value +
-            '&NombrePrecio='+ document.getElementById('NombrePrecio').value + 		     
-            '&DescripcionPrecio='+ document.getElementById('DescripcionPrecio').value +
-            '&Precio='+ document.getElementById('Precio').value + 		     
-            '&FechaAlta='+ document.getElementById('FechaAltaPrecio').value +
-            '&FechaBaja='+ document.getElementById('FechaBajaPrecio').value;
-
-
-        //alert(Params);
-	
-        Ajax.open("PUT", Url, false);
+        Ajax.open("GET", Url, false);
         Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
         Ajax.send(Params); // Enviamos los datos
+               
+        $scope.tiposTarifas = JSON.parse(Ajax.responseText).tiposTarifas;
         
-        mostrarRespuesta(Ajax.responseText);
-    }       
+        };   
+        $scope.obtenerTipoTarifa();
+        
+        
+        $scope.precio = [];
+            $scope.estado = [];
+            
+            $scope.obtenerPrecios = function(idPrecio) {
+                
+                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerPrecio";
+                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSala";
+                var Params = 'idPrecio='+ idPrecio;
+
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                                      
+                    alert(Ajax.responseText);
+                $scope.precio = JSON.parse(Ajax.responseText).precio;
+                //$scope.precio.CapacidadSala = parseInt($scope.sala.CapacidadSala);
+        
+            };
+            if (typeof($location.search().idPrecio) !== "undefined")
+                $scope.obtenerPrecios($location.search().idPrecio);
+            
+            $scope.guardarPrecio = function() {
+                if (typeof($location.search().idPrecio) !== "undefined")
+                    $scope.actualizarPrecio();    
+                else
+                    $scope.crearPrecio();            
+        
+            };
+            
+            $scope.crearPrecio = function() {
+                                
+                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=crearPrecio";		
+                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/PreciosBO.php?url=crearPrecio";		
+                var Params ='idTipoSolicitud='+ document.getElementById('idTipoSolicitud').value +
+                            '&idTipoAbono='+ document.getElementById('idTipoAbono').value +
+                            '&idTipoTarifa='+ document.getElementById('idTipoTarifa').value +
+                            '&NombrePrecio='+ document.getElementById('NombrePrecio').value + 		     
+                            '&DescripcionPrecio='+ document.getElementById('DescripcionPrecio').value +
+                            '&Precio='+ document.getElementById('Precio').value + 		     
+                            '&FechaAlta='+ document.getElementById('FechaAltaPrecio').value +
+                            '&FechaBaja='+ document.getElementById('FechaBajaPrecio').value;
+
+                
+                Ajax.open("POST", Url, true);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divCorrecto').style.display = 'block';
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
+        
+            };
+//            
+            $scope.actualizarPrecio = function(){
+                                   
+             
+                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=actualizarPrecio";
+                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/PreciosBO.php?url=actualizarPrecio";
+                var Params = 'IdPrecio=' + $location.search().idPrecio + +
+                            '&idTipoSolicitud='+ document.getElementById('idTipoSolicitud').value +
+                            '&idTipoAbono='+ document.getElementById('idTipoAbono').value +
+                            '&idTipoTarifa='+ document.getElementById('idTipoTarifa').value +
+                            '&NombrePrecio='+ document.getElementById('NombrePrecio').value + 		     
+                            '&DescripcionPrecio='+ document.getElementById('DescripcionPrecio').value +
+                            '&Precio='+ document.getElementById('Precio').value + 		     
+                            '&FechaAlta='+ document.getElementById('FechaAltaPrecio').value +
+                            '&FechaBaja='+ document.getElementById('FechaBajaPrecio').value;
+
+               
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+             
+            
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divCorrecto').style.display = 'block';
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
+            };
+        
+     }
+      
 </script>
 <div>
     <ul class="breadcrumb">
@@ -62,47 +173,64 @@
         </li>
     </ul>
 </div>
-<div class=" row">
+<div class=" row" ng-app="DetallePrecios">
+<div ng_controller="CargaDetallePrecios">
     <div class="box col-md-12">
         <div class="box-inner">
             <div class="box-header well" data-original-title="">
                 <h2><i class="glyphicon glyphicon-edit"></i> Detalle Precio</h2>
-                <div class="box-icon">
-
-                    <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
-
-                </div>
-            </div>
+             </div>
+             <div class="box-content alerts">
+                                <div class="alert alert-danger" id="divError" style='display:none;'>
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <strong>Error</strong> Se ha producido un error al realizar la operación.
+                                </div>
+                            <div class="alert alert-success" id="divCorrecto" style='display:none;'>
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <strong>Correcto.</strong>  Operación realizada con éxito.
+                            </div>
+                            </div>
             <div class="box-content">
 
-                <form class="form-group">
-                    <label class="control-label" >idTipoSolicitud</label>
-                    <input type="hidden" class="input-sm" name="idTipoSolicitud" id="idTipoSolicitud">
-                    <input type="text" class="input-sm" name="NombreSolicitud" id="NombreSolicitud"></br></br>
-
-                    <label class="control-label" >idTipoAbono</label>
-                    <input type="hidden" class="input-sm" name="idTipoAbono" id="idTipoAbono">
-                    <input type="text" class="input-sm" name="NombreAbono" id="NombreAbono"></br></br>
-
-                    <label class="control-label" >idActividad</label>
-                    <input type="hidden" class="input-sm" name="idActividad" id="idActividad">
-                    <input type="text" class="input-sm" name="NombreActividad" id="NombreActividad">
-
+                <form ole="form"  name="formulario" novalidate="true">
+                    <div class="form-group col-md-12"> 
+                                <label class="control-label" >Tipo Solicitud</label>
+                                <select name="idTipoSolicitud" id="idTipoSolicitud  class="input-sm" >	
+                                    <option ng_repeat="tiposolicitud in tiposSolicitudes" value="{{tiposolicitud.idTipoSolicitud}}">{{tiposolicitud.NombreSolicitud}}</option>
+                                </select>
+                    </div>
+                    <div class="form-group col-md-12"> 
+                                <label class="control-label" >Tipo Abono</label>
+                                <select  name="idTipoAbono" id="idTipoAbono" class="input-sm" >	
+                                    <option ng_repeat="tipoabono in tiposAbonos" value="{{tipoabono.idTipoAbono}}">{{tipoabono.NombreAbono}}</option>
+                                </select>
+                    </div>
+                    <div class="form-group col-md-12"> 
+                                <label class="control-label" >Tipo Tarifa</label>
+                                <select ng-model="tipotarifa.idTipoTarifa" id="filtroTipoTarifa" class="input-sm" >	
+                                    <option ng_repeat="tipotarifa in tiposTarifas" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>
+                                </select>
+                    </div>
+                    <div class="form-group col-md-12"> 
                     <label class="control-label" >NombrePrecio</label>
                     <input type="text" class="input-sm" name="NombrePrecio" id="NombrePrecio">
-                    
+                    </div>
+                    <div class="form-group col-md-12"> 
                     <label class="control-label" >DescripcionPrecio</label>
                     <input type="text" class="input-sm" name="DescripcionPrecio" id="DescripcionPrecio">
-                    
+                    </div>
+                    <div class="form-group col-md-12"> 
                     <label class="control-label" >Precio</label>
                     <input type="text" class="input-sm" name="Precio" id="Precio"></br></br>
-                    
+                    </div>
+                    <div class="form-group col-md-12"> 
                     <label class="control-label" >FechaAlta</label>
                     <input type="date" class="input-sm" name="FechaAlta" id="FechaAlta">
-                    
+                    </div>
+                    <div class="form-group col-md-12">
                     <label class="control-label" >FechaBaja</label>
                     <input type="date" class="input-sm" name="FechaBaja" id="FechaBaja"></br></br>
-
+                    </div>   
                     <input class="box btn-primary " type="button" value="Cancelar" onClick=" window.location.href='Precios.php' " />
                     <input class="box btn-primary " type="button" value="Aceptar" onclick="crearPrecio()"/>
 
@@ -115,49 +243,5 @@
 
 </div>
 
-<script>
-    function obtenerPrecio() {	
-        //var Url = "http://www.rightwatch.es/pfgreservas/Api.php?url=obtenerSala";
-        var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerPrecio";
-        var Params = 'idPrecio='+ document.getElementById('idPrecio').value;
-
-	
-        Ajax.open("POST", Url, false);
-        Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
-        Ajax.send(Params); // Enviamos los datos
-	
-        var RespTxt = Ajax.responseText;	
-	
-        //alert(RespTxt);
-	
-        var Clase = eval('(' + RespTxt + ')');
-        //alert('Estado: '+ Clase.estado);
-        //alert('idSala: '+ Clase.sala.idSala);
-        //alert('Nombre: '+ Clase.sala.Nombre);
-        //alert('Capacidad: '+ Clase.sala.Capacidad);
-        //alert('DescripcionTarifa: '+ Clase.sala.DescripcionTarifa);
-	  
-        document.getElementById('idPrecio').value=Clase.precio.idPrecio;	  
-        document.getElementById('idTipoSolicitud').value=Clase.precio.idTipoSolicitud;
-        document.getElementById('idTipoAbono').value=Clase.precio.idTipoAbono;
-        document.getElementById('idActividad').value=Clase.precio.idActividad;
-        document.getElementById('NombrePrecio').value=Clase.precio.NombrePrecio;
-        document.getElementById('DescripcionPrecio').value=Clase.precio.DescripcionPrecio;
-        document.getElementById('Precio').value=Clase.precio.Precio;	  
-        document.getElementById('FechaAltaPrecio').value=Clase.precio.FechaAlta;
-        document.getElementById('FechaBajaPrecio').value=Clase.precio.FechaBaja;
-    }    
-</script>
-<?php
-if (isset($_GET['idPrecio'])) {
-    $test = $_GET['idPrecio'];
-    echo $test;
-    echo '<script>
-           var varjs="' . $test . '";
-           obtenerPrecio(varjs);
-           </script>';
-} else {
-    $test = '';
-}
-?>
+</div>
 <?php require('Pie.php'); ?>
