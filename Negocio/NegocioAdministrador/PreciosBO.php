@@ -70,8 +70,8 @@ class PreciosBO extends Rest{
         $NombrePrecio = $this->datosPeticion['NombrePrecio'];
         $DescripcionPrecio = $this->datosPeticion['DescripcionPrecio'];
         $Precio = $this->datosPeticion['Precio'];
-        $FechaAlta = $this->datosPeticion['FechaAlta'];
-        $FechaBaja = $this->datosPeticion['FechaBaja'];
+        $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
+            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
      
         $this->con = ConexionBD::getInstance();
         $precio = new PrecioModel();
@@ -133,8 +133,8 @@ class PreciosBO extends Rest{
             $NombrePrecio = $this->datosPeticion['NombrePrecio'];
             $DescripcionPrecio = $this->datosPeticion['DescripcionPrecio'];
             $Precio = $this->datosPeticion['Precio'];
-            $FechaAlta = $this->datosPeticion['FechaAlta'];
-            $FechaBaja = $this->datosPeticion['FechaBaja'];
+            $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
+            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
 
             if (!empty($idSala)) {
                  $this->con = ConexionBD::getInstance();
@@ -184,8 +184,8 @@ class PreciosBO extends Rest{
             $respuesta['precio']['NombrePrecio'] = $fila->getNombrePrecio();
             $respuesta['precio']['DescripcionPrecio'] = $fila->getDescripcionPrecio();
             $respuesta['precio']['Precio'] = $fila->getPrecio();
-            $respuesta['precio']['FechaAlta'] = $fila->getFechaAlta();
-            $respuesta['precio']['FechaBaja'] = $fila->getFechaBaja();
+            $respuesta['precio']['FechaAlta'] = date("d-m-Y",strtotime($fila->getFechaAlta()));
+            $respuesta['precio']['FechaBaja'] = date("d-m-Y",strtotime($fila->getFechaBaja()));
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);

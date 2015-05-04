@@ -10,8 +10,8 @@ function CargaTiposSolicitudes($scope, $http) {
     
     $scope.obtenerTiposSolicitudes = function() {
                 
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitudesFiltro";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitudesFiltro";
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitudesFiltro";
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitudesFiltro";
                 
                 var Params = 'NombreSolicitud=' + document.getElementById("filtronombresolicitud").value + '&DescripcionSolicitud=' + document.getElementById("filtrodescripcionsolicitud").value;    
                 
@@ -83,8 +83,8 @@ function CargaTiposSolicitudes($scope, $http) {
                                                 <tr ng_repeat="tiposolicitud in tipossolicitudes">
                                                     <td>{{tiposolicitud.NombreSolicitud}}</td>
                                                     <td>{{tiposolicitud.DescripcionSolicitud}}</td>
-                                                    <td>{{tiposolicitud.FechaAlta}}</td>
-                                                    <td>{{tiposolicitud.FechaBaja}}</td>
+                                                    <td>{{tiposolicitud.FechaAlta |date:'dd-MM-yyyy'}}</td>
+                                                    <td>{{tiposolicitud.FechaBaja |date:'dd-MM-yyyy'}}</td>
                                                     <td class="center"><a href="FormularioDetalleTipoSolicitud.php?idTipoSolicitud={{tiposolicitud.idTipoSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
                                                 </tr>
                                             

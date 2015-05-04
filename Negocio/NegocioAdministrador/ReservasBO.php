@@ -163,6 +163,8 @@ class ReservasBO extends Rest{
         $tsolicitud = $this->datosPeticion['TipoSolicitud'];
         
         
+        
+        
         $this->con = ConexionBD::getInstance();
         $sort = array(
             new DSC(SolicitudModel::FIELD_FECHASOLICITUD, DSC::ASC),
@@ -226,7 +228,7 @@ class ReservasBO extends Rest{
                 $respuesta['abonodiario']['Email'] = $fila->getEMail();
                 $respuesta['abonodiario']['DNI'] = $fila->getDni();
                 $respuesta['abonodiario']['Gestionado'] = $fila->getGestionado();
-                $respuesta['abonodiario']['FechaSolicitud'] = $fila->getFechaSolicitud();
+                $respuesta['abonodiario']['FechaSolicitud'] = date("d-m-Y",strtotime($fila->getFechaSolicitud()));
                 $respuesta['abonodiario']['Localizador'] = $fila->getLocalizador();
 
                 $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
@@ -332,7 +334,7 @@ class ReservasBO extends Rest{
                 $respuesta['abonomensual']['Email'] = $fila->getEMail();
                 $respuesta['abonomensual']['DNI'] = $fila->getDni();
                 $respuesta['abonomensual']['Gestionado'] = $fila->getGestionado();
-                $respuesta['abonomensual']['FechaSolicitud'] = $fila->getFechaSolicitud();
+                $respuesta['abonomensual']['FechaSolicitud'] = date("d-m-Y",strtotime($fila->getFechaSolicitud()));
                 $respuesta['abonomensual']['Localizador'] = $fila->getLocalizador();
                 $respuesta['abonomensual']['Direccion'] = $fila->getDireccion();
                 $respuesta['abonomensual']['FechaNacimiento'] = $fila->getFechaNacimiento();
@@ -390,7 +392,7 @@ class ReservasBO extends Rest{
                 $respuesta['clasesdirigidas']['Email'] = $fila->getEMail();
                 $respuesta['clasesdirigidas']['DNI'] = $fila->getDni();
                 $respuesta['clasesdirigidas']['Gestionado'] = $fila->getGestionado();
-                $respuesta['clasesdirigidas']['FechaSolicitud'] = $fila->getFechaSolicitud();
+                $respuesta['clasesdirigidas']['FechaSolicitud'] = date("d-m-Y",strtotime($fila->getFechaSolicitud()));
                 $respuesta['clasesdirigidas']['Localizador'] = $fila->getLocalizador();
                 $respuesta['clasesdirigidas']['Direccion'] = $fila->getDireccion();
                 $respuesta['clasesdirigidas']['FechaNacimiento'] = $fila->getFechaNacimiento();

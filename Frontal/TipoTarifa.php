@@ -11,8 +11,8 @@ function CargaTiposTarifas($scope, $http) {
     $scope.obtenerTiposTarifas = function() {
                 
                 
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifasFiltro";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifasFiltro";
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifasFiltro";
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifasFiltro";
                 
                 var Params = 'NombreTarifa=' + document.getElementById("filtronombretarifa").value + '&DescripcionTarifa=' + document.getElementById("filtrodescripciontarifa").value;    
                 
@@ -84,8 +84,8 @@ function CargaTiposTarifas($scope, $http) {
                                                 <tr ng_repeat="tipotarifa in tipostarifas">
                                                     <td>{{tipotarifa.NombreTarifa}}</td>
                                                     <td>{{tipotarifa.DescripcionTarifa}}</td>
-                                                    <td>{{tipotarifa.FechaAlta}}</td>
-                                                    <td>{{tipotarifa.FechaBaja}}</td>
+                                                    <td>{{tipotarifa.FechaAlta|date:'dd-MM-yyyy'}}</td>
+                                                    <td>{{tipotarifa.FechaBaja|date:'dd-MM-yyyy'}}</td>
                                                     <td class="center"><a href="FormularioDetalleTarifa.php?idTipoTarifa={{tipotarifa.idTipoTarifa}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
                                                 </tr>
                                             

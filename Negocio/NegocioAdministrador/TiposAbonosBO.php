@@ -67,8 +67,8 @@ class TiposAbonosBO extends Rest{
 
         $NombreAbono = $this->datosPeticion['NombreAbono'];
         $DescripcionAbono = $this->datosPeticion['DescripcionAbono'];
-        $FechaAlta = $this->datosPeticion['FechaAlta'];
-        $FechaBaja = $this->datosPeticion['FechaBaja'];
+        $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
+            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
         
         $this->con = ConexionBD::getInstance();
         $tipoabono = new TipoabonoModel();
@@ -125,8 +125,8 @@ class TiposAbonosBO extends Rest{
             $idTipoAbono = $this->datosPeticion['idTipoAbono'];
             $NombreAbono = $this->datosPeticion['NombreAbono'];
             $DescripcionAbono = $this->datosPeticion['DescripcionAbono'];
-            $FechaAlta = $this->datosPeticion['FechaAlta'];
-            $FechaBaja = $this->datosPeticion['FechaBaja'];
+            $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
+            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
 
             if (!empty($idTipoAbono)) {
                 
@@ -177,8 +177,8 @@ class TiposAbonosBO extends Rest{
             $respuesta['tipoabono']['idTipoAbono'] = $fila->getIdTipoAbono();
             $respuesta['tipoabono']['NombreAbono'] = $fila->getNombreAbono();
             $respuesta['tipoabono']['DescripcionAbono'] = $fila->getDescripcionAbono();
-            $respuesta['tipoabono']['FechaAlta'] = $fila->getFechaAlta();
-            $respuesta['tipoabono']['FechaBaja'] = $fila->getFechaBaja();
+            $respuesta['tipoabono']['FechaAlta'] = date("d-m-Y",strtotime($fila->getFechaAlta()));
+            $respuesta['tipoabono']['FechaBaja'] = date("d-m-Y",strtotime($fila->getFechaBaja()));
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);

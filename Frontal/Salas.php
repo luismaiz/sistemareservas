@@ -9,8 +9,8 @@
 
             $scope.obtenerSalas = function() {
                 
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSalasFiltro";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSalasFiltro";
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSalasFiltro";
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSalasFiltro";
                 
                 var Params = 'NombreSala=' + document.getElementById("filtronombresala").value + '&CapacidadSala=' + document.getElementById("filtrocapacidadsala").value;    
                 
@@ -83,8 +83,8 @@
                                                     <td>{{sala.NombreSala}}</td>
                                                     <td>{{sala.CapacidadSala}}</td>
                                                     <td>{{sala.DescripcionSala}}</td>
-                                                    <td>{{sala.FechaAlta}}</td>
-                                                    <td>{{sala.FechaBaja}}</td>
+                                                    <td>{{sala.FechaAlta |date:'dd-MM-yyyy' }}</td>
+                                                    <td>{{sala.FechaBaja |date:'dd-MM-yyyy'}}</td>
                                                     <td class="center"><a href="FormularioDetalleSala.php?idSala={{sala.idSala}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
                                                 </tr>
                                             

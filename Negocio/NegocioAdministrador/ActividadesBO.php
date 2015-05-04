@@ -62,8 +62,8 @@ class ActividadesBO extends Rest {
         $EdadMaxima = $this->datosPeticion['EdadMaxima'];
         $Grupo = $this->datosPeticion['Grupo'];
         $Descripcion = $this->datosPeticion['Descripcion'];
-        $FechaAlta = $this->datosPeticion['FechaAlta'];
-        $FechaBaja = $this->datosPeticion['FechaBaja'];
+        $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
+            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
 
         $this->con = ConexionBD::getInstance();
 
@@ -125,8 +125,8 @@ class ActividadesBO extends Rest {
             $EdadMaxima = $this->datosPeticion['EdadMaxima'];
             $Grupo = $this->datosPeticion['Grupo'];
             $Descripcion = $this->datosPeticion['Descripcion'];
-            $FechaAlta = $this->datosPeticion['FechaAlta'];
-            $FechaBaja = $this->datosPeticion['FechaBaja'];
+            $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
+            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
 
             if (!empty($idActividad)) {
                 $this->con = ConexionBD::getInstance();
@@ -202,8 +202,8 @@ class ActividadesBO extends Rest {
             $respuesta['actividad']['Edad_Maxima'] = $fila->getEdadMaxima();
             $respuesta['actividad']['Grupo'] = $fila->getGrupo();
             $respuesta['actividad']['Descripcion'] = $fila->getDescripcion();
-            $respuesta['actividad']['FechaAlta'] = $fila->getFechaAlta();
-            $respuesta['actividad']['FechaBaja'] = $fila->getFechaBaja();
+            $respuesta['actividad']['FechaAlta'] = date("d-m-Y",strtotime($fila->getFechaAlta()));
+            $respuesta['actividad']['FechaBaja'] = date("d-m-Y",strtotime($fila->getFechaBaja()));
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);

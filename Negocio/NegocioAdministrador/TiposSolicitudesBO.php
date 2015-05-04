@@ -67,8 +67,8 @@ class TiposSolicitudesBO extends Rest{
         $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
         $NombreSolicitud = $this->datosPeticion['NombreSolicitud'];
         $DescripcionSolicitud = $this->datosPeticion['DescripcionSolicitud'];
-        $FechaAlta = $this->datosPeticion['FechaAlta'];
-        $FechaBaja = $this->datosPeticion['FechaBaja'];
+        $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
+            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
 
         $this->con = ConexionBD::getInstance();
         $tiposolicitud = new TiposolicitudModel();
@@ -125,8 +125,8 @@ class TiposSolicitudesBO extends Rest{
             $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
             $NombreSolicitud = $this->datosPeticion['NombreSolicitud'];
             $DescripcionSolicitud = $this->datosPeticion['DescripcionSolicitud'];
-            $FechaAlta = $this->datosPeticion['FechaAlta'];
-            $FechaBaja = $this->datosPeticion['FechaBaja'];
+            $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
+            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
 
             if (!empty($idTipoSolicitud)) {
                 
@@ -172,8 +172,8 @@ class TiposSolicitudesBO extends Rest{
             $respuesta['tipoSolicitud']['idTipoSolicitud'] = $fila->getIdTipoSolicitud();
             $respuesta['tipoSolicitud']['NombreSolicitud'] = $fila->getNombreSolicitud();
             $respuesta['tipoSolicitud']['DescripcionSolicitud'] = $fila->getDescripcionSolicitud();
-            $respuesta['tipoSolicitud']['FechaAlta'] = $fila->getFechaAlta();
-            $respuesta['tipoSolicitud']['FechaBaja'] = $fila->getFechaBaja();
+            $respuesta['tipoSolicitud']['FechaAlta'] = date("d-m-Y",strtotime($fila->getFechaAlta()));
+            $respuesta['tipoSolicitud']['FechaBaja'] = date("d-m-Y",strtotime($fila->getFechaBaja()));
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);

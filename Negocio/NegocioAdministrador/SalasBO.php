@@ -73,8 +73,11 @@ class SalasBO  extends Rest {
             $NombreSala = $this->datosPeticion['NombreSala'];
             $CapacidadSala = $this->datosPeticion['CapacidadSala'];
             $DescripcionSala = $this->datosPeticion['DescripcionSala'];
-            $FechaAlta = $this->datosPeticion['FechaAlta'];
-            $FechaBaja = $this->datosPeticion['FechaBaja'];
+            //$FechaAlta = ($this->datosPeticion['FechaAlta'];
+            //$FechaBaja = $this->datosPeticion['FechaBaja'];
+            
+            $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
+            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
 
                 $sala->setNombreSala($NombreSala);
                 $sala->setCapacidadSala($CapacidadSala);
@@ -96,7 +99,6 @@ class SalasBO  extends Rest {
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-
         if (isset($this->datosPeticion['idSala'])) {
 
             $this->con = ConexionBD::getInstance();
@@ -106,8 +108,11 @@ class SalasBO  extends Rest {
             $NombreSala = $this->datosPeticion['NombreSala'];
             $CapacidadSala = $this->datosPeticion['CapacidadSala'];
             $DescripcionSala = $this->datosPeticion['DescripcionSala'];
-            $FechaAlta = $this->datosPeticion['FechaAlta'];
-            $FechaBaja = $this->datosPeticion['FechaBaja'];
+//            $FechaAlta = $this->datosPeticion['FechaAlta'];
+//            $FechaBaja = $this->datosPeticion['FechaBaja'];
+            
+            $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
+            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
 
             if (!empty($idSala)) {
                 
@@ -199,8 +204,8 @@ class SalasBO  extends Rest {
                 $respuesta['sala']['NombreSala'] = $fila->getNombreSala();
                 $respuesta['sala']['CapacidadSala'] = $fila->getCapacidadSala();
                 $respuesta['sala']['DescripcionSala'] = $fila->getDescripcionSala();
-                $respuesta['sala']['FechaAlta'] = $fila->getFechaAlta();
-                $respuesta['sala']['FechaBaja'] = $fila->getFechaAlta();
+                $respuesta['sala']['FechaAlta'] = date("d-m-Y",strtotime($fila->getFechaAlta()));
+                $respuesta['sala']['FechaBaja'] = date("d-m-Y",  strtotime($fila->getFechaBaja()));
 
                 $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
             }

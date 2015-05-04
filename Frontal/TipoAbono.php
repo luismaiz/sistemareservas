@@ -10,8 +10,8 @@ function CargaTiposAbono($scope, $http) {
     
     $scope.obtenerTiposAbonos = function() {
                 
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbonosFiltro";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbonosFiltro";
+                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbonosFiltro";
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbonosFiltro";
                 
                 var Params = 'NombreAbono=' + document.getElementById("filtronombreabono").value + '&DescripcionAbono=' + document.getElementById("filtrodescripcionabono").value;    
                 
@@ -83,8 +83,8 @@ function CargaTiposAbono($scope, $http) {
                                                 <tr ng_repeat="tipoabono in tiposabonos">
                                                     <td>{{tipoabono.NombreAbono}}</td>
                                                     <td>{{tipoabono.DescripcionAbono}}</td>
-                                                    <td>{{tipoabono.FechaAlta}}</td>
-                                                    <td>{{tipoabono.FechaBaja}}</td>
+                                                    <td>{{tipoabono.FechaAlta |date:'dd-MM-yyyy'}}</td>
+                                                    <td>{{tipoabono.FechaBaja |date:'dd-MM-yyyy'}}</td>
                                                     <td class="center"><a href="FormularioDetalleAbono.php?idTipoAbono={{tipoabono.idTipoAbono}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
                                                 </tr>
                                             
