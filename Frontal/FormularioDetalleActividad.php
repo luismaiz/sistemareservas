@@ -24,7 +24,10 @@
                 Ajax.send(Params); // Enviamos los datos
                 
                 $scope.actividad = JSON.parse(Ajax.responseText).actividad;
-                //$scope.sala.CapacidadSala = parseInt($scope.sala.CapacidadSala);
+                
+                
+                $scope.actividad.EdadMinima = parseInt($scope.actividad.EdadMinima);
+                $scope.actividad.EdadMaxima = parseInt($scope.actividad.EdadMaxima);
         
             };
             if (typeof($location.search().idActividad) !== "undefined")
@@ -185,31 +188,28 @@
                     </div>
                     <div class="form-group col-md-12">
                     <label class="control-label col-md-2" >Intensidad Actividad</label>
-                    <input ng-model="actividad.IntensidadActividad" type="option" class="input-sm"  id="IntensidadActividad" name="IntensidadActividad" required/>
+
+                    <input class="input-sm color" ng-model="actividad.IntensidadActividad"   id="IntensidadActividad" name="IntensidadActividad" required>
                     <span style="color:red" ng-show="formulario.IntensidadActividad.$dirty && formulario.IntensidadActividad.$invalid">
                                 <span ng-show="formulario.IntensidadActividad.$error.required">Intensidad de actividad obligatorio.</span>
                     </span>
-                    
-                    <select class="input-sm">
-    <option id="option-1">Option 1</option>
-    <option id="option-2">Option 2</option>
-    <option id="option-3">Option 3</option>
-    <option id="option-4">Option 4</option>
-</select>
+                   
                     </div>    
                     <div class="form-group col-md-12">
                     <label class="control-label col-md-2" >Edad Mínima</label>
-                    <input ng-model="actividad.EdadMinima" type="number" class="input-sm" name="EdadMinima" id="EdadMinima"/>
-                    <span style="color:red" ng-show="formulario.EdadMinima.$dirty && formulario.EdadMinima.$invalid">
-                                <span ng-show="formulario.EdadMinima.$error.required">Edad mínima debe ser un valor numérico</span>
-                    </span>
+                    <input ng-model="actividad.EdadMinima" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="EdadMinima" id="EdadMinima" required ng-pattern="/^\d+$/"/>
+                    <span  class="col-md-4 col-sm-5 col-xs-12" style="color:red" ng-show="formulario.EdadMinima.$dirty && formulario.EdadMinima.$invalid">
+                                    <span ng-show="formulario.EdadMinima.$error.required">* Edad Mínima  obligatoria.</span>
+                                    <span ng-show="formulario.EdadMinima.$error.pattern">* Edad Mínima debe ser un valor numérico.</span>
+                                </span>
                     </div>    
                     <div class="form-group col-md-12">
                     <label class="control-label col-md-2" >Edad Máxima</label>
-                    <input ng-model="actividad.EdadMaxima" type="number" class="input-sm" name="EdadMaxima" id="EdadMaxima"/>
-                    <span style="color:red" ng-show="formulario.EdadMaxima.$dirty && formulario.EdadMaxima.$invalid">
-                                <span ng-show="formulario.EdadMaxima.$error.required">Edad máxima debe ser un valor numérico</span>
-                    </span>
+                    <input ng-model="actividad.EdadMaxima" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="EdadMaxima" id="EdadMaxima" required ng-pattern="/^\d+$/"/>
+                    <span  class="col-md-4 col-sm-5 col-xs-12" style="color:red" ng-show="formulario.EdadMaxima.$dirty && formulario.EdadMaxima.$invalid">
+                                    <span ng-show="formulario.EdadMaxima.$error.required">* Edad Máxima  obligatoria.</span>
+                                    <span ng-show="formulario.EdadMaxima.$error.pattern">* Edad Máxima debe ser un valor numérico.</span>
+                                </span>
                     </div>
                     <div class="form-group col-md-12">
                     <label class="control-label col-md-2" >Grupo</label>
@@ -233,7 +233,7 @@
                     </div>
                     
                     <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Actividades.php' " />
-                    <input class="box btn-primary" type="button" value="Aceptar" ng-click="guardarActividad()"/>
+                    <input class="box btn-primary" type="button" value="Aceptar" ng-click="guardarActividad()" ng-disabled="formulario.$invalid"/>
                 </form>
             </div>
         </div>

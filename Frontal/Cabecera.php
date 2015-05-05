@@ -27,6 +27,7 @@ include 'config.php'
         <link href='Utilidades/bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css' rel='stylesheet'>
         <link href='Utilidades/css/jquery.noty.css' rel='stylesheet'>
         <link href='Utilidades/css/noty_theme_default.css' rel='stylesheet'>
+        
         <link href='Utilidades/css/elfinder.min.css' rel='stylesheet'>
         <link href='Utilidades/css/elfinder.theme.css' rel='stylesheet'>
         <link href='Utilidades/css/jquery.iphone.toggle.css' rel='stylesheet'>
@@ -41,7 +42,7 @@ include 'config.php'
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
   <link rel="stylesheet" href="/resources/demos/style.css">
-        
+        <script src="Utilidades/js/jscolor/jscolor.js" type="text/javascript"></script>
         <!--<script src="Utilidades/bower_components/jquery/jquery.min.js" type="text/javascript"></script>-->
         <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>

@@ -64,14 +64,19 @@
                                 <div class="row">
                                     <div class="form-group">
                                         <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="control-label" >Actividad</label>
-                                                <input type="text" class="input-sm"  id="filtroactividad">
-                                                <label class="control-label" >Intensidad</label>
-                                                <input type="text" class="input-sm"  id="filtrointensidad">
-                                                <label class="control-label" >Grupo</label>
-                                                <input type="text" class="input-sm"  id="filtrogrupo">
+                                            <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Actividad</label>
+                                                <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12"  id="filtroactividad">
+                                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Intensidad</label>
+                                                <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12"  id="filtrointensidad">
+                                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Grupo</label>
+                                                <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12"  id="filtrogrupo">
+                                            </div>
+                                                <div class="form-group col-md-12">
                                                 <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerActividades();"/>
+                                                </div>
+                                                
+                                            
                                                  <div class="box-content" id="actividades">
                                         <table class="table table-striped table-bordered responsive">
                                             <thead>
@@ -87,14 +92,20 @@
                                                 <tr ng_repeat="actividad in actividades">
                                                     <td>{{actividad.NombreActividad}}</td>
                                                     <td>{{actividad.Descripcion}}</td>
-                                                    <td>{{actividad.IntensidadActividad}}</td>
+                                                    <td >
+                                                        <div ng-model="actividad.IntensidadActividad" ng-style="{'color' : actividad.IntensidadActividad}"></div>
+                                                        
+                                                        
+                                                    </td>
                                                     <td>{{actividad.EdadMinima}}</td>
                                                     <td>{{actividad.EdadMaxima}}</td>
                                                     <td class="center"><a href="FormularioDetalleActividad.php?idActividad={{actividad.idActividad}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
                                                 </tr>
                                             </thead>
                                         </table>
+                                                     <div class="form-group col-md-12">
                                                      <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleActividad.php' "/>
+                                                     </div>
                                     </div>
                                             </div>
                                         </div>
@@ -104,8 +115,7 @@
                             </div>
                         </div>
             </div>
-                       
-        </div>
-</div>
+
+      
 
 <?php require('Pie.php'); ?>

@@ -197,7 +197,7 @@ class ActividadesBO extends Rest {
             $respuesta['estado'] = 'correcto';
             $respuesta['actividad']['idActividad'] = $fila->getIdActividad();
             $respuesta['actividad']['NombreActividad'] = $fila->getNombreActividad();
-            $respuesta['actividad']['Intensidad'] = $fila->getIntensidadActividad();
+            $respuesta['actividad']['IntensidadActividad'] = $fila->getIntensidadActividad();
             $respuesta['actividad']['Edad_Minima'] = $fila->getEdadMinima();
             $respuesta['actividad']['Edad_Maxima'] = $fila->getEdadMaxima();
             $respuesta['actividad']['Grupo'] = $fila->getGrupo();

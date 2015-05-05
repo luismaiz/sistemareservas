@@ -60,11 +60,13 @@ function CargaTiposSolicitudes($scope, $http) {
                      <div class="row">
                         <div class="form-group">
                             <div class="col-md-12">
-                                <div class="form-group">
-                                       <label class="control-label" >Nombre Solicitud</label>
-                                        <input type="text" class="input-sm"  id="filtronombresolicitud">	
-                                        <label class="control-label" >Descripcion Solicitud</label>
-                                        <input type="text" class="input-sm"  id="filtrodescripcionsolicitud">
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                       <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Nombre Solicitud</label>
+                                        <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12"  id="filtronombresolicitud">	
+                                        <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Descripción Solicitud</label>
+                                        <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12"  id="filtrodescripcionsolicitud">
+                                </div>
+                                <div class="form-group col-md-12">
                                         <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerTiposSolicitudes()"/></div>
                                        
                                 <div class="box-content" id="tipossolicitudes">
@@ -90,8 +92,9 @@ function CargaTiposSolicitudes($scope, $http) {
                                             
                                         </table>
                                         </div>
-                               
+                                <div class="form-group col-md-12">
                                 <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleTipoSolicitud.php' "/>
+                                </div>
                             </div>
                             </div>
                         </div>

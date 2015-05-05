@@ -134,28 +134,28 @@
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label" >Localizador</label>
-                                <input type="text" class="input-sm" id="filtroLocalizador" name="filtroLocalizador" value="">	
-                                <label class="control-label" >Tipo Solicitud</label>
-                                <select  id="filtroTipoSolicitud" class="input-sm" >	
+                            <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Localizador</label>
+                                <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" id="filtroLocalizador" name="filtroLocalizador" value="">	
+                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Tipo Solicitud</label>
+                                <select  id="filtroTipoSolicitud" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
                                     <option ng_repeat="tiposolicitud in tiposSolicitudes" value="{{tiposolicitud.idTipoSolicitud}}">{{tiposolicitud.NombreSolicitud}}</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-12">
-                                <label class="control-label">Nombre</label>
-                                <input type="text" class="input-sm" id="filtroNombre" name="filtroNombre" />
-                                <label class="control-label" >Apellidos</label>
-                                <input type="text" class="input-sm" id="filtroApellidos" name="filtroApellidos"/>
-                                <label class="control-label" >DNI</label>
-                                <input type="text" class="input-sm" id="filtroDni" name="filtroDni"/>
+                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12">Nombre</label>
+                                <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" id="filtroNombre" name="filtroNombre" />
+                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Apellidos</label>
+                                <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" id="filtroApellidos" name="filtroApellidos"/>
+                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >DNI</label>
+                                <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" id="filtroDni" name="filtroDni"/>
                             </div>
                             <div class="form-group col-md-12">
                                 
-                                <label class="control-label" >eMail</label>
-                                <input type="email" class="input-sm" required id="filtroEmail" name="filtroEmail"/>
-                                <label class="control-label" >Fecha Solicitud</label>
-                                <input type="datetime-local" class="input-sm" id="filtroFechaSolicitud" name="filtroFechaSolicitud"/>
+                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >eMail</label>
+                                <input type="email" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" required id="filtroEmail" name="filtroEmail"/>
+                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Fecha Solicitud</label>
+                                <input type="datetime-local" class="input-sm " id="filtroFechaSolicitud" name="filtroFechaSolicitud"/>
                             </div>
                             <div class="form-group col-md-12">
                                 <input class="box btn-primary alignright" type="submit" value="Buscar" ng_click="obtenerReservas()"/>

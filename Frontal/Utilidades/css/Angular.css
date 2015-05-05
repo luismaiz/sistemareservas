@@ -39,19 +39,3 @@ input.ng-dirty.ng-invalid { border:2px solid Red; }
 input .ng-dirty.ng-valid ~ span.ok { color:green; display:inline; }
 input .ng-dirty.ng-invalid ~ span.ko { color:red; display:inline; }
 
-#option-1 {
-    background-color:  red;
- 
-}
-
-#option-2 {
-    background-color: green;
-}
-
-#option-3 {
-    background-color: yellow;
-}
-
-#option-4 {
-    background-color: blue;
-}
