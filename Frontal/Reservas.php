@@ -15,7 +15,7 @@
       
         $scope.obtenerReservasSolicitudesPendientes = function() {
                 
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesPendientes";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesPendientes');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesPendientes";
                 
                 var Params = 'TipoSolicitud=1';    
@@ -29,13 +29,13 @@
             };
             if (typeof($location.search().solicitudes) !== "undefined")
             {
-                alert('hola');
+                
                 $scope.obtenerReservasSolicitudesPendientes();
             }
             
         $scope.obtenerAbonosPendientes = function() {
                 
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes";
                 
                 var Params = 'TipoSolicitud=3';    
@@ -50,14 +50,14 @@
             };
             if (typeof($location.search().abonos) !== "undefined")
             {
-                alert('hola');
+                
                 $scope.obtenerAbonosPendientes();
             }
             
             
         $scope.obtenerTipoSolicitud = function(){
         
-        var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitud";
+        var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitud');
         //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitud";		
         
         var Params = '';
@@ -75,7 +75,7 @@
                      
         $scope.obtenerReservas = function() {
             
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerReservasFiltro";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerReservasFiltro');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerReservasFiltro";
                 
                 var Params =  'Localizador=' + document.getElementById("filtroLocalizador").value + 
@@ -134,28 +134,28 @@
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="form-group col-md-12">
-                                <label class="control-label col-md-2 col-xs-6" >Localizador</label>
-                                <input type="text" class="input-sm col-md-2 col-xs-6" id="filtroLocalizador" name="filtroLocalizador" value="">	
-                                <label class="control-label col-md-2 col-xs-6" >Tipo Solicitud</label>
-                                <select  id="filtroTipoSolicitud" class="input-sm col-md-2 col-xs-6" >	
+                            <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Localizador</label>
+                                <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" id="filtroLocalizador" name="filtroLocalizador" value="">	
+                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Tipo Solicitud</label>
+                                <select  id="filtroTipoSolicitud" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
                                     <option ng_repeat="tiposolicitud in tiposSolicitudes" value="{{tiposolicitud.idTipoSolicitud}}">{{tiposolicitud.NombreSolicitud}}</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-12">
-                                <label class="control-label col-md-2 col-sm-3 col-xs-6">Nombre</label>
-                                <input type="text" class="input-sm col-md-2 col-sm-4 col-xs-6" id="filtroNombre" name="filtroNombre" />
-                                <label class="control-label col-md-2 col-sm-3 col-xs-6" >Apellidos</label>
-                                <input type="text" class="input-sm col-md-2 col-sm-4 col-xs-6" id="filtroApellidos" name="filtroApellidos"/>
-                                <label class="control-label col-md-2 col-sm-3 col-xs-6" >DNI</label>
-                                <input type="text" class="input-sm col-md-2 col-sm-4 col-xs-6" id="filtroDni" name="filtroDni"/>
+                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12">Nombre</label>
+                                <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" id="filtroNombre" name="filtroNombre" />
+                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Apellidos</label>
+                                <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" id="filtroApellidos" name="filtroApellidos"/>
+                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >DNI</label>
+                                <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" id="filtroDni" name="filtroDni"/>
                             </div>
                             <div class="form-group col-md-12">
                                 
-                                <label class="control-label col-md-1 col-xs-6" >eMail</label>
-                                <input type="email" class="input-sm col-md-2 col-xs-6" required id="filtroEmail" name="filtroEmail"/>
-                                <label class="control-label col-md-2 col-xs-6" >Fecha Solicitud</label>
-                                <input type="datetime-local" class="input-sm col-md-2 col-xs-6" id="filtroFechaSolicitud" name="filtroFechaSolicitud"/>
+                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >eMail</label>
+                                <input type="email" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" required id="filtroEmail" name="filtroEmail"/>
+                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Fecha Solicitud</label>
+                                <input type="datetime-local" class="input-sm " id="filtroFechaSolicitud" name="filtroFechaSolicitud"/>
                             </div>
                             <div class="form-group col-md-12">
                                 <input class="box btn-primary alignright" type="submit" value="Buscar" ng_click="obtenerReservas()"/>
@@ -175,7 +175,7 @@
                                                     <td>{{solicitud.Nombre}}</td>
                                                     <td>{{solicitud.Apellidos}}</td>
                                                     <td>{{solicitud.Localizador}}</td>
-                                                    <td>{{solicitud.FechaSolicitud}}</td>
+                                                    <td>{{solicitud.FechaSolicitud |date:'dd-MM-yyyy'}}</td>
                                                     <td class="center">
                                                         <a target="_self" href="FormularioDetalleSolicitudClasesDirigidas.php?idSolicitud={{solicitud.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
                                                         <a target="_self" href="FormularioDetalleSolicitudClasesDirigidas.php" class="btn btn-danger">Sin validar</a>
@@ -185,7 +185,7 @@
                                                     <td>{{abono.Nombre}}</td>
                                                     <td>{{abono.Apellidos}}</td>
                                                     <td>{{abono.Localizador}}</td>
-                                                    <td>{{abono.FechaSolicitud}}</td>
+                                                    <td>{{abono.FechaSolicitud |date:'dd-MM-yyyy'}}</td>
                                                     <td class="center">
                                                         <a target="_self" href="FormularioDetalleSolicitudAbonoDiario.php?idSolicitud={{abono.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
                                                         <a target="_self" href="FormularioDetalleSolicitudAbonoDiario.php" class="btn btn-danger">Sin validar</a>

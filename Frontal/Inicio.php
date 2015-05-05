@@ -1,76 +1,73 @@
 <?php require('Cabecera.php'); ?>
 <script>
-    var Ajax = new AjaxObj();
-    var app = angular.module('BusquedaSolicitudes', []);
-
-    function CargaSolicitudes($scope, $http) {
-
-        $scope.solicitudes = [];
-        $scope.abonos = [];
-        $scope.obtenersolicitudes = function () {
-
-            var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesPendientes";
-            //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesPendientes";
-            var Params = 'TipoSolicitud=1';
-
-            Ajax.open("POST", Url, false);
-            Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            Ajax.send(Params); // Enviamos los datos
-
-
-
-            $scope.estado = JSON.parse(Ajax.responseText).estado;
-
-            $scope.numerosolicitudes = parseInt(JSON.parse(Ajax.responseText).numerosolicitudes);
-
-            if ($scope.estado === 'correcto')
-            {
-                $scope.solicitudes = JSON.parse(Ajax.responseText).solicitudes;
-                //document.getElementById('divSinResultados').style.display = 'none';
-            }
-            else
-            {
-                $scope.solicitudes = [];
-                //document.getElementById('divSinResultados').style.display = 'block';
-            }
-
-        };
-
-        $scope.obtenersolicitudes();
-
-        $scope.obtenerabonos = function () {
-
-            var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes";
-            //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes";
-            var Params = 'TipoSolicitud=3';
-
-            Ajax.open("POST", Url, false);
-            Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            Ajax.send(Params); // Enviamos los datos
-
-            //alert(Ajax.responseText);
-
-            $scope.estado = JSON.parse(Ajax.responseText).estado;
-
-            $scope.numeroabonos = parseInt(JSON.parse(Ajax.responseText).numeroabonos);
-
-            if ($scope.estado === 'correcto')
-            {
-                $scope.abonos = JSON.parse(Ajax.responseText).abonos;
-                //document.getElementById('divSinResultados').style.display = 'none';
-            }
-            else
-            {
-                $scope.abonos = [];
-                //document.getElementById('divSinResultados').style.display = 'block';
-            }
-
-        };
-        $scope.obtenerabonos();
-    }
-</script>
-
-
+            var Ajax = new AjaxObj();
+            var app = angular.module('BusquedaSolicitudes', []);
+            
+            function CargaSolicitudes($scope, $http) {
+            
+            $scope.solicitudes = [];
+            $scope.abonos = [];
+            $scope.obtenersolicitudes = function() {
+                
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesPendientes');
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesPendientes";
+                var Params = 'TipoSolicitud=1';    
+                
+	        Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                $scope.numerosolicitudes = parseInt(JSON.parse(Ajax.responseText).numerosolicitudes);
+                
+                if ($scope.estado === 'correcto')
+                {
+                    $scope.solicitudes = JSON.parse(Ajax.responseText).solicitudes;
+                    //document.getElementById('divSinResultados').style.display = 'none';
+                }
+                else
+                {
+                    $scope.solicitudes = [];
+                    //document.getElementById('divSinResultados').style.display = 'block';
+                }
+        
+            };
+            
+            $scope.obtenersolicitudes();
+            
+            $scope.obtenerabonos = function() {
+                
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes');
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes";
+                var Params = 'TipoSolicitud=3';    
+                
+	        Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                
+                //alert(Ajax.responseText);
+	
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                $scope.numeroabonos = parseInt(JSON.parse(Ajax.responseText).numeroabonos);
+                
+                if ($scope.estado === 'correcto')
+                {
+                    $scope.abonos = JSON.parse(Ajax.responseText).abonos;
+                    //document.getElementById('divSinResultados').style.display = 'none';
+                }
+                else
+                {
+                    $scope.abonos = [];
+                    //document.getElementById('divSinResultados').style.display = 'block';
+                }
+        
+            };
+           $scope.obtenerabonos ();
+           
+ 
+}
+        </script>
 <div>
     <ul class="breadcrumb">
         <li>
@@ -141,7 +138,7 @@
                     </li>
                 </ul>
             </div>
-            <div id="piechart" style="height:300px"></div>
+            <div id="piechart" style="height:300px" data-bind="data"></div>
         </div>
     </div>
     <!--/span-->

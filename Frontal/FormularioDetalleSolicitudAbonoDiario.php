@@ -14,7 +14,7 @@
             $scope.msg = [];
             $scope.obtenerSolicitudAbonoDiario = function(idSolicitud) {
                 
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudAbonoDiario";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudAbonoDiario');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSala";
                 var Params = 'idSolicitud='+ idSolicitud;
 
@@ -27,7 +27,7 @@
                 if ($scope.abonodiario.Gestionado=== '0')
                 {
                     document.getElementById('divPendiente').style.display = 'block';
-                    document.getElementById('validacion').style.display = 'block';
+                    document.getElementById('validacion').style.display = 'inline';
                 }
         
             };
@@ -43,7 +43,7 @@
             $scope.actualizarSolicitud = function(){
                                    
              
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=actualizarSolicitud";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=actualizarSolicitud');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala";
                 var Params = '';
 
@@ -67,16 +67,16 @@
             
             $scope.validarSolicitud = function(){
                                    
-             alert('vamos');
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=validarSolicitud";
+             
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=validarSolicitud');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala";
                 var Params = 'idSolicitud='+ $location.search().idSolicitud;
                
                 Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-             alert(Ajax.responseText);
             
+            alert(Ajax.responseText);
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')
@@ -91,6 +91,33 @@
             
             
         }
+        
+            $.datepicker.regional['es'] = {
+            closeText: 'Cerrar',
+            prevText: '<Ant',
+            nextText: 'Sig>',
+            currentText: 'Hoy',
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+            dayNamesMin: ['Do','Lun','Ma','Mi','Ju','Vi','Sá'],
+            weekHeader: 'Sm',
+            dateFormat:'dd-mm-yy',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: ''
+            };
+ $.datepicker.setDefaults($.datepicker.regional['es']);
+            
+            $(function() {
+                $( "#FechaSolicitud" ).datepicker({
+                    dateFormat:'dd-mm-yy'
+                });
+            });
+            
+            
                        
         </script>
        
@@ -139,7 +166,11 @@
                                 </div>
                                 <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Fecha Solicitud</label>
-                                <input ng-model="abonodiario.FechaSolicitud" type="date" class="input-sm" name="FechaSolicitud" id="FechaSolicitud">
+                                <input ng-model="abonodiario.FechaSolicitud" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="FechaSolicitud" id="FechaSolicitud" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required>
+                                <span class="col-md-6 col-sm-5 col-XS-12" style="color:red" ng-show="formulario.FechaSolicitud.$dirty && formulario.FechaSolicitud.$invalid">
+                                     <span ng-show="formulario.FechaSolicitud.$error.pattern">* Formato de fecha no valido.</span>
+                                    <span ng-show="formulario.FechaSolicitud.$error.required">* Fecha obligatoria.</span>
+                                </span>
                                 </div>
                                 <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Nombre</label>
@@ -167,21 +198,19 @@
                                 <label class="control-label col-md-2" >Dni</label>
                                 <input ng-model="abonodiario.DNI" type="text" class="input-sm" name="dni" id="Dni" required ng-pattern='/^\d{7,8}(-?[a-z])?$/i'>
                                 <span style="color:red" ng-show="formulario.dni.$dirty && formulario.dni.$invalid">
+                                    <span ng-show="formulario.dni.$error.required">DNI obligatorio.</span>
                                 <span ng-show="formulario.dni.$error.pattern">Formato de DNI no válido 12345678-A</span>
                                 </span>
                                 </div>
-                                <div class="form-group col-md-12">
+                                
                                 <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Reservas.php' " />
                                 <input style='display:none;' id="validacion" class="box btn-primary" type="submit" value="Validar Solicitud" ng-click="validarSolicitud();" ng-disabled="formulario.$invalid" />
-                                </div>
+                                
                              </form>
                            </div>                                         
                         </div>
                         </div>
                 </div>
     </div>
-                       
-
-
         
 <?php require('Pie.php'); ?>

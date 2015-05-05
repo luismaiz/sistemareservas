@@ -14,7 +14,7 @@
             $scope.msg = [];
             $scope.obtenerSolicitudAbonoMensual = function(idSolicitud) {
                 
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudAbonoMensual";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudAbonoMensual');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSala";
                 var Params = 'idSolicitud='+ idSolicitud;
 
@@ -22,8 +22,6 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-                alert(Ajax.responseText);
-                               
                 $scope.abonomensual = JSON.parse(Ajax.responseText).abonomensual;
         
             };
@@ -39,7 +37,7 @@
             $scope.actualizarSolicitud = function(){
                                    
              
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=actualizarSolicitud";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=actualizarSolicitud');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala";
                 var Params = '';
 
@@ -63,15 +61,14 @@
             
             $scope.validarSolicitud = function(){
                                    
-             alert('vamos');
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=validarSolicitud";
+             
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=validarSolicitud');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala";
                 var Params = 'idSolicitud='+ $location.search().idSolicitud;
                
                 Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-             alert(Ajax.responseText);
             
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
@@ -88,7 +85,7 @@
             
              $scope.obtenerTipoAbono = function(){
         
-        var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbono";		
+        var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbono');		
         //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbono";		
         
         var Params = '';
@@ -105,7 +102,7 @@
         
         $scope.obtenerTipoTarifa = function(){
         
-        var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifa";		
+        var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifa');		
         //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifa";		
         
         var Params = '';
@@ -121,6 +118,33 @@
             
             
         }
+        
+            $.datepicker.regional['es'] = {
+            closeText: 'Cerrar',
+            prevText: '<Ant',
+            nextText: 'Sig>',
+            currentText: 'Hoy',
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+            dayNamesMin: ['Do','Lun','Ma','Mi','Ju','Vi','Sá'],
+            weekHeader: 'Sm',
+            dateFormat:'dd-mm-yy',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: ''
+            };
+ $.datepicker.setDefaults($.datepicker.regional['es']);
+            
+            $(function() {
+                $( "#FechaSolicitud" ).datepicker({
+                    dateFormat:'dd-mm-yy'
+                });
+            });
+            
+            
                        
         </script>
        
@@ -166,7 +190,12 @@
                         <h3></h3>
                         <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Fecha Solicitud</label>
-                                <input ng-model="abonomensual.FechaSolicitud" type="date" class="input-sm" name="FechaSolicitud" id="FechaSolicitud">
+                                <input ng-model="abonomensual.FechaSolicitud" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="FechaSolicitud" id="FechaSolicitud" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required>
+                                <span class="col-md-6 col-sm-5 col-XS-12" style="color:red" ng-show="formulario.FechaSolicitud.$dirty && formulario.FechaSolicitud.$invalid">
+                                     <span ng-show="formulario.FechaSolicitud.$error.pattern">* Formato de fecha no valido.</span>
+                                    <span ng-show="formulario.FechaSolicitud.$error.required">* Fecha obligatoria.</span>
+                                </span>
+                                
                                 </div>
                         <div class="form-group col-md-12">
                         <label class="control-label col-md-2" >Tipo Abono</label>

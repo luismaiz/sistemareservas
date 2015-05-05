@@ -9,7 +9,7 @@
     <meta name="author" content="Muhammad Usman">
 
     <!-- The styles -->
-    <link id="bs-css" href="Utilidades/css/bootstrap-cerulean.min.css" rel="stylesheet">
+    <!--<link id="bs-css" href="Utilidades/css/bootstrap-cerulean.min.css" rel="stylesheet">-->
 
     <link href="Utilidades/css/charisma-app.css" rel="stylesheet">
     <link href='Utilidades/bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>
@@ -48,10 +48,10 @@
     <!-- text fonts -->
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
     <!--<link rel="stylesheet" href="Utilidades/fonts/fonts.googleapis.com" />-->
-    
+
 
     <!-- ace styles -->
-    <!--<link rel="stylesheet" href="Utilidades/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />-->
+    <link rel="stylesheet" href="Utilidades/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
 
     <!--[if lte IE 9]>
             <link rel="stylesheet" href="dist/css/ace-part2.min.css" class="ace-main-stylesheet" />
@@ -198,7 +198,10 @@
                     right: 'agendaWeek,month,agendaDay'
                 },
                 eventLimit: true, // allow "more" link when too many events
-                //businessHours: true, // display business hours
+                defaultView: 'agendaWeek',
+                editable: true,
+                droppable: true, // this allows things to be dropped onto the calendar !!!
+                businessHours: true, // display business hours
                 businessHours:
                     {
                     start: '09:00',
@@ -257,8 +260,8 @@
                                     //end: $(this).attr('end') // will be parsed
                                     //hay que obtener el nombre de la actividad
                                         
-                                    title: doc.clases[i].idActividad + " " + NombreActividad,
-                                    //idActividad: doc.clases[i].idActividad,
+                                    title: NombreActividad,
+                                    idClase: doc.clases[i].idClase,
                                     //start: new Date(y, m, 1, 12, 10),
                                     //end: new Date(y, m, 1, 12, 15),
                                     start: new Date(y, m, doc.clases[i].Dia, (doc.clases[i].HoraInicio).substring(0,2), (doc.clases[i].HoraInicio).substring(3,5)),
@@ -343,65 +346,49 @@
             }*/
                 //]
                 ,
-                editable: true,
-                droppable: true, // this allows things to be dropped onto the calendar !!!
-                eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc) {
-                    alert(
-                    event.title + " was moved " +
-                        dayDelta + " days and " +
-                        minuteDelta + " minutes."
-                );
-                },
+                /*eventRender: function (event, element, view) {
+                        alert("eventRender");
+                         var $idClase = $(this).attr('idClase');
+                         alert("idClase "+ $idClase);                         
+                    },*/
               
                 drop: function(event, delta, revertFunc,date, allDay) { // this function is called when something is dropped
                     alert("borrado");
 		
                     // retrieve the dropped element's stored Event Object
+                    var $color = $(this).attr('color');
+                    alert("idActividad "+ $idActividad);
+                        
                     var originalEventObject = $(this).data('eventObject');
                     alert("originalEventObject " + originalEventObject);
-                    var $extraEventClass = $(this).attr('data-class');
+                    var $extraEventClass = $color//;$(this).attr('data-class');
                     alert("$extraEventClass " + $extraEventClass);
+                    var $idActividad = $(this).attr('idActividad');
+                    alert("idActividad "+ $idActividad);
+                        
+                        
 			
 			
                     // we need to copy it, so that multiple events don't have a reference to the same object
                     var copiedEventObject = $.extend({}, originalEventObject);
                     alert("copiedEventObject " + copiedEventObject);
+                        
+                    var mes = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+                    var semana = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
 			
                     // assign it the date that was reported
-                    copiedEventObject.start = date;
+                    //Wed May 27 2015 02:00:00 GMT+0200 (Hora de verano romance)
+                    copiedEventObject.start =  semana[(event._d).getDay()] + " " + mes[event._d.getMonth()] + " " + event._d.getUTCDate() + " " + event._d.getUTCFullYear() + " " + (event._d).getUTCHours() + ":" + (event._d).getUTCMinutes() + ":" + (event._d).getUTCSeconds();
                     copiedEventObject.allDay = allDay;
                     if($extraEventClass) copiedEventObject['className'] = [$extraEventClass];
                         
-                    alert(date);
+                    alert("fecha: " + originalEventObject._d);
                     //var json = {"idActividad": "1", "idSala": "3", "HoraInicio": "10", "HoraFin":"11", "Ocupacion": "20", "Dia": "16", "Publicada": "1"};
-                    var json = { idActividad:1, idSala:3, HoraInicio:10, HoraFin:11, Ocupacion:20, Dia:16, Publicada:1 };
+                    var $HoraInicio = (event._d).getUTCHours() + ":" + (event._d).getUTCMinutes() + ":" + (event._d).getUTCSeconds();
+                    var $HoraFin = (event._d).getHours() + ":" + (event._d).getMinutes() + ":" + (event._d).getSeconds();
+                    var json = { idActividad:$idActividad, idSala:3, HoraInicio:$HoraInicio, HoraFin:$HoraFin, Ocupacion:20, Dia:(event._d).getDate(), Publicada:1 };
                         
-                    alert(jQuery.param(json));
-                        
-                    $.ajax({
-                        type: "POST",
-                        url: "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=crearClase",                            
-                        data: (jQuery.param(json)),//JSON.stringify(json),
-                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
-                        dataType: "json",
-                        
-                        success: function(data, textStatus) {
-                            alert(data);
-                            alert(textStatus);
-                            alert(data.success);
-                            alert(data.message);
-                            alert("actividad guardada");
-                        },
-                        error: function( jqXHR, textStatus, errorThrown ) {
-                            alert(jqXHR);
-                            alert(jqXHR.responseText);
-                            alert(jqXHR.status);
-                            alert(jqXHR.fail);
-                            alert(jqXHR.message);
-                            alert(textStatus);
-                            alert(errorThrown);
-                            alert("actividad no guardada");
-                        }});
+                    alert(jQuery.param(json));                       
 			
                     // render the event on the calendar
                     // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
@@ -414,15 +401,44 @@
                         $.ajax({
                             type: "DELETE",
                             url: "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=borrarClase",
-                            data: JSON.stringify({"idClase": "1"}),
+                            data: jQuery.param(json),//JSON.stringify({"idClase": "1"}),
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
 
                             success: function(data, textStatus) {
                                 alert("actividad guardada");
+                            },
+                            error: function( jqXHR, textStatus, errorThrown ) {
+                                    
                             }
                              
                         });
+                    }
+                    else{
+                        $.ajax({
+                            type: "POST",
+                            url: "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=crearClase",                            
+                            data: (jQuery.param(json)),//JSON.stringify(json),
+                            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                            dataType: "json",
+                        
+                            success: function(data, textStatus) {
+                                alert(data);
+                                alert(textStatus);
+                                alert(data.success);
+                                alert(data.message);
+                                alert("actividad guardada");
+                            },
+                            error: function( jqXHR, textStatus, errorThrown ) {
+                                alert(jqXHR);
+                                alert(jqXHR.responseText);
+                                alert(jqXHR.status);
+                                alert(jqXHR.fail);
+                                alert(jqXHR.message);
+                                alert(textStatus);
+                                alert(errorThrown);
+                                alert("actividad no guardada");
+                            }});
                     }
 			
                 }
@@ -452,151 +468,196 @@
                     calendar.fullCalendar('unselect');
                 }
                 ,
-                eventClick: function(calEvent, jsEvent, view) {
+                eventClick: function(calEvent, jsEvent, view, event, delta, revertFunc,date, allDay) {
                     alert("actualizar");
                     //display a modal
                     var modal = 
                         '<div class="modal fade">\
-              <div class="modal-dialog">\
-               <div class="modal-content">\
-                     <div class="modal-body">\
-                       <button type="button" class="close" data-dismiss="modal" style="margin-top:-10px;">&times;</button>\
-                       <form class="no-margin">\
-                              <label>Change event name &nbsp;</label>\
-                              <input class="middle" autocomplete="off" type="text" value="' + calEvent.title + '" />\
-                             <button type="submit" class="btn btn-sm btn-success"><i class="ace-icon fa fa-check"></i> Save</button>\
-                       </form>\
-                     </div>\
-                     <div class="modal-footer">\
-                            <button type="button" class="btn btn-sm btn-danger" data-action="delete"><i class="ace-icon fa fa-trash-o"></i> Delete Event</button>\
-                            <button type="button" class="btn btn-sm" data-dismiss="modal"><i class="ace-icon fa fa-times"></i> Cancel</button>\
-                     </div>\
-              </div>\
-             </div>\
-            </div>';
+                  <div class="modal-dialog">\
+                   <div class="modal-content">\
+                         <div class="modal-body">\
+                           <button type="button" class="close" data-dismiss="modal" style="margin-top:-10px;">&times;</button>\
+                           <form class="no-margin">\
+                                  <label>Nombre Actividad&nbsp;</label>\
+                                  <input class="middle" autocomplete="off" disable="false" type="text" value="' + calEvent.title + '" />\
+                                  <br><br><label>Fecha Inicio&nbsp;</label>\
+                                  <input type=date class="middle" id="fechaInicio" name="fechaInicio" value="' + calEvent._start._d.toISOString() + '" />\
+                                  <input type=time min=8:00 max=21:00 step=900 id="horaInicio" name="horaInicio" value="' + "0"+calEvent._start._d.toLocaleTimeString() + '"/>\
+                                  <br><br><label>Fecha Fin&nbsp;</label>\
+                                  <input class="middle" autocomplete="off" type="date" id="fechaFin" name="fechaFin" value="' + calEvent._end._d.toISOString() + '" />\
+                                  <input type=time min=8:00 max=21:00 step=900 id="horaFin" name="horaFin" value="' + calEvent._end._d.toLocaleTimeString() + '"/>\
+                                  <label>Día Completo </label>\
+                                  <input type="checkbox" id="diaCompleto" name="diaCompleto" onClick="javascript:diaCompleto();"/>\
+                           </form>\
+                         </div>\
+                         <div class="modal-footer">\
+                                <button type="submit" class="btn btn-sm btn-success"><i class="ace-icon fa fa-check"></i> Save</button>\
+                                <button type="button" class="btn btn-sm btn-danger" data-action="delete"><i class="ace-icon fa fa-trash-o"></i> Delete Event</button>\
+                                <button type="button" class="btn btn-sm" data-dismiss="modal"><i class="ace-icon fa fa-times"></i> Cancel</button>\
+                         </div>\
+                  </div>\
+                 </div>\
+                </div>';
+                                                  
+                                                  function diaCompleto(){
+                                                      $("#fechaInicio").disabled = false
+                                                  }
 		
 		
-                                              var modal = $(modal).appendTo('body');
-                                              modal.find('form').on('submit', function(ev){
-                                                  ev.preventDefault();
+                                                  var modal = $(modal).appendTo('body');
+                                                  modal.find('form').on('submit', function(ev){
+                                                      ev.preventDefault();
 
-                                                  calEvent.title = $(this).find("input[type=text]").val();
-                                                  calendar.fullCalendar('updateEvent', calEvent);
-                                                  modal.modal("hide");
-                                              });
-                                              modal.find('button[data-action=delete]').on('click', function() {
-                                                  calendar.fullCalendar('removeEvents' , function(ev){
-                                                      return (ev._id == calEvent._id);
-                                                  })
-                                                  modal.modal("hide");
-                                              });
+                                                      calEvent.title = $(this).find("input[type=text]").val();
+                                                      calendar.fullCalendar('updateEvent', calEvent);
+                                                      modal.modal("hide");
+                                                  });
+                                                  modal.find('button[data-action=delete]').on('click', function(calEvent, jsEvent, view, event, delta, revertFunc,date, allDay) {
+                                                      calendar.fullCalendar('removeEvents' , function(calEvent, jsEvent, view, event, delta, revertFunc,date, allDay){
+                                                          // is the "remove after drop" checkbox checked?                        
+                        
+                                                            alert("removeEvent:");
+                                                            if ($('#drop-remove').is(':checked')) {
+                                                            var $idClase = $(this).attr('idClase');
+                                                            alert("idClase "+ $idClase);
+                                                            alert(ad);
+
+                                                            var json = { idClase:event.idClase };
+
+                                                            alert(jQuery.param(json));		
+
+
+                                                            $.ajax({
+                                                                type: "DELETE",
+                                                                url: "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=borrarClase",
+                                                                data: jQuery.param(json),//JSON.stringify({"idClase": "1"}),
+                                                                contentType: "application/json; charset=utf-8",
+                                                                dataType: "json",
+
+                                                                success: function(data, textStatus) {
+                                                                    alert("actividad borrada");
+                                                                    // if so, remove the element from the "Draggable Events" list
+                                                                    $(this).remove();
+                                                                },
+                                                                error: function( jqXHR, textStatus, errorThrown ) {
+
+                                                                }
+
+                                                            });
+                                                            }
+                                                          
+                                                          return (ev._id == calEvent._id);
+                                                      })
+                                                      modal.modal("hide");
+                                                  });
 			
-                                              modal.modal('show').on('hidden', function(){
-                                                  modal.remove();
-                                              });
+                                                  modal.modal('show').on('hidden', function(){
+                                                      modal.remove();
+                                                  });
 
 
-                                              //console.log(calEvent.id);
-                                              //console.log(jsEvent);
-                                              //console.log(view);
+                                                  //console.log(calEvent.id);
+                                                  //console.log(jsEvent);
+                                                  //console.log(view);
 
-                                              // change the border color just for fun
-                                              //$(this).css('border-color', 'red');
+                                                  // change the border color just for fun
+                                                  //$(this).css('border-color', 'red');
 
-                                          }
+                                              }
 		
-                                      });
+                                          });
 
 
-                                  })
+                                      })
 
-                                  function AjaxObj()
-                                  {
-                                      var xmlhttp = null;
-
-                                      if (window.XMLHttpRequest)
+                                      function AjaxObj()
                                       {
-                                          xmlhttp = new XMLHttpRequest();
+                                          var xmlhttp = null;
 
-                                          if (xmlhttp.overrideMimeType)
+                                          if (window.XMLHttpRequest)
                                           {
-                                              xmlhttp.overrideMimeType('text/xml');
+                                              xmlhttp = new XMLHttpRequest();
+
+                                              if (xmlhttp.overrideMimeType)
+                                              {
+                                                  xmlhttp.overrideMimeType('text/xml');
+                                              }
                                           }
-                                      }
-                                      else if (window.ActiveXObject)
-                                      {
-                                          // Internet Explorer    
-                                          try
+                                          else if (window.ActiveXObject)
                                           {
-                                              xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-                                          }
-                                          catch (e)
-                                          {
+                                              // Internet Explorer    
                                               try
                                               {
-                                                  xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                                                  xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
                                               }
                                               catch (e)
                                               {
-                                                  xmlhttp = null;
+                                                  try
+                                                  {
+                                                      xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                                                  }
+                                                  catch (e)
+                                                  {
+                                                      xmlhttp = null;
+                                                  }
                                               }
-                                          }
 	
-                                          if (!xmlhttp && typeof XMLHttpRequest!='undefined')
-                                          {
-                                              xmlhttp = new XMLHttpRequest();
-	  
-                                              if (!xmlhttp)
+                                              if (!xmlhttp && typeof XMLHttpRequest!='undefined')
                                               {
-                                                  failed = true;
+                                                  xmlhttp = new XMLHttpRequest();
+	  
+                                                  if (!xmlhttp)
+                                                  {
+                                                      failed = true;
+                                                  }
                                               }
                                           }
+                                          return xmlhttp;
                                       }
-                                      return xmlhttp;
-                                  }
 			
-                                  var Ajax = new AjaxObj();
+                                      var Ajax = new AjaxObj();
 		
-                                  function obtenerActividades(){		
-                                      var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerActividades";
-                                      //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerSalas";
-                                      var Params = '';
+                                      function obtenerActividades(){		
+                                          var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerActividades";
+                                          //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerSalas";
+                                          var Params = '';
 
 	
-                                      Ajax.open("GET", Url, false);
-                                      Ajax.setRequestHeader("Content-Type","application/json");
-                                      Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");                
-                                      Ajax.send(Params); // Enviamos los datos
+                                          Ajax.open("GET", Url, false);
+                                          Ajax.setRequestHeader("Content-Type","application/json");
+                                          Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");                
+                                          Ajax.send(Params); // Enviamos los datos
 
-                                      var RespTxt = Ajax.responseText;
+                                          var RespTxt = Ajax.responseText;
 			
-                                      //alert(RespTxt);
+                                          //alert(RespTxt);
 	
-                                      var Clase = eval('(' + RespTxt + ')');	
-                                      //alert(Clase);
-                                      var contenido = "<div class='widget-main no-padding'><div id='external-events'>";
+                                          var Clase = eval('(' + RespTxt + ')');	
+                                          //alert(Clase);
+                                          var contenido = "<div class='widget-main no-padding'><div id='external-events'>";
 								  
 													
-                                      var div = document.getElementById("actividades");                      
-                                      //contenido = contenido + '<form>';                
+                                          var div = document.getElementById("actividades");                      
+                                          //contenido = contenido + '<form>';                
 			
-                                      var color = ["grey","success","danger","purple","yellow","pink","info"];
+                                          var color = ["grey","success","danger","purple","yellow","pink","info"];
         
-                                      for(i=0; i<Clase.actividades.length; i++){						  
-                                          contenido = contenido + "<div class='external-event label-" + color[i] + "' data-class='label-" + color[i] + "'><i class='ace-icon fa fa-arrows'></i>";
-                                          //alert(contenido);
-                                          contenido = contenido + Clase.actividades[i].NombreActividad;
-                                          contenido = contenido + "<input type='hidden' id='idActividad' name='idActividad' value='" + Clase.actividades[i].idActividad + "'/>";
-                                          contenido = contenido + "</div>";
-                                      }
-                                      contenido = contenido + "<label><input type='checkbox' class='ace ace-checkbox' id='drop-remove' /><span class='lbl'> Remove after drop</span></label>";
+                                          for(i=0; i<Clase.actividades.length; i++){						  
+                                              contenido = contenido + "<div class='external-event' style='background-color:" + Clase.actividades[i].Descripcion + "' color='" + Clase.actividades[i].Descripcion + "' idActividad='" + Clase.actividades[i].idActividad + "'><i class='ace-icon fa fa-arrows'></i>";
+                                              //contenido = contenido + "<div class='external-event label-" + color[i] + "' data-class='label-" + color[i] + "' idActividad='" + Clase.actividades[i].idActividad + "'><i class='ace-icon fa fa-arrows'></i>";
+                                              //alert(contenido);                    
+                                              contenido = contenido + Clase.actividades[i].NombreActividad;
+                                              //contenido = contenido + "<input type='hidden' id='idActividad' name='idActividad' value='" + Clase.actividades[i].idActividad + "'/>";
+                                              contenido = contenido + "</div>";
+                                          }
+                                          contenido = contenido + "<label><input type='checkbox' class='ace ace-checkbox' id='drop-remove' /><span class='lbl'> Remove after drop</span></label>";
 			
-                                      contenido = contenido + "</div></div>";
+                                          contenido = contenido + "</div></div>";
 
-                                      div.innerHTML = contenido;	
-                                  }		
+                                          div.innerHTML = contenido;	
+                                      }		
 							  
-                                  /*function obtenerClases(){		
+                                      /*function obtenerClases(){		
                               var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerClases";
                               //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerSalas";
                               var Params = '';

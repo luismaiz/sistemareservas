@@ -10,8 +10,8 @@ function CargaTiposAbono($scope, $http) {
     
     $scope.obtenerTiposAbonos = function() {
                 
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbonosFiltro";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbonosFiltro";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbonosFiltro');
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbonosFiltro";
                 
                 var Params = 'NombreAbono=' + document.getElementById("filtronombreabono").value + '&DescripcionAbono=' + document.getElementById("filtrodescripcionabono").value;    
                 
@@ -60,12 +60,17 @@ function CargaTiposAbono($scope, $http) {
                      <div class="row">
                         <div class="form-group">
                             <div class="col-md-12">
-                                <div class="form-group">
-                                       <label class="control-label" >Nombre Abono</label>
-                                        <input type="text" class="input-sm"  id="filtronombreabono">	
-                                        <label class="control-label" >Descripcion Abono</label>
-                                        <input type="text" class="input-sm"  id="filtrodescripcionabono">
-                                        <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerTiposAbonos()"/></div>
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                       <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Nombre Abono</label>
+                                        <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12"  id="filtronombreabono">	
+                                        <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Descripcion Abono</label>
+                                        <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12"  id="filtrodescripcionabono">
+                                </div>
+                                        <div class="form-group col-md-12">        
+                                        <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerTiposAbonos()"/>
+                                </div>
+                                
+                                
                                        
                                 <div class="box-content" id="tiposabonos">
                                      
@@ -83,15 +88,16 @@ function CargaTiposAbono($scope, $http) {
                                                 <tr ng_repeat="tipoabono in tiposabonos">
                                                     <td>{{tipoabono.NombreAbono}}</td>
                                                     <td>{{tipoabono.DescripcionAbono}}</td>
-                                                    <td>{{tipoabono.FechaAlta}}</td>
-                                                    <td>{{tipoabono.FechaBaja}}</td>
+                                                    <td>{{tipoabono.FechaAlta |date:'dd-MM-yyyy'}}</td>
+                                                    <td>{{tipoabono.FechaBaja |date:'dd-MM-yyyy'}}</td>
                                                     <td class="center"><a href="FormularioDetalleAbono.php?idTipoAbono={{tipoabono.idTipoAbono}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
                                                 </tr>
                                             
                                         </table>
                                         </div>
-                               
+                               <div class="form-group col-md-12">
                                 <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleAbono.php' "/>
+                               </div>
                             </div>
                             </div>
                         </div>

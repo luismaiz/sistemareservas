@@ -66,8 +66,8 @@ class TarifasBO extends Rest{
         //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {        
         $NombreTarifa = $this->datosPeticion['NombreTarifa'];
         $DescripcionTarifa = $this->datosPeticion['DescripcionTarifa'];
-        $FechaAlta = $this->datosPeticion['FechaAlta'];
-        $FechaBaja = $this->datosPeticion['FechaBaja'];
+        $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
+            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
 
         $this->con = ConexionBD::getInstance();
         $tipotarifa = new TipotarifaModel();
@@ -121,7 +121,7 @@ class TarifasBO extends Rest{
     }
 
     private function actualizarTipoTarifa() {
-        if ($_SERVER['REQUEST_METHOD'] != "PUT") {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
         //echo $idUsuario . "<br/>";  
@@ -129,8 +129,8 @@ class TarifasBO extends Rest{
             $idTipoTarifa = $this->datosPeticion['idTipoTarifa'];
             $NombreTarifa = $this->datosPeticion['NombreTarifa'];
             $DescripcionTarifa = $this->datosPeticion['DescripcionTarifa'];
-            $FechaAlta = $this->datosPeticion['FechaAlta'];
-            $FechaBaja = $this->datosPeticion['FechaBaja'];
+            $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
+            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
 
             if (!empty($idTipoTarifa)) {
 
@@ -176,8 +176,8 @@ class TarifasBO extends Rest{
             $respuesta['tipotarifa']['idTipoTarifa'] = $fila->getIdTipoTarifa();
             $respuesta['tipotarifa']['NombreTarifa'] = $fila->getNombreTarifa();
             $respuesta['tipotarifa']['DescripcionTarifa'] = $fila->getDescripcionTarifa();
-            $respuesta['tipotarifa']['FechaAlta'] = $fila->getFechaAlta();
-            $respuesta['tipotarifa']['FechaBaja'] = $fila->getFechaBaja();
+            $respuesta['tipotarifa']['FechaAlta'] = date("d-m-Y",strtotime($fila->getFechaAlta()));
+            $respuesta['tipotarifa']['FechaBaja'] = date("d-m-Y",strtotime($fila->getFechaBaja()));
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
@@ -217,6 +217,11 @@ class TarifasBO extends Rest{
             }
 
             $respuesta['tipostarifas'] = $array;
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        else
+        {
+            $respuesta['estado'] = 'No se encontraron datos';
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);

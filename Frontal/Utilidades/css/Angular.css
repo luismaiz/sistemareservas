@@ -33,8 +33,9 @@ input.ng-valid.ng-dirty
     
 }*/
 
-input.ng-pristine { border:1px solid; }
-input.ng-dirty.ng-valid { border:1px solid Green; }
-input.ng-dirty.ng-invalid { border:1px solid Red; }
+input.ng-pristine { border:2px solid; }
+input.ng-dirty.ng-valid { border:2px solid Green; }
+input.ng-dirty.ng-invalid { border:2px solid Red; }
 input .ng-dirty.ng-valid ~ span.ok { color:green; display:inline; }
 input .ng-dirty.ng-invalid ~ span.ko { color:red; display:inline; }
+

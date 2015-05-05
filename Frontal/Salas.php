@@ -9,16 +9,22 @@
 
             $scope.obtenerSalas = function() {
                 
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSalasFiltro";
+                
+                
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSalasFiltro');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSalasFiltro";
                 
                 var Params = 'NombreSala=' + document.getElementById("filtronombresala").value + '&CapacidadSala=' + document.getElementById("filtrocapacidadsala").value;    
+                
                 
 	        Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
 	
+        
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                
                 
                 if ($scope.estado === 'correcto')
                 {
@@ -60,12 +66,15 @@
                      <div class="row">
                         <div class="form-group">
                             <div class="col-md-12">
-                                <div class="form-group">
-					<label class="control-label" >Nombre Sala</label>
-                                        <input type="text" class="input-sm"  id="filtronombresala">	
-                                        <label class="control-label" >Capacidad Sala</label>
-                                        <input type="text" class="input-sm"  id="filtrocapacidadsala">
-                                        <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerSalas()"/></div>
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Nombre Sala</label>
+                                        <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12"  id="filtronombresala">	
+                                        <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Capacidad Sala</label>
+                                        <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12 "  id="filtrocapacidadsala">
+                                </div>
+                                <div class="form-group col-md-12">
+                                        <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerSalas()"/>
+                                </div>
                                         <div class="box-content" id="salas">
                                         <table class="table table-striped table-bordered responsive">
                                             <thead>
@@ -83,15 +92,16 @@
                                                     <td>{{sala.NombreSala}}</td>
                                                     <td>{{sala.CapacidadSala}}</td>
                                                     <td>{{sala.DescripcionSala}}</td>
-                                                    <td>{{sala.FechaAlta}}</td>
-                                                    <td>{{sala.FechaBaja}}</td>
+                                                    <td>{{sala.FechaAlta |date:'dd-MM-yyyy' }}</td>
+                                                    <td>{{sala.FechaBaja |date:'dd-MM-yyyy'}}</td>
                                                     <td class="center"><a href="FormularioDetalleSala.php?idSala={{sala.idSala}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
                                                 </tr>
                                             
                                         </table>
                                     </div>
+                                <div class="form-group col-md-12">
                                 <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleSala.php' "/>
-     
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -10,8 +10,8 @@ function CargaTiposSolicitudes($scope, $http) {
     
     $scope.obtenerTiposSolicitudes = function() {
                 
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitudesFiltro";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitudesFiltro";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitudesFiltro');
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitudesFiltro";
                 
                 var Params = 'NombreSolicitud=' + document.getElementById("filtronombresolicitud").value + '&DescripcionSolicitud=' + document.getElementById("filtrodescripcionsolicitud").value;    
                 
@@ -19,6 +19,7 @@ function CargaTiposSolicitudes($scope, $http) {
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
 	
+                
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')
@@ -60,11 +61,13 @@ function CargaTiposSolicitudes($scope, $http) {
                      <div class="row">
                         <div class="form-group">
                             <div class="col-md-12">
-                                <div class="form-group">
-                                       <label class="control-label" >Nombre Solicitud</label>
-                                        <input type="text" class="input-sm"  id="filtronombresolicitud">	
-                                        <label class="control-label" >Descripcion Solicitud</label>
-                                        <input type="text" class="input-sm"  id="filtrodescripcionsolicitud">
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                       <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Nombre Solicitud</label>
+                                        <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12"  id="filtronombresolicitud">	
+                                        <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Descripción Solicitud</label>
+                                        <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12"  id="filtrodescripcionsolicitud">
+                                </div>
+                                <div class="form-group col-md-12">
                                         <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerTiposSolicitudes()"/></div>
                                        
                                 <div class="box-content" id="tipossolicitudes">
@@ -83,15 +86,16 @@ function CargaTiposSolicitudes($scope, $http) {
                                                 <tr ng_repeat="tiposolicitud in tipossolicitudes">
                                                     <td>{{tiposolicitud.NombreSolicitud}}</td>
                                                     <td>{{tiposolicitud.DescripcionSolicitud}}</td>
-                                                    <td>{{tiposolicitud.FechaAlta}}</td>
-                                                    <td>{{tiposolicitud.FechaBaja}}</td>
+                                                    <td>{{tiposolicitud.FechaAlta |date:'dd-MM-yyyy'}}</td>
+                                                    <td>{{tiposolicitud.FechaBaja |date:'dd-MM-yyyy'}}</td>
                                                     <td class="center"><a href="FormularioDetalleTipoSolicitud.php?idTipoSolicitud={{tiposolicitud.idTipoSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
                                                 </tr>
                                             
                                         </table>
                                         </div>
-                               
+                                <div class="form-group col-md-12">
                                 <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleTipoSolicitud.php' "/>
+                                </div>
                             </div>
                             </div>
                         </div>

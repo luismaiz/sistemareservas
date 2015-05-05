@@ -14,7 +14,7 @@
             $scope.msg = [];
             $scope.obtenerSalas = function(idSala) {
                 
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSala";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSala');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSala";
                 var Params = 'idSala='+ idSala;
 
@@ -40,8 +40,9 @@
             
             $scope.crearSala = function() {
                                 
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=crearSala";		
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=crearSala";		
+                
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=crearSala');		
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=crearSala";		
                 var Params ='NombreSala='+ document.getElementById('NombreSala').value +
                     '&CapacidadSala='+ document.getElementById('CapacidadSala').value +
                     '&DescripcionSala='+ document.getElementById('DescripcionSala').value +
@@ -52,6 +53,7 @@
                 Ajax.open("POST", Url, true);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
+                
                 
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
@@ -69,7 +71,7 @@
             $scope.actualizarSala = function(){
                                    
              
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala";
                 var Params = 'idSala='+ $location.search().idSala +
                     '&NombreSala='+ document.getElementById('NombreSala').value +
@@ -98,6 +100,36 @@
             
             
         }
+            $.datepicker.regional['es'] = {
+            closeText: 'Cerrar',
+            prevText: '<Ant',
+            nextText: 'Sig>',
+            currentText: 'Hoy',
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+            dayNamesMin: ['Do','Lun','Ma','Mi','Ju','Vi','Sá'],
+            weekHeader: 'Sm',
+            dateFormat:'dd-mm-yy',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: ''
+            };
+ $.datepicker.setDefaults($.datepicker.regional['es']);
+            
+            $(function() {
+                $( "#FechaAlta" ).datepicker({
+                    dateFormat:'dd-mm-yy'
+                });
+            });
+            
+            $(function() {
+                $( "#FechaBaja" ).datepicker({
+                    dateFormat:'dd-mm-yy'    
+                });
+            });
                        
         </script>
        
@@ -132,45 +164,58 @@
                             </div>
                             </div>
                         <div class="box-content">
+                            <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-12">
                             <form role="form"  name="formulario">
-                                <div class="form-group col-md-12">
+                                    <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                  <input ng-model="sala.idSala" type="hidden" class="input-sm" name="idSala" id="idSala">
-                                <label class="control-label col-md-2" >Nombre Sala</label>
-                                <input ng-model="sala.NombreSala"  type="text" class="input-sm col-md-4" name="nombresala" id="NombreSala" required >
-                                <span style="color:red" ng-show="formulario.nombresala.$dirty && formulario.nombresala.$invalid">
-                                <span ng-show="formulario.nombresala.$error.required">Nombre de sala obligatorio.</span>
+                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Nombre Sala</label>
+                                <input type="text" ng-model="sala.NombreSala"   class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="nombresala" id="NombreSala" required >
+                                <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.nombresala.$dirty && formulario.nombresala.$invalid">
+                                <span ng-show="formulario.nombresala.$error.required">* Nombre de sala obligatorio.</span>
                                  </span>
                                 </div>
-                                <div class="form-group col-md-12">
-                                <label class="control-label col-md-2" >Descripción</label>
-                                <input ng-model="sala.DescripcionSala" type="text" class="input-sm col-md-6"  name="descripcionsala" id="DescripcionSala" required>
-                                <span style="color:red" ng-show="formulario.descripcionsala.$dirty && formulario.descripcionsala.$invalid">
-                                <span ng-show="formulario.descripcionsala.$error.required">Descripción de sala obligatorio.</span>
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Descripción</label>
+                                <input type="text" ng-model="sala.DescripcionSala"  class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12"  name="descripcionsala" id="DescripcionSala" required>
+                                <span class="col-lg-2 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.descripcionsala.$dirty && formulario.descripcionsala.$invalid">
+                                <span ng-show="formulario.descripcionsala.$error.required">* Descripción de sala obligatorio.</span>
                                 </span>
                                 </div>
-                                <div class="form-group col-md-12">                                
-    
-                                <label class="control-label col-md-2" >Capacidad</label>
-                                <input ng-model="sala.CapacidadSala" type="number" class="input-sm" name="capacidadsala" id="CapacidadSala" required>
-                                <span style="color:red" ng-show="formulario.capacidadsala.$dirty && formulario.capacidadsala.$invalid">
-                                <span ng-show="formulario.capacidadsala.$error.required">Capacidad de sala obligatoria y numérica.</span>
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">                                
+                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Capacidad</label>
+                                <input type="text" ng-model="sala.CapacidadSala"  class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" name="capacidadsala" id="CapacidadSala" required ng-pattern="/^\d+$/"  >
+                                <span  class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.capacidadsala.$dirty && formulario.capacidadsala.$invalid">
+                                    <span ng-show="formulario.capacidadsala.$error.required">* Capacidad de sala obligatoria.</span>
+                                    <span ng-show="formulario.capacidadsala.$error.pattern">* Capacidad de sala numérica.</span>
+                                </span>
+                                </div>
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Fecha Alta</label>
+                                <input ng-model="sala.FechaAlta" type="text" class="input-sm col-md-2 col-sm-4 col-xs-7" name="FechaAlta" id="FechaAlta" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required>
+                                <span class="col-md-6 col-sm-5 col-xs-12" style="color:red" ng-show="formulario.FechaAlta.$dirty && formulario.FechaAlta.$invalid">
+                                    <span ng-show="formulario.FechaAlta.$error.required">* Fecha obligatoria.</span>
+                                    <span ng-show="formulario.FechaAlta.$error.pattern">* Formato de fecha no valido.</span>
+                                </span>
+                                </div>
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Fecha Baja</label>
+                                <input ng-model="sala.FechaBaja" type="text" class="input-sm col-md-2 col-sm-4 col-xs-7" name="FechaBaja" id="FechaBaja" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required>
+                                <span class="col-md-6 col-sm-5 col-xs-12" style="color:red" ng-show="formulario.FechaBaja.$dirty && formulario.FechaBaja.$invalid">
+                                     <span ng-show="formulario.FechaBaja.$error.pattern">* Formato de fecha no valido.</span>
+                                    <span ng-show="formulario.FechaBaja.$error.required">* Fecha obligatoria.</span>
                                 </span>
                                 </div>
                                 <div class="form-group col-md-12">
-                                
-                                <label class="control-label col-md-2" >Fecha Alta</label>
-                                <input ng-model="sala.FechaAlta" type="date" class="input-sm" name="FechaAlta" id="FechaAlta">
-                                </div>
-                                <div class="form-group col-md-12">
-                                <label class="control-label col-md-2" >Fecha Baja</label>
-                                <input ng-model="sala.FechaBaja" type="date" class="input-sm" name="FechaBaja" id="FechaBaja">                                     
-                                </div>
-                                
                                 <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Salas.php' " />
                                 <input class="box btn-primary" type="submit" value="Aceptar" ng-click="guardarSala();" ng-disabled="formulario.$invalid" />
-                                
+                                </div>
                              </form>
-                           </div>                                         
+                           </div>  
+                        </div>
+                            </div>
+                        </div>
                         </div>
                         </div>
                 </div>

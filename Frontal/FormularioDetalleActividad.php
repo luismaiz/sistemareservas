@@ -15,8 +15,8 @@
         
         $scope.obtenerActividad = function(idActividad) {
                 
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividad";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividad";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividad');
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividad";
                 var Params = 'idActividad='+ idActividad;
 
                 Ajax.open("POST", Url, false);
@@ -24,7 +24,10 @@
                 Ajax.send(Params); // Enviamos los datos
                 
                 $scope.actividad = JSON.parse(Ajax.responseText).actividad;
-                //$scope.sala.CapacidadSala = parseInt($scope.sala.CapacidadSala);
+                
+                
+                $scope.actividad.EdadMinima = parseInt($scope.actividad.EdadMinima);
+                $scope.actividad.EdadMaxima = parseInt($scope.actividad.EdadMaxima);
         
             };
             if (typeof($location.search().idActividad) !== "undefined")
@@ -41,8 +44,8 @@
             $scope.actualizarActividad = function(){
                                    
              
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=actualizarActividad";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=actualizarActividad";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=actualizarActividad');
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=actualizarActividad";
                 var Params = 'idActividad='+ $location.search().idActividad +
                     '&NombreActividad='+ document.getElementById('NombreActividad').value +
                     '&IntensidadActividad='+ document.getElementById('IntensidadActividad').value +
@@ -73,8 +76,8 @@
             $scope.crearActividad = function(){
                                    
              
-                //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=crearActividad";
-                var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=crearActividad";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=crearActividad');
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=crearActividad";
                 var Params = 'NombreActividad='+ document.getElementById('NombreActividad').value +
                     '&IntensidadActividad='+ document.getElementById('IntensidadActividad').value +
                     '&Descripcion='+ document.getElementById('Descripcion').value +
@@ -102,22 +105,38 @@
             };
         
     }
-       
     
+        $.datepicker.regional['es'] = {
+            closeText: 'Cerrar',
+            prevText: '<Ant',
+            nextText: 'Sig>',
+            currentText: 'Hoy',
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+            dayNamesMin: ['Do','Lun','Ma','Mi','Ju','Vi','Sá'],
+            weekHeader: 'Sm',
+            dateFormat:'dd-mm-yy',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: ''
+            };
+ $.datepicker.setDefaults($.datepicker.regional['es']);
+            
+            $(function() {
+                $( "#FechaAlta" ).datepicker({
+                    dateFormat:'dd-mm-yy'
+                });
+            });
+            
+            $(function() {
+                $( "#FechaBaja" ).datepicker({
+                    dateFormat:'dd-mm-yy'    
+                });
+            });
     
-                
-  
-   
-    function borrarActividad() {	
-        //var Url = "http://www.rightwatch.es/pfgreservas/Api.php?url=borrarActividad";	
-        var Url = "http://localhost/sistemareservas/AdministradorBO.php?url=borrarActividad";		        
-        var Params = 'idActividad='+ document.getElementById('idActividad').value;
-
-	
-        Ajax.open("POST", Url, false);
-        Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
-        Ajax.send(Params); // Enviamos los datos
-    }
 </script>
 <div>
     <ul class="breadcrumb">
@@ -169,24 +188,28 @@
                     </div>
                     <div class="form-group col-md-12">
                     <label class="control-label col-md-2" >Intensidad Actividad</label>
-                    <input ng-model="actividad.IntensidadActividad" type="color" class="input-sm"  id="IntensidadActividad" name="IntensidadActividad" required/>
+
+                    <input class="input-sm color" ng-model="actividad.IntensidadActividad"   id="IntensidadActividad" name="IntensidadActividad" required>
                     <span style="color:red" ng-show="formulario.IntensidadActividad.$dirty && formulario.IntensidadActividad.$invalid">
                                 <span ng-show="formulario.IntensidadActividad.$error.required">Intensidad de actividad obligatorio.</span>
                     </span>
+                   
                     </div>    
                     <div class="form-group col-md-12">
                     <label class="control-label col-md-2" >Edad Mínima</label>
-                    <input ng-model="actividad.EdadMinima" type="number" class="input-sm" name="EdadMinima" id="EdadMinima"/>
-                    <span style="color:red" ng-show="formulario.EdadMinima.$dirty && formulario.EdadMinima.$invalid">
-                                <span ng-show="formulario.EdadMinima.$error.required">Edad mínima debe ser un valor numérico</span>
-                    </span>
+                    <input ng-model="actividad.EdadMinima" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="EdadMinima" id="EdadMinima" required ng-pattern="/^\d+$/"/>
+                    <span  class="col-md-4 col-sm-5 col-xs-12" style="color:red" ng-show="formulario.EdadMinima.$dirty && formulario.EdadMinima.$invalid">
+                                    <span ng-show="formulario.EdadMinima.$error.required">* Edad Mínima  obligatoria.</span>
+                                    <span ng-show="formulario.EdadMinima.$error.pattern">* Edad Mínima debe ser un valor numérico.</span>
+                                </span>
                     </div>    
                     <div class="form-group col-md-12">
                     <label class="control-label col-md-2" >Edad Máxima</label>
-                    <input ng-model="actividad.EdadMaxima" type="number" class="input-sm" name="EdadMaxima" id="EdadMaxima"/>
-                    <span style="color:red" ng-show="formulario.EdadMaxima.$dirty && formulario.EdadMaxima.$invalid">
-                                <span ng-show="formulario.EdadMaxima.$error.required">Edad máxima debe ser un valor numérico</span>
-                    </span>
+                    <input ng-model="actividad.EdadMaxima" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="EdadMaxima" id="EdadMaxima" required ng-pattern="/^\d+$/"/>
+                    <span  class="col-md-4 col-sm-5 col-xs-12" style="color:red" ng-show="formulario.EdadMaxima.$dirty && formulario.EdadMaxima.$invalid">
+                                    <span ng-show="formulario.EdadMaxima.$error.required">* Edad Máxima  obligatoria.</span>
+                                    <span ng-show="formulario.EdadMaxima.$error.pattern">* Edad Máxima debe ser un valor numérico.</span>
+                                </span>
                     </div>
                     <div class="form-group col-md-12">
                     <label class="control-label col-md-2" >Grupo</label>
@@ -194,15 +217,23 @@
                     </div>
                     <div class="form-group col-md-12">
                     <label class="control-label col-md-2" >Fecha Alta</label>
-                    <input ng-model="actividad.FechaAlta" type="date" class="input-sm" name="FechaAlta" id="FechaAlta"/>
+                    <input ng-model="actividad.FechaAlta" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="FechaAlta" id="FechaAlta" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required/>
+                    <span class="col-md-6 col-sm-5 col-xs-12" style="color:red" ng-show="formulario.FechaAlta.$dirty && formulario.FechaAlta.$invalid">
+                                    <span ng-show="formulario.FechaAlta.$error.required">* Fecha obligatoria.</span>
+                                    <span ng-show="formulario.FechaAlta.$error.pattern">* Formato de fecha no valido.</span>
+                                </span>
                     </div>    
                     <div class="form-group col-md-12">
                     <label class="control-label col-md-2" >Fecha Baja</label>
-                    <input ng-model="actividad.FechaBaja" type="date" class="input-sm" name="FechaBaja" id="FechaBaja"/>
+                    <input ng-model="actividad.FechaBaja" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="FechaBaja" id="FechaBaja" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required/>
+                    <span class="col-md-6 col-sm-5 col-XS-12" style="color:red" ng-show="formulario.FechaBaja.$dirty && formulario.FechaBaja.$invalid">
+                                     <span ng-show="formulario.FechaBaja.$error.pattern">* Formato de fecha no valido.</span>
+                                    <span ng-show="formulario.FechaBaja.$error.required">* Fecha obligatoria.</span>
+                                </span>
                     </div>
                     
                     <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Actividades.php' " />
-                    <input class="box btn-primary" type="button" value="Aceptar" ng-click="guardarActividad()"/>
+                    <input class="box btn-primary" type="button" value="Aceptar" ng-click="guardarActividad()" ng-disabled="formulario.$invalid"/>
                 </form>
             </div>
         </div>

@@ -145,14 +145,24 @@ if ($("#stackchart").length) {
     });
 }
 
-//pie chart
+
+//DAtos
+//var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesSemana";
+var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesSemana');
+
+var Params = '';    
+	        Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                
+                var diario = JSON.parse(Ajax.responseText).diario;
+                var clases = JSON.parse(Ajax.responseText).clases;
+                var mensual = JSON.parse(Ajax.responseText).mensual;
+////pie chart
 var data = [
-    { label: "Internet Explorer", data: 12},
-    { label: "Mobile", data: 27},
-    { label: "Safari", data: 85},
-    { label: "Opera", data: 64},
-    { label: "Firefox", data: 90},
-    { label: "Chrome", data: 112}
+    { label: "Diarios", data: parseInt(diario)},
+    { label: "Mensuales", data: parseInt(mensual)},
+    { label: "Clases Dirigidas", data: parseInt(clases)}
 ];
 
 if ($("#piechart").length) {
