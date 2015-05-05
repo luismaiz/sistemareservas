@@ -17,7 +17,7 @@
         
         $scope.obtenerTiposSolicitud = function(idTipoSolicitud) {
                 
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTipoSolicitud";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTipoSolicitud');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTipoSolicitud";
                 var Params = 'idTipoSolicitud='+ idTipoSolicitud;
 
@@ -43,7 +43,7 @@
             $scope.actualizarTipoSolicitud = function(){
                                    
              
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=actualizarTipoSolicitud";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=actualizarTipoSolicitud');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=actualizarTipoSolicitud";
                 var Params = 'idTipoSolicitud='+ $location.search().idTipoSolicitud +
                     '&NombreSolicitud='+ document.getElementById('NombreSolicitud').value +
@@ -72,7 +72,7 @@
             $scope.crearTipoSolicitud = function(){
                                    
              
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=crearTipoSolicitud";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=crearTipoSolicitud');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=crearTipoSolicitud";
                 var Params = 'NombreSolicitud='+ document.getElementById('NombreSolicitud').value +
                     '&DescripcionSolicitud='+ document.getElementById('DescripcionSolicitud').value +

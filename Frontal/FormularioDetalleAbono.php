@@ -17,7 +17,7 @@
         
         $scope.obtenerTiposAbono = function(idTipoAbono) {
                 
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTipoAbono";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTipoAbono');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTipoAbono";
                 var Params = 'idTipoAbono='+ idTipoAbono;
 
@@ -43,7 +43,7 @@
             $scope.actualizarTipoAbono = function(){
                                    
              
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=actualizarTipoAbono";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=actualizarTipoAbono');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=actualizarTipoAbono";
                 var Params = 'idTipoAbono='+ $location.search().idTipoAbono +
                     '&NombreAbono='+ document.getElementById('NombreAbono').value +
@@ -73,7 +73,7 @@
             $scope.crearTipoAbono = function(){
                                    
              
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=crearTipoAbono";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=crearTipoAbono');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=crearTipoAbono";
                 var Params = 'NombreAbono='+ document.getElementById('NombreAbono').value +
                     '&DescripcionAbono='+ document.getElementById('DescripcionAbono').value +

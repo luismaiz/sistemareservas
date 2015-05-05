@@ -148,11 +148,13 @@ if ($("#stackchart").length) {
 
 //DAtos
 //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesSemana";
-var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesPendientes";
+var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesSemana');
+
 var Params = '';    
 	        Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
+                
                 var diario = JSON.parse(Ajax.responseText).diario;
                 var clases = JSON.parse(Ajax.responseText).clases;
                 var mensual = JSON.parse(Ajax.responseText).mensual;

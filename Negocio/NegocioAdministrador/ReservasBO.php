@@ -451,6 +451,8 @@ class ReservasBO extends Rest{
             //$respuesta['abonos'] = $array;
             $respuesta['clases'] = $num;
         }
+        else
+            $respuesta['clases']=0;
         
         $num = count($filasmensual);
         if ($num > 0) {
@@ -461,6 +463,8 @@ class ReservasBO extends Rest{
             //$respuesta['abonos'] = $array;
             $respuesta['mensual'] = $num;
         }
+        else
+            $respuesta['mensual']=0;
         
         $num = count($filasdiario);
         if ($num > 0) {
@@ -471,6 +475,8 @@ class ReservasBO extends Rest{
             //$respuesta['abonos'] = $array;
             $respuesta['diario'] = $num;
         }
+        else
+            $respuesta['diario'] = 0;
         $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
     }

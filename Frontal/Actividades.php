@@ -12,7 +12,7 @@
             $scope.obtenerActividades = function() {
                 
                 
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividadesFiltro";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividadesFiltro');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividadesFiltro";
                 var Params = 'NombreActividad=' + document.getElementById("filtroactividad").value + 
                         '&IntensidadActividad=' + document.getElementById("filtrointensidad").value +    

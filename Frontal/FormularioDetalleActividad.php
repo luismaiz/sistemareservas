@@ -15,7 +15,7 @@
         
         $scope.obtenerActividad = function(idActividad) {
                 
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividad";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividad');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividad";
                 var Params = 'idActividad='+ idActividad;
 
@@ -44,7 +44,7 @@
             $scope.actualizarActividad = function(){
                                    
              
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=actualizarActividad";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=actualizarActividad');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=actualizarActividad";
                 var Params = 'idActividad='+ $location.search().idActividad +
                     '&NombreActividad='+ document.getElementById('NombreActividad').value +
@@ -76,7 +76,7 @@
             $scope.crearActividad = function(){
                                    
              
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=crearActividad";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=crearActividad');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=crearActividad";
                 var Params = 'NombreActividad='+ document.getElementById('NombreActividad').value +
                     '&IntensidadActividad='+ document.getElementById('IntensidadActividad').value +

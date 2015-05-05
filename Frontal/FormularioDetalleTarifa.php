@@ -17,7 +17,7 @@
         
         $scope.obtenerTiposTarifa = function(idTipoTarifa) {
                 
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTipoTarifa";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTipoTarifa');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTipoTarifa";
                 var Params = 'idTipoTarifa='+ idTipoTarifa;
 
@@ -43,7 +43,7 @@
             $scope.actualizarTipoTarifa = function(){
                                    
              
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=actualizarTipoTarifa";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=actualizarTipoTarifa');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=actualizarTipoTarifa";
                 var Params = 'idTipoTarifa='+ $location.search().idTipoTarifa +
                     '&NombreTarifa='+ document.getElementById('NombreTarifa').value +
@@ -72,7 +72,7 @@
             $scope.crearTipoTarifa = function(){
                                    
              
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=crearTipoTarifa";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=crearTipoTarifa');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=crearTipoTarifa";
                 var Params = 'idTipoTarifa='+ $location.search().idTipoTarifa +
                     '&NombreTarifa='+ document.getElementById('NombreTarifa').value +

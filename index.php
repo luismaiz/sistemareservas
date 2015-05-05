@@ -2,13 +2,18 @@
 
 $no_visible_elements = true;
 include('Frontal/CabeceraInicio.php');
+require_once 'config.php';
 ?>
 <script>
 
     var Ajax = new AjaxObj();
-
+    var BASE_URL = 'http://localhost:8080/';
     function login() {
-        var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/LoginBO.php?url=iniciarSesion";
+        
+        
+        var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/LoginBO.php?url=iniciarSesion');
+        
+        //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/LoginBO.php?url=iniciarSesion";
         //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/LoginBO.php?url=iniciarSesion";
         var Params = 'NombreUsuario=' + document.getElementById("NombreUsuario").value + '&Password=' + document.getElementById("Password").value;
 

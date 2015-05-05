@@ -53,6 +53,7 @@ include 'config.php'
         <link rel="shortcut icon" href="Utilidades/img/favicon.ico">
 
         <script>
+            var BASE_URL = 'http://localhost:8080/';
         function AjaxObj()
         {
             var xmlhttp = null;
@@ -152,7 +153,7 @@ include 'config.php'
                                     <li><a class="ajax-link" href="Salas.php"><i  class="glyphicon glyphicon-edit"></i><span> Salas</span></a></li>
                                     <li><a class="ajax-link" href="Actividades.php"><i class="glyphicon glyphicon-edit"></i><span> Actividades</span></a>
                                     </li>
-                                    <li><a class="ajax-link" href="Clases.php"><i class="glyphicon glyphicon-edit"></i><span> Clases</span></a>
+                                    <li><a class="ajax-link" href="InicioMonitor.php"><i class="glyphicon glyphicon-edit"></i><span> Clases</span></a>
                                     </li>
                                     <li><a class="ajax-link" href="TipoSolicitud.php"><i class="glyphicon glyphicon-edit"></i><span> Solicitudes</span></a>
                                     </li>
