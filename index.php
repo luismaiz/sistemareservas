@@ -8,7 +8,7 @@ include('Frontal/CabeceraInicio.php');
     var Ajax = new AjaxObj();
 
     function login() {
-        var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/LoginBO.php?url=iniciarSesion";
+        var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/LoginBO.php?url=iniciarSesion";
         //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/LoginBO.php?url=iniciarSesion";
         var Params = 'NombreUsuario=' + document.getElementById("NombreUsuario").value + '&Password=' + document.getElementById("Password").value;
 
@@ -21,7 +21,7 @@ include('Frontal/CabeceraInicio.php');
         //alert(RespTxt);
 
         var Clase = eval('(' + RespTxt + ')');
-        
+
         if (Clase) {
             var tipo = parseInt((Clase.Usuario[0].TipoUsuario));
             switch (tipo) {
@@ -77,7 +77,7 @@ include('Frontal/CabeceraInicio.php');
 
                 <p class="center col-md-5">
                     <button class="btn btn-primary" >Login</button>
-                    
+
                 </p>
             </fieldset>
         </form>

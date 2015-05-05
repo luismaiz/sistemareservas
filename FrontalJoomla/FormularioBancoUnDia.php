@@ -286,7 +286,7 @@ function redireccionar(){
 						
 						
                     </div>
-				</div>
+				
 				
 				
 				<input type="button" value="Aceptar" onClick=" ValidCaptcha();"/>
