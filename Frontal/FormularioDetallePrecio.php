@@ -206,7 +206,7 @@
 </div>
 <div class=" row" ng-app="DetallePrecios">
 <div ng_controller="CargaDetallePrecios">
-    <div class="box col-md-12">
+    <div class="box ">
         <div class="box-inner">
             <div class="box-header well" data-original-title="">
                 <h2><i class="glyphicon glyphicon-edit"></i> Detalle Precio</h2>
@@ -224,37 +224,37 @@
             <div class="box-content">
 
                 <form ole="form"  name="formulario" novalidate="true">
-                    <div class="form-group col-md-12"> 
+                    <div class="form-group "> 
                                 <label class="control-label" >Tipo Solicitud</label>
                                 <select name="idTipoSolicitud" id="idTipoSolicitud" class="input-sm" >	
                                     <option ng_repeat="tiposolicitud in tiposSolicitudes" value="{{tiposolicitud.idTipoSolicitud}}">{{tiposolicitud.NombreSolicitud}}</option>
                                 </select>
                     </div>
-                    <div class="form-group col-md-12"> 
+                    <div class="form-group "> 
                                 <label class="control-label" >Tipo Abono</label>
                                 <select  name="idTipoAbono" id="idTipoAbono" class="input-sm" >	
                                     <option ng_repeat="tipoabono in tiposAbonos" value="{{tipoabono.idTipoAbono}}">{{tipoabono.NombreAbono}}</option>
                                 </select>
                     </div>
-                    <div class="form-group col-md-12"> 
+                    <div class="form-group "> 
                                 <label class="control-label" >Tipo Tarifa</label>
                                 <select ng-model="tipotarifa.idTipoTarifa" id="filtroTipoTarifa" class="input-sm" >	
                                     <option ng_repeat="tipotarifa in tiposTarifas" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>
                                 </select>
                     </div>
-                    <div class="form-group col-md-12"> 
+                    <div class="form-group "> 
                     <label class="control-label" >NombrePrecio</label>
                     <input type="text" class="input-sm" name="NombrePrecio" id="NombrePrecio">
                     </div>
-                    <div class="form-group col-md-12"> 
+                    <div class="form-group "> 
                     <label class="control-label" >DescripcionPrecio</label>
                     <input type="text" class="input-sm" name="DescripcionPrecio" id="DescripcionPrecio">
                     </div>
-                    <div class="form-group col-md-12"> 
+                    <div class="form-group "> 
                     <label class="control-label" >Precio</label>
                     <input type="text" class="input-sm" name="Precio" id="Precio">
                     </div>
-                    <div class="form-group col-md-12"> 
+                    <div class="form-group "> 
                     <label class="control-label" >FechaAlta</label>
                     <input type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="FechaAlta" id="FechaAlta" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required>
                     <span class="col-md-6 col-sm-5 col-xs-12" style="color:red" ng-show="formulario.FechaAlta.$dirty && formulario.FechaAlta.$invalid">
@@ -262,7 +262,7 @@
                                     <span ng-show="formulario.FechaAlta.$error.pattern">* Formato de fecha no valido.</span>
                                 </span>
                     </div>
-                    <div class="form-group col-md-12">
+                    <div class="form-group ">
                     <label class="control-label" >FechaBaja</label>
                     <input type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="FechaBaja" id="FechaBaja" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required>
                     <span class="col-md-6 col-sm-5 col-XS-12" style="color:red" ng-show="formulario.FechaBaja.$dirty && formulario.FechaBaja.$invalid">

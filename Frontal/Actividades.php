@@ -72,11 +72,7 @@
                                                 <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Grupo</label>
                                                 <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12"  id="filtrogrupo">
                                             </div>
-                                                <div class="form-group col-md-12">
                                                 <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerActividades();"/>
-                                                </div>
-                                                
-                                            
                                                  <div class="box-content" id="actividades">
                                         <table class="table table-striped table-bordered responsive">
                                             <thead>
@@ -103,9 +99,8 @@
                                                 </tr>
                                             </thead>
                                         </table>
-                                                     <div class="form-group col-md-12">
-                                                     <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleActividad.php' "/>
-                                                     </div>
+                                                 </div>
+                                        <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleActividad.php' "/>
                                     </div>
                                             </div>
                                         </div>
@@ -114,7 +109,6 @@
                                </div>
                             </div>
                         </div>
-            </div>
 
       
 

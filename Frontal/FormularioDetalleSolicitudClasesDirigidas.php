@@ -228,7 +228,7 @@
                                     <span ng-show="formulario.FechaSolicitud.$error.required">* Fecha obligatoria.</span>
                                 </span>
                                 </div>
-                        <div class="form-group col-md-12 col-xs-12">
+                        <div class="form-group col-md-12 col-sm-12 col-xs-12">
                             <div class="checkbox" >
                                 <label ng_repeat="actividad in actividades" class="control-label col-md-4 col-sm-4 col-xs-4">
                                     <input  class="" type="checkbox" checklist-model="actividades" checklist-value="actividad" >{{actividad.NombreActividad}}

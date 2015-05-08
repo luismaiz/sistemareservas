@@ -118,17 +118,17 @@
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label" >Tipo Solicitud</label>
-                                <select  id="filtroTipoSolicitud" class="input-sm" >	
+                            <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Tipo Solicitud</label>
+                                <select  id="filtroTipoSolicitud" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
                                     <option ng_repeat="tiposolicitud in tiposSolicitudes" value="{{tiposolicitud.idTipoSolicitud}}">{{tiposolicitud.NombreSolicitud}}</option>
                                 </select>
-                                <label class="control-label" >Tipo Abono</label>
-                                <select  id="filtroTipoAbono" class="input-sm" >	
+                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Tipo Abono</label>
+                                <select  id="filtroTipoAbono" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
                                     <option ng_repeat="tipoabono in tiposAbonos" value="{{tipoabono.idTipoAbono}}">{{tipoabono.NombreAbono}}</option>
                                 </select>
-                                <label class="control-label" >Tipo Tarifa</label>
-                                <select  id="filtroTipoTarifa" class="input-sm" >	
+                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Tipo Tarifa</label>
+                                <select  id="filtroTipoTarifa" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
                                     <option ng_repeat="tipotarifa in tiposTarifas" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>
                                 </select>
                                 <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerPrecios()"/>

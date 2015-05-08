@@ -201,10 +201,10 @@
                                     <span ng-show="formulario.FechaBaja.$error.required">* Fecha obligatoria.</span>
                                 </span>
                                 </div>
-                    <div class="form-group col-md-12">
+                    
                                 <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='TipoAbono.php' " />
                                 <input class="box btn-primary" type="submit" value="Aceptar" ng-click="guardarTipoAbono();" ng-disabled="formulario.$invalid" />
-                    </div>
+                   
                 </form>
             </div>
       </div>

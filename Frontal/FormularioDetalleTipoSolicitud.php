@@ -167,7 +167,9 @@
                             </div>
                             </div>
             <div class="box-content">
-
+<div class="row">
+                        <div class="form-group">
+                            <div class="col-md-12">
                 <form role="form"  name="formulario">
                     <div class="form-group col-md-12">
                                 <input ng-model="tiposolicitud.idTipoSolicitud" type="hidden" class="input-sm" name="idTipoSolicitud" id="idTipoSolicitud">
@@ -204,6 +206,9 @@
                                 <input class="box btn-primary " type="submit" value="Aceptar" ng-click="guardarTipoSolicitud();" ng-disabled="formulario.$invalid" />
 
                 </form>
+                            </div>
+                        </div>
+</div>
             </div>
         </div>
 

@@ -66,17 +66,16 @@
             };
             
             $scope.validarSolicitud = function(){
-                                   
              
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=validarSolicitud');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala";
                 var Params = 'idSolicitud='+ $location.search().idSolicitud;
-               
+              
                 Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
+           
             
-            alert(Ajax.responseText);
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')
@@ -157,46 +156,46 @@
                             </div>
                         <div class="box-content">
                             <form role="form"  name="formulario">
-                                <div class="form-group col-md-12">
-                                <label class="control-label col-md-2" >Localizador</label>
-                                <input ng-model="abonodiario.Localizador"  type="text" class="input-sm col-md-4" name="localizador" id="Localizador" required >
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Localizador</label>
+                                <input ng-model="abonodiario.Localizador"  type="text" class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="localizador" id="Localizador" required >
                                 <span style="color:red" ng-show="formulario.localizador.$dirty && formulario.localizador.$invalid">
                                 <span ng-show="formulario.localizador.$error.required">Localizador obligatorio.</span>
                                  </span>
                                 </div>
-                                <div class="form-group col-md-12">
-                                <label class="control-label col-md-2" >Fecha Solicitud</label>
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Fecha Solicitud</label>
                                 <input ng-model="abonodiario.FechaSolicitud" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="FechaSolicitud" id="FechaSolicitud" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required>
                                 <span class="col-md-6 col-sm-5 col-XS-12" style="color:red" ng-show="formulario.FechaSolicitud.$dirty && formulario.FechaSolicitud.$invalid">
                                      <span ng-show="formulario.FechaSolicitud.$error.pattern">* Formato de fecha no valido.</span>
                                     <span ng-show="formulario.FechaSolicitud.$error.required">* Fecha obligatoria.</span>
                                 </span>
                                 </div>
-                                <div class="form-group col-md-12">
-                                <label class="control-label col-md-2" >Nombre</label>
-                                <input ng-model="abonodiario.Nombre"  type="text" class="input-sm col-md-4" name="nombre" id="Nombre" required >
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Nombre</label>
+                                <input ng-model="abonodiario.Nombre"  type="text" class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="nombre" id="Nombre" required >
                                 <span style="color:red" ng-show="formulario.nombre.$dirty && formulario.nombre.$invalid">
                                 <span ng-show="formulario.nombre.$error.required">Nombre obligatorio.</span>
                                  </span>
                                 </div>
-                                <div class="form-group col-md-12">
-                                <label class="control-label col-md-2" >Apellidos</label>
-                                <input ng-model="abonodiario.Apellidos" type="text" class="input-sm col-md-6"  name="apellidos" id="Apellidos" required>
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Apellidos</label>
+                                <input ng-model="abonodiario.Apellidos" type="text" class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12"  name="apellidos" id="Apellidos" required>
                                 <span style="color:red" ng-show="formulario.apellidos.$dirty && formulario.apellidos.$invalid">
                                 <span ng-show="formulario.apellidos.$error.required">Apellidos obligatorio.</span>
                                 </span>
                                 </div>
-                                <div class="form-group col-md-12">                                
-                                <label class="control-label col-md-2" >Email</label>
-                                <input ng-model="abonodiario.Email" type="email" class="input-sm" name="mail" id="Mail" required >
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">                                
+                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Email</label>
+                                <input ng-model="abonodiario.Email" type="email" class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="mail" id="Mail" required >
                                 <span style="color:red" ng-show="formulario.mail.$dirty && formulario.mail.$invalid">
                                 <span ng-show="formulario.mail.$error.required">Email obligatorio.</span>
                                 <span ng-show="formulario.mail.$error.email">Formato de email no válido.</span>
                                 </span>
                                 </div>
-                                <div class="form-group col-md-12">                                
-                                <label class="control-label col-md-2" >Dni</label>
-                                <input ng-model="abonodiario.DNI" type="text" class="input-sm" name="dni" id="Dni" required ng-pattern='/^\d{7,8}(-?[a-z])?$/i'>
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">                                
+                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Dni</label>
+                                <input ng-model="abonodiario.DNI" type="text" class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="dni" id="Dni" required ng-pattern='/^\d{7,8}(-?[a-z])?$/i'>
                                 <span style="color:red" ng-show="formulario.dni.$dirty && formulario.dni.$invalid">
                                     <span ng-show="formulario.dni.$error.required">DNI obligatorio.</span>
                                 <span ng-show="formulario.dni.$error.pattern">Formato de DNI no válido 12345678-A</span>
