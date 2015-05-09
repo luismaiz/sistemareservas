@@ -15,7 +15,9 @@
       
         $scope.obtenerReservasSolicitudesPendientes = function() {
                 
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesPendientes";
+                $scope.solicitudes = [];
+                $scope.abonos = [];
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesPendientes');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesPendientes";
                 
                 var Params = 'TipoSolicitud=1';    
@@ -35,7 +37,9 @@
             
         $scope.obtenerAbonosPendientes = function() {
                 
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes";
+                $scope.solicitudes = [];
+                $scope.abonos = [];
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes";
                 
                 var Params = 'TipoSolicitud=3';    
@@ -45,7 +49,7 @@
                 Ajax.send(Params); // Enviamos los datos
                 
   //              alert(Ajax.responseText);
-                $scope.abonos = JSON.parse(Ajax.responseText).abonos;
+                $scope.solicitudes = JSON.parse(Ajax.responseText).abonos;
         
             };
             if (typeof($location.search().abonos) !== "undefined")
@@ -57,7 +61,8 @@
             
         $scope.obtenerTipoSolicitud = function(){
         
-        var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitud";
+        
+        var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitud');
         //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitud";		
         
         var Params = '';
@@ -75,7 +80,9 @@
                      
         $scope.obtenerReservas = function() {
             
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerReservasFiltro";
+                $scope.solicitudes = [];
+                
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerReservasFiltro');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerReservasFiltro";
                 
                 var Params =  'Localizador=' + document.getElementById("filtroLocalizador").value + 
@@ -90,22 +97,43 @@
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-  
-                $scope.solicitudes = JSON.parse(Ajax.responseText).solicitudes;
-                
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')
                 {
-                    $scope.salas = JSON.parse(Ajax.responseText).salas;    
+                    $scope.solicitudes = JSON.parse(Ajax.responseText).solicitudes;
                     document.getElementById('divSinResultados').style.display = 'none';
                 }
                 else
                 {
-                    $scope.salas = [];
+                    $scope.solicitudes = [];
                     document.getElementById('divSinResultados').style.display = 'block';
                 }
             };
+            
+        $scope.validarSolicitud = function(idSolicitud){
+                          
+             
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=validarSolicitud');
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala";
+                var Params = 'idSolicitud='+ idSolicitud;
+               
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+            
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divCorrecto').style.display = 'block';
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
+            };    
+            
           
     }
       
@@ -142,7 +170,7 @@
                                     <option ng_repeat="tiposolicitud in tiposSolicitudes" value="{{tiposolicitud.idTipoSolicitud}}">{{tiposolicitud.NombreSolicitud}}</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12">Nombre</label>
                                 <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" id="filtroNombre" name="filtroNombre" />
                                 <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Apellidos</label>
@@ -150,16 +178,16 @@
                                 <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >DNI</label>
                                 <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" id="filtroDni" name="filtroDni"/>
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 
                                 <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >eMail</label>
                                 <input type="email" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" required id="filtroEmail" name="filtroEmail"/>
                                 <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Fecha Solicitud</label>
-                                <input type="datetime-local" class="input-sm " id="filtroFechaSolicitud" name="filtroFechaSolicitud"/>
+                                <input type="text" class="input-sm col-lg-4  col-md-4 col-sm-4 col-xs-7" id="filtroFechaSolicitud" name="filtroFechaSolicitud"/>
                             </div>
-                            <div class="form-group col-md-12">
-                                <input class="box btn-primary alignright" type="submit" value="Buscar" ng_click="obtenerReservas()"/>
-                            </div>
+                            
+                                <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerReservas()"/>
+                           
                             <div class="box-content" id="reservas">
                             <table class="table table-striped table-bordered responsive">
                                             <thead>
@@ -177,11 +205,14 @@
                                                     <td>{{solicitud.Localizador}}</td>
                                                     <td>{{solicitud.FechaSolicitud |date:'dd-MM-yyyy'}}</td>
                                                     <td class="center">
-                                                        <a target="_self" href="FormularioDetalleSolicitudClasesDirigidas.php?idSolicitud={{solicitud.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
-                                                        <a target="_self" href="FormularioDetalleSolicitudClasesDirigidas.php" class="btn btn-danger">Sin validar</a>
+                                                        <a target="_self" ng_show="solicitud.idTipoSolicitud==1" href="FormularioDetalleSolicitudClasesDirigidas.php?idSolicitud={{solicitud.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
+                                                        <a target="_self" ng_show="solicitud.idTipoSolicitud==2" href="FormularioDetalleSolicitudAbonoMensual.php?idSolicitud={{solicitud.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
+                                                        <a target="_self" ng_show="solicitud.idTipoSolicitud==3" href="FormularioDetalleSolicitudAbonoDiario.php?idSolicitud={{solicitud.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
+                                                        <a target="_self" ng_show="solicitud.idTipoSolicitud==1 && solicitud.Gestionado==0" href="" class="btn btn-danger" ng_click="validarSolicitud(solicitud.idSolicitud);">Validar</a>
+                                                        <a target="_self" ng_show="solicitud.idTipoSolicitud==3 && solicitud.Gestionado==0" href="" class="btn btn-danger" ng_click="validarSolicitud(solicitud.idSolicitud);">Validar</a>
                                                     </td>
                                                 </tr>
-                                                <tr ng_repeat="abono in abonos">
+<!--                                                <tr ng_repeat="abono in abonos">
                                                     <td>{{abono.Nombre}}</td>
                                                     <td>{{abono.Apellidos}}</td>
                                                     <td>{{abono.Localizador}}</td>
@@ -190,8 +221,7 @@
                                                         <a target="_self" href="FormularioDetalleSolicitudAbonoDiario.php?idSolicitud={{abono.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
                                                         <a target="_self" href="FormularioDetalleSolicitudAbonoDiario.php" class="btn btn-danger">Sin validar</a>
                                                     </td>
-                                                </tr>
-                                                
+                                                </tr>-->
                                             
                                         </table>
                 </div>

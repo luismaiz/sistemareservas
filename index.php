@@ -2,13 +2,18 @@
 
 $no_visible_elements = true;
 include('Frontal/CabeceraInicio.php');
+require_once 'config.php';
 ?>
 <script>
 
     var Ajax = new AjaxObj();
-
-    function login() {
-        var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/LoginBO.php?url=iniciarSesion";
+    //var BASE_URL = 'http://vw15115.dinaserver.com/hosting/reservascentro.es-web/';
+    var BASE_URL = 'http://localhost:8080/';
+    function login() {      
+        
+        var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/LoginBO.php?url=iniciarSesion');
+        
+        //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/LoginBO.php?url=iniciarSesion";
         //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/LoginBO.php?url=iniciarSesion";
         var Params = 'NombreUsuario=' + document.getElementById("NombreUsuario").value + '&Password=' + document.getElementById("Password").value;
 
@@ -21,7 +26,7 @@ include('Frontal/CabeceraInicio.php');
         //alert(RespTxt);
 
         var Clase = eval('(' + RespTxt + ')');
-        
+
         if (Clase) {
             var tipo = parseInt((Clase.Usuario[0].TipoUsuario));
             switch (tipo) {
@@ -77,7 +82,7 @@ include('Frontal/CabeceraInicio.php');
 
                 <p class="center col-md-5">
                     <button class="btn btn-primary" >Login</button>
-                    
+
                 </p>
             </fieldset>
         </form>

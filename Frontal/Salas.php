@@ -1,4 +1,15 @@
-<?php require('Cabecera.php'); ?>
+<?php require('Cabecera.php'); 
+if (!empty($_SESSION['CriterioFiltro']) && !empty($_SESSION['TextoFiltro']))
+{
+echo('bien');    
+//presentar tomando en cuenta los filtros antes seleccionados.
+}
+else
+{
+   echo('mal');  //presentar sin filtros
+} 
+
+?>
 <script>
             var Ajax = new AjaxObj();
             var app = angular.module('BusquedaSalas', []);
@@ -9,21 +20,27 @@
 
             $scope.obtenerSalas = function() {
                 
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSalasFiltro";
+                
+                
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSalasFiltro');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSalasFiltro";
                 
                 var Params = 'NombreSala=' + document.getElementById("filtronombresala").value + '&CapacidadSala=' + document.getElementById("filtrocapacidadsala").value;    
+                
                 
 	        Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
 	
+        
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
-                
+                       
                 if ($scope.estado === 'correcto')
                 {
                     $scope.salas = JSON.parse(Ajax.responseText).salas;    
                     document.getElementById('divSinResultados').style.display = 'none';
+                    <?php $_SESSION['Salas'] = "<script> document.write($scope.salas) </script>";?>
+                     
                 }
                 else
                 {
@@ -32,6 +49,10 @@
                 }
         
             };
+            
+            $(function () {
+                $('.footable').footable();
+                });
 
 }
         </script>
@@ -66,22 +87,21 @@
                                         <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Capacidad Sala</label>
                                         <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12 "  id="filtrocapacidadsala">
                                 </div>
-                                <div class="form-group col-md-12">
-                                        <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerSalas()"/>
-                                </div>
-                                        <div class="box-content" id="salas">
-                                        <table class="table table-striped table-bordered responsive">
+                                <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerSalas()"/>
+                                <div class="box-content" id="salas">
+                                        <table class="footable table-striped table-bordered responsive" data-page-size="10" >
                                             <thead>
                                                 <tr>
-                                                    <th>Nombre</h6></th>
-                                                    <th>Capacidad</th>
+                                                    <th>Nombre</th>
+                                                    <th data-type="numeric">Capacidad</th>
                                                     <th>Descripción</th>
-                                                    <th>Fecha Alta</th>
-                                                    <th>Fecha Baja</th>
-                                                    <th></th>
+                                                    <th data-type="numeric" data-value="303892481155">Fecha Alta</th>
+                                                    <th data-type="numeric" data-value="303892481155">Fecha Baja</th>
+                                                    <th data-sort-ignore="true"></th>
                                                     
                                                 </tr>
                                               </thead>
+                                              <tbody>
                                                 <tr ng_repeat="sala in salas">
                                                     <td>{{sala.NombreSala}}</td>
                                                     <td>{{sala.CapacidadSala}}</td>
@@ -90,13 +110,13 @@
                                                     <td>{{sala.FechaBaja |date:'dd-MM-yyyy'}}</td>
                                                     <td class="center"><a href="FormularioDetalleSala.php?idSala={{sala.idSala}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
                                                 </tr>
-                                            
+                                                </tbody>
+                                               
                                         </table>
-                                    </div>
-                                <div class="form-group col-md-12">
+                                   </div>
+                                
                                 <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleSala.php' "/>
-                                </div>
-                            </div>
+                           </div>
                         </div>
                     </div>
                 </div>
@@ -107,4 +127,10 @@
 
 
 
-<?php require('Pie.php'); ?>
+<?php require('Pie.php'); 
+
+$_SESSION['CriterioFiltro'] = "TITULO";
+$_SESSION['TextoFiltro'] = "Ultima hora";
+
+echo($_SESSION['TextoFiltro']);
+?>

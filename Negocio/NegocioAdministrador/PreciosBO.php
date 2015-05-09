@@ -231,6 +231,11 @@ class PreciosBO extends Rest{
             $respuesta['precios'] = $array;
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
+        else
+        {
+            $respuesta['estado'] = 'No se encontraron datos';
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
     }
 }

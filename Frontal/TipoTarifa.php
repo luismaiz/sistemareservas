@@ -11,7 +11,7 @@ function CargaTiposTarifas($scope, $http) {
     $scope.obtenerTiposTarifas = function() {
                 
                 
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifasFiltro";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifasFiltro');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifasFiltro";
                 
                 var Params = 'NombreTarifa=' + document.getElementById("filtronombretarifa").value + '&DescripcionTarifa=' + document.getElementById("filtrodescripciontarifa").value;    
@@ -61,16 +61,13 @@ function CargaTiposTarifas($scope, $http) {
                      <div class="row">
                         <div class="form-group">
                             <div class="col-md-12">
-                                <div class="form-group">
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                        <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Nombre Tarifa</label>
                                         <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12"  id="filtronombretarifa">	
                                         <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Descripcion Tarifa</label>
                                         <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12"  id="filtrodescripciontarifa">
                                         </div>
-                                        <div class="form-group col-md-12">
                                         <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerTiposTarifas()"/>
-                                        </div>
-                                        
                                        
                                 <div class="box-content" id="tipostarifas">
                                      
@@ -95,9 +92,9 @@ function CargaTiposTarifas($scope, $http) {
                                             
                                         </table>
                                         </div>
-                               <div class="form-group col-md-12">
+                               
                                 <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleTarifa.php' "/>
-                               </div>
+                               
                             </div>
                             </div>
                         </div>

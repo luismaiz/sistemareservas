@@ -198,10 +198,10 @@ class TiposSolicitudesBO extends Rest{
         
         $tiposolicitud = new TiposolicitudModel();
         
-        if($nomtiposolicitud != '')
-            $tiposolicitud->setNombreSolicitud($nomtiposolicitud);
-        if($destiposolicitud != '')
-            $tiposolicitud->setDescripcionSolicitud($destiposolicitud);
+        if($this->datosPeticion['NombreSolicitud'])
+            $tiposolicitud->setNombreSolicitud($this->datosPeticion['NombreSolicitud']);
+        if($this->datosPeticion['DescripcionSolicitud'] != '')
+            $tiposolicitud->setDescripcionSolicitud($this->datosPeticion['DescripcionSolicitud']);
         
         $filas = TiposolicitudModel::findByExample($this->con,$tiposolicitud,$sort);
                                 
@@ -214,6 +214,11 @@ class TiposSolicitudesBO extends Rest{
             }
 
             $respuesta['tipossolicitudes'] = $array;
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        else
+        {
+            $respuesta['estado'] = 'No se encontraron datos';
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);

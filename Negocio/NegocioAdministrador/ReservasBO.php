@@ -4,6 +4,7 @@ require_once("../../ComunicacionesREST/Rest.php");
 require_once("../../Negocio/AccesoDatos/ConexionBD.php");
 require_once("../../Negocio/Entidades/SolicitudModel.class.php");
 require_once("../../Negocio/Entidades/ActividadsolicitudclasedirigidaModel.class.php");
+require_once("../../Negocio/Entidades/DatosolicitudclasedirigidaModel.class.php");
 require_once("../../Negocio/Entidades/helpers/DFC.class.php");
 require_once("../../Negocio/Entidades/helpers/DSC.class.php");
 
@@ -202,6 +203,11 @@ class ReservasBO extends Rest{
             $respuesta['solicitudes'] = $array;
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
+        else
+        {
+            $respuesta['estado'] = 'No se encontraron datos';
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
     }
     
@@ -272,6 +278,8 @@ class ReservasBO extends Rest{
                 $DescripcionSolicitud= $fila->getDescripcionSolicitud();
                 $Otros= $fila->getOtros();
                 $Localizador= $fila->getLocalizador();
+                $Gestionado = $fila->getGestionado()
+                        ;
                                 
                 $solicitud->setIdSolicitud($idSolicitud);
                 $solicitud->setIdTipoSolicitud($idTipoSolicitud);
@@ -293,11 +301,7 @@ class ReservasBO extends Rest{
                 $solicitud->setDescripcionSolicitud($DescripcionSolicitud);
                 $solicitud->setOtros($Otros);
                 $solicitud->setLocalizador($Localizador);
-                $solicitud->setGestionado(1);
-                
-                echo('Solicitud: ' + $Nombre);
-                echo('Solicitud: ' + $idTipoSolicitud);
-                echo('Tarifa: ' + $idTipoTarifa);
+                $solicitud->setGestionado($Gestionado);
                 
                 $filasActualizadas = $solicitud->updateToDatabase($this->con);
                 
@@ -368,21 +372,39 @@ class ReservasBO extends Rest{
             
             $solicitud = new SolicitudModel();
             $actividades = new ActividadsolicitudclasedirigidaModel();
+            $datosbancarios = new DatosolicitudclasedirigidaModel();
             
             $sort = array(
             new DSC(ActividadsolicitudclasedirigidaModel::FIELD_IDACTIVIDAD, DSC::ASC)
             );
             
+            $sortdatos = array(
+            new DSC(DatosolicitudclasedirigidaModel::FIELD_IDSOLICITUD, DSC::ASC)
+            );
+            
             $fila = $solicitud->findById($this->con,$this->datosPeticion['idSolicitud']);
             $filaactividades = ActividadsolicitudclasedirigidaModel::findByExample($this->con,$actividades,$sort);
+            $filadatosbancarios =  DatosolicitudclasedirigidaModel::findByExample($this->con,$datosbancarios,$sortdatos);
             
             $num = count($filaactividades);
             if ($num > 0) {
 
-            for ($i = 0; $i < $num; $i++) {
-                $array[] = $filaactividades[$i]->toHash();
+                for ($i = 0; $i < $num; $i++) 
+                {
+                    $array[] = $filaactividades[$i]->toHash();
+                }
             }
+            
+            $num = count($filadatosbancarios);
+            if ($num > 0) {
+
+                for ($i = 0; $i < $num; $i++) 
+                {
+                    $arraybanco[] = $filadatosbancarios[$i]->toHash();
+                }
             }
+            
+            
             
             $respuesta = "";
             if ($fila) {
@@ -403,11 +425,12 @@ class ReservasBO extends Rest{
                 $respuesta['clasesdirigidas']['Localidad'] = $fila->getLocalidad();
                 $respuesta['clasesdirigidas']['Telefono1'] = $fila->getTelefono1();
                 $respuesta['clasesdirigidas']['Telefono2'] = $fila->getTelefono2();
+                $respuesta['datosbancarios'] = $arraybanco;
+                
                 $respuesta['actividades'] = $array;
+                //$respuesta['datosbancarios'] = $arraybanco;
+                    
                 
-                
-                
-
                 $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
             }
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
@@ -451,6 +474,8 @@ class ReservasBO extends Rest{
             //$respuesta['abonos'] = $array;
             $respuesta['clases'] = $num;
         }
+        else
+            $respuesta['clases']=0;
         
         $num = count($filasmensual);
         if ($num > 0) {
@@ -461,6 +486,8 @@ class ReservasBO extends Rest{
             //$respuesta['abonos'] = $array;
             $respuesta['mensual'] = $num;
         }
+        else
+            $respuesta['mensual']=0;
         
         $num = count($filasdiario);
         if ($num > 0) {
@@ -471,6 +498,8 @@ class ReservasBO extends Rest{
             //$respuesta['abonos'] = $array;
             $respuesta['diario'] = $num;
         }
+        else
+            $respuesta['diario'] = 0;
         $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
     }

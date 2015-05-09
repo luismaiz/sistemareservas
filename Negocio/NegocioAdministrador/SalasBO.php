@@ -239,6 +239,7 @@ class SalasBO  extends Rest {
                                 
         $num = count($filas);
         if ($num > 0) {
+            
             $respuesta['estado'] = 'correcto';
 
             for ($i = 0; $i < $num; $i++) {
@@ -246,6 +247,11 @@ class SalasBO  extends Rest {
             }
 
             $respuesta['salas'] = $array;
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        else
+        {
+            $respuesta['estado'] = 'No se encontraron datos';
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);

@@ -14,7 +14,7 @@
             $scope.msg = [];
             $scope.obtenerSalas = function(idSala) {
                 
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSala";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSala');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSala";
                 var Params = 'idSala='+ idSala;
 
@@ -41,7 +41,7 @@
             $scope.crearSala = function() {
                                 
                 
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=crearSala";		
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=crearSala');		
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=crearSala";		
                 var Params ='NombreSala='+ document.getElementById('NombreSala').value +
                     '&CapacidadSala='+ document.getElementById('CapacidadSala').value +
@@ -71,7 +71,7 @@
             $scope.actualizarSala = function(){
                                    
              
-                var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala";
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala";
                 var Params = 'idSala='+ $location.search().idSala +
                     '&NombreSala='+ document.getElementById('NombreSala').value +
@@ -207,10 +207,10 @@
                                     <span ng-show="formulario.FechaBaja.$error.required">* Fecha obligatoria.</span>
                                 </span>
                                 </div>
-                                <div class="form-group col-md-12">
+                                
                                 <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Salas.php' " />
                                 <input class="box btn-primary" type="submit" value="Aceptar" ng-click="guardarSala();" ng-disabled="formulario.$invalid" />
-                                </div>
+                             
                              </form>
                            </div>  
                         </div>
