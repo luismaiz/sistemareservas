@@ -1,15 +1,4 @@
-<?php require('Cabecera.php'); 
-if (!empty($_SESSION['CriterioFiltro']) && !empty($_SESSION['TextoFiltro']))
-{
-echo('bien');    
-//presentar tomando en cuenta los filtros antes seleccionados.
-}
-else
-{
-   echo('mal');  //presentar sin filtros
-} 
-
-?>
+<?php require('Cabecera.php'); ?>
 <script>
             var Ajax = new AjaxObj();
             var app = angular.module('BusquedaSalas', []);
@@ -39,8 +28,6 @@ else
                 {
                     $scope.salas = JSON.parse(Ajax.responseText).salas;    
                     document.getElementById('divSinResultados').style.display = 'none';
-                    <?php $_SESSION['Salas'] = "<script> document.write($scope.salas) </script>";?>
-                     
                 }
                 else
                 {
@@ -127,10 +114,4 @@ else
 
 
 
-<?php require('Pie.php'); 
-
-$_SESSION['CriterioFiltro'] = "TITULO";
-$_SESSION['TextoFiltro'] = "Ultima hora";
-
-echo($_SESSION['TextoFiltro']);
-?>
+<?php require('Pie.php'); ?>

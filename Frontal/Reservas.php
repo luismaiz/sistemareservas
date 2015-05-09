@@ -189,7 +189,7 @@
                                 <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerReservas()"/>
                            
                             <div class="box-content" id="reservas">
-                            <table class="table table-striped table-bordered responsive">
+                            <table class="footable table-striped table-bordered responsive" data-page-size="10"">
                                             <thead>
                                                 <tr>
                                                     <th>Nombre</th>
