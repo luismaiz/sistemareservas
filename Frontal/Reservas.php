@@ -158,6 +158,10 @@
             <div class="alert alert-info" id="divSinResultados" style='display:none;'>
                     <strong></strong>No se han encontrado resultados para los filtros introducidos.
             </div>
+            <div class="alert alert-success" id="divCorrecto" style='display:none;'>
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <strong>Correcto.</strong>  Operación realizada con éxito.
+            </div>
             <div class="box-content">
                 <div class="row">
                     <div class="form-group">
@@ -210,18 +214,10 @@
                                                         <a target="_self" ng_show="solicitud.idTipoSolicitud==3" href="FormularioDetalleSolicitudAbonoDiario.php?idSolicitud={{solicitud.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
                                                         <a target="_self" ng_show="solicitud.idTipoSolicitud==1 && solicitud.Gestionado==0" href="" class="btn btn-danger" ng_click="validarSolicitud(solicitud.idSolicitud);">Validar</a>
                                                         <a target="_self" ng_show="solicitud.idTipoSolicitud==3 && solicitud.Gestionado==0" href="" class="btn btn-danger" ng_click="validarSolicitud(solicitud.idSolicitud);">Validar</a>
+                                                        <i class="glyphicon glyphicon-bell blue" ng_show="solicitud.idTipoTarifa!=1"></i>
+                                                        
                                                     </td>
                                                 </tr>
-<!--                                                <tr ng_repeat="abono in abonos">
-                                                    <td>{{abono.Nombre}}</td>
-                                                    <td>{{abono.Apellidos}}</td>
-                                                    <td>{{abono.Localizador}}</td>
-                                                    <td>{{abono.FechaSolicitud |date:'dd-MM-yyyy'}}</td>
-                                                    <td class="center">
-                                                        <a target="_self" href="FormularioDetalleSolicitudAbonoDiario.php?idSolicitud={{abono.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
-                                                        <a target="_self" href="FormularioDetalleSolicitudAbonoDiario.php" class="btn btn-danger">Sin validar</a>
-                                                    </td>
-                                                </tr>-->
                                             
                                         </table>
                 </div>

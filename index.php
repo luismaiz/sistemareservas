@@ -35,7 +35,7 @@ require_once 'config.php';
                     return false;
                     break;
                 case 2:
-                    window.location = 'Frontal\\Inicio.php';
+                    window.location = 'Frontal\\InicioMonitor.php';
                     return false;
                     break;
                 case 3:
