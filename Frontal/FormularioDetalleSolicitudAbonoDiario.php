@@ -21,7 +21,7 @@
                 Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-                               
+                alert(Ajax.responseText);               
                 $scope.abonodiario = JSON.parse(Ajax.responseText).abonodiario;
                 
                 if ($scope.abonodiario.Gestionado=== '0')
@@ -74,7 +74,7 @@
                 Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-           
+                alert(Ajax.responseText);
             
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
@@ -108,7 +108,7 @@
             showMonthAfterYear: false,
             yearSuffix: ''
             };
- $.datepicker.setDefaults($.datepicker.regional['es']);
+            $.datepicker.setDefaults($.datepicker.regional['es']);
             
             $(function() {
                 $( "#FechaSolicitud" ).datepicker({

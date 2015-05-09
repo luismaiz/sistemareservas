@@ -1,4 +1,15 @@
-<?php require('Cabecera.php'); ?>
+<?php require('Cabecera.php'); 
+if (!empty($_SESSION['CriterioFiltro']) && !empty($_SESSION['TextoFiltro']))
+{
+echo('bien');    
+//presentar tomando en cuenta los filtros antes seleccionados.
+}
+else
+{
+   echo('mal');  //presentar sin filtros
+} 
+
+?>
 <script>
             var Ajax = new AjaxObj();
             var app = angular.module('BusquedaSalas', []);
@@ -23,13 +34,13 @@
 	
         
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
-                
-                
-                
+                       
                 if ($scope.estado === 'correcto')
                 {
                     $scope.salas = JSON.parse(Ajax.responseText).salas;    
                     document.getElementById('divSinResultados').style.display = 'none';
+                    <?php $_SESSION['Salas'] = "<script> document.write($scope.salas) </script>";?>
+                     
                 }
                 else
                 {
@@ -38,6 +49,10 @@
                 }
         
             };
+            
+            $(function () {
+                $('.footable').footable();
+                });
 
 }
         </script>
@@ -74,18 +89,19 @@
                                 </div>
                                 <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerSalas()"/>
                                 <div class="box-content" id="salas">
-                                        <table class="table table-striped table-bordered responsive">
+                                        <table class="footable table-striped table-bordered responsive" data-page-size="10" >
                                             <thead>
                                                 <tr>
-                                                    <th>Nombre</h6></th>
-                                                    <th>Capacidad</th>
+                                                    <th>Nombre</th>
+                                                    <th data-type="numeric">Capacidad</th>
                                                     <th>Descripción</th>
-                                                    <th>Fecha Alta</th>
-                                                    <th>Fecha Baja</th>
-                                                    <th></th>
+                                                    <th data-type="numeric" data-value="303892481155">Fecha Alta</th>
+                                                    <th data-type="numeric" data-value="303892481155">Fecha Baja</th>
+                                                    <th data-sort-ignore="true"></th>
                                                     
                                                 </tr>
                                               </thead>
+                                              <tbody>
                                                 <tr ng_repeat="sala in salas">
                                                     <td>{{sala.NombreSala}}</td>
                                                     <td>{{sala.CapacidadSala}}</td>
@@ -94,9 +110,11 @@
                                                     <td>{{sala.FechaBaja |date:'dd-MM-yyyy'}}</td>
                                                     <td class="center"><a href="FormularioDetalleSala.php?idSala={{sala.idSala}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
                                                 </tr>
-                                            
+                                                </tbody>
+                                               
                                         </table>
                                    </div>
+                                
                                 <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleSala.php' "/>
                            </div>
                         </div>
@@ -109,4 +127,10 @@
 
 
 
-<?php require('Pie.php'); ?>
+<?php require('Pie.php'); 
+
+$_SESSION['CriterioFiltro'] = "TITULO";
+$_SESSION['TextoFiltro'] = "Ultima hora";
+
+echo($_SESSION['TextoFiltro']);
+?>

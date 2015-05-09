@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * 
+ *
+ * @version 1.105
+ * @package entity
+ */
 require_once("helpers/Db2PhpEntityBase.class.php");
 require_once("helpers/Db2PhpEntityModificationTracking.class.php");
 require_once 'helpers/DFCAggregate.class.php';
@@ -105,7 +111,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		self::FIELD_IDSOLICITUD=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
 		self::FIELD_IDTIPOSOLICITUD=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
 		self::FIELD_IDTIPOTARIFA=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
-		self::FIELD_FECHASOLICITUD=>array(Db2PhpEntity::JDBC_TYPE_TIMESTAMP,19,0,true),
+		self::FIELD_FECHASOLICITUD=>array(Db2PhpEntity::JDBC_TYPE_DATE,10,0,true),
 		self::FIELD_NOMBRE=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,150,0,true),
 		self::FIELD_APELLIDOS=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,45,0,true),
 		self::FIELD_DNI=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,10,0,true),
@@ -144,7 +150,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		self::FIELD_DESCRIPCIONSOLICITUD=>null,
 		self::FIELD_OTROS=>null,
 		self::FIELD_LOCALIZADOR=>null,
-		self::FIELD_GESTIONADO=>'b\'0\'');
+		self::FIELD_GESTIONADO=>'');
 	private $idSolicitud;
 	private $idTipoSolicitud;
 	private $idTipoTarifa;
@@ -245,7 +251,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	/**
 	 * set value for FechaSolicitud 
 	 *
-	 * type:TIMESTAMP,size:19,default:null,nullable
+	 * type:DATE,size:10,default:null,nullable
 	 *
 	 * @param mixed $FechaSolicitud
 	 * @return SolicitudModel
@@ -259,7 +265,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	/**
 	 * get value for FechaSolicitud 
 	 *
-	 * type:TIMESTAMP,size:19,default:null,nullable
+	 * type:DATE,size:10,default:null,nullable
 	 *
 	 * @return mixed
 	 */
@@ -670,7 +676,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	/**
 	 * set value for Gestionado 
 	 *
-	 * type:BIT,size:1,default:b'0'
+	 * type:BIT,size:1,default:null
 	 *
 	 * @param mixed $Gestionado
 	 * @return SolicitudModel
@@ -684,7 +690,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	/**
 	 * get value for Gestionado 
 	 *
-	 * type:BIT,size:1,default:b'0'
+	 * type:BIT,size:1,default:null
 	 *
 	 * @return mixed
 	 */

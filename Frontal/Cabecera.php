@@ -43,6 +43,11 @@ include 'config.php'
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
   <link rel="stylesheet" href="/resources/demos/style.css">
         <script src="Utilidades/js/jscolor/jscolor.js" type="text/javascript"></script>
+        <link href="Utilidades/FooTable-2/css/footable.core.css" rel="stylesheet" type="text/css"/>
+        <link href="Utilidades/FooTable-2/css/footable.metro.css" rel="stylesheet" type="text/css"/>
+        <script src="Utilidades/FooTable-2/js/footable.js" type="text/javascript"></script>
+        <script src="Utilidades/FooTable-2/js/footable.sort.js" type="text/javascript"></script>
+        <script src="Utilidades/FooTable-2/js/footable.paginate.js" type="text/javascript"></script>
         <!--<script src="Utilidades/bower_components/jquery/jquery.min.js" type="text/javascript"></script>-->
         <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
