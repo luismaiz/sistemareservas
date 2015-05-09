@@ -1,136 +1,8 @@
-<!--?php require('Cabecera.php'); ?>-->
+<?php require('Cabecera.php'); ?>
 
-<head>
-
-    <meta charset="utf-8">
-    <title>Inicio</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">
-    <meta name="author" content="Muhammad Usman">
-
-    <!-- bootstrap & fontawesome -->
-    <link rel="stylesheet" href="Utilidades/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="Utilidades/css/font-awesome.min.css" />
-
-    <!-- page specific plugin styles -->
-    <link rel="stylesheet" href="Utilidades/css/jquery-ui.custom.min.css" />
-    <link rel="stylesheet" href="Utilidades/css/fullcalendar.min.css" />
-
-    <!-- text fonts -->
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
-
-    <!-- ace styles -->
-    <link rel="stylesheet" href="Utilidades/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
-
-    <!-- The fav icon -->
-    <link rel="shortcut icon" href="Utilidades/img/favicon.ico">
-
-    <!--[if lte IE 9]>
-            <link rel="stylesheet" href="dist/css/ace-part2.min.css" class="ace-main-stylesheet" />
-    <![endif]-->
-
-    <!--[if lte IE 9]>
-      <link rel="stylesheet" href="dist/css/ace-ie.min.css" />
-    <![endif]-->
-
-    <!-- inline styles related to this page -->
-
-    <!-- ace settings handler -->
-    <script src="Utilidades/js/ace-extra.min.js"></script>        
-
-    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
-
-    <!--[if lte IE 8]>
-    <script src="dist/js/html5shiv.min.js"></script>
-    <script src="dist/js/respond.min.js"></script>
-    <![endif]-->		
-
-
-    <!-- basic scripts -->
-
-    <!--[if !IE]> -->
-    <script src="Utilidades/js/jquery.min.js"></script>
-
-    <!-- <![endif]-->
-
-    <!--[if IE]>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<![endif]-->
-
-    <!--[if !IE]> -->
     <script type="text/javascript">
-        window.jQuery || document.write("<script src='Utilidades/js/jquery.min.js'>"+"<"+"/script>");
-    </script>
-
-    <!-- <![endif]-->
-
-    <!--[if IE]>
-<script type="text/javascript">
-window.jQuery || document.write("<script src='jquery1x.min.js'>"+"<"+"/script>");
-</script>
-<![endif]-->
-    <script type="text/javascript">
-        if('ontouchstart' in document.documentElement) document.write("<script src='Utilidades/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
-    </script>
-    <script src="Utilidades/js/bootstrap.min.js"></script>
-
-    <!-- page specific plugin scripts -->
-    <script src="Utilidades/js/jquery-ui.custom.min.js"></script>
-    <script src="Utilidades/js/jquery.ui.touch-punch.min.js"></script>
-    <script src="Utilidades/js/moment.min.js"></script>
-    <script src="Utilidades/js/fullcalendar.min.js"></script>
-    <script src="Utilidades/js/bootbox.min.js"></script>
-
-    <!-- ace scripts -->
-    <script src="Utilidades/js/ace-elements.min.js"></script>
-    <script src="Utilidades/js/ace.min.js"></script>
-    
-    
-    <!--<link rel="stylesheet" href="Utilidades/css/jquery-ui.css" />
-    <link rel="stylesheet" href="Utilidades/css/jquery-ui.min.css" />
-    <link rel="stylesheet" href="Utilidades/css/jquery-ui.structure.css" />
-    <link rel="stylesheet" href="Utilidades/css/jquery-ui.structure.min.css" />
-    <script src="Utilidades/js/jquery.js"></script>
-    <script src="Utilidades/js/jquery-ui.js"></script>
-    <script src="Utilidades/js/jquery-ui.min.js"></script>    -->
-
-    <!-- inline scripts related to this page -->
-    <script type="text/javascript">
+        var Ajax = new AjaxObj();
         jQuery(function($) {
-
-            /* initialize the external events
------------------------------------------------------------------*/
-        
-            /*$.ajax({
-                type: "GET",
-                url: "../Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividades",
-                data: "{}",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-
-                success: function(data, textStatus) {
-                    var contenido = "<div class='widget-main no-padding'><div id='external-events'>";								  
-													
-                    var div = document.getElementById("actividades");                      
-                    //contenido = contenido + '<form>';                
-
-                    var color = ["grey","success","danger","purple","yellow","pink","info"];
-
-                    for(i=0; i<data.actividades.length; i++){						  
-                        contenido = contenido + "<div class='external-event label-" + color[i] + "' data-class='label-" + color[i] + "'><i class='ace-icon fa fa-arrows'></i>";
-                        //alert(contenido);
-                        contenido = contenido + data.actividades[i].NombreActividad;
-                        contenido = contenido + "<input type='hidden' id='idActividad' name='idActividad' value='" + data.actividades[i].idActividad + "'/>";
-                        contenido = contenido + "</div>";
-                    }
-                    contenido = contenido + "<label><input type='checkbox' class='ace ace-checkbox' id='drop-remove' /><span class='lbl'> Remove after drop</span></label>";
-
-                    contenido = contenido + "</div></div>";
-
-                    div.innerHTML = contenido;	
-                }
-                             
-            });*/
 
             obtenerActividades();             
                 
@@ -259,79 +131,9 @@ window.jQuery || document.write("<script src='jquery1x.min.js'>"+"<"+"/script>")
                 }
                     
                     
-                /*events: [
-                    $.ajax({
-                        type: "GET",
-                        url: "../Negocio/NegocioAdministrador/ClasesBO.php?url=obtenerClases",
-                        data: "",
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-
-                        success: function(data, textStatus) {
-                            //#remove any events that have been loaded
-                            //var Clase = JSON.stringify(data);
-                            //var Clase = jQuery.parseJSON(data);	
-                            //alert(Clase);
-                            //$('#calendar').fullCalendar('removeEvents');
-                            //alert((data.clases[0].HoraInicio).substring(3,5));
-                            //alert("length" + data.clases.length);
-                            for (i = 0; i < data.clases.length; i++) {
-                                    
-                                var the_event = {
-                                    //console.log(data.clases[i]);                                        
-                                    title: (data.clases[i].idActividad),
-                                    start: new Date(y, m, d, (data.clases[i].HoraInicio).substring(0,2), (data.clases[i].HoraInicio).substring(3,5)),
-                                    end: new Date(y, m, d, (data.clases[i].HoraFin).substring(0,2), (data.clases[i].HoraFin).substring(3,5)),
-                                    allDay: false,
-                                    backgroundColor: "#00c0ef",
-                                    borderColor: "#00c0ef"
-                                }
-                                //alert(the_event.title);
-                                $('#calendar').fullCalendar('addEventSource',the_event,true);
-                                $('#calendar').fullCalendar('rerenderEvents');
-                            }
-                        }
-                    })*/
-                /*
-                            jQuery.ajax({
-                                    type: "GET",
-                                    url: "../Negocio/NegocioAdministrador/ClasesBO.php?url=obtenerClases",
-                                    data: "{}",
-                                    contentType: "application/json; charset=utf-8",
-                                    dataType: "json",
-
-                                    success: function(data, status, jqXHR) {
-                                      //remove any events that have been loaded
-                                      //alert(jQuery.parseJSON(data));
-                                    }
-                            })
-                 */
-                //obtenerClases();
-                /*{
-                title: 'All Day Event',
-                start: new Date(y, m, 14),
-                className: 'label-important'
-            },
-            {
-                title: 'Long Event',
-                start: moment().subtract(5, 'days').format('YYYY-MM-DD'),
-                end: moment().subtract(1, 'days').format('YYYY-MM-DD'),
-                className: 'label-success'
-            },
-            {
-                title: 'Some Event',
-                start: new Date(y, m, d-3, 16, 0),
-                allDay: false,
-                className: 'label-info'
-            }*/
-                //]
+                
                 ,
-                /*eventRender: function (event, element, view) {
-                        //alert("eventRender");
-                         var $idClase = $(this).attr('idClase');
-                         //alert("idClase "+ $idClase);                         
-                    },*/
-              
+                
                 drop: function(event, delta, revertFunc,date, allDay) { // this function is called when something is dropped
                     //alert("borrado");
 		
@@ -450,36 +252,7 @@ window.jQuery || document.write("<script src='jquery1x.min.js'>"+"<"+"/script>")
                 ,
                 eventClick: function(calEvent, jsEvent, view) {
                     //alert("actualizar");					
-                    /*$.datepicker.regional['es'] = {
-                        closeText: 'Cerrar',
-                        prevText: '<Ant',
-                        nextText: 'Sig>',
-                        currentText: 'Hoy',
-                        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                        monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-                        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-                        dayNamesMin: ['Do','Lun','Ma','Mi','Ju','Vi','Sá'],
-                        weekHeader: 'Sm',
-                        dateFormat:'dd-mm-yy',
-                        firstDay: 1,
-                        isRTL: false,
-                        showMonthAfterYear: false,
-                        yearSuffix: ''
-                    };
-                    $.datepicker.setDefaults($.datepicker.regional['es']); 
                     
-                    $(function() {
-                        $( "#FechaInicio" ).datepicker({
-                            dateFormat:'dd-mm-yy'
-                        });
-                    });
-
-                    $(function() {
-                        $( "#FechaFin" ).datepicker({
-                            dateFormat:'dd-mm-yy'    
-                        });
-                    });*/
                     //display a modal
                     var modal = 
                         '<div class="modal fade">\
@@ -581,53 +354,6 @@ window.jQuery || document.write("<script src='jquery1x.min.js'>"+"<"+"/script>")
 
                                       })
 
-                                      function AjaxObj()
-                                      {
-                                          var xmlhttp = null;
-
-                                          if (window.XMLHttpRequest)
-                                          {
-                                              xmlhttp = new XMLHttpRequest();
-
-                                              if (xmlhttp.overrideMimeType)
-                                              {
-                                                  xmlhttp.overrideMimeType('text/xml');
-                                              }
-                                          }
-                                          else if (window.ActiveXObject)
-                                          {
-                                              // Internet Explorer    
-                                              try
-                                              {
-                                                  xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-                                              }
-                                              catch (e)
-                                              {
-                                                  try
-                                                  {
-                                                      xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                                                  }
-                                                  catch (e)
-                                                  {
-                                                      xmlhttp = null;
-                                                  }
-                                              }
-	
-                                              if (!xmlhttp && typeof XMLHttpRequest!='undefined')
-                                              {
-                                                  xmlhttp = new XMLHttpRequest();
-	  
-                                                  if (!xmlhttp)
-                                                  {
-                                                      failed = true;
-                                                  }
-                                              }
-                                          }
-                                          return xmlhttp;
-                                      }
-			
-                                      var Ajax = new AjaxObj();
-		
                                       function obtenerActividades(){		
                                           var Url = "../Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividades";
                                           //var Url = "../Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSalas";
@@ -711,8 +437,6 @@ window.jQuery || document.write("<script src='jquery1x.min.js'>"+"<"+"/script>")
     </script>
 
 
-</head>
-
 <div class="row">
     <div class="col-xs-12">
         <!-- PAGE CONTENT BEGINS -->
@@ -738,4 +462,4 @@ window.jQuery || document.write("<script src='jquery1x.min.js'>"+"<"+"/script>")
         <!-- PAGE CONTENT ENDS -->
     </div><!-- /.col -->
 </div><!-- /.row -->
-<!--?php require('Pie.php'); ?>-->
+<?php require('Pie.php'); ?>
