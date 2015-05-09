@@ -9,8 +9,7 @@ require_once 'config.php';
     var Ajax = new AjaxObj();
     //var BASE_URL = 'http://vw15115.dinaserver.com/hosting/reservascentro.es-web/';
     var BASE_URL = 'http://localhost:8080/';
-    function login() {
-        
+    function login() {      
         
         var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/LoginBO.php?url=iniciarSesion');
         
@@ -27,7 +26,7 @@ require_once 'config.php';
         //alert(RespTxt);
 
         var Clase = eval('(' + RespTxt + ')');
-        
+
         if (Clase) {
             var tipo = parseInt((Clase.Usuario[0].TipoUsuario));
             switch (tipo) {
@@ -83,7 +82,7 @@ require_once 'config.php';
 
                 <p class="center col-md-5">
                     <button class="btn btn-primary" >Login</button>
-                    
+
                 </p>
             </fieldset>
         </form>

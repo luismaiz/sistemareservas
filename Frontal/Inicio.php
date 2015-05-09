@@ -68,26 +68,24 @@
  
 }
         </script>
-
-
 <div>
     <ul class="breadcrumb">
         <li>
             <a href="#">Inicio</a>
         </li>
-        
+
     </ul>
 </div>
 <div class=" row" ng-app="BusquedaSolicitudes">
     <div ng_controller="CargaSolicitudes">
-    
+
         <div class="col-md-6 col-sm-6 col-xs-12">
             <a  id="enlace" data-toggle="tooltip" title="{{numerosolicitudes}} nuevas solicitudes." class="well top-block" href="Reservas.php?solicitudes=1">
-                    <i class="glyphicon glyphicon-user blue"></i>
-                    <div id="abonosdiarios">Solicitudes Clases pendientes</div>
-                    <div>{{numerosolicitudes}}</div>
-                    <span class="notification" ng-bind="numerosolicitudes"></span>
-                </a>
+                <i class="glyphicon glyphicon-user blue"></i>
+                <div id="abonosdiarios">Solicitudes Clases pendientes</div>
+                <div>{{numerosolicitudes}}</div>
+                <span class="notification" ng-bind="numerosolicitudes"></span>
+            </a>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-12">
             <a data-toggle="tooltip" title="{{numeroabonos}} nuevas solicitudes." class="well top-block" href="Reservas.php?abonos=1">
@@ -97,21 +95,21 @@
                 <span class="notification" ng-bind="numeroabonos"></span>
             </a>
         </div>
-</div>
+    </div>
 </div>
 <div class="row"></div>
 <div class="row"></div><!--/row-->
 
 <div class="row">
-   
-   
+
+
     <div class="box col-md-6">
         <div class="box-inner">
             <div class="box-header well" data-original-title="">
                 <h2><i class="glyphicon glyphicon-list"></i> Estadistica semanal</h2>
 
                 <div class="box-icon">
-                     <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
                             class="glyphicon glyphicon-chevron-up"></i></a>
                 </div>
             </div>
@@ -177,13 +175,13 @@
                             Abono mensual
                         </a>
                     </li>
-                    
+
                 </ul>
             </div>
             <div id="donutchart" style="height: 300px;">
+            </div>
         </div>
     </div>
-        </div>
     <!--/span-->    
 </div><!--/row-->
 

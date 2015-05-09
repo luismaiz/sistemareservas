@@ -19,53 +19,9 @@
         <link rel="stylesheet" href="templates/yoo_subway/fonts/opensanslight.css">
         <link rel="stylesheet" href="lib/bootstrap-wizard/css/custom.css">
         <script src="templates/yoo_subway/warp/js/warp.js"></script>
+        <link href="../Frontal/Utilidades/css/Angular.css" rel="stylesheet" type="text/css"/>
+        <script src="../Frontal/Utilidades/js/angular-1.2.9/angular-1.2.9/angular.js" type="text/javascript"></script>
     </head>
-    <script>
-        function AjaxObj()
-        {
-            var xmlhttp = null;
-
-            if (window.XMLHttpRequest)
-            {
-                xmlhttp = new XMLHttpRequest();
-
-                if (xmlhttp.overrideMimeType)
-                {
-                    xmlhttp.overrideMimeType('text/xml');
-                }
-            }
-            else if (window.ActiveXObject)
-            {
-                // Internet Explorer    
-                try
-                {
-                    xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-                }
-                catch (e)
-                {
-                    try
-                    {
-                        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                    }
-                    catch (e)
-                    {
-                        xmlhttp = null;
-                    }
-                }
-
-                if (!xmlhttp && typeof XMLHttpRequest != 'undefined')
-                {
-                    xmlhttp = new XMLHttpRequest();
-
-                    if (!xmlhttp)
-                    {
-                        failed = true;
-                    }
-                }
-            }
-            return xmlhttp;
-        }
-    </script>
     <body id="page" class="page  noblog  transparency-25 system-transparent">
         <div id="page-body">
             <div class="wrapper">
@@ -75,4 +31,3 @@
                             <h1><img src="images/logo.png" alt="" width="186" height="98" border="0"></h1></a>
                     </div>
                 </header>
-                <div class="row">
