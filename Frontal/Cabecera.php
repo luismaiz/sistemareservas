@@ -98,7 +98,9 @@ include 'config.php'
         
         <script>
             //var BASE_URL = 'http://vw15115.dinaserver.com/hosting/reservascentro.es-web/';
-            var BASE_URL = 'http://localhost/';
+            //var BASE_URL = 'http://localhost/;
+            var BASE_URL = 'http://www.pfgreservas.rightwatch.es/';
+
         function AjaxObj()
         {
             var xmlhttp = null;

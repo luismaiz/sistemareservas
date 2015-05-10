@@ -3,10 +3,13 @@
 <script>
     
     var Ajax = new AjaxObj();
-            var app = angular.module('BusquedaPrecios', []);            
+            var app = angular.module('BusquedaPrecios', ["ngStorage"])            
+                     .config(function($locationProvider) {
+                          $locationProvider.html5Mode(true);
+                      });            
                      
     
-    function CargaBusquedaPrecios($scope, $http) {
+    function CargaBusquedaPrecios($scope, $http, $location,$localStorage) {
         
         $scope.obtenerTipoSolicitud = function(){
         
@@ -62,8 +65,12 @@
         
         $scope.obtenerPrecios = function() {
             
+                $scope.filtrosprecios = [{filtroTipoSolicitud:document.getElementById("filtroTipoSolicitud").value,
+                    filtroTipoAbono:document.getElementById("filtroTipoAbono").value,
+                    filtroTipoTarifa:document.getElementById("filtroTipoTarifa").value}];
+                localStorage.setItem('filtrosprecios', JSON.stringify($scope.filtrosprecios));
+            
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerPreciosFiltro');
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerPreciosFiltro";
                 
                 var Params =  'TipoSolicitud=' + document.getElementById("filtroTipoSolicitud").value +
                         '&TipoAbono=' + document.getElementById("filtroTipoAbono").value +
@@ -72,23 +79,37 @@
 	        Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-                
-  
-                $scope.precios = JSON.parse(Ajax.responseText).precios;
-                
+                  
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
+                alert(Ajax.responseText);
                 
                 if ($scope.estado === 'correcto')
                 {
-                    $scope.salas = JSON.parse(Ajax.responseText).salas;    
+                    $scope.precios = JSON.parse(Ajax.responseText).precios;
+                    localStorage.setItem('precios', JSON.stringify($scope.precios));
                     document.getElementById('divSinResultados').style.display = 'none';
                 }
                 else
                 {
-                    $scope.salas = [];
+                    $scope.precios = [];
                     document.getElementById('divSinResultados').style.display = 'block';
                 }
             };
+            
+            if (typeof($location.search().detalle) !== "undefined")
+            {
+                $scope.resultado = localStorage.getItem('precios');
+                $scope.filtrosprecios = localStorage.getItem('filtrosprecios');
+                $scope.precios = (localStorage.getItem('precios')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).precios;
+            
+                document.getElementById("filtroTipoSolicitud").value = JSON.parse($scope.filtrosprecios)[0].filtroTipoSolicitud;
+                document.getElementById("filtroTipoAbono").value = JSON.parse($scope.filtrosprecios)[0].filtroTipoAbono;
+                document.getElementById("filtroTipoTarifa").value = JSON.parse($scope.filtrosprecios)[0].filtroTipoTarifa;
+                
+                $scope.obtenerPrecios();
+            }
+            
+            
              $(function () {
                 $('.footable').footable();
                 });
@@ -160,7 +181,8 @@
                                                             <option ng_repeat="tipotarifa in tiposTarifas" ng_selected="{{precio.idTipoTarifa}} == {{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>
                                                     </select></td>
                                                     <td>{{precio.Precio}}€</td>
-                                                    <td class="center"><a href="FormularioDetallePrecio.php?idPrecio={{precio.idPrecio}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
+                                                    <td class="center"><a target="_self" href="FormularioDetallePrecio.php?idPrecio={{precio.idPrecio}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
+                                                    <a  ng_show="precio.FechaBaja!==null"  class="btn btn-danger">Anulado</a></td>
                                                 </tr>
                                                 </tbody>
                                                 <tfoot class="hide-if-no-paging">

@@ -200,7 +200,7 @@ class PreciosBO extends Rest{
         $tabono = $this->datosPeticion['TipoAbono'];
         $ttarifa = $this->datosPeticion['TipoTarifa'];
         
-        
+                
         $this->con = ConexionBD::getInstance();
         $sort = array(
             new DSC(PrecioModel:: FIELD_PRECIO, DSC::ASC)
@@ -215,9 +215,18 @@ class PreciosBO extends Rest{
             $precio->setIdTipoAbono($tabono);
         if($ttarifa != '')
             $precio->setIdTipoTarifa($ttarifa);
+        //$precio->setFechaBaja($fechabaja);
         
+        //$filas = PrecioModel::findByExample($this->con,$precio,$sort);
         
-        $filas = PrecioModel::findByExample($this->con,$precio,$sort);
+        $filter=array(
+        new DFC(PrecioModel::FIELD_FECHABAJA, 's', DFC::IS_NULL),
+        new DFC(PrecioModel::FIELD_IDTIPOSOLICITUD, $tsolicitud, DFC::EXACT),
+        new DFC(PrecioModel::FIELD_IDTIPOABONO, $tabono, DFC::EXACT),
+        new DFC(PrecioModel::FIELD_IDTIPOTARIFA, $ttarifa, DFC::EXACT)
+        );
+        
+        $filas = PrecioModel::findByFilter($this->con,$filter);
                                 
         $num = count($filas);
         if ($num > 0) {
@@ -228,6 +237,55 @@ class PreciosBO extends Rest{
             }
 
             $respuesta['precios'] = $array;
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        else
+        {
+            $respuesta['estado'] = 'No se encontraron datos';
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+    }
+    
+    private function obtenerHistoricoPrecios() {
+        
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+                
+        //el constructor del padre ya se encarga de sanear los datos de entrada  
+        $idPrecio = $this->datosPeticion['idPrecio'];
+
+        $this->con = ConexionBD::getInstance();
+        $precio = new PrecioModel();
+
+        $fila = $precio->findById($this->con, $idPrecio);
+        
+        $tsolicitud = $fila->getIdTipoSolicitud();
+        $tabono = $fila->getIdTipoAbono();
+        $ttarifa = $fila->getIdTipoTarifa();
+        
+        $sort = array(
+            new DSC(PrecioModel::FIELD_FECHABAJA, DSC::DESC)
+        );
+                        
+        $filter=array(
+        new DFC(PrecioModel::FIELD_FECHABAJA, DFC::IS_NULL, DFC::NOT),
+        new DFC(PrecioModel::FIELD_IDTIPOSOLICITUD, $tsolicitud, DFC::EXACT),
+        new DFC(PrecioModel::FIELD_IDTIPOABONO, $tabono, DFC::EXACT),
+        new DFC(PrecioModel::FIELD_IDTIPOTARIFA, $ttarifa, DFC::EXACT)
+        );
+        
+        $filas = PrecioModel::findByFilter($this->con,$filter);
+        $num = count($filas);
+        if ($num > 0) {
+            $respuesta['estado'] = 'correcto';
+
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
+            $respuesta['historicoprecios'] = $array;
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         else
