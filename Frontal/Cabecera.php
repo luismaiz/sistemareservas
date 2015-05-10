@@ -97,8 +97,8 @@ include 'config.php'
     <script src="Utilidades/js/ace.min.js"></script>-->
         
         <script>
-            //var BASE_URL = 'http://vw15115.dinaserver.com/hosting/reservascentro.es-web/';
-            var BASE_URL = 'http://localhost:8080/';
+            var BASE_URL = 'http://vw15115.dinaserver.com/hosting/reservascentro.es-web/';
+            //var BASE_URL = 'http://localhost:8080/';
         function AjaxObj()
         {
             var xmlhttp = null;
