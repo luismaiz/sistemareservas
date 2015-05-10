@@ -1,14 +1,13 @@
 <?php
-
+require_once("helpers/Db2PhpEntityBase.class.php");
+require_once("helpers/Db2PhpEntityModificationTracking.class.php");
+require_once 'helpers/DFCAggregate.class.php';
 /**
  * 
  *
  * @version 1.105
  * @package entity
  */
-require_once("helpers/Db2PhpEntityBase.class.php");
-require_once("helpers/Db2PhpEntityModificationTracking.class.php");
-require_once 'helpers/DFCAggregate.class.php';
 class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTracking {
 	private static $CLASS_NAME='SolicitudModel';
 	const SQL_IDENTIFIER_QUOTE='`';
@@ -118,7 +117,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	private static $FIELD_TYPES=array(
 		self::FIELD_IDSOLICITUD=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
 		self::FIELD_IDTIPOSOLICITUD=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
-		self::FIELD_IDTIPOTARIFA=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
+		self::FIELD_IDTIPOTARIFA=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,true),
 		self::FIELD_FECHASOLICITUD=>array(Db2PhpEntity::JDBC_TYPE_DATE,10,0,true),
 		self::FIELD_NOMBRE=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,150,0,true),
 		self::FIELD_APELLIDOS=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,45,0,true),
@@ -142,7 +141,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	private static $DEFAULT_VALUES=array(
 		self::FIELD_IDSOLICITUD=>null,
 		self::FIELD_IDTIPOSOLICITUD=>0,
-		self::FIELD_IDTIPOTARIFA=>0,
+		self::FIELD_IDTIPOTARIFA=>null,
 		self::FIELD_FECHASOLICITUD=>null,
 		self::FIELD_NOMBRE=>null,
 		self::FIELD_APELLIDOS=>null,
@@ -240,7 +239,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	/**
 	 * set value for idTipoTarifa 
 	 *
-	 * type:INT,size:10,default:null,index
+	 * type:INT,size:10,default:null,index,nullable
 	 *
 	 * @param mixed $idTipoTarifa
 	 * @return SolicitudModel
@@ -254,7 +253,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	/**
 	 * get value for idTipoTarifa 
 	 *
-	 * type:INT,size:10,default:null,index
+	 * type:INT,size:10,default:null,index,nullable
 	 *
 	 * @return mixed
 	 */
@@ -928,12 +927,10 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		if(self::isCacheStatements()) {
 			if (in_array($statement, array(self::SQL_INSERT, self::SQL_INSERT_AUTOINCREMENT, self::SQL_UPDATE, self::SQL_SELECT_PK, self::SQL_DELETE_PK))) {
 				$dbInstanceId=spl_object_hash($db);
-//				if (null===self::$stmts[$statement][$dbInstanceId]) {
-//					self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
-//				}
-//				return self::$stmts[$statement][$dbInstanceId];
-                                
-                                self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
+				if (null===self::$stmts[$statement][$dbInstanceId]) {
+					self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
+				}
+				return self::$stmts[$statement][$dbInstanceId];
 			}
 		}
 		return $db->prepare($statement);

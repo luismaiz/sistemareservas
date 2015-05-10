@@ -1,15 +1,38 @@
 <?php require_once 'CabeceraExterna.php'; ?>
 <script>
+    var Ajax = new AjaxObj();
     var app = angular.module('solicitudAbonoDiario', []);
     app.controller('RegistrarSolicitudAbonoDiarioController', function RegistrarSolicitudAbonoDiarioController($scope, $http) {
-        $scope.s = {};
-        $scope.enviar = function(){
-         $http.post("http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSolicitud", $.param($scope.s));
-        conAjax.success(function (respuesta) {
-            console.log(respuesta);
-        });           
+        $scope.codigoQR = function (Params) {
+            var URL = BASE_URL.concat('AdministradorBO.php?url=codigoQR');
+
+            Ajax.open("POST", URL, false);
+            Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            Ajax.send(Params); // Enviamos los datos
+            var response = Ajax.responseText;
+            console.log(response);
+        };
+
+        $scope.enviar = function (s) {
+            var URL = BASE_URL.concat('AdministradorBO.php?url=crearSolicitud');
+
+            var Params = '&idTipoSolicitud=3&';
+            Params += jQuery.param(s);
+            Ajax.open("POST", URL, false);
+            Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            Ajax.send(Params); // Enviamos los datos
+            var response = Ajax.responseText;
+            console.log(response);
+            $scope.estado = JSON.parse(response).estado;
+            console.log($scope.estado);
+            $scope.solicitud = JSON.parse(response).solicitud;
+            console.log($scope.solicitud);
+            Params += '&Localizador=' + $scope.solicitud.Localizador;
+            console.log(Params);
+             $scope.codigoQR(Params);
         };
     });
+
 </script>
 <div class="row" ng-app="solicitudAbonoDiario" ng-controller="RegistrarSolicitudAbonoDiarioController">
     <div id="maininner" class="col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2 col-xs-12 col-sm-10 col-sm-offset-1">
@@ -21,18 +44,18 @@
                     <fieldset>
                         <div class="form-group has-success has-feedback">
                             <div class="col-md-5 col-sm-5 input-group-lg">
-                                <label class="control-label" > Nombre</label><input type="text" name="nombre" ng-models="s.nombre" class="form-control" required pattern="^[a-zA-Z0-9]{4,12}$" value="" placeholder="Blanca" />
+                                <label class="control-label" > Nombre</label><input type="text" name="Nombre" ng-model="s.Nombre" class="form-control" required pattern="^[a-zA-Z0-9]{4,12}$" value="" placeholder="Blanca" />
                             </div>
                             <div class="col-md-5 col-sm-5 input-group-lg">
-                                <label class="control-label" > Apellidos </label><input type="text" name="apellidos" ng-model="s.apellidos" class="form-control" required pattern="^[a-zA-Z0-9]{4,12}$" value="" placeholder="Garcia" />
+                                <label class="control-label" > Apellidos </label><input type="text" name="Apellidos" ng-model="s.Apellidos" class="form-control" required pattern="^[a-zA-Z0-9]{4,12}$" value="" placeholder="Garcia" />
                                 <br />
                             </div>
                             <br />
                             <div class="col-md-5 col-sm-5 input-group-lg">
-                                <label class="control-label" >Dni</label><input type="text" name="dni" ng-model="s.dni" class="form-control" required pattern="^[a-zA-Z0-9]{4,12}$" value="" placeholder="05330762y" />
+                                <label class="control-label" >Dni</label><input type="text" name="DNI" ng-model="s.DNI" class="form-control" required pattern="^[a-zA-Z0-9]{4,12}$" value="" placeholder="05330762y" />
                             </div>
                             <div class="col-md-5 col-sm-5 input-group-lg">
-                                <label class="control-label" >E-mail</label><input type="email" name="mail" ng-model="s.mail" class="form-control" required pattern="^[a-zA-Z0-9-\_.]+@[a-zA-Z0-9-\_.]+\.[a-zA-Z0-9.]{2,5}$" value="" placeholder="info@developerji.com" /><br />
+                                <label class="control-label" >E-mail</label><input type="email" name="EMail" ng-model="s.EMail" class="form-control" required pattern="^[a-zA-Z0-9-\_.]+@[a-zA-Z0-9-\_.]+\.[a-zA-Z0-9.]{2,5}$" value="" placeholder="info@developerji.com" /><br />
                             </div>
                             <br />
                             <div class="col-md-3 col-sm-3 input-group-lg">
@@ -54,7 +77,7 @@
                         </div>
                     </fieldset>
                     <div class="col-md-offset-1">
-                        <button class="btn btn-default btn-lg" type="submit" ng-click="enviar();">Enviar</button>
+                        <button class="btn btn-default btn-lg" ng-click="enviar(s);">Enviar</button>
                     </div>
                 </form>
             </div>

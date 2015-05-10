@@ -4,7 +4,8 @@
     app.controller('RegistrarSolicitudAbonoMensualController', function RegistrarSolicitudAbonoMensualController($scope, $http) {
         $scope.tiposabonos = [];
         $scope.s = {};
-        $http.get("http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbono")
+         var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbono');
+        $http.get(URL)
                 .success(function (response) {
 
                     $scope.estado = response.estado;
@@ -67,12 +68,13 @@
             var edad = $scope.calcularFecha($scope.s.fechanacimiento);
             if (edad < 18) {
                 $scope.menor = true;
-            }else{
+            } else {
                 $scope.menor = false;
             }
         };
         $scope.enviar = function () {
-            $http.post("http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSolicitud", $scope.s);
+            var URL1 = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSolicitud');
+            $http.post(URL1, $scope.s);
             conAjax.success(function (respuesta) {
                 console.log(respuesta);
             });

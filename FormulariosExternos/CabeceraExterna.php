@@ -31,3 +31,52 @@
                             <h1><img src="images/logo.png" alt="" width="186" height="98" border="0"></h1></a>
                     </div>
                 </header>
+                <script>
+                    var BASE_URL = 'http://www.rightwatch.es/pfgreservas/';
+                    function AjaxObj()
+                    {
+                        var xmlhttp = null;
+
+                        if (window.XMLHttpRequest)
+                        {
+                            xmlhttp = new XMLHttpRequest();
+
+                            if (xmlhttp.overrideMimeType)
+                            {
+                                xmlhttp.overrideMimeType('text/xml');
+                            }
+                        }
+                        else if (window.ActiveXObject)
+                        {
+                            // Internet Explorer    
+                            try
+                            {
+                                xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+                            }
+                            catch (e)
+                            {
+                                try
+                                {
+                                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                                }
+                                catch (e)
+                                {
+                                    xmlhttp = null;
+                                }
+                            }
+
+                            if (!xmlhttp && typeof XMLHttpRequest != 'undefined')
+                            {
+                                xmlhttp = new XMLHttpRequest();
+
+                                if (!xmlhttp)
+                                {
+                                    failed = true;
+                                }
+                            }
+                        }
+                        return xmlhttp;
+                    }
+
+
+                </script>

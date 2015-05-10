@@ -3,7 +3,6 @@
     var app = angular.module('solicitudClaseDirigida', []);
     app.controller('RegistrarSolicitudClaseDirigidaController', function RegistrarSolicitudClaseDirigidaController($scope, $http) {
         $scope.actividades = [];
-        $scope.s = {};
         $http.get("http://localhost/sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividades")
                 .success(function (response) {
                     $scope.estado = response.estado;
