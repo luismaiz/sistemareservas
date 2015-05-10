@@ -2,14 +2,32 @@
 <script>
  var Ajax = new AjaxObj();
 
-var app = angular.module('BusquedaTiposTarifas', []);
+var app = angular.module('BusquedaTiposTarifas', ["ngStorage"])            
+                     .config(function($locationProvider) {
+                          $locationProvider.html5Mode(true);
+                      });
 
-function CargaTiposTarifas($scope, $http) {
+function CargaTiposTarifas($scope, $http,$location,$localStorage) {
     
     $scope.tipostarifas = [];
+    if (typeof($location.search().detalle) !== "undefined")
+            {
+            $scope.resultado = localStorage.getItem('tipostarifas');
+            $scope.filtrosTarifas = localStorage.getItem('filtrosTarifas');
+            $scope.tipostarifas = (localStorage.getItem('tipostarifas')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).tipostarifas;
+            
+            document.getElementById("filtronombretarifa").value = JSON.parse($scope.filtrosTarifas)[0].filtronombretarifa;
+            document.getElementById("filtrodescripciontarifa").value = JSON.parse($scope.filtrosTarifas)[0].filtrodescripciontarifa;
+            
+            alert('hola');
+            } 
     
     $scope.obtenerTiposTarifas = function() {
                 
+                $scope.filtrosTarifas = [{filtronombretarifa:document.getElementById("filtronombretarifa").value,
+                                    filtrodescripciontarifa:document.getElementById("filtrodescripciontarifa").value}
+                    ];
+                localStorage.setItem('filtrosTarifas', JSON.stringify($scope.filtrosTarifas));
                 
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifasFiltro');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifasFiltro";
@@ -24,7 +42,8 @@ function CargaTiposTarifas($scope, $http) {
                 
                 if ($scope.estado === 'correcto')
                 {
-                    $scope.tipostarifas = JSON.parse(Ajax.responseText).tipostarifas;    
+                    $scope.tipostarifas = JSON.parse(Ajax.responseText).tipostarifas;  
+                    localStorage.setItem('tipostarifas', JSON.stringify($scope.tipostarifas));
                     document.getElementById('divSinResultados').style.display = 'none';
                 }
                 else
@@ -34,6 +53,9 @@ function CargaTiposTarifas($scope, $http) {
                 }
         
             };
+            $(function () {
+                $('.footable').footable();
+                });
 }
             
         </script>
@@ -71,17 +93,18 @@ function CargaTiposTarifas($scope, $http) {
                                        
                                 <div class="box-content" id="tipostarifas">
                                      
-                                       <table class="table table-striped table-bordered responsive">
+                                       <table class="footable table-striped table-bordered responsive" data-page-size="5" data-page-navigation=".pagination" id="tabla">
                                             <thead>
                                                 <tr>
                                                     <th>Nombre</h6></th>
                                                     <th>Descripcion</th>
                                                     <th>Fecha Alta</th>
                                                     <th>Fecha Baja</th>
-                                                    <th></th>
+                                                    <th data-sort-ignore="true"></th>
                                                     
                                                 </tr>
                                               </thead>
+                                              <tbody>
                                                 <tr ng_repeat="tipotarifa in tipostarifas">
                                                     <td>{{tipotarifa.NombreTarifa}}</td>
                                                     <td>{{tipotarifa.DescripcionTarifa}}</td>
@@ -89,6 +112,16 @@ function CargaTiposTarifas($scope, $http) {
                                                     <td>{{tipotarifa.FechaBaja|date:'dd-MM-yyyy'}}</td>
                                                     <td class="center"><a href="FormularioDetalleTarifa.php?idTipoTarifa={{tipotarifa.idTipoTarifa}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
                                                 </tr>
+                                            </tbody>
+                                            <tfoot class="hide-if-no-paging">
+                                                    <tr>
+                                                        <td colspan="7" class="text-center">
+                                                            <ul class="pagination pagination-centered">
+
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
                                             
                                         </table>
                                         </div>

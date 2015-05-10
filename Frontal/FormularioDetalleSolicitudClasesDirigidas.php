@@ -31,10 +31,8 @@
                 $scope.actividadesseleccionadas = JSON.parse(Ajax.responseText).actividades;
                 
                 for (var i=0; i< $scope.actividadesseleccionadas.length; i++) {
-                    alert($scope.actividadesseleccionadas[i].idActividad);
                     var actividad = $scope.actividadesseleccionadas[i].idActividad;
                     $scope.selection.push($scope.actividadesseleccionadas[i].idActividad);
-                    alert('Inicial ' + $scope.selection.indexOf(actividad));
                     //alert($scope.selection.indexOf($scope.actividadesseleccionadas[i].idActividad));
                 }
                 
@@ -43,6 +41,9 @@
                     document.getElementById('divPendiente').style.display = 'block';
                     document.getElementById('validacion').style.display = 'inline';
                 }
+                else
+                    document.getElementById('anulacion').style.display = 'inline';
+                    
         
             };
             if (typeof($location.search().idSolicitud) !== "undefined")
@@ -50,7 +51,6 @@
             
             $scope.toggleSelection = function toggleSelection(idActividad) {
                 
-                alert('Toogle ' + $scope.selection.indexOf(idActividad));
                 var idx = $scope.selection.indexOf(idActividad);
                             
                             // is currently selected
@@ -117,6 +117,30 @@
                     document.getElementById('divError').style.display = 'block';
                 }
             };
+            
+            $scope.anularSolicitud = function(){
+                                   
+             
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=anularSolicitud');
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala";
+                var Params = 'idSolicitud='+ $location.search().idSolicitud;
+               
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+            
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divCorrecto').style.display = 'block';
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
+            };
+            
             
             $scope.obtenerTipoAbono = function(){
         
@@ -262,7 +286,7 @@
                         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <div class="checkbox">
                                 <label ng_repeat="actividad in actividades"   class="control-label col-md-4 col-sm-4 col-xs-4">
-                                    <input  class="" type="checkbox" ng-checked="selection.indexOf(actividad.idActividad)>-1" ng-click="toggleSelection(actividad.idActividad)" checklist-model="actividades" checklist-value="actividad" >{{actividad.idActividad}}{{actividad.NombreActividad}}
+                                    <input  class="" type="checkbox" ng-checked="selection.indexOf(actividad.idActividad)>-1" ng-click="toggleSelection(actividad.idActividad)" checklist-model="actividades" checklist-value="actividad" >{{actividad.NombreActividad}}
                                 </label>
                             </div>
                             </div>
@@ -395,9 +419,9 @@
                         </div>
                     </div>
                     </div>
-                                
-                                <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Reservas.php' " />
+                                <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Reservas.php?detalle=1' " />
                                 <input style='display:none;' id="validacion" class="box btn-primary" type="submit" value="Validar Solicitud" ng-click="validarSolicitud();" ng-disabled="formulario.$invalid" />
+                                <input style='display:none;' id="anulacion" class="box btn-primary" type="submit" value="Anular Solicitud" ng-click="anularSolicitud();" />
                                 
                                 
                              </form>

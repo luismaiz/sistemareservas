@@ -3,20 +3,38 @@
 <script>
     
     var Ajax = new AjaxObj();
-            var app = angular.module('BusquedaReservas', [])            
+            var app = angular.module('BusquedaReservas', ["ngStorage"])            
                      .config(function($locationProvider) {
                           $locationProvider.html5Mode(true);
                       });
     
-    function CargaBusquedaReservas($scope, $http, $location) {
+    function CargaBusquedaReservas($scope,$http, $location,$localStorage) {
         
         $scope.solicitudes = [];
         $scope.abonos = [];
-      
+                
+        if (typeof($location.search().detalle) !== "undefined")
+        {
+            $scope.saved = localStorage.getItem('solicitudes');
+            $scope.filtrosguardados = localStorage.getItem('filtros');
+            $scope.solicitudes = (localStorage.getItem('solicitudes')!==null) ? JSON.parse($scope.saved) : JSON.parse(Ajax.responseText).solicitudes;
+            
+            document.getElementById("filtroLocalizador").value = JSON.parse($scope.filtrosguardados)[0].Localizador;
+            document.getElementById("filtroNombre").value = JSON.parse($scope.filtrosguardados)[0].Nombre;
+            document.getElementById("filtroApellidos").value = JSON.parse($scope.filtrosguardados)[0].Apellidos;
+            document.getElementById("filtroDni").value = JSON.parse($scope.filtrosguardados)[0].Dni;
+            document.getElementById("filtroEmail").value = JSON.parse($scope.filtrosguardados)[0].Email;      
+            document.getElementById("filtroFechaSolicitud").value = JSON.parse($scope.filtrosguardados)[0].FechaSolicitud;
+            document.getElementById("filtroTipoSolicitud").value = JSON.parse($scope.filtrosguardados)[0].TipoSolicitud;
+            
+            alert('hola');
+        }
+        
         $scope.obtenerReservasSolicitudesPendientes = function() {
                 
                 $scope.solicitudes = [];
                 $scope.abonos = [];
+                
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesPendientes');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesPendientes";
                 
@@ -26,15 +44,15 @@
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                   //  alert(Ajax.responseText);
+                                        
                 $scope.solicitudes = JSON.parse(Ajax.responseText).solicitudes;
-        
+                localStorage.setItem('solicitudes', JSON.stringify($scope.solicitudes));
+                
             };
             if (typeof($location.search().solicitudes) !== "undefined")
             {
-                
                 $scope.obtenerReservasSolicitudesPendientes();
             }
-            
         $scope.obtenerAbonosPendientes = function() {
                 
                 $scope.solicitudes = [];
@@ -50,6 +68,7 @@
                 
   //              alert(Ajax.responseText);
                 $scope.solicitudes = JSON.parse(Ajax.responseText).abonos;
+                localStorage.setItem('solicitudes', JSON.stringify($scope.solicitudes));
         
             };
             if (typeof($location.search().abonos) !== "undefined")
@@ -75,12 +94,19 @@
         
         };   
         $scope.obtenerTipoSolicitud();
-        
-        
+                
                      
         $scope.obtenerReservas = function() {
             
                 $scope.solicitudes = [];
+                $scope.filtros = [{Localizador:document.getElementById("filtroLocalizador").value,
+                    Nombre:document.getElementById("filtroNombre").value,
+                    Apellidos:document.getElementById("filtroApellidos").value,
+                    Dni:document.getElementById("filtroDni").value,
+                    Email:document.getElementById("filtroEmail").value,
+                    FechaSolicitud:document.getElementById("filtroFechaSolicitud").value,
+                    TipoSolicitud:document.getElementById("filtroTipoSolicitud").value}];
+                localStorage.setItem('filtros', JSON.stringify($scope.filtros));
                 
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerReservasFiltro');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerReservasFiltro";
@@ -97,11 +123,13 @@
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
+                alert(Ajax.responseText);
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')
                 {
                     $scope.solicitudes = JSON.parse(Ajax.responseText).solicitudes;
+                    localStorage.setItem('solicitudes', JSON.stringify($scope.solicitudes));
                     document.getElementById('divSinResultados').style.display = 'none';
                 }
                 else
@@ -132,9 +160,12 @@
                 {
                     document.getElementById('divError').style.display = 'block';
                 }
-            };    
+            };
             
-          
+            $(function () {
+                $('.footable').footable();
+                });
+         
     }
       
 </script>
@@ -160,7 +191,7 @@
             </div>
             <div class="alert alert-success" id="divCorrecto" style='display:none;'>
                                     <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                    <strong>Correcto.</strong>  Operación realizada con éxito.
+                                    <strong>Correcto.</strong>  Se ha validado la solicitud.
             </div>
             <div class="box-content">
                 <div class="row">
@@ -193,14 +224,14 @@
                                 <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerReservas()"/>
                            
                             <div class="box-content" id="reservas">
-                            <table class="footable table-striped table-bordered responsive" data-page-size="10"">
+                            <table class="footable table-striped responsive" data-page-size="10" data-page="true">
                                             <thead>
                                                 <tr>
                                                     <th>Nombre</th>
                                                     <th>Apellidos</th>
                                                     <th>Localizador</th>
                                                     <th>Fecha Solicitud</th>
-                                                    <th></th>
+                                                    <th data-sort-ignore="true"></th>
                                                 </tr>
                                               </thead>    
                                               <tr ng_repeat="solicitud in solicitudes">
@@ -218,6 +249,14 @@
                                                         
                                                     </td>
                                                 </tr>
+                                                <tfoot >
+                                                    <tr>
+                                                        <td colspan="7" class="text-center">
+                                                            <ul display="inline" class="pagination pagination-centered">
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
                                             
                                         </table>
                 </div>

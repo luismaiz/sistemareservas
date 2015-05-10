@@ -3,14 +3,37 @@
     var Ajax = new AjaxObj();
     
     var Ajax = new AjaxObj();
-    var app = angular.module('BusquedaActividades', []);
+    var app = angular.module('BusquedaActividades',  ["ngStorage"])            
+                     .config(function($locationProvider) {
+                          $locationProvider.html5Mode(true);
+                      });
     
-    function CargaActividades($scope, $http) {
+    function CargaActividades($scope, $http,$location,$localStorage) {
             
             $scope.actividades = [];
+                
+            if (typeof($location.search().detalle) !== "undefined")
+            {
+            $scope.resultado = localStorage.getItem('actividades');
+            $scope.filtrosActividades = localStorage.getItem('filtrosActividades');
+            $scope.actividades = (localStorage.getItem('actividades')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).actividades;
+            
+            document.getElementById("filtroactividad").value = JSON.parse($scope.filtrosActividades)[0].filtroactividad;
+            document.getElementById("filtrointensidad").value = JSON.parse($scope.filtrosActividades)[0].filtrointensidad;
+            document.getElementById("filtrogrupo").value = JSON.parse($scope.filtrosActividades)[0].filtrogrupo;
+            
+            alert('hola');
+            }    
+
+
 
             $scope.obtenerActividades = function() {
                 
+                $scope.filtrosActividades = [{filtroactividad:document.getElementById("filtroactividad").value,
+                                    filtrointensidad:document.getElementById("filtrointensidad").value,
+                                    filtrogrupo:document.getElementById("filtrogrupo").value}
+                    ];
+                localStorage.setItem('filtrosActividades', JSON.stringify($scope.filtrosActividades));
                 
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividadesFiltro');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividadesFiltro";
@@ -25,7 +48,8 @@
                 
                 if ($scope.estado === 'correcto')
                 {
-                    $scope.actividades = JSON.parse(Ajax.responseText).actividades;    
+                    $scope.actividades = JSON.parse(Ajax.responseText).actividades;
+                    localStorage.setItem('actividades', JSON.stringify($scope.actividades));
                     document.getElementById('divSinResultados').style.display = 'none';
                 }
                 else
@@ -35,7 +59,9 @@
                 }
         
             };
-
+$(function () {
+                $('.footable').footable();
+                });
 }
     
 </script>
@@ -74,30 +100,40 @@
                                             </div>
                                                 <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerActividades();"/>
                                                  <div class="box-content" id="actividades">
-                                        <table class="table table-striped table-bordered responsive">
+                                        <table class="footable table-striped table-bordered responsive" data-page-size="5" data-page-navigation=".pagination" id="tabla">
                                             <thead>
                                                 <tr>
                                                     <th>Nombre</th>
                                                     <th>Descripción</th>
                                                     <th>Intensidad</th>
-                                                    <th>Edad Mínima</th>
-                                                    <th>Edad Máxima</th>
-                                                    <th></th>
+                                                    <th data-type="numeric">Edad Mínima</th>
+                                                    <th data-type="numeric">Edad Máxima</th>
+                                                    <th data-sort-ignore="true"></th>
                                                     
                                                 </tr>
+                                              </thead>
+                                              <tbody>
                                                 <tr ng_repeat="actividad in actividades">
                                                     <td>{{actividad.NombreActividad}}</td>
                                                     <td>{{actividad.Descripcion}}</td>
                                                     <td >
                                                         <div ng-model="actividad.IntensidadActividad" ng-style="{'color' : actividad.IntensidadActividad}"></div>
-                                                        
-                                                        
                                                     </td>
                                                     <td>{{actividad.EdadMinima}}</td>
                                                     <td>{{actividad.EdadMaxima}}</td>
-                                                    <td class="center"><a href="FormularioDetalleActividad.php?idActividad={{actividad.idActividad}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
+                                                    <td class="center"><a target="_self" href="FormularioDetalleActividad.php?idActividad={{actividad.idActividad}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
                                                 </tr>
-                                            </thead>
+                                            </tbody>
+                                            <tfoot class="hide-if-no-paging">
+                                                    <tr>
+                                                        <td colspan="7" class="text-center">
+                                                            <ul class="pagination pagination-centered">
+
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
+                                            
                                         </table>
                                                  </div>
                                         <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleActividad.php' "/>

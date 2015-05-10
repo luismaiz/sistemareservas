@@ -16,6 +16,7 @@ include 'config.php'
 
 
         <!-- The styles -->
+        
         <link href="Utilidades/css/bootstrap-cerulean.min.css" rel="stylesheet" type="text/css"/>
         <link href="Utilidades/css/charisma-app.css" rel="stylesheet">
         <link href='Utilidades/bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>
@@ -49,6 +50,8 @@ include 'config.php'
         <script src="Utilidades/FooTable-2/js/footable.js" type="text/javascript"></script>
         <script src="Utilidades/FooTable-2/js/footable.sort.js" type="text/javascript"></script>
         <script src="Utilidades/FooTable-2/js/footable.paginate.js" type="text/javascript"></script>
+        <script src="Utilidades/js/angular-1.2.9/angular-1.2.9/ngStorage.min.js" type="text/javascript"></script>
+
         <!--<script src="Utilidades/bower_components/jquery/jquery.min.js" type="text/javascript"></script>-->
         <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>

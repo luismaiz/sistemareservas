@@ -202,7 +202,7 @@
                                     <span ng-show="formulario.FechaBaja.$error.required">* Fecha obligatoria.</span>
                                 </span>
                                 </div>
-                                <input class="box btn-primary " type="button" value="Cancelar" onClick=" window.location.href='TipoSolicitud.php' " />
+                                <input class="box btn-primary " type="button" value="Cancelar" onClick=" window.location.href='TipoSolicitud.php?detalle=1' " />
                                 <input class="box btn-primary " type="submit" value="Aceptar" ng-click="guardarTipoSolicitud();" ng-disabled="formulario.$invalid" />
 
                 </form>

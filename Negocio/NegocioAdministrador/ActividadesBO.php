@@ -63,7 +63,7 @@ class ActividadesBO extends Rest {
         $Grupo = $this->datosPeticion['Grupo'];
         $Descripcion = $this->datosPeticion['Descripcion'];
         $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
-            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
+        $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
 
         $this->con = ConexionBD::getInstance();
 

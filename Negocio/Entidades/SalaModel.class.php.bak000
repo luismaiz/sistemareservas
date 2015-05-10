@@ -3,7 +3,14 @@
 require_once("helpers/Db2PhpEntityBase.class.php");
 require_once("helpers/Db2PhpEntityModificationTracking.class.php");
 require_once 'helpers/DFCAggregate.class.php';
-
+error_reporting(E_ALL);
+                ini_set("display_errors", 1);
+/**
+ * 
+ *
+ * @version 1.105
+ * @package entity
+ */
 class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTracking {
 	private static $CLASS_NAME='SalaModel';
 	const SQL_IDENTIFIER_QUOTE='`';
@@ -11,7 +18,8 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	const SQL_INSERT='INSERT INTO `sala` (`idSala`,`NombreSala`,`CapacidadSala`,`DescripcionSala`,`FechaAlta`,`FechaBaja`) VALUES (?,?,?,?,?,?)';
 	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `sala` (`NombreSala`,`CapacidadSala`,`DescripcionSala`,`FechaAlta`,`FechaBaja`) VALUES (?,?,?,?,?)';
 	const SQL_UPDATE='UPDATE `sala` SET `idSala`=?,`NombreSala`=?,`CapacidadSala`=?,`DescripcionSala`=?,`FechaAlta`=?,`FechaBaja`=? WHERE `idSala`=?';
-	const SQL_SELECT_PK='SELECT * FROM `sala` WHERE `idSala`=?';
+	const SQL_SELECT_PK='SELECT * FROM SALA WHERE IDSALA=?';
+        const SQL_SELECT='SELECT * FROM SALA';
 	const SQL_DELETE_PK='DELETE FROM `sala` WHERE `idSala`=?';
 	const FIELD_IDSALA=-1779113975;
 	const FIELD_NOMBRESALA=949418583;
@@ -48,14 +56,14 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 		self::FIELD_CAPACIDADSALA=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,true),
 		self::FIELD_DESCRIPCIONSALA=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,150,0,true),
 		self::FIELD_FECHAALTA=>array(Db2PhpEntity::JDBC_TYPE_DATE,10,0,false),
-		self::FIELD_FECHABAJA=>array(Db2PhpEntity::JDBC_TYPE_DATE,10,0,true));
+		self::FIELD_FECHABAJA=>array(Db2PhpEntity::JDBC_TYPE_DATE,10,0,false));
 	private static $DEFAULT_VALUES=array(
 		self::FIELD_IDSALA=>null,
 		self::FIELD_NOMBRESALA=>null,
 		self::FIELD_CAPACIDADSALA=>null,
 		self::FIELD_DESCRIPCIONSALA=>null,
 		self::FIELD_FECHAALTA=>'',
-		self::FIELD_FECHABAJA=>null);
+		self::FIELD_FECHABAJA=>'');
 	private $idSala;
 	private $NombreSala;
 	private $CapacidadSala;
@@ -191,7 +199,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	/**
 	 * set value for FechaBaja 
 	 *
-	 * type:DATE,size:10,default:null,nullable
+	 * type:DATE,size:10,default:null
 	 *
 	 * @param mixed $FechaBaja
 	 * @return SalaModel
@@ -205,7 +213,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	/**
 	 * get value for FechaBaja 
 	 *
-	 * type:DATE,size:10,default:null,nullable
+	 * type:DATE,size:10,default:null
 	 *
 	 * @return mixed
 	 */
@@ -361,11 +369,12 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	protected static function prepareStatement(PDO $db, $statement) {
 		if(self::isCacheStatements()) {
 			if (in_array($statement, array(self::SQL_INSERT, self::SQL_INSERT_AUTOINCREMENT, self::SQL_UPDATE, self::SQL_SELECT_PK, self::SQL_DELETE_PK))) {
-				$dbInstanceId=spl_object_hash($db);
-//				if (null===self::$stmts[$statement][$dbInstanceId]) {
+                                $dbInstanceId=spl_object_hash($db);
+//                                if (null===self::$stmts[$statement][$dbInstanceId]) {
 //					self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
 //				}
 //				return self::$stmts[$statement][$dbInstanceId];
+                                
                                 self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
 			}
 		}
@@ -589,7 +598,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 */
 	public static function findById(PDO $db,$idSala) {
 		$stmt=self::prepareStatement($db,self::SQL_SELECT_PK);
-		$stmt->bindValue(1,$idSala);
+                $stmt->bindValue(1,$idSala);
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();
@@ -628,6 +637,8 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	 * @return mixed
 	 */
 	public function insertIntoDatabase(PDO $db) {
+            
+            
 		if (null===$this->getIdSala()) {
 			$stmt=self::prepareStatement($db,self::SQL_INSERT_AUTOINCREMENT);
 			$stmt->bindValue(1,$this->getNombreSala());
@@ -639,6 +650,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 			$stmt=self::prepareStatement($db,self::SQL_INSERT);
 			$this->bindValues($stmt);
 		}
+                        
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();

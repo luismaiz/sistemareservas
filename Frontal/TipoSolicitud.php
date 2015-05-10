@@ -2,13 +2,33 @@
 <script>
  var Ajax = new AjaxObj();
 
-var app = angular.module('BusquedaTiposSolicitudes', []);
+var app = angular.module('BusquedaTiposSolicitudes', ["ngStorage"])            
+                     .config(function($locationProvider) {
+                          $locationProvider.html5Mode(true);
+                      });
 
-function CargaTiposSolicitudes($scope, $http) {
+function CargaTiposSolicitudes($scope, $http,$location,$localStorage) {
     
     $scope.tipossolicitudes = [];
     
+    if (typeof($location.search().detalle) !== "undefined")
+            {
+            $scope.resultado = localStorage.getItem('tipossolicitudes');
+            $scope.filtrosSolicitudes = localStorage.getItem('filtrosSolicitudes');
+            $scope.tipossolicitudes = (localStorage.getItem('tipossolicitudes')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).tipossolicitudes;
+            
+            document.getElementById("filtronombresolicitud").value = JSON.parse($scope.filtrosSolicitudes)[0].filtronombresolicitud;
+            document.getElementById("filtrodescripcionsolicitud").value = JSON.parse($scope.filtrosSolicitudes)[0].filtrodescripcionsolicitud;
+            
+            alert('hola');
+            } 
+    
     $scope.obtenerTiposSolicitudes = function() {
+        
+                $scope.filtrosSolicitudes = [{filtronombresolicitud:document.getElementById("filtronombresolicitud").value,
+                                    filtrodescripcionsolicitud:document.getElementById("filtrodescripcionsolicitud").value}
+                    ];
+                localStorage.setItem('filtrosSolicitudes', JSON.stringify($scope.filtrosSolicitudes));
                 
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitudesFiltro');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitudesFiltro";
@@ -24,7 +44,8 @@ function CargaTiposSolicitudes($scope, $http) {
                 
                 if ($scope.estado === 'correcto')
                 {
-                    $scope.tipossolicitudes = JSON.parse(Ajax.responseText).tipossolicitudes;    
+                    $scope.tipossolicitudes = JSON.parse(Ajax.responseText).tipossolicitudes;
+                    localStorage.setItem('tipossolicitudes', JSON.stringify($scope.tipossolicitudes));
                     document.getElementById('divSinResultados').style.display = 'none';
                 }
                 else
@@ -34,6 +55,9 @@ function CargaTiposSolicitudes($scope, $http) {
                 }
         
             };
+            $(function () {
+                $('.footable').footable();
+                });
 }
             
         </script>
@@ -72,17 +96,18 @@ function CargaTiposSolicitudes($scope, $http) {
                                        
                                 <div class="box-content" id="tipossolicitudes">
                                      
-                                       <table class="table table-striped table-bordered responsive">
+                                       <table class="footable table-striped table-bordered responsive" data-page-size="5" data-page-navigation=".pagination" id="tabla">
                                             <thead>
                                                 <tr>
                                                     <th>Nombre</h6></th>
                                                     <th>Descripcion</th>
                                                     <th>Fecha Alta</th>
                                                     <th>Fecha Baja</th>
-                                                    <th></th>
+                                                    <th data-sort-ignore="true"></th>
                                                     
                                                 </tr>
                                               </thead>
+                                              <tbody>
                                                 <tr ng_repeat="tiposolicitud in tipossolicitudes">
                                                     <td>{{tiposolicitud.NombreSolicitud}}</td>
                                                     <td>{{tiposolicitud.DescripcionSolicitud}}</td>
@@ -90,7 +115,16 @@ function CargaTiposSolicitudes($scope, $http) {
                                                     <td>{{tiposolicitud.FechaBaja |date:'dd-MM-yyyy'}}</td>
                                                     <td class="center"><a href="FormularioDetalleTipoSolicitud.php?idTipoSolicitud={{tiposolicitud.idTipoSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
                                                 </tr>
-                                            
+                                            </tbody>
+                                            <tfoot class="hide-if-no-paging">
+                                                    <tr>
+                                                        <td colspan="7" class="text-center">
+                                                            <ul class="pagination pagination-centered">
+
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
                                         </table>
                                         </div>
                                 

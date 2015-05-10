@@ -63,34 +63,30 @@ class SalasBO  extends Rest {
       //Metodos CRUD Sala
     public function crearSala(){
          
-        if ($_SERVER['REQUEST_METHOD'] != "POST") {
-           return $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-        }
-   
-            $this->con = ConexionBD::getInstance();
-            $sala = new SalaModel();
-
             $NombreSala = $this->datosPeticion['NombreSala'];
             $CapacidadSala = $this->datosPeticion['CapacidadSala'];
             $DescripcionSala = $this->datosPeticion['DescripcionSala'];
-            //$FechaAlta = ($this->datosPeticion['FechaAlta'];
-            //$FechaBaja = $this->datosPeticion['FechaBaja'];
-            
-            $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
-            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
-
-                $sala->setNombreSala($NombreSala);
-                $sala->setCapacidadSala($CapacidadSala);
-                $sala->setDescripcionSala($DescripcionSala);
-                $sala->setFechaAlta($FechaAlta);
-                $sala->setFechaBaja($FechaBaja);
+            $FechaAlta =date("Y-m-d");
+            $FechaBaja =null;
+   
+            $this->con = ConexionBD::getInstance();
+            $sala = new SalaModel();
+            $sala->setNombreSala($NombreSala);
+            $sala->setCapacidadSala($CapacidadSala);
+            $sala->setDescripcionSala($DescripcionSala);
+            $sala->setFechaAlta($FechaAlta);
+            $sala->setFechaBaja($FechaBaja);
                 
-                $filasActualizadas = $sala->insertIntoDatabase($this->con);
+            $filasActualizadas = $sala->insertIntoDatabase($this->con);
                 
-                if (count($filasActualizadas) > 0) {
-                    $resp = array('estado' => "correcto", "msg" => "sala creada");
-                    $this->mostrarRespuesta($this->convertirJson($resp), 200);
-                } else {
+                if ($filasActualizadas) 
+                {
+                    $respuesta['estado'] = 'correcto';
+                    $respuesta['msg'] = 'sala creada correctamente';
+                    $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+                } 
+                else 
+                {
                     $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
                 }
     }
@@ -108,20 +104,17 @@ class SalasBO  extends Rest {
             $NombreSala = $this->datosPeticion['NombreSala'];
             $CapacidadSala = $this->datosPeticion['CapacidadSala'];
             $DescripcionSala = $this->datosPeticion['DescripcionSala'];
-//            $FechaAlta = $this->datosPeticion['FechaAlta'];
-//            $FechaBaja = $this->datosPeticion['FechaBaja'];
             
-            $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
-            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
-
+            $fila = $sala->findById($this->con,$this->datosPeticion['idSala']);
+            
             if (!empty($idSala)) {
                 
                 $sala->setIdSala($idSala);
                 $sala->setNombreSala($NombreSala);
                 $sala->setCapacidadSala($CapacidadSala);
                 $sala->setDescripcionSala($DescripcionSala);
-                $sala->setFechaAlta($FechaAlta);
-                $sala->setFechaBaja($FechaBaja);
+                $sala->setFechaAlta($fila->getFechaAlta());
+                $sala->setFechaBaja($fila->getFechaBaja());
                 
                 $filasActualizadas = $sala->updateToDatabase($this->con);
                 
@@ -255,6 +248,81 @@ class SalasBO  extends Rest {
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+    }
+    
+    private function anularSala() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        if (isset($this->datosPeticion['idSala'])) {
+
+            $this->con = ConexionBD::getInstance();
+            $sala = new SalaModel();
+
+            $idSala = $this->datosPeticion['idSala'];
+                        
+            $fila = $sala->findById($this->con,$this->datosPeticion['idSala']);
+            
+            $FechaBaja =date("Y-m-d");
+                        
+            if (!empty($idSala)) {
+                
+                $sala->setIdSala($idSala);
+                $sala->setNombreSala($fila->getNombreSala());
+                $sala->setCapacidadSala($fila->getCapacidadSala());
+                $sala->setDescripcionSala($fila->getDescripcionSala());
+                $sala->setFechaAlta($fila->getFechaAlta());
+                $sala->setFechaBaja($FechaBaja);
+                
+                $filasActualizadas = $sala->updateToDatabase($this->con);
+                
+                if (count($filasActualizadas) == 1) {
+                    $resp = array('estado' => "correcto", "msg" => "sala actualizada");
+                    $this->mostrarRespuesta($this->convertirJson($resp), 200);
+                } else {
+                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+                }
+            }
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+    }
+    
+    private function activarSala() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        if (isset($this->datosPeticion['idSala'])) {
+
+            $this->con = ConexionBD::getInstance();
+            $sala = new SalaModel();
+
+            $idSala = $this->datosPeticion['idSala'];
+                        
+            $fila = $sala->findById($this->con,$this->datosPeticion['idSala']);
+            
+            $FechaAlta =date("Y-m-d");
+            $FechaBaja =NULL;
+                        
+            if (!empty($idSala)) {
+                
+                $sala->setIdSala($idSala);
+                $sala->setNombreSala($fila->getNombreSala());
+                $sala->setCapacidadSala($fila->getCapacidadSala());
+                $sala->setDescripcionSala($fila->getDescripcionSala());
+                $sala->setFechaAlta($FechaAlta);
+                $sala->setFechaBaja($FechaBaja);
+                
+                $filasActualizadas = $sala->updateToDatabase($this->con);
+                
+                if (count($filasActualizadas) == 1) {
+                    $resp = array('estado' => "correcto", "msg" => "sala actualizada");
+                    $this->mostrarRespuesta($this->convertirJson($resp), 200);
+                } else {
+                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+                }
+            }
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
     }
             
 }

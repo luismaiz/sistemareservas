@@ -202,7 +202,7 @@
                                 </span>
                                 </div>
                     
-                                <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='TipoAbono.php' " />
+                                <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='TipoAbono.php?detalle=1' " />
                                 <input class="box btn-primary" type="submit" value="Aceptar" ng-click="guardarTipoAbono();" ng-disabled="formulario.$invalid" />
                    
                 </form>

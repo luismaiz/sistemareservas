@@ -231,7 +231,7 @@
                                 </span>
                     </div>
                     
-                    <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Actividades.php' " />
+                    <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Actividades.php?detalle=1' " />
                     <input class="box btn-primary" type="button" value="Aceptar" ng-click="guardarActividad()" ng-disabled="formulario.$invalid"/>
                 </form>
             </div>

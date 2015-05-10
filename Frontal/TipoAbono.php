@@ -2,13 +2,35 @@
 <script>
  var Ajax = new AjaxObj();
 
-var app = angular.module('BusquedaTiposAbono', []);
+var app = angular.module('BusquedaTiposAbono', ["ngStorage"])            
+                     .config(function($locationProvider) {
+                          $locationProvider.html5Mode(true);
+                      });
 
-function CargaTiposAbono($scope, $http) {
+function CargaTiposAbono($scope, $http,$location,$localStorage) {
     
     $scope.tiposabonos = [];
     
+    if (typeof($location.search().detalle) !== "undefined")
+            {
+            $scope.resultado = localStorage.getItem('tiposabonos');
+            $scope.filtrosTiposAbono = localStorage.getItem('filtrosTiposAbono');
+            $scope.tiposabonos = (localStorage.getItem('tiposabono')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).tiposabonos;
+            
+            document.getElementById("filtronombreabono").value = JSON.parse($scope.filtrosTiposAbono)[0].filtronombreabono;
+            document.getElementById("filtrodescripcionabono").value = JSON.parse($scope.filtrosTiposAbono)[0].filtrodescripcionabono;
+            
+            alert('hola');
+            } 
+    
     $scope.obtenerTiposAbonos = function() {
+        
+                
+                $scope.filtrosTiposAbono = [{filtronombreabono:document.getElementById("filtronombreabono").value,
+                                    filtrodescripcionabono:document.getElementById("filtrodescripcionabono").value}
+                    ];
+                localStorage.setItem('filtrosTiposAbono', JSON.stringify($scope.filtrosTiposAbono));
+                
                 
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbonosFiltro');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbonosFiltro";
@@ -19,11 +41,13 @@ function CargaTiposAbono($scope, $http) {
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
 	
+                
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')
                 {
-                    $scope.tiposabonos = JSON.parse(Ajax.responseText).tiposabonos;    
+                    $scope.tiposabonos = JSON.parse(Ajax.responseText).tiposabonos;
+                    localStorage.setItem('tiposabonos', JSON.stringify($scope.tiposabonos));
                     document.getElementById('divSinResultados').style.display = 'none';
                 }
                 else
@@ -33,6 +57,9 @@ function CargaTiposAbono($scope, $http) {
                 }
         
             };
+            $(function () {
+                $('.footable').footable();
+                });
 }
             
         </script>
@@ -74,17 +101,18 @@ function CargaTiposAbono($scope, $http) {
                                        
                                 <div class="box-content" id="tiposabonos">
                                      
-                                       <table class="table table-striped table-bordered responsive">
+                                       <table class="footable table-striped table-bordered responsive" data-page-size="5" data-page-navigation=".pagination" id="tabla">
                                             <thead>
                                                 <tr>
                                                     <th>Nombre</h6></th>
                                                     <th>Descripcion</th>
                                                     <th>Fecha Alta</th>
                                                     <th>Fecha Baja</th>
-                                                    <th></th>
+                                                    <th data-sort-ignore="true"></th>
                                                     
                                                 </tr>
                                               </thead>
+                                              <tbody>
                                                 <tr ng_repeat="tipoabono in tiposabonos">
                                                     <td>{{tipoabono.NombreAbono}}</td>
                                                     <td>{{tipoabono.DescripcionAbono}}</td>
@@ -92,6 +120,16 @@ function CargaTiposAbono($scope, $http) {
                                                     <td>{{tipoabono.FechaBaja |date:'dd-MM-yyyy'}}</td>
                                                     <td class="center"><a href="FormularioDetalleAbono.php?idTipoAbono={{tipoabono.idTipoAbono}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
                                                 </tr>
+                                                </tbody>
+                                                <tfoot class="hide-if-no-paging">
+                                                    <tr>
+                                                        <td colspan="7" class="text-center">
+                                                            <ul class="pagination pagination-centered">
+
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
                                             
                                         </table>
                                         </div>

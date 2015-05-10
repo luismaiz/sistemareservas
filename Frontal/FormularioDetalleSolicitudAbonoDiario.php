@@ -29,6 +29,8 @@
                     document.getElementById('divPendiente').style.display = 'block';
                     document.getElementById('validacion').style.display = 'inline';
                 }
+                else
+                    document.getElementById('anulacion').style.display = 'inline';
         
             };
             if (typeof($location.search().idSolicitud) !== "undefined")
@@ -164,6 +166,14 @@
                                  </span>
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Día de acceso</label>
+                                <input ng-model="abonodiario.FechaAbonoDiario" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="FechaAbonoDiario" id="FechaAbonoDiario" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required>
+                                <span class="col-md-6 col-sm-5 col-XS-12" style="color:red" ng-show="formulario.FechaAbonoDiario.$dirty && formulario.FechaSolicitud.$invalid">
+                                     <span ng-show="formulario.FechaAbonoDiario.$error.pattern">* Formato de fecha no valido.</span>
+                                    <span ng-show="formulario.FechaAbonoDiario.$error.required">* Fecha obligatoria.</span>
+                                </span>
+                                </div>
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Fecha Solicitud</label>
                                 <input ng-model="abonodiario.FechaSolicitud" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="FechaSolicitud" id="FechaSolicitud" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required>
                                 <span class="col-md-6 col-sm-5 col-XS-12" style="color:red" ng-show="formulario.FechaSolicitud.$dirty && formulario.FechaSolicitud.$invalid">
@@ -202,8 +212,9 @@
                                 </span>
                                 </div>
                                 
-                                <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Reservas.php' " />
+                                <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Reservas.php?detalle=1' " />
                                 <input style='display:none;' id="validacion" class="box btn-primary" type="submit" value="Validar Solicitud" ng-click="validarSolicitud();" ng-disabled="formulario.$invalid" />
+                                <input style='display:none;' id="anulacion" class="box btn-primary" type="submit" value="Anular Solicitud" ng-click="anularSolicitud();"  />
                                 
                              </form>
                            </div>                                         

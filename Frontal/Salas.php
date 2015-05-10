@@ -1,14 +1,33 @@
 <?php require('Cabecera.php'); ?>
 <script>
             var Ajax = new AjaxObj();
-            var app = angular.module('BusquedaSalas', []);
+            var app = angular.module('BusquedaSalas',  ["ngStorage"])            
+                     .config(function($locationProvider) {
+                          $locationProvider.html5Mode(true);
+                      });
             
-            function CargaSalas($scope, $http) {
+            function CargaSalas($scope, $http,$location,$localStorage) {
             
             $scope.salas = [];
-
+            
+            if (typeof($location.search().detalle) !== "undefined")
+            {
+                $scope.resultado = localStorage.getItem('salas');
+                $scope.filtrossalas = localStorage.getItem('filtrosSalas');
+                $scope.salas = (localStorage.getItem('salas')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).salas;
+            
+                document.getElementById("filtronombresala").value = JSON.parse($scope.filtrossalas)[0].filtronombresala;
+                document.getElementById("filtrocapacidadsala").value = JSON.parse($scope.filtrossalas)[0].filtrocapacidadsala;
+                        
+                
+            }
+                    
             $scope.obtenerSalas = function() {
                 
+                $scope.filtrossalas = [{filtronombresala:document.getElementById("filtronombresala").value,
+                    filtrocapacidadsala:document.getElementById("filtrocapacidadsala").value}
+                    ];
+                localStorage.setItem('filtrosSalas', JSON.stringify($scope.filtrossalas));
                 
                 
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSalasFiltro');
@@ -26,7 +45,8 @@
                        
                 if ($scope.estado === 'correcto')
                 {
-                    $scope.salas = JSON.parse(Ajax.responseText).salas;    
+                    $scope.salas = JSON.parse(Ajax.responseText).salas;
+                    localStorage.setItem('salas', JSON.stringify($scope.salas));
                     document.getElementById('divSinResultados').style.display = 'none';
                 }
                 else
@@ -40,7 +60,6 @@
             $(function () {
                 $('.footable').footable();
                 });
-
 }
         </script>
 <div>
@@ -76,7 +95,7 @@
                                 </div>
                                 <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerSalas()"/>
                                 <div class="box-content" id="salas">
-                                        <table class="footable table-striped table-bordered responsive" data-page-size="10" >
+                                        <table class="footable table-striped table-bordered responsive" data-page-size="5" data-page-navigation=".pagination" id="tabla" >
                                             <thead>
                                                 <tr>
                                                     <th>Nombre</th>
@@ -95,9 +114,19 @@
                                                     <td>{{sala.DescripcionSala}}</td>
                                                     <td>{{sala.FechaAlta |date:'dd-MM-yyyy' }}</td>
                                                     <td>{{sala.FechaBaja |date:'dd-MM-yyyy'}}</td>
-                                                    <td class="center"><a href="FormularioDetalleSala.php?idSala={{sala.idSala}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
+                                                    <td class="center"><a target="_self" href="FormularioDetalleSala.php?idSala={{sala.idSala}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
+                                                    <a target="_self" ng_show="sala.FechaBaja!==null"  class="btn btn-danger">Anulada</a></td>
                                                 </tr>
                                                 </tbody>
+                                                <tfoot class="hide-if-no-paging">
+                                                    <tr>
+                                                        <td colspan="7" class="text-center">
+                                                            <ul class="pagination pagination-centered">
+
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
                                                
                                         </table>
                                    </div>

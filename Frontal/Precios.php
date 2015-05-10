@@ -89,6 +89,9 @@
                     document.getElementById('divSinResultados').style.display = 'block';
                 }
             };
+             $(function () {
+                $('.footable').footable();
+                });
         
     }
         
@@ -131,26 +134,44 @@
                                 <select  id="filtroTipoTarifa" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
                                     <option ng_repeat="tipotarifa in tiposTarifas" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>
                                 </select>
-                                <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerPrecios()"/>
+                                
                             </div>	
+                            <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerPrecios()"/>
                             <div class="box-content" id="precios">
-                            <table class="table table-striped table-bordered responsive">
+                            <table class="footable table-striped table-bordered responsive" data-page-size="5" data-page-navigation=".pagination" id="tabla">
                                             <thead>
                                                 <tr>
                                                     <th>Tipo Solicitud</h6></th>
                                                     <th>Tipo Abono</th>
                                                     <th>Tipo Tarifa</th>
-                                                    <th>Precio</th>
-                                                    <th></th>
+                                                    <th data-type="numeric">Precio</th>
+                                                    <th data-sort-ignore="true"></th>
                                               </thead>      
                                                 </tr>
+                                                <tbody>
                                                 <tr ng_repeat="precio in precios">
-                                                    <td>{{precio.idTipoSolicitud}}</td>
-                                                    <td>{{precio.idTipoAbono}}</td>
-                                                    <td>{{precio.idTipoTarifa}}</td>
-                                                    <td>{{precio.Precio}}</td>
+                                                    <td><select  ng_disabled="true">	
+                                                            <option ng_repeat="tiposolicitud in tiposSolicitudes" ng_selected="{{precio.idTipoSolicitud}} == {{tiposolicitud.idTipoSolicitud}}">{{tiposolicitud.NombreSolicitud}}</option>
+                                                    </select></td>
+                                                    <td><select  ng_disabled="true">	
+                                                            <option ng_repeat="tipoabono in tiposAbonos" ng_selected="{{precio.idTipoAbono}} == {{tipoabono.idTipoAbono}}">{{tipoabono.NombreAbono}}</option>
+                                                    </select></td>
+                                                    <td><select  ng_disabled="true">	
+                                                            <option ng_repeat="tipotarifa in tiposTarifas" ng_selected="{{precio.idTipoTarifa}} == {{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>
+                                                    </select></td>
+                                                    <td>{{precio.Precio}}€</td>
                                                     <td class="center"><a href="FormularioDetallePrecio.php?idPrecio={{precio.idPrecio}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
                                                 </tr>
+                                                </tbody>
+                                                <tfoot class="hide-if-no-paging">
+                                                    <tr>
+                                                        <td colspan="7" class="text-center">
+                                                            <ul class="pagination pagination-centered">
+
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
                                         </table>
                                 </div>
                         </div>
