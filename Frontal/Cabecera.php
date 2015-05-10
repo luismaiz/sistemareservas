@@ -19,8 +19,7 @@ include 'config.php'
         <link href="Utilidades/css/bootstrap-cerulean.min.css" rel="stylesheet" type="text/css"/>
         <!--<link id="bs-css" href="Utilidades/css/bootstrap-cerulean.min.css" rel="stylesheet">-->
         <link href="Utilidades/css/charisma-app.css" rel="stylesheet">
-        <link href='Utilidades/bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>
-        <link href='Utilidades/bower_components/fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print'>
+        <link href='Utilidades/bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>        
         <link href='Utilidades/bower_components/chosen/chosen.min.css' rel='stylesheet'>
         <link href='Utilidades/bower_components/colorbox/example3/colorbox.css' rel='stylesheet'>
         <link href='Utilidades/bower_components/responsive-tables/responsive-tables.css' rel='stylesheet'>
@@ -39,9 +38,9 @@ include 'config.php'
         <script src="Utilidades/bower_components/jquery/jquery.min.js"></script>
         
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-  <link rel="stylesheet" href="/resources/demos/style.css">
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <!--<link rel="stylesheet" href="/resources/demos/style.css">-->
         <script src="Utilidades/js/jscolor/jscolor.js" type="text/javascript"></script>
         <link href="Utilidades/FooTable-2/css/footable.core.css" rel="stylesheet" type="text/css"/>
         <link href="Utilidades/FooTable-2/css/footable.metro.css" rel="stylesheet" type="text/css"/>
@@ -53,6 +52,28 @@ include 'config.php'
         <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
+        
+        <!-- 
+            fullCalendar styles css
+        -->
+        <!-- bootstrap & fontawesome -->
+        <!--<link rel="stylesheet" href="Utilidades/css/bootstrap.min.css" />-->
+        <link rel="stylesheet" href="Utilidades/calendario/css/font-awesome.min.css" />
+        
+        <!-- page specific plugin styles -->
+        <!--<link rel="stylesheet" href="Utilidades/css/jquery-ui.custom.min.css" />-->
+        <!--<link rel="stylesheet" href="Utilidades/css/fullcalendar.min.css" />-->
+
+        <!-- text fonts -->
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+
+        <!-- ace styles -->
+        <link rel="stylesheet" href="Utilidades/calendario/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
+        
+        <link rel="stylesheet" type="text/css" href="Utilidades/calendario/css/jquery.datetimepicker.css"/>
+        
+        <script src="Utilidades/calendario/js/jquery.datetimepicker.js" type="text/javascript"></script>
+
         
         <!-- The fav icon -->
         <link rel="shortcut icon" href="Utilidades/img/favicon.ico">
