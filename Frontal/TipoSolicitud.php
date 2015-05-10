@@ -11,18 +11,7 @@ function CargaTiposSolicitudes($scope, $http,$location,$localStorage) {
     
     $scope.tipossolicitudes = [];
     
-    if (typeof($location.search().detalle) !== "undefined")
-            {
-            $scope.resultado = localStorage.getItem('tipossolicitudes');
-            $scope.filtrosSolicitudes = localStorage.getItem('filtrosSolicitudes');
-            $scope.tipossolicitudes = (localStorage.getItem('tipossolicitudes')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).tipossolicitudes;
-            
-            document.getElementById("filtronombresolicitud").value = JSON.parse($scope.filtrosSolicitudes)[0].filtronombresolicitud;
-            document.getElementById("filtrodescripcionsolicitud").value = JSON.parse($scope.filtrosSolicitudes)[0].filtrodescripcionsolicitud;
-            
-            alert('hola');
-            } 
-    
+        
     $scope.obtenerTiposSolicitudes = function() {
         
                 $scope.filtrosSolicitudes = [{filtronombresolicitud:document.getElementById("filtronombresolicitud").value,
@@ -55,6 +44,19 @@ function CargaTiposSolicitudes($scope, $http,$location,$localStorage) {
                 }
         
             };
+            
+            if (typeof($location.search().detalle) !== "undefined")
+            {
+            $scope.resultado = localStorage.getItem('tipossolicitudes');
+            $scope.filtrosSolicitudes = localStorage.getItem('filtrosSolicitudes');
+            $scope.tipossolicitudes = (localStorage.getItem('tipossolicitudes')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).tipossolicitudes;
+            
+            document.getElementById("filtronombresolicitud").value = JSON.parse($scope.filtrosSolicitudes)[0].filtronombresolicitud;
+            document.getElementById("filtrodescripcionsolicitud").value = JSON.parse($scope.filtrosSolicitudes)[0].filtrodescripcionsolicitud;
+            
+            $scope.obtenerTiposSolicitudes();
+            } 
+            
             $(function () {
                 $('.footable').footable();
                 });
@@ -113,7 +115,8 @@ function CargaTiposSolicitudes($scope, $http,$location,$localStorage) {
                                                     <td>{{tiposolicitud.DescripcionSolicitud}}</td>
                                                     <td>{{tiposolicitud.FechaAlta |date:'dd-MM-yyyy'}}</td>
                                                     <td>{{tiposolicitud.FechaBaja |date:'dd-MM-yyyy'}}</td>
-                                                    <td class="center"><a href="FormularioDetalleTipoSolicitud.php?idTipoSolicitud={{tiposolicitud.idTipoSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
+                                                    <td class="center"><a target="_self" href="FormularioDetalleTipoSolicitud.php?idTipoSolicitud={{tiposolicitud.idTipoSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
+                                                    <a target="_self" ng_show="tiposolicitud.FechaBaja!==null"  class="btn btn-danger">Anulada</a></td>
                                                 </tr>
                                             </tbody>
                                             <tfoot class="hide-if-no-paging">

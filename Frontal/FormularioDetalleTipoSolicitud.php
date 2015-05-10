@@ -26,11 +26,27 @@
                 Ajax.send(Params); // Enviamos los datos
                 
                 $scope.tiposolicitud = JSON.parse(Ajax.responseText).tipoSolicitud;
-                //$scope.sala.CapacidadSala = parseInt($scope.sala.CapacidadSala);
+                if ($scope.tiposolicitud.FechaBaja !== "01-01-1970")
+                {
+                    document.getElementById('divBaja').style.display = 'block';
+                    document.getElementById('activar').style.display = 'inline';
+                }
+                else
+                {
+                    $scope.tiposolicitud.FechaBaja = null;
+                    document.getElementById('anular').style.display = 'inline';
+                    document.getElementById('aceptar').style.display = 'inline';
+                }
         
             };
             if (typeof($location.search().idTipoSolicitud) !== "undefined")
+            {
                 $scope.obtenerTiposSolicitud($location.search().idTipoSolicitud);
+            }
+            else
+            {
+                document.getElementById('aceptar').style.display = 'inline';
+            }
             
             $scope.guardarTipoSolicitud = function() {
                 if (typeof($location.search().idTipoSolicitud) !== "undefined")
@@ -40,16 +56,13 @@
         
             };
             
-            $scope.actualizarTipoSolicitud = function(){
+            $scope.crearTipoSolicitud = function(){
                                    
              
-                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=actualizarTipoSolicitud');
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=actualizarTipoSolicitud";
-                var Params = 'idTipoSolicitud='+ $location.search().idTipoSolicitud +
-                    '&NombreSolicitud='+ document.getElementById('NombreSolicitud').value +
-                    '&DescripcionSolicitud='+ document.getElementById('DescripcionSolicitud').value +
-                    '&FechaAlta='+ document.getElementById('FechaAlta').value +
-                    '&FechaBaja='+ document.getElementById('FechaBaja').value;
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=crearTipoSolicitud');
+                
+                var Params = 'NombreSolicitud='+ document.getElementById('NombreSolicitud').value +
+                    '&DescripcionSolicitud='+ document.getElementById('DescripcionSolicitud').value;
 
                
                 Ajax.open("POST", Url, false);
@@ -62,6 +75,34 @@
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
+                    $scope.obtenerTiposSolicitud($location.search().idTipoSolicitud);
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
+            };
+            $scope.actualizarTipoSolicitud = function(){
+                                   
+             
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=actualizarTipoSolicitud');
+                
+                var Params = 'idTipoSolicitud='+ $location.search().idTipoSolicitud +
+                    '&NombreSolicitud='+ document.getElementById('NombreSolicitud').value +
+                    '&DescripcionSolicitud='+ document.getElementById('DescripcionSolicitud').value;
+
+               
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+             
+            
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divCorrecto').style.display = 'block';
+                    $scope.obtenerTiposSolicitud($location.search().idTipoSolicitud);
                 }
                 else
                 {
@@ -69,27 +110,47 @@
                 }
             };
             
-            $scope.crearTipoSolicitud = function(){
-                                   
-             
-                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=crearTipoSolicitud');
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=crearTipoSolicitud";
-                var Params = 'NombreSolicitud='+ document.getElementById('NombreSolicitud').value +
-                    '&DescripcionSolicitud='+ document.getElementById('DescripcionSolicitud').value +
-                    '&FechaAlta='+ document.getElementById('FechaAlta').value +
-                    '&FechaBaja='+ document.getElementById('FechaBaja').value;
-
-               
+            
+            
+            $scope.anularTipoSolicitud = function(){
+                
+                alert('hola');
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=anularTipoSolicitud');
+                var Params = 'idTipoSolicitud='+ $location.search().idTipoSolicitud;
+                
                 Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-             
+                
+                alert(Ajax.responseText);    
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divBaja').style.display = 'none';
+                    document.getElementById('divCorrecto').style.display = 'block';
+                    $scope.obtenerTiposSolicitud($location.search().idTipoSolicitud);
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
+            };
             
+            $scope.activarTipoSolicitud = function(){
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=activarTipoSolicitud');
+                var Params = 'idTipoSolicitud='+ $location.search().idTipoSolicitud;
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                
+                alert(Ajax.responseText);
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
+                    $scope.obtenerTiposSolicitud($location.search().idTipoSolicitud);
                 }
                 else
                 {
@@ -165,6 +226,10 @@
                                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                                     <strong>Correcto.</strong>  Operación realizada con éxito.
                             </div>
+                            <div class="alert alert-danger" id="divBaja" style='display:none;'>
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <strong>Este tipo de solicitud se encuentra dado de baja.</strong>
+                            </div>
                             </div>
             <div class="box-content">
 <div class="row">
@@ -181,29 +246,23 @@
                     </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Descripción Solicitud</label>
-                                <input ng-model="tiposolicitud.DescripcionSolicitud" ng-required=true" type="text" class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12"  name="descripcionsolicitud" id="DescripcionSolicitud">
+                                <input ng-model="tiposolicitud.DescripcionSolicitud" ng-required="true" type="text" class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12"  name="descripcionsolicitud" id="DescripcionSolicitud">
                                 <span style="color:red" ng-show="formulario.descripcionsolicitud.$dirty && formulario.descripcionsolicitud.$invalid">
                                 <span ng-show="formulario.descripcionsolicitud.$error.required">Descripción de solicitud obligatorio.</span>
                                  </span>
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12 " >Fecha Alta</label>
-                                <input ng-model="tiposolicitud.FechaAlta" type="text" class="input-sm col-md-2 col-sm-4 col-xs-8" name="FechaAlta" id="FechaAlta" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required>
-                                <span class="col-md-6 col-sm-5 col-xs-12" style="color:red" ng-show="formulario.FechaAlta.$dirty && formulario.FechaAlta.$invalid">
-                                    <span ng-show="formulario.FechaAlta.$error.required">* Fecha obligatoria.</span>
-                                    <span ng-show="formulario.FechaAlta.$error.pattern">* Formato de fecha no valido.</span>
-                                </span>
+                                <input ng_disabled="true" ng-model="tiposolicitud.FechaAlta" type="text" class="input-sm col-md-2 col-sm-4 col-xs-8" name="FechaAlta" id="FechaAlta" >
                                 </div>
                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Fecha Baja</label>
-                                <input ng-model="tiposolicitud.FechaBaja" type="text" class="input-sm col-md-2 col-sm-4 col-xs-8" name="FechaBaja" id="FechaBaja" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required>                                     
-                                <span class="col-md-6 col-sm-5 col-XS-12" style="color:red" ng-show="formulario.FechaBaja.$dirty && formulario.FechaBaja.$invalid">
-                                     <span ng-show="formulario.FechaBaja.$error.pattern">* Formato de fecha no valido.</span>
-                                    <span ng-show="formulario.FechaBaja.$error.required">* Fecha obligatoria.</span>
-                                </span>
+                                <input ng_disabled="true" ng-model="tiposolicitud.FechaBaja" type="text" class="input-sm col-md-2 col-sm-4 col-xs-8" name="FechaBaja" id="FechaBaja" >                                     
                                 </div>
                                 <input class="box btn-primary " type="button" value="Cancelar" onClick=" window.location.href='TipoSolicitud.php?detalle=1' " />
-                                <input class="box btn-primary " type="submit" value="Aceptar" ng-click="guardarTipoSolicitud();" ng-disabled="formulario.$invalid" />
+                                <input style='display:none;' id="aceptar" class="box btn-primary " type="submit" value="Aceptar" ng-click="guardarTipoSolicitud();" ng-disabled="formulario.$invalid" />
+                                <input style='display:none;' id="anular" class="box btn-primary" type="submit" value="Anular" ng-click="anularTipoSolicitud();"/>
+                                <input style='display:none;' id="activar" class="box btn-primary" type="submit" value="Activar" ng-click="activarTipoSolicitud();"/>
 
                 </form>
                             </div>

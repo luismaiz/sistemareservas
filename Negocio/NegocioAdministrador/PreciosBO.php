@@ -62,7 +62,6 @@ class PreciosBO extends Rest{
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-        //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {
 
         $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
         $idTipoAbono = $this->datosPeticion['idTipoAbono'];
@@ -70,8 +69,8 @@ class PreciosBO extends Rest{
         $NombrePrecio = $this->datosPeticion['NombrePrecio'];
         $DescripcionPrecio = $this->datosPeticion['DescripcionPrecio'];
         $Precio = $this->datosPeticion['Precio'];
-        $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
-            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
+        $FechaAlta =date("Y-m-d");
+        $FechaBaja =null;
      
         $this->con = ConexionBD::getInstance();
         $precio = new PrecioModel();
@@ -87,7 +86,6 @@ class PreciosBO extends Rest{
         $result = $precio->insertIntoDatabase($this->con);
 
         if ($result) {
-            //$id = $this->_conn->lastInsertId();  
             $respuesta['estado'] = 'correcto';
             $respuesta['msg'] = 'precio creado correctamente';
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
@@ -124,7 +122,9 @@ class PreciosBO extends Rest{
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-        //echo $idUsuario . "<br/>";  
+        $this->con = ConexionBD::getInstance();
+        $precio = new PrecioModel();
+                
         if (isset($this->datosPeticion['idPrecio'])) {
             $idPrecio = $this->datosPeticion['idPrecio'];
             $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
@@ -133,20 +133,19 @@ class PreciosBO extends Rest{
             $NombrePrecio = $this->datosPeticion['NombrePrecio'];
             $DescripcionPrecio = $this->datosPeticion['DescripcionPrecio'];
             $Precio = $this->datosPeticion['Precio'];
-            $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
-            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
 
-            if (!empty($idSala)) {
-                 $this->con = ConexionBD::getInstance();
-                $precio = new PrecioModel();
+            $fila = $precio->findById($this->con,$this->datosPeticion['idPrecio']);
+            
+            if (!empty($idPrecio)) {
+                 
                 $precio->setIdTipoSolicitud($idTipoSolicitud);
                 $precio->setIdTipoAbono($idTipoAbono);
                 $precio->setIdTipoTarifa($idTipoTarifa);
                 $precio->setNombrePrecio($NombrePrecio);
                 $precio->setDescripcionPrecio($DescripcionPrecio);
                 $precio->setPrecio($Precio);
-                $precio->setFechaAlta($FechaAlta);
-                $precio->setFechaBaja($FechaBaja);
+                $precio->setFechaAlta($fila->getFechaAlta());
+                $precio->setFechaBaja($fila->getFechaBaja());
 
                 $result = $precio->updateToDatabase($this->con);
 

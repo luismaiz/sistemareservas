@@ -12,21 +12,6 @@
             
             $scope.actividades = [];
                 
-            if (typeof($location.search().detalle) !== "undefined")
-            {
-            $scope.resultado = localStorage.getItem('actividades');
-            $scope.filtrosActividades = localStorage.getItem('filtrosActividades');
-            $scope.actividades = (localStorage.getItem('actividades')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).actividades;
-            
-            document.getElementById("filtroactividad").value = JSON.parse($scope.filtrosActividades)[0].filtroactividad;
-            document.getElementById("filtrointensidad").value = JSON.parse($scope.filtrosActividades)[0].filtrointensidad;
-            document.getElementById("filtrogrupo").value = JSON.parse($scope.filtrosActividades)[0].filtrogrupo;
-            
-            alert('hola');
-            }    
-
-
-
             $scope.obtenerActividades = function() {
                 
                 $scope.filtrosActividades = [{filtroactividad:document.getElementById("filtroactividad").value,
@@ -59,6 +44,19 @@
                 }
         
             };
+            
+            if (typeof($location.search().detalle) !== "undefined")
+            {
+            $scope.resultado = localStorage.getItem('actividades');
+            $scope.filtrosActividades = localStorage.getItem('filtrosActividades');
+            $scope.actividades = (localStorage.getItem('actividades')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).actividades;
+            
+            document.getElementById("filtroactividad").value = JSON.parse($scope.filtrosActividades)[0].filtroactividad;
+            document.getElementById("filtrointensidad").value = JSON.parse($scope.filtrosActividades)[0].filtrointensidad;
+            document.getElementById("filtrogrupo").value = JSON.parse($scope.filtrosActividades)[0].filtrogrupo;
+            
+            $scope.obtenerActividades();
+            }    
 $(function () {
                 $('.footable').footable();
                 });
@@ -121,7 +119,8 @@ $(function () {
                                                     </td>
                                                     <td>{{actividad.EdadMinima}}</td>
                                                     <td>{{actividad.EdadMaxima}}</td>
-                                                    <td class="center"><a target="_self" href="FormularioDetalleActividad.php?idActividad={{actividad.idActividad}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
+                                                    <td class="center"><a target="_self" href="FormularioDetalleActividad.php?idActividad={{actividad.idActividad}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
+                                                    <a target="_self" ng_show="actividad.FechaBaja!==null"  class="btn btn-danger">Anulada</a></td>
                                                 </tr>
                                             </tbody>
                                             <tfoot class="hide-if-no-paging">

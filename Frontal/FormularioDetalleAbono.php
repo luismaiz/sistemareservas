@@ -26,11 +26,27 @@
                 Ajax.send(Params); // Enviamos los datos
                 
                 $scope.tipoabono = JSON.parse(Ajax.responseText).tipoabono;
-                //$scope.sala.CapacidadSala = parseInt($scope.sala.CapacidadSala);
+                if ($scope.tipoabono.FechaBaja !== "01-01-1970")
+                {
+                    document.getElementById('divBaja').style.display = 'block';
+                    document.getElementById('activar').style.display = 'inline';
+                }
+                else
+                {
+                    $scope.tipoabono.FechaBaja = null;
+                    document.getElementById('anular').style.display = 'inline';
+                    document.getElementById('aceptar').style.display = 'inline';
+                }
         
             };
             if (typeof($location.search().idTipoAbono) !== "undefined")
+            {
                 $scope.obtenerTiposAbono($location.search().idTipoAbono);
+            }
+            else
+            {
+                document.getElementById('aceptar').style.display = 'inline';
+            }
             
             $scope.guardarTipoAbono = function() {
                 if (typeof($location.search().idTipoAbono) !== "undefined")
@@ -40,16 +56,13 @@
         
             };
             
-            $scope.actualizarTipoAbono = function(){
+            $scope.crearTipoAbono = function(){
                                    
              
-                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=actualizarTipoAbono');
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=actualizarTipoAbono";
-                var Params = 'idTipoAbono='+ $location.search().idTipoAbono +
-                    '&NombreAbono='+ document.getElementById('NombreAbono').value +
-                    '&DescripcionAbono='+ document.getElementById('DescripcionAbono').value +
-                    '&FechaAlta='+ document.getElementById('FechaAlta').value +
-                    '&FechaBaja='+ document.getElementById('FechaBaja').value;
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=crearTipoAbono');
+                
+                var Params = 'NombreAbono='+ document.getElementById('NombreAbono').value +
+                    '&DescripcionAbono='+ document.getElementById('DescripcionAbono').value;
 
                
                 Ajax.open("POST", Url, false);
@@ -62,6 +75,34 @@
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
+                    $scope.obtenerTiposAbono($location.search().idTipoAbono);
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
+            };
+            $scope.actualizarTipoAbono = function(){
+                                   
+             
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=actualizarTipoAbono');
+                
+                var Params = 'idTipoAbono='+ $location.search().idTipoAbono +
+                    '&NombreAbono='+ document.getElementById('NombreAbono').value +
+                    '&DescripcionAbono='+ document.getElementById('DescripcionAbono').value;
+
+               
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+             
+                
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divCorrecto').style.display = 'block';
+                    $scope.obtenerTiposAbono($location.search().idTipoAbono);
                 }
                 else
                 {
@@ -69,28 +110,47 @@
                 }
             };
             
+                       
             
-            $scope.crearTipoAbono = function(){
-                                   
-             
-                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=crearTipoAbono');
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=crearTipoAbono";
-                var Params = 'NombreAbono='+ document.getElementById('NombreAbono').value +
-                    '&DescripcionAbono='+ document.getElementById('DescripcionAbono').value +
-                    '&FechaAlta='+ document.getElementById('FechaAlta').value +
-                    '&FechaBaja='+ document.getElementById('FechaBaja').value;
-
-               
+            $scope.anularTipoAbono = function(){
+                
+                alert('hola');
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=anularTipoAbono');
+                var Params = 'idTipoAbono='+ $location.search().idTipoAbono;
+                
                 Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-             
                 
+                alert(Ajax.responseText);    
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divBaja').style.display = 'none';
+                    document.getElementById('divCorrecto').style.display = 'block';
+                    $scope.obtenerTiposAbono($location.search().idTipoAbono);
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
+            };
+            
+            $scope.activarTipoAbono = function(){
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=activarTipoAbono');
+                var Params = 'idTipoAbono='+ $location.search().idTipoAbono;
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                
+                alert(Ajax.responseText);
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
+                    $scope.obtenerTiposAbono($location.search().idTipoAbono);
                 }
                 else
                 {
@@ -163,6 +223,10 @@
                                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                                     <strong>Correcto.</strong>  Operación realizada con éxito.
                             </div>
+                            <div class="alert alert-danger" id="divBaja" style='display:none;'>
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <strong>Este tipo de abono se encuentra dado de baja.</strong>
+                            </div>
                             </div>
             <div class="box-content">
 <div class="row">
@@ -179,31 +243,23 @@
                       </div>          
                       <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Descripción Abono</label>
-                                <input ng-model="tipoabono.DescripcionAbono" ng-required=true" type="textarea" class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12"  name="descripcionabono" id="DescripcionAbono">
+                                <input ng-model="tipoabono.DescripcionAbono" ng-required="true" type="textarea" class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12"  name="descripcionabono" id="DescripcionAbono">
                                 <span class="col-lg-2 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.descripcionabono.$dirty && formulario.descripcionabono.$invalid">
                                 <span ng-show="formulario.descripcionabono.$error.required">Descripción de abono obligatorio.</span>
                                 </span>
                       </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12 " >Fecha Alta</label>
-                                <input ng-model="tipoabono.FechaAlta" type="text" class="input-sm col-md-2 col-sm-4 col-xs-7" name="FechaAlta" id="FechaAlta" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required>
-                                <span class="col-md-6 col-sm-5 col-xs-12" style="color:red" ng-show="formulario.FechaAlta.$dirty && formulario.FechaAlta.$invalid">
-                                    <span ng-show="formulario.FechaAlta.$error.required">* Fecha obligatoria.</span>
-                                    <span ng-show="formulario.FechaAlta.$error.pattern">* Formato de fecha no valido.</span>
-                                </span>
-                                </span>
+                                <input ng_disabled="true" ng-model="tipoabono.FechaAlta" type="text" class="input-sm col-md-2 col-sm-4 col-xs-7" name="FechaAlta" id="FechaAlta" >
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Fecha Baja</label>
-                                <input ng-model="tipoabono.FechaBaja" type="text" class="input-sm col-md-2 col-sm-4 col-xs-7" name="FechaBaja" id="FechaBaja" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required>                                     
-                                <span class="col-md-6 col-sm-5 col-xs-12" style="color:red" ng-show="formulario.FechaBaja.$dirty && formulario.FechaBaja.$invalid">
-                                     <span ng-show="formulario.FechaBaja.$error.pattern">* Formato de fecha no valido.</span>
-                                    <span ng-show="formulario.FechaBaja.$error.required">* Fecha obligatoria.</span>
-                                </span>
+                                <input ng_disabled="true" ng-model="tipoabono.FechaBaja" type="text" class="input-sm col-md-2 col-sm-4 col-xs-7" name="FechaBaja" id="FechaBaja" >                                     
                                 </div>
-                    
                                 <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='TipoAbono.php?detalle=1' " />
-                                <input class="box btn-primary" type="submit" value="Aceptar" ng-click="guardarTipoAbono();" ng-disabled="formulario.$invalid" />
+                                <input style='display:none;' id="aceptar" class="box btn-primary" type="submit" value="Aceptar" ng-click="guardarTipoAbono();" ng-disabled="formulario.$invalid" />
+                                <input style='display:none;' id="anular" class="box btn-primary" type="submit" value="Anular" ng-click="anularTipoAbono();"/>
+                                <input style='display:none;' id="activar" class="box btn-primary" type="submit" value="Activar" ng-click="activarTipoAbono();"/>
                    
                 </form>
             </div>

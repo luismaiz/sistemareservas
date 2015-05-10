@@ -66,8 +66,8 @@ class TarifasBO extends Rest{
         //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {        
         $NombreTarifa = $this->datosPeticion['NombreTarifa'];
         $DescripcionTarifa = $this->datosPeticion['DescripcionTarifa'];
-        $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
-            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
+        $FechaAlta =date("Y-m-d");
+        $FechaBaja =null;
 
         $this->con = ConexionBD::getInstance();
         $tipotarifa = new TipotarifaModel();
@@ -86,20 +86,15 @@ class TarifasBO extends Rest{
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         else
+        {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
-        //}  
-        //else  
-        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(8)), 400);  
-        //} else {  
-        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);  
-        //}  
+        }
     }
 
     private function obtenerTiposTarifa() {
         if ($_SERVER['REQUEST_METHOD'] != "GET") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-      
 
         $this->con = ConexionBD::getInstance();
         $tipoTarifa = new TipoTarifaModel();
@@ -124,24 +119,22 @@ class TarifasBO extends Rest{
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-        //echo $idUsuario . "<br/>";  
+        $this->con = ConexionBD::getInstance();
+                $tipotarifa = new TipotarifaModel();
         if (isset($this->datosPeticion['idTipoTarifa'])) {
             $idTipoTarifa = $this->datosPeticion['idTipoTarifa'];
             $NombreTarifa = $this->datosPeticion['NombreTarifa'];
             $DescripcionTarifa = $this->datosPeticion['DescripcionTarifa'];
-            $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
-            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
+            
+            $fila = $tipotarifa->findById($this->con,$this->datosPeticion['idTipoTarifa']);
 
             if (!empty($idTipoTarifa)) {
-
-                $this->con = ConexionBD::getInstance();
-                $tipotarifa = new TipotarifaModel();
 
                 $tipotarifa->setIdTipoTarifa($idTipoTarifa);
                 $tipotarifa->setNombreTarifa($NombreTarifa);
                 $tipotarifa->setDescripcionTarifa($DescripcionTarifa);
-                $tipotarifa->setFechaAlta($FechaAlta);
-                $tipotarifa->setFechaBaja($FechaBaja);
+                $tipotarifa->setFechaAlta($fila->getFechaAlta());
+                $tipotarifa->setFechaBaja($fila->getFechaBaja());
 
                 $fila = $tipotarifa->updateToDatabase($this->con);
 
@@ -225,6 +218,79 @@ class TarifasBO extends Rest{
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+    }
+        
+    private function anularTipoTarifa() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        if (isset($this->datosPeticion['idTipoTarifa'])) {
+
+            $this->con = ConexionBD::getInstance();
+            $tipotarifa = new TipotarifaModel();
+
+            $idtipotarifa = $this->datosPeticion['idTipoTarifa'];
+                        
+            $fila = $tipotarifa->findById($this->con,$this->datosPeticion['idTipoTarifa']);
+            
+            $FechaBaja =date("Y-m-d");
+                        
+            if (!empty($idtipotarifa)) {
+                
+                $tipotarifa->setIdTipoTarifa($idtipotarifa);
+                $tipotarifa->setNombreTarifa($fila->getNombreTarifa());
+                $tipotarifa->setDescripcionTarifa($fila->getDescripcionTarifa());
+                $tipotarifa->setFechaAlta($fila->getFechaAlta());
+                $tipotarifa->setFechaBaja($FechaBaja);
+                
+                $filasActualizadas = $tipotarifa->updateToDatabase($this->con);
+                
+                if (count($filasActualizadas) == 1) {
+                    $resp = array('estado' => "correcto", "msg" => "Tipo Tarifa actualizada");
+                    $this->mostrarRespuesta($this->convertirJson($resp), 200);
+                } else {
+                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+                }
+            }
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+    }
+    
+    private function activarTipoTarifa() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        if (isset($this->datosPeticion['idTipoTarifa'])) {
+
+            $this->con = ConexionBD::getInstance();
+            $tipotarifa = new TipotarifaModel();
+
+            $idtipotarifa = $this->datosPeticion['idTipoTarifa'];
+                        
+            $fila = $tipotarifa->findById($this->con,$this->datosPeticion['idTipoTarifa']);
+            
+            $FechaAlta =date("Y-m-d");
+            $FechaBaja =NULL;
+                        
+            if (!empty($idtipotarifa)) {
+                
+                $tipotarifa->setIdTipoTarifa($idtipotarifa);
+                $tipotarifa->setNombreTarifa($fila->getNombreTarifa());
+                $tipotarifa->setDescripcionTarifa($fila->getDescripcionTarifa());
+                $tipotarifa->setFechaAlta($FechaAlta);
+                $tipotarifa->setFechaBaja($FechaBaja);
+                
+                $filasActualizadas = $tipotarifa->updateToDatabase($this->con);
+                
+                if (count($filasActualizadas) == 1) {
+                    $resp = array('estado' => "correcto", "msg" => "Tipo Tarifa actualizada");
+                    $this->mostrarRespuesta($this->convertirJson($resp), 200);
+                } else {
+                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+                }
+            }
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
     }
     
 }

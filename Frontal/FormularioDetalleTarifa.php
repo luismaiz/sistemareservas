@@ -18,7 +18,7 @@
         $scope.obtenerTiposTarifa = function(idTipoTarifa) {
                 
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTipoTarifa');
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTipoTarifa";
+                
                 var Params = 'idTipoTarifa='+ idTipoTarifa;
 
                 Ajax.open("POST", Url, false);
@@ -26,11 +26,28 @@
                 Ajax.send(Params); // Enviamos los datos
                 
                 $scope.tipotarifa = JSON.parse(Ajax.responseText).tipotarifa;
-                //$scope.sala.CapacidadSala = parseInt($scope.sala.CapacidadSala);
+                
+                if ($scope.tipotarifa.FechaBaja !== "01-01-1970")
+                {
+                    document.getElementById('divBaja').style.display = 'block';
+                    document.getElementById('activar').style.display = 'inline';
+                }
+                else
+                {
+                    $scope.tipotarifa.FechaBaja = null;
+                    document.getElementById('anular').style.display = 'inline';
+                    document.getElementById('aceptar').style.display = 'inline';
+                }
         
             };
             if (typeof($location.search().idTipoTarifa) !== "undefined")
+            {
                 $scope.obtenerTiposTarifa($location.search().idTipoTarifa);
+            }
+            else
+            {
+                document.getElementById('aceptar').style.display = 'inline';
+            }
             
             $scope.guardarTipoTarifa = function() {
                 if (typeof($location.search().idTipoTarifa) !== "undefined")
@@ -39,46 +56,14 @@
                     $scope.crearTipoTarifa();            
         
             };
-            
-            $scope.actualizarTipoTarifa = function(){
-                                   
-             
-                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=actualizarTipoTarifa');
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=actualizarTipoTarifa";
-                var Params = 'idTipoTarifa='+ $location.search().idTipoTarifa +
-                    '&NombreTarifa='+ document.getElementById('NombreTarifa').value +
-                    '&DescripcionTarifa='+ document.getElementById('DescripcionTarifa').value +
-                    '&FechaAlta='+ document.getElementById('FechaAlta').value +
-                    '&FechaBaja='+ document.getElementById('FechaBaja').value;
-
-               
-                Ajax.open("POST", Url, false);
-                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-                Ajax.send(Params); // Enviamos los datos
-             
-            
-                $scope.estado = JSON.parse(Ajax.responseText).estado;
-                
-                if ($scope.estado === 'correcto')
-                {
-                    document.getElementById('divCorrecto').style.display = 'block';
-                }
-                else
-                {
-                    document.getElementById('divError').style.display = 'block';
-                }
-            };
-            
             $scope.crearTipoTarifa = function(){
                                    
              
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=crearTipoTarifa');
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=crearTipoTarifa";
+                
                 var Params = 'idTipoTarifa='+ $location.search().idTipoTarifa +
                     '&NombreTarifa='+ document.getElementById('NombreTarifa').value +
-                    '&DescripcionTarifa='+ document.getElementById('DescripcionTarifa').value +
-                    '&FechaAlta='+ document.getElementById('FechaAlta').value +
-                    '&FechaBaja='+ document.getElementById('FechaBaja').value;
+                    '&DescripcionTarifa='+ document.getElementById('DescripcionTarifa').value;
 
                
                 Ajax.open("POST", Url, false);
@@ -91,6 +76,83 @@
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
+                    $scope.obtenerTiposTarifa($location.search().idTipoTarifa);
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
+            };
+            
+            $scope.actualizarTipoTarifa = function(){
+                                   
+             
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=actualizarTipoTarifa');
+                
+                var Params = 'idTipoTarifa='+ $location.search().idTipoTarifa +
+                    '&NombreTarifa='+ document.getElementById('NombreTarifa').value +
+                    '&DescripcionTarifa='+ document.getElementById('DescripcionTarifa').value;
+
+               
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+             
+            
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divCorrecto').style.display = 'block';
+                    $scope.obtenerTiposTarifa($location.search().idTipoTarifa);
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
+            };
+            
+            
+            
+            $scope.anularTipoTarifa = function(){
+                
+                alert('hola');
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=anularTipoTarifa');
+                var Params = 'idTipoTarifa='+ $location.search().idTipoTarifa;
+                
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                
+                alert(Ajax.responseText);    
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divBaja').style.display = 'none';
+                    document.getElementById('divCorrecto').style.display = 'block';
+                    $scope.obtenerTiposTarifa($location.search().idTipoTarifa);
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
+            };
+            
+            $scope.activarTipoTarifa = function(){
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=activarTipoTarifa');
+                var Params = 'idTipoTarifa='+ $location.search().idTipoTarifa;
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                
+                alert(Ajax.responseText);
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divCorrecto').style.display = 'block';
+                    $scope.obtenerTiposTarifa($location.search().idTipoTarifa);
                 }
                 else
                 {
@@ -167,6 +229,10 @@
                                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                                     <strong>Correcto.</strong>  Operación realizada con éxito.
                             </div>
+                            <div class="alert alert-danger" id="divBaja" style='display:none;'>
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <strong>Este tipo de tarifa se encuentra dada de baja.</strong>
+                            </div>
                             </div>
             <div class="box-content">
 <div class="row">
@@ -183,29 +249,23 @@
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Descripción Tarifa</label>
-                                <input ng-model="tipotarifa.DescripcionTarifa" ng-required=true" type="text" class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12"  name="descripciontarifa" id="DescripcionTarifa">
+                                <input ng-model="tipotarifa.DescripcionTarifa" ng-required="true" type="text" class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12"  name="descripciontarifa" id="DescripcionTarifa">
                                 <span style="color:red" ng-show="formulario.descripciontarifa.$dirty && formulario.descripciontarifa.$invalid">
                                 <span ng-show="formulario.descripciontarifa.$error.required">Descripción de tarifa obligatorio.</span>
                                  </span>
                                 </div>
                                  <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12 " >Fecha Alta</label>
-                                <input ng-model="tipotarifa.FechaAlta" type="text" class="input-sm col-md-2 col-sm-4 col-xs-8" name="FechaAlta" id="FechaAlta" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required>
-                                <span class="col-md-6 col-sm-5 col-xs-12" style="color:red" ng-show="formulario.FechaAlta.$dirty && formulario.FechaAlta.$invalid">
-                                    <span ng-show="formulario.FechaAlta.$error.required">* Fecha obligatoria.</span>
-                                    <span ng-show="formulario.FechaAlta.$error.pattern">* Formato de fecha no valido.</span>
-                                </span>
+                                <input ng_disabled="true" ng-model="tipotarifa.FechaAlta" type="text" class="input-sm col-md-2 col-sm-4 col-xs-8" name="FechaAlta" id="FechaAlta" >
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Fecha Baja</label>
-                                <input ng-model="tipotarifa.FechaBaja" type="text" class="input-sm col-md-2 col-sm-4 col-xs-8" name="FechaBaja" id="FechaBaja" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required>                                     
-                                <span class="col-md-6 col-sm-5 col-XS-12" style="color:red" ng-show="formulario.FechaBaja.$dirty && formulario.FechaBaja.$invalid">
-                                     <span ng-show="formulario.FechaBaja.$error.pattern">* Formato de fecha no valido.</span>
-                                    <span ng-show="formulario.FechaBaja.$error.required">* Fecha obligatoria.</span>
-                                </span>
+                                <input ng_disabled="true" ng-model="tipotarifa.FechaBaja" type="text" class="input-sm col-md-2 col-sm-4 col-xs-8" name="FechaBaja" id="FechaBaja" >                                     
                                 </div>
                                 <input class="box btn-primary " type="button" value="Cancelar" onClick=" window.location.href='TipoTarifa.php?detalle=1' " />
-                                <input class="box btn-primary " type="submit" value="Aceptar" ng-click="guardarTipoTarifa();" ng-disabled="formulario.$invalid" />
+                                <input style='display:none;' id="aceptar" class="box btn-primary " type="submit" value="Aceptar" ng-click="guardarTipoTarifa();" ng-disabled="formulario.$invalid" />
+                                <input style='display:none;' id="anular" class="box btn-primary" type="submit" value="Anular" ng-click="anularTipoTarifa();"/>
+                                <input style='display:none;' id="activar" class="box btn-primary" type="submit" value="Activar" ng-click="activarTipoTarifa();"/>
 
                 </form>
                             </div>

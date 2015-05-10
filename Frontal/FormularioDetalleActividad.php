@@ -24,14 +24,30 @@
                 Ajax.send(Params); // Enviamos los datos
                 
                 $scope.actividad = JSON.parse(Ajax.responseText).actividad;
-                
-                
+                                
                 $scope.actividad.EdadMinima = parseInt($scope.actividad.EdadMinima);
                 $scope.actividad.EdadMaxima = parseInt($scope.actividad.EdadMaxima);
-        
+                
+                if ($scope.actividad.FechaBaja !== "01-01-1970")
+                {
+                    document.getElementById('divBaja').style.display = 'block';
+                    document.getElementById('activar').style.display = 'inline';
+                }
+                else
+                {
+                    $scope.actividad.FechaBaja = null;
+                    document.getElementById('anular').style.display = 'inline';
+                    document.getElementById('aceptar').style.display = 'inline';
+                }
             };
             if (typeof($location.search().idActividad) !== "undefined")
+            {
                 $scope.obtenerActividad($location.search().idActividad);
+            }
+             else
+            {
+                document.getElementById('aceptar').style.display = 'inline';
+            }
             
             $scope.guardarActividad = function() {
                 if (typeof($location.search().idActividad) !== "undefined")
@@ -41,20 +57,16 @@
         
             };
             
-            $scope.actualizarActividad = function(){
+            $scope.crearActividad = function(){
                                    
              
-                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=actualizarActividad');
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=actualizarActividad";
-                var Params = 'idActividad='+ $location.search().idActividad +
-                    '&NombreActividad='+ document.getElementById('NombreActividad').value +
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=crearActividad');
+                var Params = 'NombreActividad='+ document.getElementById('NombreActividad').value +
                     '&IntensidadActividad='+ document.getElementById('IntensidadActividad').value +
                     '&Descripcion='+ document.getElementById('Descripcion').value +
                     '&Grupo='+ document.getElementById('Grupo').value +
                     '&EdadMinima='+ document.getElementById('EdadMinima').value +
-                    '&EdadMaxima='+ document.getElementById('EdadMaxima').value +
-                    '&FechaAlta='+ document.getElementById('FechaAlta').value +
-                    '&FechaBaja='+ document.getElementById('FechaBaja').value;
+                    '&EdadMaxima='+ document.getElementById('EdadMaxima').value;
                
                 Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
@@ -66,6 +78,7 @@
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
+                    $scope.obtenerActividad($location.search().idActividad);
                 }
                 else
                 {
@@ -73,19 +86,18 @@
                 }
             };
             
-            $scope.crearActividad = function(){
+            $scope.actualizarActividad = function(){
                                    
              
-                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=crearActividad');
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=crearActividad";
-                var Params = 'NombreActividad='+ document.getElementById('NombreActividad').value +
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=actualizarActividad');
+                
+                var Params = 'idActividad='+ $location.search().idActividad +
+                    '&NombreActividad='+ document.getElementById('NombreActividad').value +
                     '&IntensidadActividad='+ document.getElementById('IntensidadActividad').value +
                     '&Descripcion='+ document.getElementById('Descripcion').value +
                     '&Grupo='+ document.getElementById('Grupo').value +
                     '&EdadMinima='+ document.getElementById('EdadMinima').value +
-                    '&EdadMaxima='+ document.getElementById('EdadMaxima').value +
-                    '&FechaAlta='+ document.getElementById('FechaAlta').value +
-                    '&FechaBaja='+ document.getElementById('FechaBaja').value;
+                    '&EdadMaxima='+ document.getElementById('EdadMaxima').value;
                
                 Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
@@ -97,12 +109,60 @@
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
+                    $scope.obtenerActividad($location.search().idActividad);
                 }
                 else
                 {
                     document.getElementById('divError').style.display = 'block';
                 }
             };
+               
+            
+            
+            $scope.anularActividad = function(){
+                
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=anularActividad');
+                var Params = 'idActividad='+ $location.search().idActividad;
+                
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divBaja').style.display = 'none';
+                    document.getElementById('divCorrecto').style.display = 'block';
+                    $scope.obtenerActividad($location.search().idActividad);
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
+            };
+            
+            $scope.activarActividad = function(){
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=activarActividad');
+                var Params = 'idActividad='+ $location.search().idActividad;
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divCorrecto').style.display = 'block';
+                    $scope.obtenerActividad($location.search().idActividad);
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
+            };
+
+            
         
     }
     
@@ -123,7 +183,7 @@
             showMonthAfterYear: false,
             yearSuffix: ''
             };
- $.datepicker.setDefaults($.datepicker.regional['es']);
+            $.datepicker.setDefaults($.datepicker.regional['es']);
             
             $(function() {
                 $( "#FechaAlta" ).datepicker({
@@ -167,6 +227,10 @@
                                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                                     <strong>Correcto.</strong>  Operación realizada con éxito.
                             </div>
+                            <div class="alert alert-danger" id="divBaja" style='display:none;'>
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <strong>Esta actividad se encuentra dada de baja.</strong>
+                            </div>
                             </div>
             <div class="box-content">
 
@@ -188,7 +252,7 @@
                     </div>
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Intensidad Actividad</label>
-                    <input class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" ng-model="actividad.IntensidadActividad"   id="IntensidadActividad" name="IntensidadActividad" required>
+                    <input class="input-sm color" ng-model="actividad.IntensidadActividad"   id="IntensidadActividad" name="IntensidadActividad" required>
                     <span style="color:red" ng-show="formulario.IntensidadActividad.$dirty && formulario.IntensidadActividad.$invalid">
                                 <span ng-show="formulario.IntensidadActividad.$error.required">Intensidad de actividad obligatorio.</span>
                     </span>
@@ -216,23 +280,16 @@
                     </div>
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12 " >Fecha Alta</label>
-                    <input ng-model="actividad.FechaAlta" type="text" class="input-sm col-md-2 col-sm-4 col-xs-8" name="FechaAlta" id="FechaAlta" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required/>
-                    <span class="col-md-6 col-sm-5 col-xs-12" style="color:red" ng-show="formulario.FechaAlta.$dirty && formulario.FechaAlta.$invalid">
-                                    <span ng-show="formulario.FechaAlta.$error.required">* Fecha obligatoria.</span>
-                                    <span ng-show="formulario.FechaAlta.$error.pattern">* Formato de fecha no valido.</span>
-                                </span>
+                    <input ng_disabled="true" ng-model="actividad.FechaAlta" type="text" class="input-sm col-md-2 col-sm-4 col-xs-8" name="FechaAlta" id="FechaAlta" />
                     </div>    
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Fecha Baja</label>
-                    <input ng-model="actividad.FechaBaja" type="text" class="input-sm col-md-2 col-sm-4 col-xs-8" name="FechaBaja" id="FechaBaja" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required/>
-                    <span class="col-md-6 col-sm-5 col-xs-12" style="color:red" ng-show="formulario.FechaBaja.$dirty && formulario.FechaBaja.$invalid">
-                                     <span ng-show="formulario.FechaBaja.$error.pattern">* Formato de fecha no valido.</span>
-                                    <span ng-show="formulario.FechaBaja.$error.required">* Fecha obligatoria.</span>
-                                </span>
+                    <input ng_disabled="true" ng-model="actividad.FechaBaja" type="text" class="input-sm col-md-2 col-sm-4 col-xs-8" name="FechaBaja" id="FechaBaja" />
                     </div>
-                    
                     <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Actividades.php?detalle=1' " />
-                    <input class="box btn-primary" type="button" value="Aceptar" ng-click="guardarActividad()" ng-disabled="formulario.$invalid"/>
+                    <input style='display:none;' id="aceptar" class="box btn-primary" type="button" value="Aceptar" ng-click="guardarActividad()" ng-disabled="formulario.$invalid"/>
+                    <input style='display:none;' id="anular" class="box btn-primary" type="submit" value="Anular" ng-click="anularActividad();"/>
+                    <input style='display:none;' id="activar" class="box btn-primary" type="submit" value="Activar" ng-click="activarActividad();"/>
                 </form>
             </div>
         </div>

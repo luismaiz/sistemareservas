@@ -62,8 +62,8 @@ class ActividadesBO extends Rest {
         $EdadMaxima = $this->datosPeticion['EdadMaxima'];
         $Grupo = $this->datosPeticion['Grupo'];
         $Descripcion = $this->datosPeticion['Descripcion'];
-        $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
-        $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
+        $FechaAlta =date("Y-m-d");
+        $FechaBaja =null;
 
         $this->con = ConexionBD::getInstance();
 
@@ -85,7 +85,9 @@ class ActividadesBO extends Rest {
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         else
+        {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
+        }
     }
 
     private function obtenerActividades() {
@@ -116,7 +118,10 @@ class ActividadesBO extends Rest {
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-        //echo $idUsuario . "<br/>";  
+        
+        $this->con = ConexionBD::getInstance();
+        $actividad = new ActividadModel();
+                
         if (isset($this->datosPeticion['idActividad'])) {
             $idActividad = $this->datosPeticion['idActividad'];
             $NombreActividad = $this->datosPeticion['NombreActividad'];
@@ -125,12 +130,11 @@ class ActividadesBO extends Rest {
             $EdadMaxima = $this->datosPeticion['EdadMaxima'];
             $Grupo = $this->datosPeticion['Grupo'];
             $Descripcion = $this->datosPeticion['Descripcion'];
-            $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
-            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
+            
+            $fila = $actividad->findById($this->con,$this->datosPeticion['idActividad']);
 
             if (!empty($idActividad)) {
-                $this->con = ConexionBD::getInstance();
-                $actividad = new ActividadModel();
+                
 
                 $actividad->setIdActividad($idActividad);
                 $actividad->setNombreActividad($NombreActividad);
@@ -139,8 +143,8 @@ class ActividadesBO extends Rest {
                 $actividad->setEdadMaxima($EdadMaxima);
                 $actividad->setGrupo($Grupo);
                 $actividad->setDescripcion($Descripcion);
-                $actividad->setFechaAlta($FechaAlta);
-                $actividad->setFechaBaja($FechaBaja);
+                $actividad->setFechaAlta($fila->getFechaAlta());
+                $actividad->setFechaBaja($fila->getFechaBaja());
 
                 $result = $actividad->updateToDatabase($this->con);
 
@@ -254,6 +258,87 @@ class ActividadesBO extends Rest {
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+    }
+        
+    private function anularActividad() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        if (isset($this->datosPeticion['idActividad'])) {
+
+            $this->con = ConexionBD::getInstance();
+            $actividad = new ActividadModel();
+
+            $idActividad = $this->datosPeticion['idActividad'];
+                        
+            $fila = $actividad->findById($this->con,$this->datosPeticion['idActividad']);
+            
+            $FechaBaja =date("Y-m-d");
+                        
+            if (!empty($idActividad)) {
+                
+                $actividad->setIdActividad($idActividad);
+                $actividad->setNombreActividad($fila->getNombreActividad());
+                $actividad->setDescripcion($fila->getDescripcion());
+                $actividad->setIntensidadActividad($fila->getIntensidadActividad());
+                $actividad->setEdadMaxima($fila->getEdadMaxima());
+                $actividad->setEdadMinima($fila->getEdadMinima());
+                $actividad->setGrupo($fila->getGrupo());
+                $actividad->setFechaAlta($fila->getFechaAlta());
+                $actividad->setFechaBaja($FechaBaja);
+                
+                $filasActualizadas = $actividad->updateToDatabase($this->con);
+                
+                if (count($filasActualizadas) == 1) {
+                    $resp = array('estado' => "correcto", "msg" => "Actividad actualizada");
+                    $this->mostrarRespuesta($this->convertirJson($resp), 200);
+                } else {
+                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+                }
+            }
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+    }
+    
+    private function activarActividad() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        if (isset($this->datosPeticion['idActividad'])) {
+
+            $this->con = ConexionBD::getInstance();
+            $actividad = new ActividadModel();
+
+            $idActividad = $this->datosPeticion['idActividad'];
+                        
+            $fila = $actividad->findById($this->con,$this->datosPeticion['idActividad']);
+            
+            $FechaAlta =date("Y-m-d");
+            $FechaBaja =NULL;
+                        
+            if (!empty($idActividad)) {
+                
+                $actividad->setIdActividad($idActividad);
+                $actividad->setNombreActividad($fila->getNombreActividad());
+                $actividad->setDescripcion($fila->getDescripcion());
+                $actividad->setIntensidadActividad($fila->getIntensidadActividad());
+                $actividad->setEdadMaxima($fila->getEdadMaxima());
+                $actividad->setEdadMinima($fila->getEdadMinima());
+                $actividad->setGrupo($fila->getGrupo());
+                $actividad->setFechaAlta($FechaAlta);
+                $actividad->setFechaBaja($FechaBaja);
+                
+                $filasActualizadas = $actividad->updateToDatabase($this->con);
+                
+                if (count($filasActualizadas) == 1) {
+                    $resp = array('estado' => "correcto", "msg" => "Actividad actualizada");
+                    $this->mostrarRespuesta($this->convertirJson($resp), 200);
+                } else {
+                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+                }
+            }
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
     }
 }
 

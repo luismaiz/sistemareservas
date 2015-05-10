@@ -11,24 +11,12 @@ function CargaTiposAbono($scope, $http,$location,$localStorage) {
     
     $scope.tiposabonos = [];
     
-    if (typeof($location.search().detalle) !== "undefined")
-            {
-            $scope.resultado = localStorage.getItem('tiposabonos');
-            $scope.filtrosTiposAbono = localStorage.getItem('filtrosTiposAbono');
-            $scope.tiposabonos = (localStorage.getItem('tiposabono')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).tiposabonos;
-            
-            document.getElementById("filtronombreabono").value = JSON.parse($scope.filtrosTiposAbono)[0].filtronombreabono;
-            document.getElementById("filtrodescripcionabono").value = JSON.parse($scope.filtrosTiposAbono)[0].filtrodescripcionabono;
-            
-            alert('hola');
-            } 
-    
+       
     $scope.obtenerTiposAbonos = function() {
         
                 
                 $scope.filtrosTiposAbono = [{filtronombreabono:document.getElementById("filtronombreabono").value,
-                                    filtrodescripcionabono:document.getElementById("filtrodescripcionabono").value}
-                    ];
+                                    filtrodescripcionabono:document.getElementById("filtrodescripcionabono").value}];
                 localStorage.setItem('filtrosTiposAbono', JSON.stringify($scope.filtrosTiposAbono));
                 
                 
@@ -40,8 +28,7 @@ function CargaTiposAbono($scope, $http,$location,$localStorage) {
 	        Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-	
-                
+	                
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')
@@ -57,6 +44,19 @@ function CargaTiposAbono($scope, $http,$location,$localStorage) {
                 }
         
             };
+            
+            if (typeof($location.search().detalle) !== "undefined")
+            {
+            $scope.resultado = localStorage.getItem('tiposabonos');
+            $scope.filtrosTiposAbono = localStorage.getItem('filtrosTiposAbono');
+            $scope.tiposabonos = (localStorage.getItem('tiposabonos')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).tiposabonos;
+            
+            document.getElementById("filtronombreabono").value = JSON.parse($scope.filtrosTiposAbono)[0].filtronombreabono;
+            document.getElementById("filtrodescripcionabono").value = JSON.parse($scope.filtrosTiposAbono)[0].filtrodescripcionabono;
+            
+            $scope.obtenerTiposAbonos();
+            } 
+            
             $(function () {
                 $('.footable').footable();
                 });
@@ -118,7 +118,8 @@ function CargaTiposAbono($scope, $http,$location,$localStorage) {
                                                     <td>{{tipoabono.DescripcionAbono}}</td>
                                                     <td>{{tipoabono.FechaAlta |date:'dd-MM-yyyy'}}</td>
                                                     <td>{{tipoabono.FechaBaja |date:'dd-MM-yyyy'}}</td>
-                                                    <td class="center"><a href="FormularioDetalleAbono.php?idTipoAbono={{tipoabono.idTipoAbono}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
+                                                    <td class="center"><a target="_self" href="FormularioDetalleAbono.php?idTipoAbono={{tipoabono.idTipoAbono}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
+                                                    <a target="_self" ng_show="tipoabono.FechaBaja!==null"  class="btn btn-danger">Anulada</a></td>
                                                 </tr>
                                                 </tbody>
                                                 <tfoot class="hide-if-no-paging">

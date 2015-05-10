@@ -9,18 +9,6 @@
             function CargaSalas($scope, $http,$location,$localStorage) {
             
             $scope.salas = [];
-            
-            if (typeof($location.search().detalle) !== "undefined")
-            {
-                $scope.resultado = localStorage.getItem('salas');
-                $scope.filtrossalas = localStorage.getItem('filtrosSalas');
-                $scope.salas = (localStorage.getItem('salas')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).salas;
-            
-                document.getElementById("filtronombresala").value = JSON.parse($scope.filtrossalas)[0].filtronombresala;
-                document.getElementById("filtrocapacidadsala").value = JSON.parse($scope.filtrossalas)[0].filtrocapacidadsala;
-                        
-                
-            }
                     
             $scope.obtenerSalas = function() {
                 
@@ -56,6 +44,18 @@
                 }
         
             };
+            
+            if (typeof($location.search().detalle) !== "undefined")
+            {
+                $scope.resultado = localStorage.getItem('salas');
+                $scope.filtrossalas = localStorage.getItem('filtrosSalas');
+                $scope.salas = (localStorage.getItem('salas')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).salas;
+            
+                document.getElementById("filtronombresala").value = JSON.parse($scope.filtrossalas)[0].filtronombresala;
+                document.getElementById("filtrocapacidadsala").value = JSON.parse($scope.filtrossalas)[0].filtrocapacidadsala;
+                
+                $scope.obtenerSalas();
+            }
             
             $(function () {
                 $('.footable').footable();

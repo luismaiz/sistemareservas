@@ -10,17 +10,7 @@ var app = angular.module('BusquedaTiposTarifas', ["ngStorage"])
 function CargaTiposTarifas($scope, $http,$location,$localStorage) {
     
     $scope.tipostarifas = [];
-    if (typeof($location.search().detalle) !== "undefined")
-            {
-            $scope.resultado = localStorage.getItem('tipostarifas');
-            $scope.filtrosTarifas = localStorage.getItem('filtrosTarifas');
-            $scope.tipostarifas = (localStorage.getItem('tipostarifas')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).tipostarifas;
-            
-            document.getElementById("filtronombretarifa").value = JSON.parse($scope.filtrosTarifas)[0].filtronombretarifa;
-            document.getElementById("filtrodescripciontarifa").value = JSON.parse($scope.filtrosTarifas)[0].filtrodescripciontarifa;
-            
-            alert('hola');
-            } 
+    
     
     $scope.obtenerTiposTarifas = function() {
                 
@@ -53,6 +43,18 @@ function CargaTiposTarifas($scope, $http,$location,$localStorage) {
                 }
         
             };
+            
+            if (typeof($location.search().detalle) !== "undefined")
+            {
+            $scope.resultado = localStorage.getItem('tipostarifas');
+            $scope.filtrosTarifas = localStorage.getItem('filtrosTarifas');
+            $scope.tipostarifas = (localStorage.getItem('tipostarifas')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).tipostarifas;
+                        
+            document.getElementById("filtronombretarifa").value = JSON.parse($scope.filtrosTarifas)[0].filtronombretarifa;
+            document.getElementById("filtrodescripciontarifa").value = JSON.parse($scope.filtrosTarifas)[0].filtrodescripciontarifa;
+            
+            $scope.obtenerTiposTarifas();
+            } 
             $(function () {
                 $('.footable').footable();
                 });
@@ -96,7 +98,7 @@ function CargaTiposTarifas($scope, $http,$location,$localStorage) {
                                        <table class="footable table-striped table-bordered responsive" data-page-size="5" data-page-navigation=".pagination" id="tabla">
                                             <thead>
                                                 <tr>
-                                                    <th>Nombre</h6></th>
+                                                    <th>Nombre</th>
                                                     <th>Descripcion</th>
                                                     <th>Fecha Alta</th>
                                                     <th>Fecha Baja</th>
@@ -110,7 +112,8 @@ function CargaTiposTarifas($scope, $http,$location,$localStorage) {
                                                     <td>{{tipotarifa.DescripcionTarifa}}</td>
                                                     <td>{{tipotarifa.FechaAlta|date:'dd-MM-yyyy'}}</td>
                                                     <td>{{tipotarifa.FechaBaja|date:'dd-MM-yyyy'}}</td>
-                                                    <td class="center"><a href="FormularioDetalleTarifa.php?idTipoTarifa={{tipotarifa.idTipoTarifa}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>
+                                                    <td class="center"><a target="_self" href="FormularioDetalleTarifa.php?idTipoTarifa={{tipotarifa.idTipoTarifa}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
+                                                    <a target="_self" ng_show="tipotarifa.FechaBaja!==null"  class="btn btn-danger">Anulada</a></td>
                                                 </tr>
                                             </tbody>
                                             <tfoot class="hide-if-no-paging">

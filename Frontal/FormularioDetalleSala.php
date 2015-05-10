@@ -36,6 +36,7 @@
                     document.getElementById('aceptar').style.display = 'inline';
                 }
             };
+            
             if (typeof($location.search().idSala) !== "undefined")
             {
                 $scope.obtenerSalas($location.search().idSala);
@@ -59,7 +60,7 @@
                                 
                 
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=crearSala');		
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=crearSala";		
+                		
                 var Params ='NombreSala='+ document.getElementById('NombreSala').value +
                     '&CapacidadSala='+ document.getElementById('CapacidadSala').value +
                     '&DescripcionSala='+ document.getElementById('DescripcionSala').value;
@@ -70,11 +71,14 @@
                 Ajax.send(Params); // Enviamos los datos
                 
                 alert(Ajax.responseText);
+                
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
+                    
+                    //$scope.obtenerSalas($location.search().idSala);
                 }
                 else
                 {
@@ -82,7 +86,7 @@
                 }
         
             };
-//            
+
             $scope.actualizarSala = function(){
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala');
                 var Params = 'idSala='+ $location.search().idSala +
@@ -98,6 +102,7 @@
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
+                    $scope.obtenerSalas($location.search().idSala);
                 }
                 else
                 {
@@ -123,6 +128,7 @@
                 {
                     document.getElementById('divBaja').style.display = 'none';
                     document.getElementById('divCorrecto').style.display = 'block';
+                    $scope.obtenerSalas($location.search().idSala);
                 }
                 else
                 {
@@ -143,6 +149,7 @@
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
+                    $scope.obtenerSalas($location.search().idSala);
                 }
                 else
                 {

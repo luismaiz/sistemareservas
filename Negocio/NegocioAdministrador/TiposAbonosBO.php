@@ -67,8 +67,8 @@ class TiposAbonosBO extends Rest{
 
         $NombreAbono = $this->datosPeticion['NombreAbono'];
         $DescripcionAbono = $this->datosPeticion['DescripcionAbono'];
-        $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
-            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
+        $FechaAlta =date("Y-m-d");
+        $FechaBaja =null;
         
         $this->con = ConexionBD::getInstance();
         $tipoabono = new TipoabonoModel();
@@ -87,7 +87,9 @@ class TiposAbonosBO extends Rest{
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         else
+        {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
+        }
         
     }
 
@@ -120,24 +122,21 @@ class TiposAbonosBO extends Rest{
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
 
-        //echo $idUsuario . "<br/>";  
+        $this->con = ConexionBD::getInstance();
+        $tipoabono = new TipoabonoModel();
         if (isset($this->datosPeticion['idTipoAbono'])) {
             $idTipoAbono = $this->datosPeticion['idTipoAbono'];
             $NombreAbono = $this->datosPeticion['NombreAbono'];
             $DescripcionAbono = $this->datosPeticion['DescripcionAbono'];
-            $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
-            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
-
+            
+            $fila = $tipoabono->findById($this->con,$this->datosPeticion['idTipoAbono']);
             if (!empty($idTipoAbono)) {
                 
-                $this->con = ConexionBD::getInstance();
-                $tipoabono = new TipoabonoModel();
-
                 $tipoabono->setIdTipoAbono($idTipoAbono);
                 $tipoabono->setNombreAbono($NombreAbono);
                 $tipoabono->setDescripcionAbono($DescripcionAbono);
-                $tipoabono->setFechaAlta($FechaAlta);
-                $tipoabono->setFechaBaja($FechaBaja);
+                $tipoabono->setFechaAlta($fila->getFechaAlta());
+                $tipoabono->setFechaBaja($fila->getFechaBaja());
 
                 $result = $tipoabono->updateToDatabase($this->con);
 
@@ -225,6 +224,79 @@ class TiposAbonosBO extends Rest{
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+    }
+    
+    private function anularTipoAbono() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        if (isset($this->datosPeticion['idTipoAbono'])) {
+
+            $this->con = ConexionBD::getInstance();
+            $tipoabono = new TipoabonoModel();
+
+            $idtipoabono = $this->datosPeticion['idTipoAbono'];
+                        
+            $fila = $tipoabono->findById($this->con,$this->datosPeticion['idTipoAbono']);
+            
+            $FechaBaja =date("Y-m-d");
+                        
+            if (!empty($idtipoabono)) {
+                
+                $tipoabono->setIdTipoAbono($idtipoabono);
+                $tipoabono->setNombreAbono($fila->getNombreAbono());
+                $tipoabono->setDescripcionAbono($fila->getDescripcionAbono());
+                $tipoabono->setFechaAlta($fila->getFechaAlta());
+                $tipoabono->setFechaBaja($FechaBaja);
+                
+                $filasActualizadas = $tipoabono->updateToDatabase($this->con);
+                
+                if (count($filasActualizadas) == 1) {
+                    $resp = array('estado' => "correcto", "msg" => "Tipo Abono anulado");
+                    $this->mostrarRespuesta($this->convertirJson($resp), 200);
+                } else {
+                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+                }
+            }
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+    }
+    
+    private function activarTipoAbono() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        if (isset($this->datosPeticion['idTipoAbono'])) {
+
+            $this->con = ConexionBD::getInstance();
+            $tipoabono = new TipoabonoModel();
+
+            $idtipoabono = $this->datosPeticion['idTipoAbono'];
+                        
+            $fila = $tipoabono->findById($this->con,$this->datosPeticion['idTipoAbono']);
+            
+            $FechaAlta =date("Y-m-d");
+            $FechaBaja =NULL;
+                        
+            if (!empty($idtipoabono)) {
+                
+                $tipoabono->setIdTipoAbono($idtipoabono);
+                $tipoabono->setNombreAbono($fila->getNombreAbono());
+                $tipoabono->setDescripcionAbono($fila->getDescripcionAbono());
+                $tipoabono->setFechaAlta($FechaAlta);
+                $tipoabono->setFechaBaja($FechaBaja);
+                
+                $filasActualizadas = $tipoabono->updateToDatabase($this->con);
+                
+                if (count($filasActualizadas) == 1) {
+                    $resp = array('estado' => "correcto", "msg" => "Tipo Abono activado");
+                    $this->mostrarRespuesta($this->convertirJson($resp), 200);
+                } else {
+                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+                }
+            }
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
     }
     
 }

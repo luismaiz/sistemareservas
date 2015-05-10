@@ -67,8 +67,8 @@ class TiposSolicitudesBO extends Rest{
         $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
         $NombreSolicitud = $this->datosPeticion['NombreSolicitud'];
         $DescripcionSolicitud = $this->datosPeticion['DescripcionSolicitud'];
-        $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
-            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
+        $FechaAlta =date("Y-m-d");
+        $FechaBaja =null;
 
         $this->con = ConexionBD::getInstance();
         $tiposolicitud = new TiposolicitudModel();
@@ -88,7 +88,9 @@ class TiposSolicitudesBO extends Rest{
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         else
+        {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
+        }
          
     }
 
@@ -120,24 +122,21 @@ class TiposSolicitudesBO extends Rest{
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
 
-        //echo $idUsuario . "<br/>";  
+        $this->con = ConexionBD::getInstance();
+                $tiposolicitud = new TiposolicitudModel();
         if (isset($this->datosPeticion['idTipoSolicitud'])) {
             $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
             $NombreSolicitud = $this->datosPeticion['NombreSolicitud'];
             $DescripcionSolicitud = $this->datosPeticion['DescripcionSolicitud'];
-            $FechaAlta =date("Y-m-d", strtotime($this->datosPeticion['FechaAlta']));
-            $FechaBaja =date("Y-m-d", strtotime($this->datosPeticion['FechaBaja']));
 
+            $fila = $tiposolicitud->findById($this->con,$this->datosPeticion['idTipoSolicitud']);
             if (!empty($idTipoSolicitud)) {
-                
-                $this->con = ConexionBD::getInstance();
-                $tiposolicitud = new TiposolicitudModel();
 
                 $tiposolicitud->setIdTipoSolicitud($idTipoSolicitud);
                 $tiposolicitud->setNombreSolicitud($NombreSolicitud);
                 $tiposolicitud->setDescripcionSolicitud($DescripcionSolicitud);
-                $tiposolicitud->setFechaAlta($FechaAlta);
-                $tiposolicitud->setFechaBaja($FechaBaja);
+                $tiposolicitud->setFechaAlta($fila->getFechaAlta());
+                $tiposolicitud->setFechaBaja($fila->getFechaBaja());
 
                 $result = $tiposolicitud->updateToDatabase($this->con);
 
@@ -222,6 +221,80 @@ class TiposSolicitudesBO extends Rest{
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+    }
+    
+    
+    private function anularTipoSolicitud() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        if (isset($this->datosPeticion['idTipoSolicitud'])) {
+
+            $this->con = ConexionBD::getInstance();
+            $tiposolicitud = new TiposolicitudModel();
+
+            $idtiposolicitud = $this->datosPeticion['idTipoSolicitud'];
+                        
+            $fila = $tiposolicitud->findById($this->con,$this->datosPeticion['idTipoSolicitud']);
+            
+            $FechaBaja =date("Y-m-d");
+                        
+            if (!empty($idtiposolicitud)) {
+                
+                $tiposolicitud->setIdTipoSolicitud($idtiposolicitud);
+                $tiposolicitud->setNombreSolicitud($fila->getNombreSolicitud());
+                $tiposolicitud->setDescripcionSolicitud($fila->getDescripcionSolicitud());
+                $tiposolicitud->setFechaAlta($fila->getFechaAlta());
+                $tiposolicitud->setFechaBaja($FechaBaja);
+                
+                $filasActualizadas = $tiposolicitud->updateToDatabase($this->con);
+                
+                if (count($filasActualizadas) == 1) {
+                    $resp = array('estado' => "correcto", "msg" => "Tipo Solicitud anulada");
+                    $this->mostrarRespuesta($this->convertirJson($resp), 200);
+                } else {
+                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+                }
+            }
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+    }
+    
+    private function activarTipoSolicitud() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        if (isset($this->datosPeticion['idTipoSolicitud'])) {
+
+            $this->con = ConexionBD::getInstance();
+            $tiposolicitud = new TiposolicitudModel();
+
+            $idtiposolicitud = $this->datosPeticion['idTipoSolicitud'];
+                        
+            $fila = $tiposolicitud->findById($this->con,$this->datosPeticion['idTipoSolicitud']);
+            
+            $FechaAlta =date("Y-m-d");
+            $FechaBaja =NULL;
+                        
+            if (!empty($idtiposolicitud)) {
+                
+                $tiposolicitud->setIdTipoSolicitud($idtiposolicitud);
+                $tiposolicitud->setNombreSolicitud($fila->getNombreSolicitud());
+                $tiposolicitud->setDescripcionSolicitud($fila->getDescripcionSolicitud());
+                $tiposolicitud->setFechaAlta($FechaAlta);
+                $tiposolicitud->setFechaBaja($FechaBaja);
+                
+                $filasActualizadas = $tiposolicitud->updateToDatabase($this->con);
+                
+                if (count($filasActualizadas) == 1) {
+                    $resp = array('estado' => "correcto", "msg" => "Tipo Solicitud activada");
+                    $this->mostrarRespuesta($this->convertirJson($resp), 200);
+                } else {
+                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+                }
+            }
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
     }
     
 }
