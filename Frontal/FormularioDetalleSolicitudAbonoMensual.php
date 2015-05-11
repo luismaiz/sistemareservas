@@ -190,7 +190,7 @@
                         <h3></h3>
                         <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Fecha Solicitud</label>
-                                <input ng-model="abonomensual.FechaSolicitud" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="FechaSolicitud" id="FechaSolicitud" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required>
+                                <input ng_disabled="true" n ng-model="abonomensual.FechaSolicitud" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="FechaSolicitud" id="FechaSolicitud" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required>
                                 <span class="col-md-6 col-sm-5 col-XS-12" style="color:red" ng-show="formulario.FechaSolicitud.$dirty && formulario.FechaSolicitud.$invalid">
                                      <span ng-show="formulario.FechaSolicitud.$error.pattern">* Formato de fecha no valido.</span>
                                     <span ng-show="formulario.FechaSolicitud.$error.required">* Fecha obligatoria.</span>
@@ -199,20 +199,20 @@
                                 </div>
                         <div class="form-group col-md-12">
                         <label class="control-label col-md-2" >Tipo Abono</label>
-                                <select  id="filtroTipoAbono" class="input-sm col-md-2" >	
+                                <select ng_disabled="true"  id="filtroTipoAbono" class="input-sm col-md-2" >	
                                     <option ng_repeat="tipoabono in tiposAbonos" value="{{tipoabono.idTipoAbono}}">{{tipoabono.NombreAbono}}</option>
                                 </select>
                         </div>
                         <div class="form-group col-md-12">
                         <label class="control-label col-md-2" >Tipo Tarifa</label>
-                                <select  id="filtroTipoTarifa" class="input-sm col-md-2" >	
+                                <select ng_disabled="true"  id="filtroTipoTarifa" class="input-sm col-md-2" >	
                                     <option ng_repeat="tipotarifa in tiposTarifas" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>
                                 </select>
                         </div>
                         
                         <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Cantidad pagada</label>
-                                <input ng-model="abonomensual.Cantidad"  type="text" class="input-sm col-md-4" name="cantidad" id="cantidad" required >
+                                <input ng_disabled="true" ng-model="abonomensual.Cantidad"  type="text" class="input-sm col-md-4" name="cantidad" id="cantidad" required >
                                 <span style="color:red" ng-show="formulario.cantidad.$dirty && formulario.cantidad.$invalid">
                                 <span ng-show="formulario.cantidad.$error.required">Nombre obligatorio.</span>
                                  </span>
@@ -222,7 +222,7 @@
                         <h3></h3>
                         <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Localizador</label>
-                                <input ng-model="abonomensual.Localizador"  type="text" class="input-sm col-md-4" name="localizador" id="Localizador" required >
+                                <input ng_disabled="true" ng-model="abonomensual.Localizador"  type="text" class="input-sm col-md-4" name="localizador" id="Localizador" required >
                                 <span style="color:red" ng-show="formulario.localizador.$dirty && formulario.localizador.$invalid">
                                 <span ng-show="formulario.localizador.$error.required">Localizador obligatorio.</span>
                                  </span>
@@ -230,14 +230,14 @@
                                 
                                 <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Nombre</label>
-                                <input ng-model="abonomensual.Nombre"  type="text" class="input-sm col-md-4" name="nombre" id="Nombre" required >
+                                <input ng_disabled="true" ng-model="abonomensual.Nombre"  type="text" class="input-sm col-md-4" name="nombre" id="Nombre" required >
                                 <span style="color:red" ng-show="formulario.nombre.$dirty && formulario.nombre.$invalid">
                                 <span ng-show="formulario.nombre.$error.required">Nombre obligatorio.</span>
                                  </span>
                                 </div>
                                 <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Apellidos</label>
-                                <input ng-model="abonomensual.Apellidos" type="text" class="input-sm col-md-6"  name="apellidos" id="Apellidos" required>
+                                <input ng_disabled="true" ng-model="abonomensual.Apellidos" type="text" class="input-sm col-md-6"  name="apellidos" id="Apellidos" required>
                                 <span style="color:red" ng-show="formulario.apellidos.$dirty && formulario.apellidos.$invalid">
                                 <span ng-show="formulario.apellidos.$error.required">Apellidos obligatorio.</span>
                                 </span>
@@ -245,7 +245,7 @@
                                 
                                 <div class="form-group col-md-12">                                
                                 <label class="control-label col-md-2" >Dni</label>
-                                <input ng-model="abonomensual.DNI" type="text" class="input-sm" name="dni" id="Dni" required ng-pattern='/^\d{7,8}(-?[a-z])?$/i'>
+                                <input ng_disabled="true" ng-model="abonomensual.DNI" type="text" class="input-sm" name="dni" id="Dni" required ng-pattern='/^\d{7,8}(-?[a-z])?$/i'>
                                 <span style="color:red" ng-show="formulario.dni.$dirty && formulario.dni.$invalid">
                                 <span ng-show="formulario.dni.$error.pattern">Formato de DNI no válido 12345678-A</span>
                                 </span>
@@ -255,35 +255,35 @@
                         <h3></h3>
                                 <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Direccion</label>
-                                <input ng-model="abonomensual.Direccion"  type="text" class="input-sm col-md-8" name="direccion" id="Direccion" required >
+                                <input ng_disabled="true" ng-model="abonomensual.Direccion"  type="text" class="input-sm col-md-8" name="direccion" id="Direccion" required >
                                 <span style="color:red" ng-show="formulario.direccion.$dirty && formulario.direccion.$invalid">
                                 <span ng-show="formulario.direccion.$error.required">Direccion obligatorio.</span>
                                  </span>
                                 </div>
                         <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Localidad</label>
-                                <input ng-model="abonomensual.Localidad"  type="text" class="input-sm col-md-4" name="localidad" id="Localidad" required >
+                                <input ng_disabled="true" ng-model="abonomensual.Localidad"  type="text" class="input-sm col-md-4" name="localidad" id="Localidad" required >
                                 <span style="color:red" ng-show="formulario.localidad.$dirty && formulario.localidad.$invalid">
                                 <span ng-show="formulario.localidad.$error.required">Localidad obligatorio.</span>
                                  </span>
                                 </div>
                         <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Provincia</label>
-                                <input ng-model="abonomensual.Provincia"  type="text" class="input-sm col-md-4" name="provincia" id="Provincia" required >
+                                <input ng_disabled="true" ng-model="abonomensual.Provincia"  type="text" class="input-sm col-md-4" name="provincia" id="Provincia" required >
                                 <span style="color:red" ng-show="formulario.provincia.$dirty && formulario.provincia.$invalid">
                                 <span ng-show="formulario.provincia.$error.required">Provincia obligatorio.</span>
                                  </span>
                                 </div>
                         <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Código Postal</label>
-                                <input ng-model="abonomensual.CodigoPostal"  type="text" class="input-sm col-md-4" name="codigopostal" id="CodigoPostal" required >
+                                <input ng_disabled="true" ng-model="abonomensual.CodigoPostal"  type="text" class="input-sm col-md-4" name="codigopostal" id="CodigoPostal" required >
                                 <span style="color:red" ng-show="formulario.codigopostal.$dirty && formulario.codigopostal.$invalid">
                                 <span ng-show="formulario.codigopostal.$error.required">Codigo Postal obligatorio.</span>
                                  </span>
                                 </div>
                         <div class="form-group col-md-12">                                
                                 <label class="control-label col-md-2" >Email</label>
-                                <input ng-model="abonomensual.Email" type="email" class="input-sm" name="mail" id="Mail" required >
+                                <input ng_disabled="true" ng-model="abonomensual.Email" type="email" class="input-sm" name="mail" id="Mail" required >
                                 <span style="color:red" ng-show="formulario.mail.$dirty && formulario.mail.$invalid">
                                 <span ng-show="formulario.mail.$error.required">Email obligatorio.</span>
                                 <span ng-show="formulario.mail.$error.email">Formato de email no válido.</span>
@@ -291,25 +291,24 @@
                                 </div>
                         <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Telefono 1</label>
-                                <input ng-model="abonomensual.Telefono1"  type="text" class="input-sm col-md-4" name="telefono1" id="Telefono1" required >
+                                <input ng_disabled="true" ng-model="abonomensual.Telefono1"  type="text" class="input-sm col-md-4" name="telefono1" id="Telefono1" required >
                                 <span style="color:red" ng-show="formulario.telefono1.$dirty && formulario.telefono1.$invalid">
                                 <span ng-show="formulario.telefono1.$error.required">Codigo Postal obligatorio.</span>
                                  </span>
                                 </div>
                         <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Telefono 2</label>
-                                <input ng-model="abonomensual.Telefono1"  type="text" class="input-sm col-md-4" name="telefono2" id="Telefono2" required >
+                                <input ng_disabled="true" ng-model="abonomensual.Telefono1"  type="text" class="input-sm col-md-4" name="telefono2" id="Telefono2" required >
                                 <span style="color:red" ng-show="formulario.telefono2.$dirty && formulario.telefono2.$invalid">
                                 <span ng-show="formulario.telefono2.$error.required">Codigo Postal obligatorio.</span>
                                  </span>
                                 </div>
                     </div>
                     </div>
-                                <div class="form-group col-md-12">
                                 <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Reservas.php?detalle=1' " />
                                 <input style='display:none;' id="validacion" class="box btn-primary" type="submit" value="Validar Solicitud" ng-click="validarSolicitud();" ng-disabled="formulario.$invalid" />
                                 <input style='display:none;' id="anulacion" class="box btn-primary" type="submit" value="Anular Solicitud" ng-click="anularSolicitud();"  />
-                                </div>
+                                
                              </form>
                            </div>                                         
                         </div>

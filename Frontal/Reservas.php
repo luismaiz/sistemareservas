@@ -249,7 +249,7 @@
                                                         
                                                     </td>
                                                 </tr>
-                                                <tfoot >
+                                                <tfoot class="hide-if-no-paging">
                                                     <tr>
                                                         <td colspan="7" class="text-center">
                                                             <ul display="inline" class="pagination pagination-centered">

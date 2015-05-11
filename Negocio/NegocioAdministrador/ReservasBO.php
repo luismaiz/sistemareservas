@@ -425,6 +425,8 @@ class ReservasBO extends Rest{
                 $respuesta['clasesdirigidas']['Localidad'] = $fila->getLocalidad();
                 $respuesta['clasesdirigidas']['Telefono1'] = $fila->getTelefono1();
                 $respuesta['clasesdirigidas']['Telefono2'] = $fila->getTelefono2();
+                $respuesta['clasesdirigidas']['Provincia'] = $fila->getProvincia();
+                $respuesta['clasesdirigidas']['Sexo'] = $fila->getSexo();
                 $respuesta['datosbancarios'] = $arraybanco;
                 
                 $respuesta['actividades'] = $array;
