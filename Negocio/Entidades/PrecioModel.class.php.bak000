@@ -62,8 +62,8 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 		self::FIELD_NOMBREPRECIO=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,45,0,true),
 		self::FIELD_DESCRIPCIONPRECIO=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,45,0,true),
 		self::FIELD_PRECIO=>array(Db2PhpEntity::JDBC_TYPE_REAL,12,0,true),
-		self::FIELD_FECHAALTA=>array(Db2PhpEntity::JDBC_TYPE_DATE,10,0,false),
-		self::FIELD_FECHABAJA=>array(Db2PhpEntity::JDBC_TYPE_DATE,10,0,true));
+		self::FIELD_FECHAALTA=>array(Db2PhpEntity::JDBC_TYPE_TIMESTAMP,19,0,true),
+		self::FIELD_FECHABAJA=>array(Db2PhpEntity::JDBC_TYPE_TIMESTAMP,19,0,true));
 	private static $DEFAULT_VALUES=array(
 		self::FIELD_IDPRECIO=>null,
 		self::FIELD_IDTIPOTARIFA=>0,
@@ -72,7 +72,7 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 		self::FIELD_NOMBREPRECIO=>null,
 		self::FIELD_DESCRIPCIONPRECIO=>null,
 		self::FIELD_PRECIO=>null,
-		self::FIELD_FECHAALTA=>'',
+		self::FIELD_FECHAALTA=>null,
 		self::FIELD_FECHABAJA=>null);
 	private $idPrecio;
 	private $idTipoTarifa;
@@ -112,7 +112,7 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 	/**
 	 * set value for idTipoTarifa 
 	 *
-	 * type:INT,size:10,default:null
+	 * type:INT,size:10,default:null,index
 	 *
 	 * @param mixed $idTipoTarifa
 	 * @return PrecioModel
@@ -126,7 +126,7 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 	/**
 	 * get value for idTipoTarifa 
 	 *
-	 * type:INT,size:10,default:null
+	 * type:INT,size:10,default:null,index
 	 *
 	 * @return mixed
 	 */
@@ -137,7 +137,7 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 	/**
 	 * set value for idTipoSolicitud 
 	 *
-	 * type:INT,size:10,default:null
+	 * type:INT,size:10,default:null,index
 	 *
 	 * @param mixed $idTipoSolicitud
 	 * @return PrecioModel
@@ -151,7 +151,7 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 	/**
 	 * get value for idTipoSolicitud 
 	 *
-	 * type:INT,size:10,default:null
+	 * type:INT,size:10,default:null,index
 	 *
 	 * @return mixed
 	 */
@@ -162,7 +162,7 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 	/**
 	 * set value for idTipoAbono 
 	 *
-	 * type:INT,size:10,default:null
+	 * type:INT,size:10,default:null,index
 	 *
 	 * @param mixed $idTipoAbono
 	 * @return PrecioModel
@@ -176,7 +176,7 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 	/**
 	 * get value for idTipoAbono 
 	 *
-	 * type:INT,size:10,default:null
+	 * type:INT,size:10,default:null,index
 	 *
 	 * @return mixed
 	 */
@@ -262,7 +262,7 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 	/**
 	 * set value for FechaAlta 
 	 *
-	 * type:DATE,size:10,default:null
+	 * type:TIMESTAMP,size:19,default:null,nullable
 	 *
 	 * @param mixed $FechaAlta
 	 * @return PrecioModel
@@ -276,7 +276,7 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 	/**
 	 * get value for FechaAlta 
 	 *
-	 * type:DATE,size:10,default:null
+	 * type:TIMESTAMP,size:19,default:null,nullable
 	 *
 	 * @return mixed
 	 */
@@ -287,7 +287,7 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 	/**
 	 * set value for FechaBaja 
 	 *
-	 * type:DATE,size:10,default:null,nullable
+	 * type:TIMESTAMP,size:19,default:null,nullable
 	 *
 	 * @param mixed $FechaBaja
 	 * @return PrecioModel
@@ -301,7 +301,7 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 	/**
 	 * get value for FechaBaja 
 	 *
-	 * type:DATE,size:10,default:null,nullable
+	 * type:TIMESTAMP,size:19,default:null,nullable
 	 *
 	 * @return mixed
 	 */
@@ -465,6 +465,7 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 //					self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
 //				}
 //				return self::$stmts[$statement][$dbInstanceId];
+                                
                                 self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
 			}
 		}
@@ -799,6 +800,48 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 		}
 		$stmt->closeCursor();
 		return $affected;
+	}
+
+	/**
+	 * Fetch TiposolicitudModel which references this PrecioModel. Will return null in case reference is invalid.
+	 * `precio`.`idTipoSolicitud` -> `tiposolicitud`.`idTipoSolicitud`
+	 *
+	 * @param PDO $db a PDO Database instance
+	 * @param array $sort array of DSC instances
+	 * @return TiposolicitudModel
+	 */
+	public function fetchTiposolicitudModel(PDO $db, $sort=null) {
+		$filter=array(TiposolicitudModel::FIELD_IDTIPOSOLICITUD=>$this->getIdTipoSolicitud());
+		$result=TiposolicitudModel::findByFilter($db, $filter, true, $sort);
+		return empty($result) ? null : $result[0];
+	}
+
+	/**
+	 * Fetch TipoabonoModel which references this PrecioModel. Will return null in case reference is invalid.
+	 * `precio`.`idTipoAbono` -> `tipoabono`.`idTipoAbono`
+	 *
+	 * @param PDO $db a PDO Database instance
+	 * @param array $sort array of DSC instances
+	 * @return TipoabonoModel
+	 */
+	public function fetchTipoabonoModel(PDO $db, $sort=null) {
+		$filter=array(TipoabonoModel::FIELD_IDTIPOABONO=>$this->getIdTipoAbono());
+		$result=TipoabonoModel::findByFilter($db, $filter, true, $sort);
+		return empty($result) ? null : $result[0];
+	}
+
+	/**
+	 * Fetch TipotarifaModel which references this PrecioModel. Will return null in case reference is invalid.
+	 * `precio`.`idTipoTarifa` -> `tipotarifa`.`idTipoTarifa`
+	 *
+	 * @param PDO $db a PDO Database instance
+	 * @param array $sort array of DSC instances
+	 * @return TipotarifaModel
+	 */
+	public function fetchTipotarifaModel(PDO $db, $sort=null) {
+		$filter=array(TipotarifaModel::FIELD_IDTIPOTARIFA=>$this->getIdTipoTarifa());
+		$result=TipotarifaModel::findByFilter($db, $filter, true, $sort);
+		return empty($result) ? null : $result[0];
 	}
 
 

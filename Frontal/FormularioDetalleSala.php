@@ -24,6 +24,8 @@
                 $scope.sala = JSON.parse(Ajax.responseText).sala;
                 $scope.sala.CapacidadSala = parseInt($scope.sala.CapacidadSala);
                 
+                alert(Ajax.responseText);
+                
                 if ($scope.sala.FechaBaja !== "01-01-1970")
                 {
                     document.getElementById('divBaja').style.display = 'block';
@@ -70,7 +72,6 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-                alert(Ajax.responseText);
                 
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 

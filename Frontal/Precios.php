@@ -1,7 +1,5 @@
-<?php require('Cabecera.php'); ?>
-
+<?php require('Cabecera.php');?>
 <script>
-    
     var Ajax = new AjaxObj();
             var app = angular.module('BusquedaPrecios', ["ngStorage"])            
                      .config(function($locationProvider) {
@@ -196,6 +194,8 @@
                                                 </tfoot>
                                         </table>
                                 </div>
+                            <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetallePrecio.php' "/>
+                            
                         </div>
                     </div>
                 </div>

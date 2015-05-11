@@ -62,7 +62,7 @@ class PreciosBO extends Rest{
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-
+        
         $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
         $idTipoAbono = $this->datosPeticion['idTipoAbono'];
         $idTipoTarifa = $this->datosPeticion['idTipoTarifa'];
@@ -70,28 +70,86 @@ class PreciosBO extends Rest{
         $DescripcionPrecio = $this->datosPeticion['DescripcionPrecio'];
         $Precio = $this->datosPeticion['Precio'];
         $FechaAlta =date("Y-m-d");
-        $FechaBaja =null;
-     
+        
+        
         $this->con = ConexionBD::getInstance();
         $precio = new PrecioModel();
-        $precio->setIdTipoSolicitud($idTipoSolicitud);
-        $precio->setIdTipoAbono($idTipoAbono);
-        $precio->setIdTipoTarifa($idTipoTarifa);
-        $precio->setNombrePrecio($NombrePrecio);
-        $precio->setDescripcionPrecio($DescripcionPrecio);
-        $precio->setPrecio($Precio);
-        $precio->setFechaAlta($FechaAlta);
-        $precio->setFechaBaja($FechaBaja);
+       
+        
+        $filter=array(
+        new DFC(PrecioModel::FIELD_FECHABAJA, 's', DFC::IS_NULL),
+        new DFC(PrecioModel::FIELD_IDTIPOSOLICITUD, $idTipoSolicitud, DFC::EXACT),
+        new DFC(PrecioModel::FIELD_IDTIPOABONO, $idTipoAbono, DFC::EXACT),
+        new DFC(PrecioModel::FIELD_IDTIPOTARIFA, $idTipoTarifa, DFC::EXACT)
+        );
+        
+        $filas = $precio->findByFilter($this->con,$filter);
+                
+        if (count($filas) >0) {
+                $FechaBaja =date("Y-m-d");
+                $precio->setIdPrecio($filas[0]->getIdPrecio());
+                 $precio->setIdTipoSolicitud($filas[0]->getIdTipoSolicitud());
+                    $precio->setIdTipoAbono($filas[0]->getIdTipoAbono());
+                    $precio->setIdTipoTarifa($filas[0]->getIdTipoTarifa());
+                    $precio->setNombrePrecio($filas[0]->getNombrePrecio());
+                    $precio->setDescripcionPrecio($filas[0]->getDescripcionPrecio());
+                    $precio->setPrecio($filas[0]->getPrecio());
+                    $precio->setFechaAlta($filas[0]->getFechaAlta());
+                    $precio->setFechaBaja($FechaBaja);
 
-        $result = $precio->insertIntoDatabase($this->con);
+                $filasActualizadas = $precio->updateToDatabase($this->con);
+                    
+                    $precio->setIdPrecio(null);
+                    $precio->setIdTipoSolicitud($idTipoSolicitud);
+                    $precio->setIdTipoAbono($idTipoAbono);
+                    $precio->setIdTipoTarifa($idTipoTarifa);
+                    $precio->setNombrePrecio($NombrePrecio);
+                    $precio->setDescripcionPrecio($DescripcionPrecio);
+                    $precio->setPrecio($Precio);
+                    $precio->setFechaAlta($FechaAlta);
+                    $precio->setFechaBaja(NULL);
 
-        if ($result) {
-            $respuesta['estado'] = 'correcto';
-            $respuesta['msg'] = 'precio creado correctamente';
-            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+                $filasActualizadasinsert = $precio->insertIntoDatabase($this->con);
+                
+                if ($filasActualizadasinsert) 
+                {
+                    $respuesta['estado'] = 'correcto';
+                    $respuesta['msg'] = 'sala creada correctamente';
+                    $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+                } 
+                else 
+                {
+                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+                }
         }
         else
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);        
+        {
+                    $precio->setIdPrecio(null);
+                    $precio->setIdTipoSolicitud($idTipoSolicitud);
+                    $precio->setIdTipoAbono($idTipoAbono);
+                    $precio->setIdTipoTarifa($idTipoTarifa);
+                    $precio->setNombrePrecio($NombrePrecio);
+                    $precio->setDescripcionPrecio($DescripcionPrecio);
+                    $precio->setPrecio($Precio);
+                    $precio->setFechaAlta($FechaAlta);
+                    $precio->setFechaBaja(null);
+
+                $filasActualizadas = $precio->insertIntoDatabase($this->con);
+                
+                if ($filasActualizadas) 
+                {
+                    $respuesta['estado'] = 'correcto';
+                    $respuesta['msg'] = 'sala creada correctamente';
+                    $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+                } 
+                else 
+                {
+                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+                }
+        }
+        
+        
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
     }
 
     private function obtenerPrecios() {
