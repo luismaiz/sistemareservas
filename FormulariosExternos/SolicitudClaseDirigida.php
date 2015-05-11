@@ -79,11 +79,41 @@
                 $scope.menor = false;
             }
         };
-        $scope.enviar = function () {
-            $http.post("http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSolicitud", $scope.s);
-            conAjax.success(function (respuesta) {
-                console.log(respuesta);
-            });
+        $scope.codigoQR = function (Params) {
+            var URL = BASE_URL.concat('Negocio/NegocioAdministrador/AdministradorBO.php?url=codigoQR');
+
+            Ajax.open("POST", URL, false);
+            Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            Ajax.send(Params); // Enviamos los datos
+            var response = Ajax.responseText;
+            console.log(response);
+        };
+
+        $scope.enviar = function (s) {
+            var URL = BASE_URL.concat('Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSolicitud');
+
+            var Params = '&idTipoSolicitud=2&';
+            Params += jQuery.param(s);
+            Ajax.open("POST", URL, false);
+            Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            Ajax.send(Params); // Enviamos los datos
+            var response = Ajax.responseText;
+            console.log(response);
+            $scope.estado = JSON.parse(response).estado;
+            console.log($scope.estado);
+            if ($scope.estado === 'correcto')
+            {
+                document.getElementById('divCorrecto').style.display = 'block';
+            }
+            else
+            {
+                document.getElementById('divError').style.display = 'block';
+            }
+            $scope.solicitud = JSON.parse(response).solicitud;
+            console.log($scope.solicitud);
+            Params += '&Localizador=' + $scope.solicitud.Localizador;
+            console.log(Params);
+            $scope.codigoQR(Params);
         };
     });
 </script> 
@@ -93,7 +123,7 @@
             </div>
             <div id="system">
                 <h2>Solicitud Clase Dirigida</h2>
-                <form class="submission box style" name="solClaseDirigida" novalidate>
+                <form class="submission box style" name="formulario" novalidate>
                     <div class="tab-content" ng-init="tab1 = true">
                         <div class="tab-pane active" id="tab1" ng-show="tab1">
                             <ol class="breadcrumb">
@@ -104,7 +134,7 @@
                                     <div class="col-md-12 col-sm-12 input-group-lg">
                                         <h3>Actividades</h3>
                                         <div id="actividades">
-                                            <p ng-repeat="actividad in actividades"><label class="control-label">
+                                            <p ng-repeat="actividad in actividades" class="control-label col-md-4 col-sm-6 col-xs-12"><label class="control-label">
                                                     <input type="checkbox" name="actividades" ng-model="s.actividades" ng-value="{{ actividad.idActividad}}">&nbsp; {{ actividad.NombreActividad}}</label><br/></p>
                                         </div>
                                     </div>

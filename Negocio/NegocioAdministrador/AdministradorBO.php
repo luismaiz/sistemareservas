@@ -1,5 +1,5 @@
 ﻿<?php
-
+error_reporting(0);
 require_once("../../ComunicacionesREST/Rest.php");
 require_once("../../Negocio/AccesoDatos/ConexionBD.php");
 require_once("../../Negocio/Entidades/SalaModel.class.php");
@@ -111,7 +111,8 @@ class AdministradorBO extends Rest {
         $DescripcionSolicitud = $this->datosPeticion['DescripcionSolicitud'];
         $Otros = $this->datosPeticion['Otros'];
         $Localizador = md5($this->generarLocalizador($Nombre, $Apellidos, $FechaSolicitud, $DNI));
-        $Localizador = substr($Localizador, 0, -10);
+        $Localizador = substr($Localizador, 0, 6);
+        $FechaAbonoDiario = $this->datosPeticion['FechaAbonoDiario'];
 
 
         //if (!$this->existeUsuario($email)) {  
@@ -164,6 +165,7 @@ class AdministradorBO extends Rest {
         $solicitud->setDescripcionSolicitud($DescripcionSolicitud);
         $solicitud->setOtros($Otros);
         $solicitud->setLocalizador($Localizador);
+        $solicitud->setFechaAbonoDiario($FechaAbonoDiario);
 
         //var_dump($solicitud);
 
