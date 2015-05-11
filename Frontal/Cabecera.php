@@ -37,8 +37,8 @@ include 'config.php'
         <link href="Utilidades/FooTable-2/css/footable.core.css" rel="stylesheet" type="text/css"/>
         <link href="Utilidades/FooTable-2/css/footable.metro.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-        <!--<link rel="stylesheet" href="/resources/demos/style.css">-->
-        <!-- The fav icon -->
+                
+		<!-- The fav icon -->
         <link rel="shortcut icon" href="Utilidades/img/favicon.ico">
         
         <script src="Utilidades/js/angular-1.2.9/angular-1.2.9/angular.js" type="text/javascript"></script>
@@ -52,53 +52,19 @@ include 'config.php'
         <script src="Utilidades/FooTable-2/js/footable.paginate.js" type="text/javascript"></script>
         <script src="Utilidades/js/angular-1.2.9/angular-1.2.9/ngStorage.min.js" type="text/javascript"></script>
 
-        <!--<script src="Utilidades/bower_components/jquery/jquery.min.js" type="text/javascript"></script>-->
-        <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-        
-        
+		        
         
         <!-- Calendario -->
-       
-         <!--bootstrap & fontawesome--> 
-<!--        <link rel="stylesheet" href="Utilidades/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="Utilidades/css/font-awesome.min.css" />-->
-
-         <!--page specific plugin styles--> 
-        <!--<link rel="stylesheet" href="Utilidades/css/jquery-ui.custom.min.css" />-->
-        <link rel="stylesheet" href="Utilidades/css/fullcalendar.min.css" />
-
-         <!--text fonts--> 
-        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
-
-        <!-- ace styles -->
-        <!--<link rel="stylesheet" href="Utilidades/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />-->
-<!--        <script src="Utilidades/js/ace-extra.min.js"></script>        
-        <script src="Utilidades/js/jquery.min.js"></script>
-            <script type="text/javascript">
-                window.jQuery || document.write("<script src='Utilidades/js/jquery.min.js'>"+"<"+"/script>");
-            </script>
-            <script type="text/javascript">
-                if('ontouchstart' in document.documentElement) document.write("<script src='Utilidades/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
-            </script>
-    <script src="Utilidades/js/bootstrap.min.js"></script>-->
-
-    <!-- page specific plugin scripts -->
-<!--    <script src="Utilidades/js/jquery-ui.custom.min.js"></script>
-    <script src="Utilidades/js/jquery.ui.touch-punch.min.js"></script>
-    <script src="Utilidades/js/moment.min.js"></script>
-    <script src="Utilidades/js/fullcalendar.min.js"></script>
-    <script src="Utilidades/js/bootbox.min.js"></script>
-
-     ace scripts 
-    <script src="Utilidades/js/ace-elements.min.js"></script>
-    <script src="Utilidades/js/ace.min.js"></script>-->
+       <link rel="stylesheet" href="Utilidades/calendario/css/font-awesome.min.css" />
+	    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+		 <!-- ace styles -->
+        <!--<link rel="stylesheet" href="Utilidades/calendario/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />-->
+        <link rel="stylesheet" type="text/css" href="Utilidades/calendario/css/jquery.datetimepicker.css"/>
+        <script src="Utilidades/calendario/js/jquery.datetimepicker.js" type="text/javascript"></script>
         
         <script>
-            //var BASE_URL = 'http://vw15115.dinaserver.com/hosting/reservascentro.es-web/';
-            var BASE_URL = 'http://localhost:8080/';
+            var BASE_URL = 'http://vw15115.dinaserver.com/hosting/reservascentro.es-web/';
+            //var BASE_URL = 'http://localhost:8080/';
         function AjaxObj()
         {
             var xmlhttp = null;
@@ -195,20 +161,19 @@ include 'config.php'
                                     </li>
                                     <li><a class="ajax-link" href="Reservas.php"><i class="glyphicon glyphicon-edit"></i><span> Reservas </span></a>
                                     </li>
-                                    <li><a class="ajax-link" href="Salas.php"><i  class="glyphicon glyphicon-edit"></i><span> Salas</span></a></li>
-                                    <li><a class="ajax-link" href="Actividades.php"><i class="glyphicon glyphicon-edit"></i><span> Actividades</span></a>
+									<li><a class="ajax-link" href="InicioMonitor.php"><i class="glyphicon glyphicon-edit"></i><span> Clases</span></a>
                                     </li>
-                                    <li><a class="ajax-link" href="InicioMonitor.php"><i class="glyphicon glyphicon-edit"></i><span> Clases</span></a>
-                                    </li>
-                                    <li><a class="ajax-link" href="TipoSolicitud.php"><i class="glyphicon glyphicon-edit"></i><span> Solicitudes</span></a>
-                                    </li>
-                                    <li><a class="ajax-link" href="TipoAbono.php"><i class="glyphicon glyphicon-edit"></i><span> Abonos</span></a>
-                                    </li>
-                                    <li><a class="ajax-link" href="TipoTarifa.php"><i class="glyphicon glyphicon-edit"></i><span> Tarifas</span></a>
-                                    </li>
-                                    <li><a class="ajax-link" href="Precios.php"><i class="glyphicon glyphicon-edit"></i><span> Precios</span></a>
-                                    </li>
-                                    
+									<li class="accordion">
+										<a href="#"><i class="glyphicon glyphicon-plus"></i><span> Mantenimiento</span></a>
+											<ul class="nav nav-pills nav-stacked">
+											<li><a class="ajax-link" href="Salas.php"><i  class="glyphicon glyphicon-edit"></i><span> Salas</span></a></li>
+											<li><a class="ajax-link" href="Actividades.php"><i class="glyphicon glyphicon-edit"></i><span> Actividades</span></a></li>
+											<li><a class="ajax-link" href="TipoSolicitud.php"><i class="glyphicon glyphicon-edit"></i><span> Tipo Solicitud</span></a></li>
+											<li><a class="ajax-link" href="TipoAbono.php"><i class="glyphicon glyphicon-edit"></i><span> Tipo Abono</span></a></li>
+											<li><a class="ajax-link" href="TipoTarifa.php"><i class="glyphicon glyphicon-edit"></i><span> Tipo Tarifa</span></a></li>
+											<li><a class="ajax-link" href="Precios.php"><i class="glyphicon glyphicon-edit"></i><span> Precios</span></a></li>
+											</ul>
+									</li>
                                     <li><a class="ajax-link" href="Informes.php"><i class="glyphicon glyphicon-eye-open"></i><span> Informes</span></a>
                                     </li>
                                 </ul>
@@ -225,19 +190,17 @@ include 'config.php'
                                     </li>
                                     <li><a class="ajax-link" href="Reservas.php"><i class="glyphicon glyphicon-edit"></i><span> Reservas </span></a>
                                     </li>
-                                    <li><a class="ajax-link" href="Salas.php"><i  class="glyphicon glyphicon-edit"></i><span> Salas</span></a></li>
-                                    <li><a class="ajax-link" href="Actividades.php"><i class="glyphicon glyphicon-edit"></i><span> Actividades</span></a>
-                                    </li>
-                                    <li><a class="ajax-link" href="Clases.php"><i class="glyphicon glyphicon-edit"></i><span> Clases</span></a>
-                                    </li>
-                                    <li><a class="ajax-link" href="TipoSolicitud.php"><i class="glyphicon glyphicon-edit"></i><span> Solicitudes</span></a>
-                                    </li>
-                                    <li><a class="ajax-link" href="TipoAbono.php"><i class="glyphicon glyphicon-edit"></i><span> Abonos</span></a>
-                                    </li>
-                                    <li><a class="ajax-link" href="TipoTarifa.php"><i class="glyphicon glyphicon-edit"></i><span> Tarifas</span></a>
-                                    </li>
-                                    <li><a class="ajax-link" href="Precios.php"><i class="glyphicon glyphicon-edit"></i><span> Precios</span></a>
-                                    </li>
+									<li class="accordion">
+										<a href="#"><i class="glyphicon glyphicon-plus"></i><span> Mantenimiento</span></a>
+											<ul class="nav nav-pills nav-stacked">
+											<li><a class="ajax-link" href="Salas.php"><i  class="glyphicon glyphicon-edit"></i><span> Salas</span></a></li>
+											<li><a class="ajax-link" href="Actividades.php"><i class="glyphicon glyphicon-edit"></i><span> Actividades</span></a></li>
+											<li><a class="ajax-link" href="TipoSolicitud.php"><i class="glyphicon glyphicon-edit"></i><span> Tipo Solicitud</span></a></li>
+											<li><a class="ajax-link" href="TipoAbono.php"><i class="glyphicon glyphicon-edit"></i><span> Tipo Abono</span></a></li>
+											<li><a class="ajax-link" href="TipoTarifa.php"><i class="glyphicon glyphicon-edit"></i><span> Tipo Tarifa</span></a></li>
+											<li><a class="ajax-link" href="Precios.php"><i class="glyphicon glyphicon-edit"></i><span> Precios</span></a></li>
+											</ul>
+									</li>
                                     <li><a class="ajax-link" href="Informes.php"><i class="glyphicon glyphicon-eye-open"></i><span> Informes</span></a>
                                     </li>
                                 </ul>
@@ -250,11 +213,6 @@ include 'config.php'
                                 <ul class="nav nav-pills nav-stacked main-menu">
                                     <li class="nav-header">Menú Principal</li>
                                     <li><a class="ajax-link" href="Inicio.php"><i class="glyphicon glyphicon-home"></i><span> Inicio</span></a>
-                                    </li>
-                                    <li><a class="ajax-link" href="Reservas.php"><i class="glyphicon glyphicon-edit"></i><span> Reservas </span></a>
-                                    </li>
-                                    <li><a class="ajax-link" href="Salas.php"><i  class="glyphicon glyphicon-edit"></i><span> Salas</span></a></li>
-                                    <li><a class="ajax-link" href="Actividades.php"><i class="glyphicon glyphicon-edit"></i><span> Actividades</span></a>
                                     </li>
                                     <li><a class="ajax-link" href="Clases.php"><i class="glyphicon glyphicon-edit"></i><span> Clases</span></a>
                                     </li>
