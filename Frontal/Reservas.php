@@ -26,6 +26,7 @@
             document.getElementById("filtroEmail").value = JSON.parse($scope.filtrosguardados)[0].Email;      
             document.getElementById("filtroFechaSolicitud").value = JSON.parse($scope.filtrosguardados)[0].FechaSolicitud;
             document.getElementById("filtroTipoSolicitud").value = JSON.parse($scope.filtrosguardados)[0].TipoSolicitud;
+            document.getElementById("filtroGestionado").value = JSON.parse($scope.filtrosguardados)[0].Gestionado;
             
             alert('hola');
         }
@@ -105,7 +106,8 @@
                     Dni:document.getElementById("filtroDni").value,
                     Email:document.getElementById("filtroEmail").value,
                     FechaSolicitud:document.getElementById("filtroFechaSolicitud").value,
-                    TipoSolicitud:document.getElementById("filtroTipoSolicitud").value}];
+                    TipoSolicitud:document.getElementById("filtroTipoSolicitud").value,
+                    Gestionado:document.getElementById("filtroGestionado").value}];
                 localStorage.setItem('filtros', JSON.stringify($scope.filtros));
                 
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerReservasFiltro');
@@ -117,7 +119,8 @@
                 '&DNI=' + document.getElementById("filtroDni").value +
                 '&Email=' + document.getElementById("filtroEmail").value +
                 '&FechaSolicitud=' + document.getElementById("filtroFechaSolicitud").value +
-                '&TipoSolicitud=' + document.getElementById("filtroTipoSolicitud").value;
+                '&TipoSolicitud=' + document.getElementById("filtroTipoSolicitud").value +
+                '&Gestionado=' + document.getElementById("filtroGestionado").value;
                 
 	        Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -210,15 +213,21 @@
                                 <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" id="filtroNombre" name="filtroNombre" />
                                 <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Apellidos</label>
                                 <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" id="filtroApellidos" name="filtroApellidos"/>
+                            </div>
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >DNI</label>
                                 <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" id="filtroDni" name="filtroDni"/>
-                            </div>
-                            <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                
                                 <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >eMail</label>
                                 <input type="email" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" required id="filtroEmail" name="filtroEmail"/>
+                            </div>
+                            <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Fecha Solicitud</label>
                                 <input type="text" class="input-sm col-lg-4  col-md-4 col-sm-4 col-xs-7" id="filtroFechaSolicitud" name="filtroFechaSolicitud"/>
+                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Gestionado</label>
+                                <select  id="filtroGestionado" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
+                                    <option value="1">Gestionado</option>
+                                    <option value="0">Pendiente</option>
+                                </select>
                             </div>
                             
                                 <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerReservas()"/>

@@ -55,7 +55,7 @@
                             
                             // is currently selected
                             if (idx > -1) {
-                                $scope.selection.splice(idx, 1);
+                            $scope.selection.splice(idx, 1);
                                 }
                             // is newly selected
                              else {
@@ -267,7 +267,7 @@
                             <form role="form"  name="formulario">
                                 <ul class="nav nav-tabs" id="myTab">
                                 <li><a href="#datossolicitud">Datos Solicitud</a></li>
-                                <li class="active"><a href="#datospersonales">Datos Personales</a></li>
+                                <li><a href="#datospersonales">Datos Personales</a></li>
                                 <li><a href="#direccion">Direccion</a></li>
                                 <li><a href="#datosbancarios">Datos bancarios</a></li>
                                 </ul>
@@ -292,7 +292,7 @@
                             </div>
                         
                     </div>    
-                    <div class="tab-pane active" id="datospersonales">
+                    <div class="tab-pane" id="datospersonales">
                         <h3></h3>
                         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Localizador</label>
@@ -421,9 +421,7 @@
                                 <span style="color:red" ng-show="formulario.titular.$dirty && formulario.titular.$invalid">
                                 <span ng-show="formulario.titular.$error.required">Codigo Postal obligatorio.</span>
                                  </span>
-                                </fieldset>
                         </div>
-                    </div>
                     </div>
                                 <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Reservas.php?detalle=1' " />
                                 <input style='display:none;' id="validacion" class="box btn-primary" type="submit" value="Validar Solicitud" ng-click="validarSolicitud();" ng-disabled="formulario.$invalid" />
@@ -431,6 +429,8 @@
                                 
                                 
                              </form>
+                    </div>
+                                
                            </div>                                         
                         </div>
                         </div>

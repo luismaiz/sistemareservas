@@ -162,6 +162,7 @@ class ReservasBO extends Rest{
         $mail = $this->datosPeticion['Email'];
         $fsolicitud = $this->datosPeticion['FechaSolicitud'];
         $tsolicitud = $this->datosPeticion['TipoSolicitud'];
+        $gestionado = $this->datosPeticion['Gestionado'];
                  
         
         $this->con = ConexionBD::getInstance();
@@ -169,6 +170,8 @@ class ReservasBO extends Rest{
             new DSC(SolicitudModel::FIELD_FECHASOLICITUD, DSC::ASC),
             new DSC(SolicitudModel::FIELD_APELLIDOS, DSC::ASC)
         );
+               
+        
         
         $solicitud = new SolicitudModel();
         
@@ -186,6 +189,8 @@ class ReservasBO extends Rest{
             $solicitud->setFechaSolicitud($fsolicitud);
         if($tsolicitud != '')
             $solicitud->setIdTipoSolicitud($tsolicitud);
+        if($gestionado != '')
+            $solicitud->setGestionado($gestionado);
         
         
         $filas = SolicitudModel::findByExample($this->con,$solicitud,$sort);
