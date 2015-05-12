@@ -108,7 +108,7 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                                       
-                alert(Ajax.responseText);
+                //alert(Ajax.responseText);
                 $scope.historicoprecios = JSON.parse(Ajax.responseText).historicoprecios;
             };
             if (typeof($location.search().idPrecio) !== "undefined")
@@ -116,7 +116,7 @@
                 
                 $scope.obtenerPrecios($location.search().idPrecio);
                 $scope.obtenerHistoricoPrecios($location.search().idPrecio);
-                alert('hola2');
+                
             }
             
             $scope.guardarPrecio = function() {
@@ -142,7 +142,7 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-                alert(Ajax.responseText);
+                //alert(Ajax.responseText);
                 
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 

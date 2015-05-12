@@ -24,7 +24,7 @@
                 $scope.sala = JSON.parse(Ajax.responseText).sala;
                 $scope.sala.CapacidadSala = parseInt($scope.sala.CapacidadSala);
                 
-                alert(Ajax.responseText);
+                //alert(Ajax.responseText);
                 
                 if ($scope.sala.FechaBaja !== "01-01-1970")
                 {
@@ -115,7 +115,7 @@
             
             $scope.anularSala = function(){
                 
-                alert('hola');
+                
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=anularSala');
                 var Params = 'idSala='+ $location.search().idSala;
                 
@@ -123,7 +123,7 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-                alert(Ajax.responseText);    
+                //alert(Ajax.responseText);    
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')
@@ -147,7 +147,7 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-                alert(Ajax.responseText);
+                //alert(Ajax.responseText);
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')

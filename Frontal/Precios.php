@@ -79,7 +79,7 @@
                 Ajax.send(Params); // Enviamos los datos
                   
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
-                alert(Ajax.responseText);
+                //alert(Ajax.responseText);
                 
                 if ($scope.estado === 'correcto')
                 {
