@@ -22,7 +22,9 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
+                alert(Ajax.responseText);
                 $scope.abonomensual = JSON.parse(Ajax.responseText).abonomensual;
+                $scope.datossolicitud = JSON.parse(Ajax.responseText).datossolicitud;
         
             };
             if (typeof($location.search().idSolicitud) !== "undefined")
@@ -181,8 +183,8 @@
                         <div class="box-content">
                             <form role="form"  name="formulario">
                                 <ul class="nav nav-tabs" id="myTab">
-                                <li><a href="#datosabono">Datos Abono</a></li>
-                                <li class="active"><a href="#datospersonales">Datos Personales</a></li>
+                                <li class="active"><a href="#datosabono">Datos Abono</a></li>
+                                <li><a href="#datospersonales">Datos Personales</a></li>
                                 <li><a href="#direccion">Direccion</a></li>
                                 </ul>
                 <div id="myTabContent" class="tab-content">
@@ -197,6 +199,7 @@
                                 </span>
                                 
                                 </div>
+                        
                         <div class="form-group col-md-12">
                         <label class="control-label col-md-2" >Tipo Abono</label>
                                 <select ng_disabled="true"  id="filtroTipoAbono" class="input-sm col-md-2" >	
@@ -209,16 +212,35 @@
                                     <option ng_repeat="tipotarifa in tiposTarifas" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>
                                 </select>
                         </div>
-                        
-                        <div class="form-group col-md-12">
+                        <div class="form-group col-md-12" ng-repeat="dato in datossolicitud">
+                        <div class="form-group col-md-12" >
+                                <label class="control-label col-md-2" >Fecha Inicio</label>
+                                <input ng_disabled="true" n ng-model="dato.FechaInicio" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="FechaInicio" id="FechaInicio" >
+                                <span class="col-md-6 col-sm-5 col-XS-12" style="color:red" ng-show="formulario.FechaInicio.$dirty && formulario.FechaInicio.$invalid">
+                                     <span ng-show="formulario.FechaInicio.$error.pattern">* Formato de fecha no valido.</span>
+                                    <span ng-show="formulario.FechaInicio.$error.required">* Fecha obligatoria.</span>
+                                </span>
+                                
+                                </div>
+                        <div class="form-group col-md-12" >
+                                <label class="control-label col-md-2" >Fecha Fin</label>
+                                <input  ng_disabled="true" n ng-model="dato.FechaFin" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="FechaFin" id="FechaFin" >
+                                <span class="col-md-6 col-sm-5 col-XS-12" style="color:red" ng-show="formulario.FechaFin.$dirty && formulario.FechaFin.$invalid">
+                                     <span ng-show="formulario.FechaFin.$error.pattern">* Formato de fecha no valido.</span>
+                                    <span ng-show="formulario.FechaFin.$error.required">* Fecha obligatoria.</span>
+                                </span>
+                                
+                                </div>
+                        <div class="form-group col-md-12" >
                                 <label class="control-label col-md-2" >Cantidad pagada</label>
-                                <input ng_disabled="true" ng-model="abonomensual.Cantidad"  type="text" class="input-sm col-md-4" name="cantidad" id="cantidad" required >
+                                <input ng_disabled="true" ng-model="dato.PrecioPagado"  type="text" class="input-sm col-md-4" name="cantidad" id="cantidad" required >
                                 <span style="color:red" ng-show="formulario.cantidad.$dirty && formulario.cantidad.$invalid">
                                 <span ng-show="formulario.cantidad.$error.required">Nombre obligatorio.</span>
                                  </span>
                                 </div>
-                    </div>    
-                    <div class="tab-pane active" id="datospersonales">
+                    </div>
+                       </div>
+                    <div class="tab-pane" id="datospersonales">
                         <h3></h3>
                         <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Localizador</label>

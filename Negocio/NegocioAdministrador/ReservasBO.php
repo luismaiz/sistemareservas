@@ -5,6 +5,7 @@ require_once("../../Negocio/AccesoDatos/ConexionBD.php");
 require_once("../../Negocio/Entidades/SolicitudModel.class.php");
 require_once("../../Negocio/Entidades/ActividadsolicitudclasedirigidaModel.class.php");
 require_once("../../Negocio/Entidades/DatosolicitudclasedirigidaModel.class.php");
+require_once("../../Negocio/Entidades/DatosolicitudabonomensualModel.class.php");
 require_once("../../Negocio/Entidades/helpers/DFC.class.php");
 require_once("../../Negocio/Entidades/helpers/DSC.class.php");
 
@@ -340,7 +341,24 @@ class ReservasBO extends Rest{
             $this->con = ConexionBD::getInstance();
             
             $solicitud = new SolicitudModel();
+            $datosolicitud = new DatosolicitudabonomensualModel();
+            
+            $sortdatos = array(
+            new DSC(DatosolicitudclasedirigidaModel::FIELD_IDSOLICITUD, DSC::ASC)
+            );
+            
+            $filadatosbancarios =  DatosolicitudabonomensualModel::findByExample($this->con,$datosolicitud,$sortdatos);
             $fila = $solicitud->findById($this->con,$this->datosPeticion['idSolicitud']);
+            $filadatos =  DatosolicitudabonomensualModel::findByExample($this->con,$datosolicitud,$sortdatos);
+            
+            $num = count($filadatos);
+            if ($num > 0) {
+
+                for ($i = 0; $i < $num; $i++) 
+                {
+                    $arraydatos[] = $filadatos[$i]->toHash();
+                }
+            }
           
             $respuesta = "";
             if ($fila) {
@@ -359,9 +377,10 @@ class ReservasBO extends Rest{
                 $respuesta['abonomensual']['TipoTarifa'] = $fila->getIdTipoTarifa();
                 $respuesta['abonomensual']['CodigoPostal'] = $fila->getCp();
                 $respuesta['abonomensual']['Localidad'] = $fila->getLocalidad();
+                $respuesta['abonomensual']['Provincia'] = $fila->getProvincia();
                 $respuesta['abonomensual']['Telefono1'] = $fila->getTelefono1();
                 $respuesta['abonomensual']['Telefono2'] = $fila->getTelefono2();
-                
+                $respuesta['datossolicitud'] = $arraydatos;
                 
                 
 
