@@ -24,7 +24,7 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-                //alert(Ajax.responseText);
+                alert(Ajax.responseText);
                 
                 $scope.clasesdirigidas = JSON.parse(Ajax.responseText).clasesdirigidas;
                 $scope.datosbancarios = JSON.parse(Ajax.responseText).datosbancarios;
@@ -142,6 +142,8 @@
             };
             
             
+            
+            
             $scope.obtenerTipoAbono = function(){
         
         var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbono');		
@@ -225,6 +227,12 @@
                 });
             });
             
+            $(function() {
+                $( "#FechaNacimiento" ).datepicker({
+                    dateFormat:'dd-mm-yy'
+                });
+            });
+            
             
                        
         </script>
@@ -277,11 +285,7 @@
                         
                         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-md-2" >Fecha Solicitud</label>
-                                <input ng_disabled="true" ng-model="clasesdirigidas.FechaSolicitud" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="FechaSolicitud" id="FechaSolicitud" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required>
-                                <span class="col-md-6 col-sm-5 col-XS-12" style="color:red" ng-show="formulario.FechaSolicitud.$dirty && formulario.FechaSolicitud.$invalid">
-                                     <span ng-show="formulario.FechaSolicitud.$error.pattern">* Formato de fecha no valido.</span>
-                                    <span ng-show="formulario.FechaSolicitud.$error.required">* Fecha obligatoria.</span>
-                                </span>
+                                <input ng_disabled="true" ng-model="clasesdirigidas.FechaSolicitud" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="FechaSolicitud" id="FechaSolicitud" >
                                 </div>
                         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <div class="checkbox">
@@ -298,7 +302,7 @@
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Localizador</label>
                                 <input ng_disabled="true" ng-model="clasesdirigidas.Localizador"  type="text" class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="localizador" id="Localizador" required >
                                 <span style="color:red" ng-show="formulario.localizador.$dirty && formulario.localizador.$invalid">
-                                <span ng-show="formulario.localizador.$error.required">Localizador obligatorio.</span>
+                                <span ng-show="formulario.localizador.$error.required">* Localizador obligatorio.</span>
                                  </span>
                                 </div>
                                 
@@ -306,14 +310,14 @@
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Nombre</label>
                                 <input ng_disabled="true" ng-model="clasesdirigidas.Nombre"  type="text" class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="nombre" id="Nombre" required >
                                 <span style="color:red" ng-show="formulario.nombre.$dirty && formulario.nombre.$invalid">
-                                <span ng-show="formulario.nombre.$error.required">Nombre obligatorio.</span>
+                                <span ng-show="formulario.nombre.$error.required">* Nombre obligatorio.</span>
                                  </span>
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Apellidos</label>
                                 <input ng_disabled="true" ng-model="clasesdirigidas.Apellidos" type="text" class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12"  name="apellidos" id="Apellidos" required>
                                 <span style="color:red" ng-show="formulario.apellidos.$dirty && formulario.apellidos.$invalid">
-                                <span ng-show="formulario.apellidos.$error.required">Apellidos obligatorio.</span>
+                                <span ng-show="formulario.apellidos.$error.required">* Apellidos obligatorio.</span>
                                 </span>
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -328,7 +332,7 @@
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Dni</label>
                                 <input ng_disabled="true" ng-model="clasesdirigidas.DNI" type="text" class="input-sm col-lg-2 col-md-4 col-sm-6 col-xs-12" name="dni" id="Dni" required ng-pattern='/^\d{7,8}(-?[a-z])?$/i'>
                                 <span style="color:red" ng-show="formulario.dni.$dirty && formulario.dni.$invalid">
-                                <span ng-show="formulario.dni.$error.pattern">Formato de DNI no válido 12345678-A</span>
+                                <span ng-show="formulario.dni.$error.pattern">* Formato de DNI no válido 12345678-A</span>
                                 </span>
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -342,14 +346,14 @@
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Direccion</label>
                                 <input ng_disabled="true" ng-model="clasesdirigidas.Direccion"  type="text" class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12" name="direccion" id="Direccion" required >
                                 <span style="color:red" ng-show="formulario.direccion.$dirty && formulario.direccion.$invalid">
-                                <span ng-show="formulario.direccion.$error.required">Direccion obligatorio.</span>
+                                <span ng-show="formulario.direccion.$error.required">* Direccion obligatoria.</span>
                                  </span>
                                 </div>
                         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Localidad</label>
                                 <input ng_disabled="true" ng-model="clasesdirigidas.Localidad"  type="text" class="input-sm col-lg-6 col-md-3 col-sm-4 col-xs-12" name="localidad" id="Localidad" required >
                                 <span style="color:red" ng-show="formulario.localidad.$dirty && formulario.localidad.$invalid">
-                                <span ng-show="formulario.localidad.$error.required">Localidad obligatorio.</span>
+                                <span ng-show="formulario.localidad.$error.required">* Localidad obligatoria.</span>
                                  </span>
                                 </div>
                         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -363,30 +367,27 @@
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Código Postal</label>
                                 <input ng_disabled="true" ng-model="clasesdirigidas.CodigoPostal"  type="text" class="input-sm col-lg-1 col-md-1 col-sm-2 col-xs-3" name="codigopostal" id="CodigoPostal" required >
                                 <span style="color:red" ng-show="formulario.codigopostal.$dirty && formulario.codigopostal.$invalid">
-                                <span ng-show="formulario.codigopostal.$error.required">Codigo Postal obligatorio.</span>
+                                <span ng-show="formulario.codigopostal.$error.required">* Codigo Postal obligatorio.</span>
                                  </span>
                                 </div>
                         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">                                
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Email</label>
                                 <input ng_disabled="true" ng-model="clasesdirigidas.Email" type="email" class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="mail" id="Mail" required >
                                 <span style="color:red" ng-show="formulario.mail.$dirty && formulario.mail.$invalid">
-                                <span ng-show="formulario.mail.$error.required">Email obligatorio.</span>
-                                <span ng-show="formulario.mail.$error.email">Formato de email no válido.</span>
+                                <span ng-show="formulario.mail.$error.required">* Email obligatorio.</span>
+                                <span ng-show="formulario.mail.$error.email">* Formato de email no válido.</span>
                                 </span>
                                 </div>
                         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Telefono 1</label>
                                 <input ng_disabled="true" ng-model="clasesdirigidas.Telefono1"  type="text" class="input-sm col-lg-1 col-md-2 col-sm-3 col-xs-3" maxlength="9" name="telefono1" id="Telefono1" required >
                                 <span style="color:red" ng-show="formulario.telefono1.$dirty && formulario.telefono1.$invalid">
-                                <span ng-show="formulario.telefono1.$error.required">Codigo Postal obligatorio.</span>
+                                <span ng-show="formulario.telefono1.$error.required">Telefono 1 obligatorio.</span>
                                  </span>
                                 </div>
                         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Telefono 2</label>
-                                <input ng_disabled="true" ng-model="clasesdirigidas.Telefono1"  type="text" class="input-sm col-lg-1 col-md-2 col-sm-3 col-xs-3" name="telefono2" id="Telefono2" required >
-                                <span style="color:red" ng-show="formulario.telefono2.$dirty && formulario.telefono2.$invalid">
-                                <span ng-show="formulario.telefono2.$error.required">Codigo Postal obligatorio.</span>
-                                 </span>
+                                <input ng_disabled="true" ng-model="clasesdirigidas.Telefono2"  type="text" class="input-sm col-lg-1 col-md-2 col-sm-3 col-xs-3" name="telefono2" id="Telefono2" >
                                 </div>
                     </div>
                     <div class="tab-pane" id="datosbancarios" ng-repeat="dato in datosbancarios">
@@ -395,7 +396,7 @@
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Titular</label>
                                 <input ng_disabled="true" ng-model="dato.Titular"  type="text" class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="titular" id="Titular" required >
                                 <span style="color:red" ng-show="formulario.titular.$dirty && formulario.titular.$invalid">
-                                <span ng-show="formulario.titular.$error.required">Titular obligatorio.</span>
+                                <span ng-show="formulario.titular.$error.required">* Titular obligatorio.</span>
                                  </span>
                         </div>
                         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -418,9 +419,6 @@
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Número de cuenta</label>
                                 <input ng_disabled="true" ng-model="dato.Cuenta"  type="text" maxlength="10" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" name="cuenta" id="Cuenta" required ng-pattern="/^\d+$/">
                                 </div>
-                                <span style="color:red" ng-show="formulario.titular.$dirty && formulario.titular.$invalid">
-                                <span ng-show="formulario.titular.$error.required">Codigo Postal obligatorio.</span>
-                                 </span>
                         </div>
                     </div>
                                 <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Reservas.php?detalle=1' " />

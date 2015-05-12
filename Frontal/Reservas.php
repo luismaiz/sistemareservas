@@ -28,7 +28,7 @@
             document.getElementById("filtroTipoSolicitud").value = JSON.parse($scope.filtrosguardados)[0].TipoSolicitud;
             document.getElementById("filtroGestionado").value = JSON.parse($scope.filtrosguardados)[0].Gestionado;
             
-            alert('hola');
+            
         }
         
         $scope.obtenerReservasSolicitudesPendientes = function() {
@@ -111,7 +111,6 @@
                 localStorage.setItem('filtros', JSON.stringify($scope.filtros));
                 
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerReservasFiltro');
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerReservasFiltro";
                 
                 var Params =  'Localizador=' + document.getElementById("filtroLocalizador").value + 
                 '&Nombre=' + document.getElementById("filtroNombre").value +    
@@ -125,7 +124,6 @@
 	        Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-                
                 alert(Ajax.responseText);
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
@@ -170,6 +168,31 @@
                 });
          
     }
+    
+     $.datepicker.regional['es'] = {
+            closeText: 'Cerrar',
+            prevText: '<Ant',
+            nextText: 'Sig>',
+            currentText: 'Hoy',
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+            dayNamesMin: ['Do','Lun','Ma','Mi','Ju','Vi','Sá'],
+            weekHeader: 'Sm',
+            dateFormat:'dd-mm-yy',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: ''
+            };
+ $.datepicker.setDefaults($.datepicker.regional['es']);
+            
+            $(function() {
+                $( "#filtroFechaSolicitud" ).datepicker({
+                    dateFormat:'dd-mm-yy'
+                });
+            });
       
 </script>
 <div>
@@ -236,18 +259,24 @@
                             <table class="footable table-striped responsive" data-page-size="10" data-page="true">
                                             <thead>
                                                 <tr>
-                                                    <th>Nombre</th>
-                                                    <th>Apellidos</th>
                                                     <th>Localizador</th>
+                                                    <th>Apellidos</th>
+                                                    <th>Nombre</th>
                                                     <th>Fecha Solicitud</th>
+                                                    <th>Tipo Solicitud</th>
                                                     <th data-sort-ignore="true"></th>
                                                 </tr>
                                               </thead>    
                                               <tr ng_repeat="solicitud in solicitudes">
-                                                    <td>{{solicitud.Nombre}}</td>
-                                                    <td>{{solicitud.Apellidos}}</td>
                                                     <td>{{solicitud.Localizador}}</td>
+                                                    <td>{{solicitud.Apellidos}}</td>
+                                                    <td>{{solicitud.Nombre}}</td>
                                                     <td>{{solicitud.FechaSolicitud |date:'dd-MM-yyyy'}}</td>
+                                                    <td>
+                                                        <p ng_show="solicitud.idTipoSolicitud==1">Clase Dirigida</p>
+                                                        <p ng_show="solicitud.idTipoSolicitud==2">Mensual</p>
+                                                        <p ng_show="solicitud.idTipoSolicitud==3">Diario</p>
+                                                    </td>
                                                     <td class="center">
                                                         <a target="_self" ng_show="solicitud.idTipoSolicitud==1" href="FormularioDetalleSolicitudClasesDirigidas.php?idSolicitud={{solicitud.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
                                                         <a target="_self" ng_show="solicitud.idTipoSolicitud==2" href="FormularioDetalleSolicitudAbonoMensual.php?idSolicitud={{solicitud.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
