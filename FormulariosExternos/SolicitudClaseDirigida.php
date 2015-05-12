@@ -43,6 +43,226 @@
                 $scope.tab4 = true;
             }
         };
+        $scope.obtenerProvincia = function (codigoPostal) {
+
+            if (codigoPostal < 52999 && codigoPostal > 01000) {
+                var provincia = '';
+                var cp = codigoPostal.substring(0, 1);
+
+                switch (cp) {
+                    case 01:
+                        provincia = 'Álava';
+                        break;
+
+                    case 02:
+                        provincia = 'Albacete';
+                        break;
+
+                    case 03:
+                        provincia = 'Alicante';
+                        break;
+
+                    case 04:
+                        provincia = 'Almería';
+                        break;
+
+                    case 05:
+                        provincia = 'Ávila';
+                        break;
+
+                    case 06:
+                        provincia = 'Badajoz';
+                        break;
+
+                    case 07:
+                        provincia = 'Islas Baleares';
+                        break;
+
+                    case 08:
+                        provincia = 'Barcelona';
+                        break;
+
+                    case 09:
+                        provincia = 'Burgos';
+                        break;
+
+                    case 10:
+                        provincia = 'Cáceres';
+                        break;
+
+                    case 11:
+                        provincia = 'Cádiz';
+                        break;
+
+                    case 12:
+                        provincia = 'Castellón';
+                        break;
+
+                    case 13:
+                        provincia = 'Ciudad Real';
+                        break;
+
+                    case 14:
+                        provincia = 'Córdoba';
+                        break;
+
+                    case 15:
+                        provincia = 'La Coruña';
+                        break;
+
+                    case 16:
+                        provincia = 'Cuenca';
+                        break;
+
+                    case 17:
+                        provincia = 'Gerona';
+                        break;
+
+                    case 18:
+                        provincia = 'Granada';
+                        break;
+
+                    case 19:
+                        provincia = 'Guadalajara';
+                        break;
+
+                    case 20:
+                        provincia = 'Guipúzcua';
+                        break;
+
+                    case 21:
+                        provincia = 'Huelva';
+                        break;
+
+                    case 22:
+                        provincia = 'Huesca';
+                        break;
+
+                    case 23:
+                        provincia = 'Jaén';
+                        break;
+
+                    case 24:
+                        provincia = 'León';
+                        break;
+
+                    case 25:
+                        provincia = 'Lérida';
+                        break;
+
+                    case 26:
+                        provincia = 'La Rioja';
+                        break;
+
+                    case 27:
+                        provincia = 'Lugo';
+                        break;
+
+                    case 28:
+                        provincia = 'Madrid';
+                        break;
+
+                    case 29:
+                        provincia = 'Málaga';
+                        break;
+
+                    case 30:
+                        provincia = 'Murcia';
+                        break;
+
+                    case 31:
+                        provincia = 'Navarra';
+                        break;
+
+                    case 32:
+                        provincia = 'Orense';
+                        break;
+
+                    case 33:
+                        provincia = 'Asturias';
+                        break;
+
+                    case 34:
+                        provincia = 'Palencia';
+                        break;
+
+                    case 35:
+                        provincia = 'Las Palmas';
+                        break;
+
+                    case 36:
+                        provincia = 'Pontevedra';
+                        break;
+
+                    case 37:
+                        provincia = 'Salamanca';
+                        break;
+
+                    case 38:
+                        provincia = 'S.C. Tenerife';
+                        break;
+
+                    case 39:
+                        provincia = 'Cantabria';
+                        break;
+
+                    case 40:
+                        provincia = 'Segovia';
+                        break;
+
+                    case 41:
+                        provincia = 'Navarra';
+                        break;
+
+                    case 42:
+                        provincia = 'Soria';
+                        break;
+
+                    case 43:
+                        provincia = 'Tarragona';
+                        break;
+
+                    case 44:
+                        provincia = 'Teruel';
+                        break;
+
+                    case 45:
+                        provincia = 'Toledo';
+                        break;
+
+                    case 46:
+                        provincia = 'Valencia';
+                        break;
+
+                    case 47:
+                        provincia = 'Valladolid';
+                        break;
+
+                    case 48:
+                        provincia = 'Vizcaya';
+                        break;
+
+                    case 49:
+                        provincia = 'Zamora';
+                        break;
+
+                    case 50:
+                        provincia = 'Zaragoza';
+                        break;
+
+                    case 51:
+                        provincia = 'Ceuta';
+                        break;
+
+                    case 52:
+                        provincia = 'Melilla';
+                        break;
+
+                }
+            }
+
+            return provincia;
+        };
         $scope.calcularFecha = function (fecha) {
             var values = fecha.split("/");
             var dia = parseInt(values[2]);
@@ -80,7 +300,7 @@
             }
         };
         $scope.codigoQR = function (Params) {
-            var URL = BASE_URL.concat('Negocio/NegocioAdministrador/AdministradorBO.php?url=codigoQR');
+            var URL = BASE_URL.concat('Sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=codigoQR');
 
             Ajax.open("POST", URL, false);
             Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -90,7 +310,7 @@
         };
 
         $scope.enviar = function (s) {
-            var URL = BASE_URL.concat('Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSolicitud');
+            var URL = BASE_URL.concat('Sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSolicitud');
 
             var Params = '&idTipoSolicitud=2&';
             Params += jQuery.param(s);
@@ -115,6 +335,32 @@
             console.log(Params);
             $scope.codigoQR(Params);
         };
+        $.datepicker.regional['es'] = {
+            closeText: 'Cerrar',
+            prevText: '<Ant',
+            nextText: 'Sig>',
+            currentText: 'Hoy',
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+            dayNamesMin: ['Do', 'Lun', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+            weekHeader: 'Sm',
+            dateFormat: 'yy-mm-dd',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: ''
+        };
+        $.datepicker.setDefaults($.datepicker.regional['es']);
+
+        $(function () {
+            $("#FechaNacimiento").datepicker({
+                onchange: function (dateText, inst) {
+                    $("input[name='FechaNacimiento']").val(dateText);
+                }
+            });
+        });
     });
 </script> 
 <div class="row" ng-app="solicitudClaseDirigida" ng-controller="RegistrarSolicitudClaseDirigidaController">
@@ -151,33 +397,60 @@
                             </ol>
                             <fieldset>
                                 <div class="form-group has-success has-feedback">
-                                    <div class="col-md-5 col-sm-5 input-group-lg">
-                                        <label class="control-label" >Nombre</label><input type="text" name="nombre" ng-model="s.nombre" class="form-control" required pattern="^[a-zA-Z0-9]{4,12}$" value="" placeholder="Blanca" />
+                                    <div class="form-group has-success has-feedback">
+                                        <div class="col-md-5 col-sm-5 input-group-lg">
+                                            <label class="control-label" > Nombre</label><input type="text" name="Nombre" ng-model="s.Nombre" class="form-control" required ng-pattern="/^[a-zA-Z]*$/" placeholder="Blanca" ng-maxlength="40"/>
+                                            <span style="color:red" ng-show="formulario.Nombre.$dirty && formulario.Nombre.$invalid">
+                                                <span ng-show="formulario.Nombre.$error.required">Nombre obligatorio.</span>
+                                                <span ng-show="formulario.Nombre.$error.pattern">* Formato de Nombre no valido.</span>
+                                                <span ng-show="formulario.Nombre.$error.maxlength">* Nombre demasiado largo</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-md-5 col-sm-5 input-group-lg">
+                                            <label class="control-label" > Apellidos </label><input type="text" name="Apellidos" ng-model="s.Apellidos" class="form-control" required ng-pattern="/^[a-zA-Z]*$/" placeholder="Garcia" ng-maxlength="40"/>
+                                            <span style="color:red" ng-show="formulario.Apellidos.$dirty && formulario.Apellidos.$invalid">
+                                                <span ng-show="formulario.Apellidos.$error.required">Apellidos obligatorio.</span>
+                                                <span ng-show="formulario.Apellidos.$error.pattern">* Formato de Apellidos no valido.</span>
+                                                <span ng-show="formulario.Apellidos.$error.maxlength">* Apellidos demasiado largo</span>
+                                            </span>
+                                            <br/>
+                                        </div>     
+                                        <div class="col-md-5 col-sm-5 input-group-lg">
+                                            <label class="control-label" >Dni</label><input type="text" name="DNI" ng-model="s.DNI" class="form-control" required ng-pattern="/^\d{8}[a-zA-Z]$/" placeholder="05330762y" ng-maxlength="9" ng-minlength="9"/>
+                                            <span style="color:red" ng-show="formulario.DNI.$dirty && formulario.DNI.$invalid">
+                                                <span ng-show="formulario.DNI.$error.required">DNI es obligatorio.</span>
+                                                <span ng-show="formulario.DNI.$error.pattern">* Formato de DNI no valido.</span>
+                                                <span ng-show="formulario.DNI.$error.maxlength">* DNI demasiado largo</span>
+                                                <span ng-show="formulario.DNI.$error.minlength">* DNI demasiado corto</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-md-5 col-sm-5 input-group-lg">
+                                            <label class="control-label" >E-mail</label><input type="email" name="EMail" ng-model="s.EMail" class="form-control" required placeholder="info@developerji.com"/>
+                                            <span style="color:red" ng-show="formulario.EMail.$dirty && formulario.EMail.$invalid">
+                                                <span ng-show="formulario.EMail.$error.required">Email obligatorio.</span>
+                                                <span ng-show="formulario.EMail.$error.email">Formato de email no válido.</span>
+                                            </span>
+                                            <br />
+                                        </div>                                
+                                        <div class="col-md-5 col-sm-5 input-group-lg">
+                                            <label class="control-label" >Sexo</label><br>
+                                            <label class="control-label" ><input type="radio" ng-model="s.Sexo" name="Sexo" value="M" checked id="Sexo" required />&nbsp;Mujer&nbsp;</label>
+                                            <label class="control-label" ><input type="radio" ng-model="s.Sexo" name="Sexo" value="H" d id="Sexo"/>&nbsp;Hombre&nbsp;</label>
+                                        </div>
+                                        <div class="col-md-5 col-sm-5 input-group-lg">
+                                            <label class="control-label" >Fecha nacimiento</label><input type="text" name="FechaNacimiento" ng-model="s.FechaNacimiento" class="form-control" id="FechaNacimiento" ng-change="esMenor();" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required placeholder="yyyy-mm-dd">
+                                            <span style="color:red" ng-show="formulario.FechaNacimiento.$dirty && formulario.FechaNacimiento.$invalid">
+                                                <span ng-show="formulario.FechaNacimiento.$error.pattern">* Formato de fecha no valido.</span>
+                                                <span ng-show="formulario.FechaNacimiento.$error.required">* Fecha obligatoria.</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-md-5 col-sm-5 input-group-lg" ng-init="tutor = false">
+                                            <label class="control-label" ng-show="menor">Tutor legal</label><input type="text" name="Tutor" ng-model="s.tutor" class="form-control" required name="TutorLegal" placeholder="Alberto Fernandez" id="TutorLegal" ng-show="menor" ng-pattern="/^[a-zA-Z]*$/"/>
+                                        </div> 
                                     </div>
-                                    <div class="col-md-5 col-sm-5 input-group-lg">
-                                        <label class="control-label" >Apellidos </label><input type="text" name="apellidos" ng-model="s.apellidos" class="form-control" required pattern="^[a-zA-Z0-9]{4,12}$" value="" placeholder="Garcia" /><br />
-                                    </div>
-                                    <br />
-                                    <div class="col-md-5 col-sm-5 input-group-lg">
-                                        <label class="control-label" >Dni</label><input type="text" name="dni" ng-model="s.dni" class="form-control" required pattern="^[a-zA-Z0-9]{4,12}$" value="" placeholder="05330762y" />
-                                    </div>
-                                    <div class="col-md-5 col-sm-5 input-group-lg">
-                                        <label class="control-label" >E-mail</label><input type="mail" name="mail" ng-model="s.mail" class="form-control" required pattern="^[a-zA-Z0-9-\_.]+@[a-zA-Z0-9-\_.]+\.[a-zA-Z0-9.]{2,5}$" value="" placeholder="info@developerji.com" /><br />   
-                                    </div>
-                                    <br />
-                                    <div class="col-md-5 col-sm-5 input-group-lg">
-                                        <label class="control-label" >&nbsp; Mujer</label><input type="radio" ng-model="s.sexo" name="sexo" value="" id="Sexo"/>
-                                        <label class="control-label" >&nbsp; Hombre</label><input type="radio" ng-model="s.sexo" name="sexo" value="" checked="checked" id="Sexo"/>
-                                    </div>
-                                    <div class="col-md-5 col-sm-5 input-group-lg">
-                                        <label class="control-label" >Fecha nacimiento</label><input type="date" ng-model="s.fechanacimiento"  class="form-control" name="fechanacimiento"id="FechaNacimiento"  ng-change="esMenor();"/>
-                                    </div>
-                                    <div class="col-md-5 col-sm-5 input-group-lg">
-                                        <label class="control-label" ng-show="menor">Tutor legal</label> <input type= "text" class="form-control" required name="tutor" ng-model="s.tutor" value="" placeholder="Alberto Fernandez" id="TutorLegal" ng-show="menor"/>
-                                    </div> 
                                     <div class="col-md-12 col-sm-12 input-group-lg">
                                         <label class="control-label">
-                                            <input type="checkbox" name="aceptado" value="aceptado" ng-model="aceptado"/>Acepto los términos y condiciones</label>
+                                            <input type="checkbox" name="aceptado" ng-model="aceptado" required />&nbsp;Acepto los términos y condiciones</label>
                                     </div>
                                 </div>
                             </fieldset>
@@ -194,19 +467,38 @@
                             </ol>
                             <fieldset>
                                 <div class="col-md-10 col-sm-10 input-group-lg">
-                                    <label class="control-label" >Direccion  &nbsp; </label><input type="text" class="form-control" name="Direccion" ng-model="s.direccion" required  value="" placeholder="Calle los Emigrantes  16" id="Direccion" />  
+                                    <label class="control-label" >Direcci&oacute;n&nbsp;</label><input type="text" class="form-control" name="Direccion" ng-model="s.Direccion" required  placeholder="Calle los Emigrantes  16" id="Direccion"  />  
+                                    <span style="color:red" ng-show="formulario.Direccion.$dirty && formulario.Direccion.$invalid">
+                                        <span ng-show="formulario.Direccion.$error.required">* Dirección obligatoria.</span>
+                                    </span>
                                 </div>
                                 <div class="col-md-5 col-sm-5 input-group-lg">
                                     <label class="control-label" >Localidad &nbsp;</label><input type="text" class="form-control" name="Localidad" ng-model="s.localidad" required  value="" placeholder="Madrid" id="Localidad"/>
                                 </div>
-                                <div class="col-md-5 col-sm-5 input-group-lg">
-                                    <label class="control-label" >Codigo Postal &nbsp;</label><input type="text" class="form-control" name="cp" ng-model="s.cp" size="5" maxlength="5"id="CP"/>
+                                <div class="col-md-2 col-sm-2 input-group-lg">
+                                    <label class="control-label" >Codigo Postal&nbsp;</label><input type="number" class="form-control" name="CP" ng-model="s.CP" min="01000" max="54999" step="5" id="CP" placeholder="28040" ng-pattern="/^[0-9]{5}/" />
+                                    <span style="color:red" ng-show="formulario.CP.$dirty && formulario.CP.$invalid">
+                                        <span ng-show="formulario.CP.$error.pattern">* Formato de CP no valido.</span>
+                                        <span ng-show="formulario.CP.$error.required">* CP obligatorio.</span>
+                                        <span class="error" ng-show="myForm.input.$error.number">* CP no valido </span>
+                                    </span>
+                                </div>
+                                <div class="col-md-3 col-sm-3 input-group-lg">
+                                    <label class="control-label" >Provincia&nbsp;</label><input type="text" class="form-control" name="Provincia" ng-model="s.Provincia" required  placeholder="Madrid" id="Provincia" ng-pattern="/^[a-zA-Z]*$/"/>
+                                    <br>
                                 </div>
                                 <div class="col-md-5 col-sm-5 input-group-lg">
-                                    <label class="control-label" >&nbsp;Telefono 1 &nbsp;</label> <input type="tel" class="form-control" name="telefono1" ng-model="s.telefono1" required pattern="[0-9]{9}"id="Telefono1"/>
+                                    <label class="control-label" >&nbsp;Telefono 1 &nbsp;</label> <input type="tel" class="form-control" name="Telefono1" ng-model="s.Telefono1" required ng-pattern="/[0-9]{9}/" placeholder="912344567" />
+                                    <span style="color:red" ng-show="formulario.Telefono1.$dirty && formulario.Telefono1.$invalid">
+                                        <span ng-show="formulario.Telefono1.$error.pattern">* Formato de Telefono1 no valido.</span>
+                                        <span ng-show="formulario.Telefono1.$error.required">* Telefono1 obligatorio.</span>
+                                    </span>
                                 </div>
                                 <div class="col-md-5 col-sm-5 input-group-lg">
-                                    <label class="control-label" >&nbsp;Telefono 2 &nbsp;</label> <input type="tel" class="form-control" name="telefono2" ng-model="s.telefono2" required pattern="[0-9]{9}" value="Telefono" placeholder="60007287"id="Telefono2"/>   
+                                    <label class="control-label" >&nbsp; Telefono 2 &nbsp;</label> <input type="tel" class="form-control" name="Telefono2" ng-model="s.Telefono2" ng-pattern="/[0-9]{9}/" Placeholder="600072897" />   
+                                    <span style="color:red" ng-show="formulario.Telefono2.$dirty && formulario.Telefono2.$invalid">
+                                        <span ng-show="formulario.Telefono2.$error.pattern">* Formato de Telefono2 no valido.</span>
+                                    </span>
                                 </div>
                             </fieldset>
                             <ul class="pager">
@@ -224,29 +516,53 @@
                             <fieldset>
                                 <div class="col-md-12 col-sm-12 input-group-lg">
                                     <label class="control-label" >Titular</label>
-                                    <input type="text" class="form-control" required pattern="^[a-zA-Z0-9]{4,12}$" name="titular" ng-model="s.titular" />
+                                    <input type="text" class="form-control" required pattern="^[a-zA-Z0-9]{4,12}$" name="Titular" ng-model="s.Titular" placeholder="Juan Gomez"/>
+                                    <span style="color:red" ng-show="formulario.Titular.$dirty && formulario.Titular.$invalid">
+                                        <span ng-show="formulario.Titular.$error.required">Titular obligatorio.</span>
+                                        <span ng-show="formulario.Titular.$error.pattern">* Formato de Nombre Titular no valido.</span>
+                                        <span ng-show="formulario.Titular.$error.maxlength">* Titular demasiado largo</span>
+                                    </span>
                                 </div>
                                 <div class="col-md-2 col-sm-2 input-group-lg">
                                     <label class="control-label" >&nbsp;IBAN</label>
-                                    <input type="text" class="form-control" required pattern="^[a-zA-Z0-9]{4}$" name="entidad" ng-model="s.iban" maxlength="4"/>
+                                    <input type="text" class="form-control" required pattern="^[a-zA-Z0-9]{4}$" name="IBAN" ng-model="s.IBAN" maxlength="4" placeholder="ES00"/>
+                                    <span style="color:red" ng-show="formulario.IBAN.$dirty && formulario.IBAN.$invalid">
+                                        <span ng-show="formulario.IBAN.$error.pattern">* Formato de IBAN no valido.</span>
+                                        <span ng-show="formulario.IBAN.$error.required">* IBAN obligatorio.</span>
+                                    </span>
                                 </div>
                                 <div class="col-md-2 col-sm-2 input-group-lg">
                                     <label class="control-label" >Entidad</label>
-                                    <input type="text" class="form-control" required pattern="^[0-9]{4}$" name="entidad" ng-model="s.entidad" maxlength="4"/>
+                                    <input type="text" class="form-control" required pattern="^[0-9]{4}$" name="Entidad" ng-model="s.Entidad" maxlength="4" placeholder="4578"/>
+                                    <span style="color:red" ng-show="formulario.Entidad.$dirty && formulario.Entidad.$invalid">
+                                        <span ng-show="formulario.Entidad.$error.pattern">* Formato de Entidad no valido.</span>
+                                        <span ng-show="formulario.Entidad.$error.required">* Entidad obligatorio.</span>
+                                    </span>
                                 </div>
                                 <div class="col-md-2 col-sm-2 input-group-lg">
                                     <label class="control-label" >Oficina</label>
-                                    <input type="text" class="form-control" required pattern="^[0-9]{4}$" name="oficina" ng-model="s.oficina" maxlength="4"/>
+                                    <input type="text" class="form-control" required pattern="^[0-9]{4}$" name="Oficina" ng-model="s.Oficina" maxlength="4" placeholder="4348"/>
+                                    <span style="color:red" ng-show="formulario.Oficina.$dirty && formulario.Oficina.$invalid">
+                                        <span ng-show="formulario.Oficina.$error.pattern">* Formato de Oficina no valido.</span>
+                                        <span ng-show="formulario.Oficina.$error.required">* Oficina obligatorio.</span>
+                                    </span>
                                 </div>
 
                                 <div class="col-md-2 col-sm-2 input-group-lg">
                                     <label class="control-label" >&nbsp;DC</label>
-                                    <input type="text" class="form-control" required pattern="^[0-9]{2}$" name="dc" ng-model="s.dc" maxlength="2"/>
+                                    <input type="text" class="form-control" required pattern="^[0-9]{2}$" name="DigitoControl" ng-model="s.DigitoControl" maxlength="2" placeholder="23"/>
+                                    <span style="color:red" ng-show="formulario.DigitoControl.$dirty && formulario.DigitoControl.$invalid">
+                                        <span ng-show="formulario.DigitoControl.$error.pattern">* Formato de DigitoControl no valido.</span>
+                                        <span ng-show="formulario.DigitoControl.$error.required">* DigitoControl obligatorio.</span>
+                                    </span>
                                 </div>
                                 <div class="col-md-4 col-sm-4 input-group-lg">
                                     <label class="control-label" >CTA/Libreta</label>
-                                    <input type="text" class="form-control" required pattern="^[0-9]{10}$" name="cta" ng-model="s.cta" maxlength="10"/>
-                                  <!--  <span class="glyphicon glyphicon-ok form-control-feedback"></span></br></p>-->
+                                    <input type="text" class="form-control" required pattern="^[0-9]{10}$" name="Cuenta" ng-model="s.Cuenta" maxlength="10" placeholder="4578784596"/>
+                                    <span style="color:red" ng-show="formulario.Cuenta.$dirty && formulario.Cuenta.$invalid">
+                                        <span ng-show="formulario.Cuenta.$error.pattern">* Formato de Cuenta no valido.</span>
+                                        <span ng-show="formulario.Cuenta.$error.required">* Cuenta obligatorio.</span>
+                                    </span>
                                 </div>
                             </fieldset>
                             <ul class="pager">

@@ -35,7 +35,7 @@
                     </div>
                 </header>
                 <script>
-                    var BASE_URL = 'http://localhost/Sistemareservas/';
+                    var BASE_URL = 'http://localhost/';
                     function AjaxObj()
                     {
                         var xmlhttp = null;

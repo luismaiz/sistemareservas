@@ -4,7 +4,7 @@
     var app = angular.module('solicitudAbonoDiario', []);
     app.controller('RegistrarSolicitudAbonoDiarioController', function RegistrarSolicitudAbonoDiarioController($scope, $http) {
         $scope.codigoQR = function (Params) {
-            var URL = BASE_URL.concat('Negocio/NegocioAdministrador/AdministradorBO.php?url=codigoQR');
+            var URL = BASE_URL.concat('Sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=codigoQR');
 
             Ajax.open("POST", URL, false);
             Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -14,7 +14,7 @@
         };
 
         $scope.enviar = function (s) {
-            var URL = BASE_URL.concat('Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSolicitud');
+            var URL = BASE_URL.concat('Sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSolicitud');
 
             var Params = '&idTipoSolicitud=3&';
             Params += jQuery.param(s);
@@ -39,31 +39,35 @@
             console.log(Params);
             $scope.codigoQR(Params);
         };
-    });
-    $.datepicker.regional['es'] = {
-        closeText: 'Cerrar',
-        prevText: '<Ant',
-        nextText: 'Sig>',
-        currentText: 'Hoy',
-        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
-        dayNamesMin: ['Do', 'Lun', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
-        weekHeader: 'Sm',
-        dateFormat: 'dd-mm-yy',
-        firstDay: 1,
-        isRTL: false,
-        showMonthAfterYear: false,
-        yearSuffix: ''
-    };
-    $.datepicker.setDefaults($.datepicker.regional['es']);
 
-    $(function () {
-        $("#FechaAbonoDiario").datepicker({
-            dateFormat: 'dd-mm-yy'
+        $.datepicker.regional['es'] = {
+            closeText: 'Cerrar',
+            prevText: '<Ant',
+            nextText: 'Sig>',
+            currentText: 'Hoy',
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+            dayNamesMin: ['Do', 'Lun', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+            weekHeader: 'Sm',
+            dateFormat: 'yy-mm-dd',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: ''
+        };
+        $.datepicker.setDefaults($.datepicker.regional['es']);
+
+        $(function () {
+            $("#FechaAbonoDiario").datepicker({
+                onchange: function (dateText, inst) {
+                    $("input[name='FechaAbonoDiario']").val(dateText);
+                }
+            });
         });
     });
+
 
 
 </script>
@@ -103,9 +107,8 @@
                             </div>
                             <br />
                             <div class="col-md-5 col-sm-5 input-group-lg">
-                                <label class="control-label" >Dni</label><input type="text" name="DNI" ng-model="s.DNI" class="form-control" required ng-pattern="/^\d{8}[a-zA-Z]$/" placeholder="05330762y" ng-maxlength="9" ng-minlength="9"/>
+                                <label class="control-label" >Dni</label><input type="text" name="DNI" ng-model="s.DNI" class="form-control" ng-pattern="/^\d{8}[a-zA-Z]$/" placeholder="05330762y" ng-maxlength="9" ng-minlength="9"/>
                                 <span style="color:red" ng-show="formulario.DNI.$dirty && formulario.DNI.$invalid">
-                                    <span ng-show="formulario.DNI.$error.required">DNI es obligatorio.</span>
                                     <span ng-show="formulario.DNI.$error.pattern">* Formato de DNI no valido.</span>
                                     <span ng-show="formulario.DNI.$error.maxlength">* DNI demasiado largo</span>
                                     <span ng-show="formulario.DNI.$error.minlength">* DNI demasiado corto</span>
@@ -138,7 +141,7 @@
                             </div>-->
                             <div class="col-md-5 col-sm-5 input-group-lg">
                                 <label class="control-label" >Día de acceso</label>
-                                <input ng-model="s.FechaAbonoDiario" type="text" class="form-control" name="FechaAbonoDiario" id="FechaAbonoDiario" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required>
+                                <input type="text" ng-model="s.FechaAbonoDiario" type="text" class="form-control" name="FechaAbonoDiario" id="FechaAbonoDiario" ng-pattern="/^(199\d|[2-9]\d{3})\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/" required placeholder="yyyy-mm-dd">
                                 <span style="color:red" ng-show="formulario.FechaAbonoDiario.$dirty && formulario.FechaAbonoDiario.$invalid">
                                     <span ng-show="formulario.FechaAbonoDiario.$error.pattern">* Formato de fecha no valido.</span>
                                     <span ng-show="formulario.FechaAbonoDiario.$error.required">* Fecha obligatoria.</span>
