@@ -22,6 +22,9 @@
                                 <ul>
                                     <li><a href='../AplicacionInformes/phpjasperxml_0.9d/sample1.php' target='_blank'>Listado salas <a></li>
                                 </ul>
+                                <ul>
+                                    <li><a href='../AplicacionInformes/phpjasperxml_0.9d/diarios.php' target='_blank'>Listado abonos diarios <a></li>
+                                </ul>
                             </div>
 
                         </div>
