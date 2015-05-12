@@ -93,7 +93,7 @@
                                         <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Capacidad Sala</label>
                                         <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12 "  id="filtrocapacidadsala">
                                 </div>
-                                <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerSalas()"/>
+                                <input class="box btn-primary" type="submit" value="Buscar" ng_click="obtenerSalas()"/>
                                 <div class="box-content" id="salas">
                                         <table class="footable table-striped table-bordered responsive" data-page-size="5" data-page-navigation=".pagination" id="tabla" >
                                             <thead>
