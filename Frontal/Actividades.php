@@ -91,10 +91,10 @@ $(function () {
                                             <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                 <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Actividad</label>
                                                 <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12"  id="filtroactividad">
-                                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Intensidad</label>
-                                                <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12"  id="filtrointensidad">
-                                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Grupo</label>
-                                                <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12"  id="filtrogrupo">
+                                                <label ng_show="false" class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Intensidad</label>
+                                                <input ng_show="false" type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12"  id="filtrointensidad">
+                                                <label ng_show="false" class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Grupo</label>
+                                                <input ng_show="false" type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12"  id="filtrogrupo">
                                             </div>
                                                 <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerActividades();"/>
                                                  <div class="box-content" id="actividades">

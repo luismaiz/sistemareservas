@@ -18,7 +18,7 @@
         $scope.obtenerTiposAbono = function(idTipoAbono) {
                 
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTipoAbono');
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTipoAbono";
+                
                 var Params = 'idTipoAbono='+ idTipoAbono;
 
                 Ajax.open("POST", Url, false);
@@ -36,6 +36,7 @@
                     $scope.tipoabono.FechaBaja = null;
                     document.getElementById('anular').style.display = 'inline';
                     document.getElementById('aceptar').style.display = 'inline';
+                    document.getElementById('activar').style.display = 'none';
                 }
         
             };
@@ -46,6 +47,7 @@
             else
             {
                 document.getElementById('aceptar').style.display = 'inline';
+                document.getElementById('activar').style.display = 'none';
             }
             
             $scope.guardarTipoAbono = function() {
@@ -114,7 +116,7 @@
             
             $scope.anularTipoAbono = function(){
                 
-                alert('hola');
+                
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=anularTipoAbono');
                 var Params = 'idTipoAbono='+ $location.search().idTipoAbono;
                 
@@ -122,7 +124,7 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-                alert(Ajax.responseText);    
+                
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')
@@ -130,6 +132,8 @@
                     document.getElementById('divBaja').style.display = 'none';
                     document.getElementById('divCorrecto').style.display = 'block';
                     $scope.obtenerTiposAbono($location.search().idTipoAbono);
+                    document.getElementById('anular').style.display = 'none';
+                    document.getElementById('aceptar').style.display = 'none';
                 }
                 else
                 {
@@ -151,6 +155,10 @@
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
                     $scope.obtenerTiposAbono($location.search().idTipoAbono);
+                    document.getElementById('anular').style.display = 'inline';
+                    document.getElementById('aceptar').style.display = 'inline';
+                    document.getElementById('activar').style.display = 'none';
+                    
                 }
                 else
                 {
@@ -257,7 +265,7 @@
                                 <input ng_disabled="true" ng-model="tipoabono.FechaBaja" type="text" class="input-sm col-md-2 col-sm-4 col-xs-7" name="FechaBaja" id="FechaBaja" >                                     
                                 </div>
                                 <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='TipoAbono.php?detalle=1' " />
-                                <input style='display:none;' id="aceptar" class="box btn-primary" type="submit" value="Aceptar" ng-click="guardarTipoAbono();" ng-disabled="formulario.$invalid" />
+                                <input style='display:none;'  id="aceptar" class="box btn-primary" type="submit" value="Aceptar" ng-click="guardarTipoAbono();" ng-disabled="formulario.$invalid" />
                                 <input style='display:none;' id="anular" class="box btn-primary" type="submit" value="Anular" ng-click="anularTipoAbono();"/>
                                 <input style='display:none;' id="activar" class="box btn-primary" type="submit" value="Activar" ng-click="activarTipoAbono();"/>
                    

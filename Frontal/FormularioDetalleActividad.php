@@ -38,6 +38,7 @@
                     $scope.actividad.FechaBaja = null;
                     document.getElementById('anular').style.display = 'inline';
                     document.getElementById('aceptar').style.display = 'inline';
+                    document.getElementById('activar').style.display = 'none';
                 }
             };
             if (typeof($location.search().idActividad) !== "undefined")
@@ -47,6 +48,7 @@
              else
             {
                 document.getElementById('aceptar').style.display = 'inline';
+                document.getElementById('activar').style.display = 'none';
             }
             
             $scope.guardarActividad = function() {
@@ -135,6 +137,8 @@
                     document.getElementById('divBaja').style.display = 'none';
                     document.getElementById('divCorrecto').style.display = 'block';
                     $scope.obtenerActividad($location.search().idActividad);
+                    document.getElementById('anular').style.display = 'none';
+                    document.getElementById('aceptar').style.display = 'none';
                 }
                 else
                 {
@@ -155,10 +159,14 @@
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
                     $scope.obtenerActividad($location.search().idActividad);
+                    document.getElementById('anular').style.display = 'inline';
+                    document.getElementById('aceptar').style.display = 'inline';
+                    document.getElementById('activar').style.display = 'none';
                 }
                 else
                 {
                     document.getElementById('divError').style.display = 'block';
+                    
                 }
             };
 
@@ -275,8 +283,8 @@
                                 </span>
                     </div>
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Grupo</label>
-                    <input ng-model="actividad.Grupo" type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" id="Grupo" name="Grupo"/>
+                    <label ng_show="false" class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Grupo</label>
+                    <input ng_show="false" ng-model="actividad.Grupo" type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" id="Grupo" name="Grupo"/>
                     </div>
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12 " >Fecha Alta</label>
