@@ -69,9 +69,9 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 		self::FIELD_IDCLASE=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
 		self::FIELD_IDACTIVIDAD=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
 		self::FIELD_IDSALA=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
-		self::FIELD_FECHAINICIO=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,10,0,false),
+		self::FIELD_FECHAINICIO=>array(Db2PhpEntity::JDBC_TYPE_DATE,10,0,false),
 		self::FIELD_HORAINICIO=>array(Db2PhpEntity::JDBC_TYPE_TIME,8,0,true),
-		self::FIELD_FECHAFIN=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,10,0,false),
+		self::FIELD_FECHAFIN=>array(Db2PhpEntity::JDBC_TYPE_DATE,10,0,false),
 		self::FIELD_HORAFIN=>array(Db2PhpEntity::JDBC_TYPE_TIME,8,0,true),
 		self::FIELD_OCUPACION=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,true),
 		self::FIELD_DIA=>array(Db2PhpEntity::JDBC_TYPE_BIT,0,0,true),
@@ -176,7 +176,7 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 	/**
 	 * set value for FechaInicio 
 	 *
-	 * type:VARCHAR,size:10,default:null
+	 * type:DATE,size:10,default:null
 	 *
 	 * @param mixed $FechaInicio
 	 * @return ClaseModel
@@ -190,7 +190,7 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 	/**
 	 * get value for FechaInicio 
 	 *
-	 * type:VARCHAR,size:10,default:null
+	 * type:DATE,size:10,default:null
 	 *
 	 * @return mixed
 	 */
@@ -226,7 +226,7 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 	/**
 	 * set value for FechaFin 
 	 *
-	 * type:VARCHAR,size:10,default:null
+	 * type:DATE,size:10,default:null
 	 *
 	 * @param mixed $FechaFin
 	 * @return ClaseModel
@@ -240,7 +240,7 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 	/**
 	 * get value for FechaFin 
 	 *
-	 * type:VARCHAR,size:10,default:null
+	 * type:DATE,size:10,default:null
 	 *
 	 * @return mixed
 	 */
@@ -501,10 +501,12 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 		if(self::isCacheStatements()) {
 			if (in_array($statement, array(self::SQL_INSERT, self::SQL_INSERT_AUTOINCREMENT, self::SQL_UPDATE, self::SQL_SELECT_PK, self::SQL_DELETE_PK))) {
 				$dbInstanceId=spl_object_hash($db);
-				if (null===self::$stmts[$statement][$dbInstanceId]) {
-					self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
-				}
-				return self::$stmts[$statement][$dbInstanceId];
+//				if (null===self::$stmts[$statement][$dbInstanceId]) {
+//					self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
+//				}
+//				return self::$stmts[$statement][$dbInstanceId];
+                                
+                                self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
 			}
 		}
 		return $db->prepare($statement);

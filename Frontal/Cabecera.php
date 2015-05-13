@@ -51,7 +51,6 @@ include 'config.php'
         <script src="Utilidades/FooTable-2/js/footable.sort.js" type="text/javascript"></script>
         <script src="Utilidades/FooTable-2/js/footable.paginate.js" type="text/javascript"></script>
         <script src="Utilidades/js/angular-1.2.9/angular-1.2.9/ngStorage.min.js" type="text/javascript"></script>
-        <script src="path_to_your_js/footable.your-add-on.js" type="text/javascript"></script>
         <script src="Utilidades/bower_components/bootstrap/js/tab.js" type="text/javascript"></script>
 		        
         
@@ -64,8 +63,8 @@ include 'config.php'
         <script src="Utilidades/calendario/js/jquery.datetimepicker.js" type="text/javascript"></script>
         
         <script>
-            var BASE_URL = 'http://vw15115.dinaserver.com/hosting/reservascentro.es-web/';
-            //var BASE_URL = 'http://localhost:8080/';
+            //var BASE_URL = 'http://vw15115.dinaserver.com/hosting/reservascentro.es-web/';
+            var BASE_URL = 'http://localhost:8080/';
         function AjaxObj()
         {
             var xmlhttp = null;
@@ -159,6 +158,8 @@ include 'config.php'
                                 <ul class="nav nav-pills nav-stacked main-menu">
                                     <li class="nav-header">Menú Principal</li>
                                     <li><a class="ajax-link" href="Inicio.php"><i class="glyphicon glyphicon-home"></i><span> Inicio</span></a>
+                                    </li>
+                                    <li><a class="ajax-link" href="Calendario.php"><i class="glyphicon glyphicon-home"></i><span> Calendario</span></a>
                                     </li>
                                     <li><a class="ajax-link" href="Reservas.php"><i class="glyphicon glyphicon-edit"></i><span> Reservas </span></a>
                                     </li>

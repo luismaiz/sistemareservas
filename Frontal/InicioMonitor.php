@@ -1,4 +1,4 @@
-<?php require('Cabecera.php'); ?>
+<?php // require('Cabecera.php'); ?>
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
     var Ajax = new AjaxObj();

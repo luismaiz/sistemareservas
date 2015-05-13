@@ -7,8 +7,8 @@ require_once 'config.php';
 <script>
 
     var Ajax = new AjaxObj();
-    var BASE_URL = 'http://vw15115.dinaserver.com/hosting/reservascentro.es-web/';
-    //var BASE_URL = 'http://localhost:8080/';
+    //var BASE_URL = 'http://vw15115.dinaserver.com/hosting/reservascentro.es-web/';
+    var BASE_URL = 'http://localhost:8080/';
     function login() {      
         
         var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/LoginBO.php?url=iniciarSesion');

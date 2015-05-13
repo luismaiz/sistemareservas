@@ -6,7 +6,7 @@ require_once("../../Negocio/Entidades/ClaseModel.class.php");
 require_once("../../Negocio/Entidades/helpers/DFC.class.php");
 require_once("../../Negocio/Entidades/helpers/DSC.class.php");
 class ClasesBO extends Rest{
-    //put your code hereç
+    //put your code hereÃ§
     private $con = NULL;
     private $_metodo;
     private $_argumentos;
@@ -17,9 +17,9 @@ class ClasesBO extends Rest{
 
     private function devolverError($id) {
         $errores = array(
-            array('estado' => "error", "msg" => "petición no encontrada"),
-            array('estado' => "error", "msg" => "petición no aceptada"),
-            array('estado' => "error", "msg" => "petición sin contenido"),
+            array('estado' => "error", "msg" => "peticiÃ³n no encontrada"),
+            array('estado' => "error", "msg" => "peticiÃ³n no aceptada"),
+            array('estado' => "error", "msg" => "peticiÃ³n sin contenido"),
             array('estado' => "error", "msg" => "email o password incorrectos"),
             array('estado' => "error", "msg" => "error borrando usuario"),
             array('estado' => "error", "msg" => "error actualizando nombre de usuario"),
@@ -35,9 +35,9 @@ class ClasesBO extends Rest{
             //si por ejemplo pasamos explode('/','////controller///method////args///') el resultado es un array con elem vacios;
             //Array ( [0] => [1] => [2] => [3] => [4] => controller [5] => [6] => [7] => method [8] => [9] => [10] => [11] => args [12] => [13] => [14] => )
             $url = explode('/', trim($_REQUEST['url']));
-            //con array_filter() filtramos elementos de un array pasando función callback, que es opcional.
-            //si no le pasamos función callback, los elementos false o vacios del array serán borrados 
-            //por lo tanto la entre la anterior función (explode) y esta eliminamos los '/' sobrantes de la URL
+            //con array_filter() filtramos elementos de un array pasando funciÃ³n callback, que es opcional.
+            //si no le pasamos funciÃ³n callback, los elementos false o vacios del array serÃ¡n borrados 
+            //por lo tanto la entre la anterior funciÃ³n (explode) y esta eliminamos los '/' sobrantes de la URL
             $url = array_filter($url);
             $this->_metodo = strtolower(array_shift($url));
             $this->_argumentos = $url;
@@ -69,12 +69,13 @@ class ClasesBO extends Rest{
 
         $idActividad = $this->datosPeticion['idActividad'];
         $idSala = $this->datosPeticion['idSala'];
-        $HoraInicio = $this->datosPeticion['HoraInicio'];
-        $HoraFin = $this->datosPeticion['HoraFin'];
+        $FechaInicio = $this->datosPeticion['FechaInicio'];
+        $HoraInicio = $this->datosPeticion['HoraInicio'];                
+        $FechaFin = $this->datosPeticion['FechaFin'];
+        $HoraFin = $this->datosPeticion['HoraFin'];        
         $Ocupacion = $this->datosPeticion['Ocupacion'];
         $Dia = $this->datosPeticion['Dia'];
         $Publicada = $this->datosPeticion['Publicada'];
-
 
         //if (!$this->existeUsuario($email)) {  
         /* $query = $this->_conn->prepare("INSERT into clase(idClase, Actividad, Sala, Hora_Inicio, Hora_Fin, Ocupacion, Dia, Publicada) 
@@ -93,8 +94,10 @@ class ClasesBO extends Rest{
         $clase = new ClaseModel();
 
         $clase->setIdActividad($idActividad);
-        $clase->setIdSala($idSala);
+        $clase->setIdSala($idSala);        
+        $clase->setFechaInicio($FechaInicio);
         $clase->setHoraInicio($HoraInicio);
+        $clase->setFechaFin($FechaFin);
         $clase->setHoraFin($HoraFin);
         $clase->setOcupacion($Ocupacion);
         $clase->setDia($Dia);
@@ -147,15 +150,17 @@ class ClasesBO extends Rest{
     }
 
     private function actualizarClase() {
-        // if ($_SERVER['REQUEST_METHOD'] != "PUT") {
-        //   $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-        // }
+         if ($_SERVER['REQUEST_METHOD'] != "POST") {
+           $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+         }
         //echo $idUsuario . "<br/>";  
         if (isset($this->datosPeticion['idClase'])) {
             $idClase = $this->datosPeticion['idClase'];
             $idActividad = $this->datosPeticion['idActividad'];
             $idSala = $this->datosPeticion['idSala'];
+            $FechaInicio = $this->datosPeticion['FechaInicio'];
             $HoraInicio = $this->datosPeticion['HoraInicio'];
+            $FechaFin = $this->datosPeticion['FechaFin'];
             $HoraFin = $this->datosPeticion['HoraFin'];
             $Ocupacion = $this->datosPeticion['Ocupacion'];
             $Dia = $this->datosPeticion['Dia'];
@@ -181,7 +186,9 @@ class ClasesBO extends Rest{
                 $clase->setIdClase($idClase);
                 $clase->setIdActividad($idActividad);
                 $clase->setIdSala($idSala);
+                $clase->setFechaInicio($FechaInicio);
                 $clase->setHoraInicio($HoraInicio);
+                $clase->setFechaFin($FechaFin);
                 $clase->setHoraFin($HoraFin);
                 $clase->setOcupacion($Ocupacion);
                 $clase->setDia($Dia);
@@ -200,7 +207,7 @@ class ClasesBO extends Rest{
     }
 
     private function borrarClase() {
-        if ($_SERVER['REQUEST_METHOD'] != "DELETE") {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
         $idClase = $this->datosPeticion['idClase'];
