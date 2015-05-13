@@ -38,7 +38,7 @@
                       
     
     jQuery(function($) {
-        $('#external-events div.external-event').each(function() {				
+        $('#external-events .fc-event').each(function() {				
             // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
             // it doesn't need to have a start or end
             var eventObject = {
@@ -121,7 +121,7 @@
                                 //end: doc.clases[i].FechaFin,//new Date(y, m, doc.clases[i].Dia, (doc.clases[i].HoraFin).substring(0,2), (doc.clases[i].HoraFin).substring(3,5)),
                                 end:  new Date(new Date(doc.clases[i].FechaInicio).getFullYear(), new Date(doc.clases[i].FechaInicio).getMonth(), new Date(doc.clases[i].FechaInicio).getDate(), (doc.clases[i].HoraFin).substring(0,2), (doc.clases[i].HoraFin).substring(3,5)),                                
                                 //constraint: 'businessHours',
-                                //backgroundColor: Actividades[doc.clases[i].idActividad].Descripcion,
+                                backgroundColor: "red" //Actividades[doc.clases[i].idActividad].Descripcion,
                                 //borderColor: Actividades[doc.clases[i].idActividad].idActividad.Descripcion
                             });
                         }
@@ -329,7 +329,7 @@
                     <div class="widget-body" id="actividades">		
                         <div class='widget-main no-padding'>
                             <div id='external-events'>
-                                <div class='external-event' ng_repeat="actividad in actividades"><i class='ace-icon fa fa-arrows'></i>
+                                <div class='fc-event' ng_repeat="actividad in actividades"><i class='ace-icon fa fa-arrows'></i>
                                 {{actividad.NombreActividad}}
                                 </div>
                                 </div>
