@@ -119,6 +119,7 @@ class AdministradorBO extends Rest {
         $FechaFin = $this->datosPeticion['FechaFin'];
         $PrecioPagado = $this->datosPeticion['PrecioPagado'];
         $tipoabono = $this->datosPeticion['idTipoAbono'];
+        $Renovacion = $this->datosPeticion['Renovacion'];
 
         //Modelo Solicitud
         $solicitud->setIdTipoSolicitud($idTipoSolicitud);
@@ -149,6 +150,7 @@ class AdministradorBO extends Rest {
         $solAbonoMensual->setPrecioPagado($PrecioPagado);
         $solAbonoMensual->setFechaInicio($FechaInicio);
         $solAbonoMensual->setFechaFin($FechaFin);
+        $solAbonoMensual->setRenovacion($Renovacion);
 
         //var_dump( $solAbonoMensual);
         //Inicio Transaccion
@@ -844,7 +846,7 @@ class AdministradorBO extends Rest {
         //$mail->AddCC("mariosgsg@gmail.com");
         //$mail->AddBCC("mariosgsg@gmail.com");
 
-        $body = "Hola <strong>amigo</strong><br>";
+        $body = "Hola <strong>amigo</strong><br> La compra se ha realizado con éxito.<br> Muestra este localizador a la entrada: ".$loc;
         //$body .= "probando <i>PHPMailer<i>.<br><br>";
         //$body .= "<font color='red'>Saludos</font>";
         $mail->Body = $body;

@@ -2,7 +2,7 @@
 <script>
     var Ajax = new AjaxObj();
     var app = angular.module('solicitudAbonoDiario', []);
-    app.controller('RegistrarSolicitudAbonoDiarioController', function RegistrarSolicitudAbonoDiarioController($scope, $http) {
+    app.controller('RegistrarSolicitudAbonoDiarioController', function RegistrarSolicitudAbonoDiarioController($scope) {
         $scope.codigoQR = function (Params) {
             var URL = BASE_URL.concat('Sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=codigoQR');
 
@@ -58,18 +58,74 @@
             yearSuffix: ''
         };
         $.datepicker.setDefaults($.datepicker.regional['es']);
-
-        $(function () {
-            $("#FechaAbonoDiario").datepicker({
-                onchange: function (dateText, inst) {
-                    $("input[name='FechaAbonoDiario']").val(dateText);
-                }
-            });
-        });
     });
 
+    app.directive('datepicker', function () {
+        return  {
+            restrict: 'A',
+            require: '?ngModel',
+            link: function (scope, element, attrs, ngModel) {
+                element = $("#FechaAbonoDiario");
+                if (!ngModel)
+                    return;
+                var optionsObj = {};
+                optionsObj.dateFormat = 'yy-mm-dd';
+                var updateModel = function (dateTxt) {
+                    scope.$apply(function () {
+                        // Call the internal AngularJS helper to
+                        // update the two-way binding
+                        ngModel.$setViewValue(dateTxt);
+                    });
+                };
+                var comprobarCaducidad = function (fecha) {
+                    var values = fecha.split("-");
+                    var dia = parseInt(values[2]);
+                    var mes = parseInt(values[1]);
+                    var ano = parseInt(values[0]);
+                    // cogemos los valores actuales
+                    var fecha_hoy = new Date();
+                    var ahora_ano = (fecha_hoy.getYear()) + 1900;
+                    var ahora_mes = parseInt((((fecha_hoy.getMonth()) + 1) < 10) ? '0' + ((fecha_hoy.getMonth()) + 1) : (fecha_hoy.getMonth()) + 1);
+                    var ahora_dia = parseInt((((fecha_hoy.getDay()) + 10) < 10) ? '0' + ((fecha_hoy.getDay()) + 10) : ((fecha_hoy.getDay()) + 10));
+                    var valido = false;
+                    if (ano === ahora_ano) {
+                        if (mes === ahora_mes) {
+                            if (dia >= ahora_dia) {
+                                valido = true;
+                            }
+                        }else if (mes > ahora_mes){
+                            valido= true;
+                        }
+                    }else if(ano > ahora_ano){
+                        valido = true;
+                    }
+                    var hoy = ahora_ano+'-'+ahora_mes+'-'+ahora_dia;
+                    if (valido) {
+                        console.log('Permitir Compra');
+                        return valido;
+                    }
+                    else {
+                         console.log('No se permite comprar abonos de días pasados');
+                         return valido;
+                    }
+                };
+                optionsObj.onSelect = function (dateTxt) {
+                        ngModel.$setValidity('caducado', comprobarCaducidad(dateTxt));
+                        updateModel(dateTxt);
+                        if (scope.select) {
+                            scope.$apply(function () {
+                                scope.select({date: dateTxt});
+                            });
+                        }
+                };
+                ngModel.$render = function(dateText) {
+                    element.datepicker('setDate', ngModel.$viewValue || '');
+                };
+                element.datepicker(optionsObj);
+            }
+        };
 
-
+    });
 </script>
 <div class="row" ng-app="solicitudAbonoDiario" ng-controller="RegistrarSolicitudAbonoDiarioController">
     <div id="maininner" class="col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2 col-xs-12 col-sm-10 col-sm-offset-1">
@@ -89,7 +145,7 @@
                                 <strong>Correcto.</strong>  Operación realizada con éxito.
                             </div>
                             <div class="col-md-5 col-sm-5 input-group-lg">
-                                <label class="control-label" > Nombre</label><input type="text" name="Nombre" ng-model="s.Nombre" class="form-control" required ng-pattern="/^[a-zA-Z]*$/" placeholder="Blanca" ng-maxlength="40"/>
+                                <label class="control-label" > Nombre</label><input type="text" name="Nombre" ng-model="s.Nombre" class="form-control" required ng-pattern="/[a-zA-Z]$/" placeholder="Blanca" ng-maxlength="40"/>
                                 <span style="color:red" ng-show="formulario.Nombre.$dirty && formulario.Nombre.$invalid">
                                     <span ng-show="formulario.Nombre.$error.required">Nombre obligatorio.</span>
                                     <span ng-show="formulario.Nombre.$error.pattern">* Formato de Nombre no valido.</span>
@@ -97,7 +153,7 @@
                                 </span>
                             </div>
                             <div class="col-md-5 col-sm-5 input-group-lg">
-                                <label class="control-label" > Apellidos </label><input type="text" name="Apellidos" ng-model="s.Apellidos" class="form-control" required ng-pattern="/^[a-zA-Z]*$/" placeholder="Garcia" ng-maxlength="40"/>
+                                <label class="control-label" > Apellidos </label><input type="text" name="Apellidos" ng-model="s.Apellidos" class="form-control" required ng-pattern="/[a-zA-Z]$/" placeholder="Garcia" ng-maxlength="40"/>
                                 <span style="color:red" ng-show="formulario.Apellidos.$dirty && formulario.Apellidos.$invalid">
                                     <span ng-show="formulario.Apellidos.$error.required">Apellidos obligatorio.</span>
                                     <span ng-show="formulario.Apellidos.$error.pattern">* Formato de Apellidos no valido.</span>
@@ -141,10 +197,11 @@
                             </div>-->
                             <div class="col-md-5 col-sm-5 input-group-lg">
                                 <label class="control-label" >Día de acceso</label>
-                                <input type="text" ng-model="s.FechaAbonoDiario" type="text" class="form-control" name="FechaAbonoDiario" id="FechaAbonoDiario" ng-pattern="/^(199\d|[2-9]\d{3})\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/" required placeholder="yyyy-mm-dd">
+                                <input type="text" ng-model="s.FechaAbonoDiario" type="text" datepicker class="form-control" name="FechaAbonoDiario" id="FechaAbonoDiario" ng-pattern="/^(199\d|[2-9]\d{3})\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/" required placeholder="yyyy-mm-dd">
                                 <span style="color:red" ng-show="formulario.FechaAbonoDiario.$dirty && formulario.FechaAbonoDiario.$invalid">
                                     <span ng-show="formulario.FechaAbonoDiario.$error.pattern">* Formato de fecha no valido.</span>
                                     <span ng-show="formulario.FechaAbonoDiario.$error.required">* Fecha obligatoria.</span>
+                                    <span ng-show="formulario.FechaAbonoDiario.$error.caducado">* No se pueden comprar abonos caducados</span>
                                 </span>
                             </div>
                             <div class="col-md-12 col-sm-12 input-group-lg">

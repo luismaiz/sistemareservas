@@ -1,15 +1,18 @@
 <?php
 
-require_once("helpers/Db2PhpEntityBase.class.php");
-require_once("helpers/Db2PhpEntityModificationTracking.class.php");
-require_once 'helpers/DFCAggregate.class.php';
+/**
+ * 
+ *
+ * @version 1.105
+ * @package entity
+ */
 class DatosolicitudabonomensualModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTracking {
 	private static $CLASS_NAME='DatosolicitudabonomensualModel';
 	const SQL_IDENTIFIER_QUOTE='`';
 	const SQL_TABLE_NAME='datosolicitudabonomensual';
-	const SQL_INSERT='INSERT INTO `datosolicitudabonomensual` (`idDatosSolicitudAbonoMensual`,`idSolicitud`,`idTipoAbono`,`PrecioPagado`,`FechaInicio`,`FechaFin`) VALUES (?,?,?,?,?,?)';
-	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `datosolicitudabonomensual` (`idSolicitud`,`idTipoAbono`,`PrecioPagado`,`FechaInicio`,`FechaFin`) VALUES (?,?,?,?,?)';
-	const SQL_UPDATE='UPDATE `datosolicitudabonomensual` SET `idDatosSolicitudAbonoMensual`=?,`idSolicitud`=?,`idTipoAbono`=?,`PrecioPagado`=?,`FechaInicio`=?,`FechaFin`=? WHERE `idDatosSolicitudAbonoMensual`=?';
+	const SQL_INSERT='INSERT INTO `datosolicitudabonomensual` (`idDatosSolicitudAbonoMensual`,`idSolicitud`,`idTipoAbono`,`PrecioPagado`,`FechaInicio`,`FechaFin`,`Renovacion`) VALUES (?,?,?,?,?,?,?)';
+	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `datosolicitudabonomensual` (`idSolicitud`,`idTipoAbono`,`PrecioPagado`,`FechaInicio`,`FechaFin`,`Renovacion`) VALUES (?,?,?,?,?,?)';
+	const SQL_UPDATE='UPDATE `datosolicitudabonomensual` SET `idDatosSolicitudAbonoMensual`=?,`idSolicitud`=?,`idTipoAbono`=?,`PrecioPagado`=?,`FechaInicio`=?,`FechaFin`=?,`Renovacion`=? WHERE `idDatosSolicitudAbonoMensual`=?';
 	const SQL_SELECT_PK='SELECT * FROM `datosolicitudabonomensual` WHERE `idDatosSolicitudAbonoMensual`=?';
 	const SQL_DELETE_PK='DELETE FROM `datosolicitudabonomensual` WHERE `idDatosSolicitudAbonoMensual`=?';
 	const FIELD_IDDATOSSOLICITUDABONOMENSUAL=838948966;
@@ -18,6 +21,7 @@ class DatosolicitudabonomensualModel extends Db2PhpEntityBase implements Db2PhpE
 	const FIELD_PRECIOPAGADO=1267968842;
 	const FIELD_FECHAINICIO=-1174295948;
 	const FIELD_FECHAFIN=-1822350756;
+	const FIELD_RENOVACION=-1050978894;
 	private static $PRIMARY_KEYS=array(self::FIELD_IDDATOSSOLICITUDABONOMENSUAL);
 	private static $AUTOINCREMENT_FIELDS=array(self::FIELD_IDDATOSSOLICITUDABONOMENSUAL);
 	private static $FIELD_NAMES=array(
@@ -26,41 +30,47 @@ class DatosolicitudabonomensualModel extends Db2PhpEntityBase implements Db2PhpE
 		self::FIELD_IDTIPOABONO=>'idTipoAbono',
 		self::FIELD_PRECIOPAGADO=>'PrecioPagado',
 		self::FIELD_FECHAINICIO=>'FechaInicio',
-		self::FIELD_FECHAFIN=>'FechaFin');
+		self::FIELD_FECHAFIN=>'FechaFin',
+		self::FIELD_RENOVACION=>'Renovacion');
 	private static $PROPERTY_NAMES=array(
 		self::FIELD_IDDATOSSOLICITUDABONOMENSUAL=>'idDatosSolicitudAbonoMensual',
 		self::FIELD_IDSOLICITUD=>'idSolicitud',
 		self::FIELD_IDTIPOABONO=>'idTipoAbono',
 		self::FIELD_PRECIOPAGADO=>'PrecioPagado',
 		self::FIELD_FECHAINICIO=>'FechaInicio',
-		self::FIELD_FECHAFIN=>'FechaFin');
+		self::FIELD_FECHAFIN=>'FechaFin',
+		self::FIELD_RENOVACION=>'Renovacion');
 	private static $PROPERTY_TYPES=array(
 		self::FIELD_IDDATOSSOLICITUDABONOMENSUAL=>Db2PhpEntity::PHP_TYPE_INT,
 		self::FIELD_IDSOLICITUD=>Db2PhpEntity::PHP_TYPE_INT,
 		self::FIELD_IDTIPOABONO=>Db2PhpEntity::PHP_TYPE_INT,
 		self::FIELD_PRECIOPAGADO=>Db2PhpEntity::PHP_TYPE_FLOAT,
 		self::FIELD_FECHAINICIO=>Db2PhpEntity::PHP_TYPE_STRING,
-		self::FIELD_FECHAFIN=>Db2PhpEntity::PHP_TYPE_STRING);
+		self::FIELD_FECHAFIN=>Db2PhpEntity::PHP_TYPE_STRING,
+		self::FIELD_RENOVACION=>Db2PhpEntity::PHP_TYPE_BOOL);
 	private static $FIELD_TYPES=array(
 		self::FIELD_IDDATOSSOLICITUDABONOMENSUAL=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
 		self::FIELD_IDSOLICITUD=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,true),
 		self::FIELD_IDTIPOABONO=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,true),
 		self::FIELD_PRECIOPAGADO=>array(Db2PhpEntity::JDBC_TYPE_REAL,12,0,true),
 		self::FIELD_FECHAINICIO=>array(Db2PhpEntity::JDBC_TYPE_DATE,10,0,true),
-		self::FIELD_FECHAFIN=>array(Db2PhpEntity::JDBC_TYPE_DATE,10,0,true));
+		self::FIELD_FECHAFIN=>array(Db2PhpEntity::JDBC_TYPE_DATE,10,0,true),
+		self::FIELD_RENOVACION=>array(Db2PhpEntity::JDBC_TYPE_BIT,0,0,false));
 	private static $DEFAULT_VALUES=array(
 		self::FIELD_IDDATOSSOLICITUDABONOMENSUAL=>null,
 		self::FIELD_IDSOLICITUD=>null,
 		self::FIELD_IDTIPOABONO=>null,
 		self::FIELD_PRECIOPAGADO=>null,
 		self::FIELD_FECHAINICIO=>null,
-		self::FIELD_FECHAFIN=>null);
+		self::FIELD_FECHAFIN=>null,
+		self::FIELD_RENOVACION=>'');
 	private $idDatosSolicitudAbonoMensual;
 	private $idSolicitud;
 	private $idTipoAbono;
 	private $PrecioPagado;
 	private $FechaInicio;
 	private $FechaFin;
+	private $Renovacion;
 
 	/**
 	 * set value for idDatosSolicitudAbonoMensual 
@@ -213,6 +223,31 @@ class DatosolicitudabonomensualModel extends Db2PhpEntityBase implements Db2PhpE
 	}
 
 	/**
+	 * set value for Renovacion 
+	 *
+	 * type:BIT,size:0,default:null
+	 *
+	 * @param mixed $Renovacion
+	 * @return DatosolicitudabonomensualModel
+	 */
+	public function &setRenovacion($Renovacion) {
+		$this->notifyChanged(self::FIELD_RENOVACION,$this->Renovacion,$Renovacion);
+		$this->Renovacion=$Renovacion;
+		return $this;
+	}
+
+	/**
+	 * get value for Renovacion 
+	 *
+	 * type:BIT,size:0,default:null
+	 *
+	 * @return mixed
+	 */
+	public function getRenovacion() {
+		return $this->Renovacion;
+	}
+
+	/**
 	 * Get table name
 	 *
 	 * @return string
@@ -328,7 +363,8 @@ class DatosolicitudabonomensualModel extends Db2PhpEntityBase implements Db2PhpE
 			self::FIELD_IDTIPOABONO=>$this->getIdTipoAbono(),
 			self::FIELD_PRECIOPAGADO=>$this->getPrecioPagado(),
 			self::FIELD_FECHAINICIO=>$this->getFechaInicio(),
-			self::FIELD_FECHAFIN=>$this->getFechaFin());
+			self::FIELD_FECHAFIN=>$this->getFechaFin(),
+			self::FIELD_RENOVACION=>$this->getRenovacion());
 	}
 
 
@@ -576,6 +612,7 @@ class DatosolicitudabonomensualModel extends Db2PhpEntityBase implements Db2PhpE
 		$this->setPrecioPagado($result['PrecioPagado']);
 		$this->setFechaInicio($result['FechaInicio']);
 		$this->setFechaFin($result['FechaFin']);
+		$this->setRenovacion($result['Renovacion']);
 	}
 
 	/**
@@ -616,6 +653,7 @@ class DatosolicitudabonomensualModel extends Db2PhpEntityBase implements Db2PhpE
 		$stmt->bindValue(4,$this->getPrecioPagado());
 		$stmt->bindValue(5,$this->getFechaInicio());
 		$stmt->bindValue(6,$this->getFechaFin());
+		$stmt->bindValue(7,$this->getRenovacion());
 	}
 
 
@@ -633,6 +671,7 @@ class DatosolicitudabonomensualModel extends Db2PhpEntityBase implements Db2PhpE
 			$stmt->bindValue(3,$this->getPrecioPagado());
 			$stmt->bindValue(4,$this->getFechaInicio());
 			$stmt->bindValue(5,$this->getFechaFin());
+			$stmt->bindValue(6,$this->getRenovacion());
 		} else {
 			$stmt=self::prepareStatement($db,self::SQL_INSERT);
 			$this->bindValues($stmt);
@@ -661,7 +700,7 @@ class DatosolicitudabonomensualModel extends Db2PhpEntityBase implements Db2PhpE
 	public function updateToDatabase(PDO $db) {
 		$stmt=self::prepareStatement($db,self::SQL_UPDATE);
 		$this->bindValues($stmt);
-		$stmt->bindValue(7,$this->getIdDatosSolicitudAbonoMensual());
+		$stmt->bindValue(8,$this->getIdDatosSolicitudAbonoMensual());
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();

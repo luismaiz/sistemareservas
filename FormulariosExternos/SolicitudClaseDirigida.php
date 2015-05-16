@@ -1,9 +1,10 @@
 <?php require_once 'CabeceraExterna.php'; ?>
 <script>
+    var Ajax = new AjaxObj();
     var app = angular.module('solicitudClaseDirigida', []);
     app.controller('RegistrarSolicitudClaseDirigidaController', function RegistrarSolicitudClaseDirigidaController($scope, $http) {
         $scope.actividades = [];
-        $http.get("http://localhost/sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividades")
+        $http.get("Sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividades")
                 .success(function (response) {
                     $scope.estado = response.estado;
 
@@ -44,45 +45,44 @@
             }
         };
         $scope.obtenerProvincia = function (codigoPostal) {
-
             if (codigoPostal < 52999 && codigoPostal > 01000) {
                 var provincia = '';
-                var cp = codigoPostal.substring(0, 1);
+                var cp = parseInt(codigoPostal / 1000);
 
                 switch (cp) {
-                    case 01:
+                    case 1:
                         provincia = 'Álava';
                         break;
 
-                    case 02:
+                    case 2:
                         provincia = 'Albacete';
                         break;
 
-                    case 03:
+                    case 3:
                         provincia = 'Alicante';
                         break;
 
-                    case 04:
+                    case 4:
                         provincia = 'Almería';
                         break;
 
-                    case 05:
+                    case 5:
                         provincia = 'Ávila';
                         break;
 
-                    case 06:
+                    case 6:
                         provincia = 'Badajoz';
                         break;
 
-                    case 07:
+                    case 7:
                         provincia = 'Islas Baleares';
                         break;
 
-                    case 08:
+                    case 8:
                         provincia = 'Barcelona';
                         break;
 
-                    case 09:
+                    case 9:
                         provincia = 'Burgos';
                         break;
 
@@ -257,14 +257,13 @@
                     case 52:
                         provincia = 'Melilla';
                         break;
-
                 }
             }
 
-            return provincia;
+            $scope.s.Provincia = provincia;
         };
         $scope.calcularFecha = function (fecha) {
-            var values = fecha.split("/");
+            var values = fecha.split("-");
             var dia = parseInt(values[2]);
             var mes = parseInt(values[1]);
             var ano = parseInt(values[0]);
@@ -353,14 +352,39 @@
             yearSuffix: ''
         };
         $.datepicker.setDefaults($.datepicker.regional['es']);
-
-        $(function () {
-            $("#FechaNacimiento").datepicker({
-                onchange: function (dateText, inst) {
-                    $("input[name='FechaNacimiento']").val(dateText);
-                }
-            });
-        });
+    });
+    app.directive('datepicker', function () {
+        return  {
+            restrict: 'A',
+            require: '?ngModel',
+            link: function (scope, element, attrs, ngModel) {
+                element = $("#FechaAbonoDiario");
+                if (!ngModel)
+                    return;
+                var optionsObj = {};
+                optionsObj.dateFormat = 'yy-mm-dd';
+                var updateModel = function (dateTxt) {
+                    scope.$apply(function () {
+                        // Call the internal AngularJS helper to
+                        // update the two-way binding
+                        ngModel.$setViewValue(dateTxt);
+                    });
+                };
+                optionsObj.onSelect = function (dateTxt) {
+                    updateModel(dateTxt);
+                    if (scope.select) {
+                        scope.$apply(function () {
+                            scope.select({date: dateTxt});
+                        });
+                    }
+                };
+                ngModel.$render = function () {
+                    // Use the AngularJS internal 'binding-specific' variable
+                    element.datepicker('setDate', ngModel.$viewValue || '');
+                };
+                element.datepicker(optionsObj);
+            }
+        };
     });
 </script> 
 <div class="row" ng-app="solicitudClaseDirigida" ng-controller="RegistrarSolicitudClaseDirigidaController">
@@ -399,7 +423,7 @@
                                 <div class="form-group has-success has-feedback">
                                     <div class="form-group has-success has-feedback">
                                         <div class="col-md-5 col-sm-5 input-group-lg">
-                                            <label class="control-label" > Nombre</label><input type="text" name="Nombre" ng-model="s.Nombre" class="form-control" required ng-pattern="/^[a-zA-Z]*$/" placeholder="Blanca" ng-maxlength="40"/>
+                                            <label class="control-label" > Nombre</label><input type="text" name="Nombre" ng-model="s.Nombre" class="form-control" required ng-pattern="/[a-zA-Z]$/" placeholder="Blanca" ng-maxlength="40"/>
                                             <span style="color:red" ng-show="formulario.Nombre.$dirty && formulario.Nombre.$invalid">
                                                 <span ng-show="formulario.Nombre.$error.required">Nombre obligatorio.</span>
                                                 <span ng-show="formulario.Nombre.$error.pattern">* Formato de Nombre no valido.</span>
@@ -407,7 +431,7 @@
                                             </span>
                                         </div>
                                         <div class="col-md-5 col-sm-5 input-group-lg">
-                                            <label class="control-label" > Apellidos </label><input type="text" name="Apellidos" ng-model="s.Apellidos" class="form-control" required ng-pattern="/^[a-zA-Z]*$/" placeholder="Garcia" ng-maxlength="40"/>
+                                            <label class="control-label" > Apellidos </label><input type="text" name="Apellidos" ng-model="s.Apellidos" class="form-control" required ng-pattern="/[a-zA-Z]$/" placeholder="Garcia" ng-maxlength="40"/>
                                             <span style="color:red" ng-show="formulario.Apellidos.$dirty && formulario.Apellidos.$invalid">
                                                 <span ng-show="formulario.Apellidos.$error.required">Apellidos obligatorio.</span>
                                                 <span ng-show="formulario.Apellidos.$error.pattern">* Formato de Apellidos no valido.</span>
@@ -438,7 +462,7 @@
                                             <label class="control-label" ><input type="radio" ng-model="s.Sexo" name="Sexo" value="H" d id="Sexo"/>&nbsp;Hombre&nbsp;</label>
                                         </div>
                                         <div class="col-md-5 col-sm-5 input-group-lg">
-                                            <label class="control-label" >Fecha nacimiento</label><input type="text" name="FechaNacimiento" ng-model="s.FechaNacimiento" class="form-control" id="FechaNacimiento" ng-change="esMenor();" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required placeholder="yyyy-mm-dd">
+                                            <label class="control-label" >Fecha nacimiento</label><input type="text" name="FechaNacimiento" ng-model="s.FechaNacimiento" datepicker class="form-control" id="FechaNacimiento" ng-change="esMenor();" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required placeholder="yyyy-mm-dd">
                                             <span style="color:red" ng-show="formulario.FechaNacimiento.$dirty && formulario.FechaNacimiento.$invalid">
                                                 <span ng-show="formulario.FechaNacimiento.$error.pattern">* Formato de fecha no valido.</span>
                                                 <span ng-show="formulario.FechaNacimiento.$error.required">* Fecha obligatoria.</span>
