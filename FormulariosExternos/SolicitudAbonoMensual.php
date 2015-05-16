@@ -585,7 +585,7 @@
                                     </div>-->
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 input-group-lg">
                                         <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Tipo Abono</label>
-                                        <select  id="filtroTipoAbono" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" ng-model="s.idTipoAbono" >	
+                                        <select  id="filtroTipoAbono" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" ng-model="s.idTipoAbono" ng-init="s.idTipoAbono = tiposAbonos[0].idTipoAbono"> >	
                                             <option ng_repeat="tipoabono in tiposAbonos" value="{{tipoabono.idTipoAbono}}">{{tipoabono.NombreAbono}}</option>
                                         </select>
                                         <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Tipo Tarifa</label>
@@ -661,7 +661,7 @@
                                     </span>
                                     <br />
                                 </div>                                
-                                <div class="col-md-5 col-sm-5 input-group-lg">
+                                <div class="col-md-5 col-sm-5 input-group-lg" ng-init="s.Sexo='M'">
                                     <label class="control-label" >Sexo</label><br>
                                     <label class="control-label" ><input type="radio" ng-model="s.Sexo" name="Sexo" value="M" checked id="Sexo" required />&nbsp;Mujer&nbsp;</label>
                                     <label class="control-label" ><input type="radio" ng-model="s.Sexo" name="Sexo" value="H" d id="Sexo"/>&nbsp;Hombre&nbsp;</label>
@@ -674,7 +674,7 @@
                                     </span>
                                 </div>
                                 <div class="col-md-5 col-sm-5 input-group-lg" ng-init="tutor = false">
-                                    <label class="control-label" ng-show="menor">Tutor legal</label><input type="text" name="Tutor" ng-model="s.tutor" class="form-control" required name="TutorLegal" placeholder="Alberto Fernandez" id="TutorLegal" ng-show="menor" ng-pattern="/^[a-zA-Z]*$/"/>
+                                    <label class="control-label" ng-show="menor">Tutor legal</label><input type="text" name="Tutor" ng-model="s.tutor" class="form-control" required name="TutorLegal" placeholder="Alberto Fernandez" id="TutorLegal" ng-show="menor" ng-pattern="/[a-zA-Z]$/"/>
                                 </div> 
                             </div>
                             <div class="col-md-12 col-sm-12 input-group-lg">
@@ -720,14 +720,14 @@
                                 <br>
                             </div>
                             <div class="col-md-5 col-sm-5 input-group-lg">
-                                <label class="control-label" >&nbsp;Telefono 1 &nbsp;</label> <input type="tel" class="form-control" name="Telefono1" ng-model="s.Telefono1" required ng-pattern="/[0-9]{9}/" placeholder="912344567" />
+                                <label class="control-label" >&nbsp;Telefono 1 &nbsp;</label> <input type="tel" class="form-control" name="Telefono1" ng-model="s.Telefono1" required ng-pattern="/[0-9]{9}/" placeholder="912344567" maxlength="9" />
                                 <span style="color:red" ng-show="formulario.Telefono1.$dirty && formulario.Telefono1.$invalid">
                                     <span ng-show="formulario.Telefono1.$error.pattern">* Formato de Telefono1 no valido.</span>
                                     <span ng-show="formulario.Telefono1.$error.required">* Telefono1 obligatorio.</span>
                                 </span>
                             </div>
                             <div class="col-md-5 col-sm-5 input-group-lg">
-                                <label class="control-label" >&nbsp; Telefono 2 &nbsp;</label> <input type="tel" class="form-control" name="Telefono2" ng-model="s.Telefono2" ng-pattern="/[0-9]{9}/" Placeholder="600072897" />   
+                                <label class="control-label" >&nbsp; Telefono 2 &nbsp;</label> <input type="tel" class="form-control" name="Telefono2" ng-model="s.Telefono2" ng-pattern="/[0-9]{9}/" Placeholder="600072897" maxlength="9" />   
                                 <span style="color:red" ng-show="formulario.Telefono2.$dirty && formulario.Telefono2.$invalid">
                                     <span ng-show="formulario.Telefono2.$error.pattern">* Formato de Telefono2 no valido.</span>
                                 </span>

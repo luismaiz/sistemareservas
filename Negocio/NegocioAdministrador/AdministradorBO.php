@@ -177,13 +177,12 @@ class AdministradorBO extends Rest {
     }
 
     private function crearSolicitudClaseDirigida() {
-        /*  if ($_SERVER['REQUEST_METHOD'] != "POST") {
-          $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-          } */
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
         $this->con = ConexionBD::getInstance();
         $solicitud = new SolicitudModel();
         $solClase = new DatosolicitudclasedirigidaModel();
-        $act = new ActividadsolicitudclasedirigidaModel();
 
         $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
         $idTipoTarifa = $this->datosPeticion['idTipoTarifa'];
@@ -215,7 +214,7 @@ class AdministradorBO extends Rest {
         $Oficina = $this->datosPeticion['Oficina'];
         $DigitoControl = $this->datosPeticion['DigitoControl'];
         $Cuenta = $this->datosPeticion['Cuenta'];
-        $actividad = $this->datosPeticion['IdActividad'];
+        $actividad = $this->datosPeticion['Actividad'];
 
         //Modelo Solicitud
         $solicitud->setIdTipoSolicitud($idTipoSolicitud);
@@ -241,7 +240,6 @@ class AdministradorBO extends Rest {
         $solicitud->setGestionado($gestionado);
 
         //var_dump($solicitud);
-       
         //Modelo Datos Solicitud Clase Dirigida
         $solClase->setTitular(base64_encode($Titular));
         $solClase->setIban(base64_encode($IBAN));
@@ -250,18 +248,26 @@ class AdministradorBO extends Rest {
         $solClase->setDigitoControl(base64_encode($DigitoControl));
         $solClase->setCuenta(base64_encode($Cuenta));
         //var_dump($solClase);
-        
         //Modelo Datos Actividadsolicitudclasedirigida
-        $act->setIdActividad($actividad);
-        
+        $a = '';
+        foreach ($a as $actividad) {
+            $act = new ActividadsolicitudclasedirigidaModel();
+            $act->setIdActividad($a);
+        }
+
+
         //Inicio Transaccion
         try {
             $this->con->beginTransaction();
             $result1 = $solicitud->insertIntoDatabase($this->con);
             $solClase->setIdSolicitud($solicitud->getIdSolicitud());
             $result2 = $solClase->insertIntoDatabase($this->con);
-            $act->setIdSolicitud($solClase->getIdSolicitud());
-            $result3 = $act->insertIntoDatabase($this->con);
+            foreach ($a as $actividad) {
+                $act = new ActividadsolicitudclasedirigidaModel();
+                $act->setIdActividad($a);
+                $act->setIdSolicitud($solClase->getIdSolicitud());
+                $result3 = $act->insertIntoDatabase($this->con);
+            }
             $this->con->commit();
         } catch (Exception $e) {
             $this->con->rollBack();
@@ -846,7 +852,7 @@ class AdministradorBO extends Rest {
         //$mail->AddCC("mariosgsg@gmail.com");
         //$mail->AddBCC("mariosgsg@gmail.com");
 
-        $body = "Hola <strong>amigo</strong><br> La compra se ha realizado con éxito.<br> Muestra este localizador a la entrada: ".$loc;
+        $body = "Hola <strong>amigo</strong><br> La compra se ha realizado con éxito.<br> Muestra este localizador a la entrada: " . $loc;
         //$body .= "probando <i>PHPMailer<i>.<br><br>";
         //$body .= "<font color='red'>Saludos</font>";
         $mail->Body = $body;

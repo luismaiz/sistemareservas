@@ -4,7 +4,9 @@
     var app = angular.module('solicitudClaseDirigida', []);
     app.controller('RegistrarSolicitudClaseDirigidaController', function RegistrarSolicitudClaseDirigidaController($scope, $http) {
         $scope.actividades = [];
-        $http.get("Sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividades")
+        $scope.s = {};
+        var URL = BASE_URL.concat("Sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividades");
+        $http.get(URL)
                 .success(function (response) {
                     $scope.estado = response.estado;
 
@@ -42,6 +44,19 @@
                 $scope.tab2 = false;
                 $scope.tab3 = false;
                 $scope.tab4 = true;
+            }
+        };
+        $scope.toggleSelection = function (idActividad) {
+
+            var idx = $scope.selection.indexOf(idActividad);
+
+            // is currently selected
+            if (idx > -1) {
+                $scope.selection.splice(idx, 1);
+            }
+            // is newly selected
+            else {
+                $scope.selection.push(idActividad);
             }
         };
         $scope.obtenerProvincia = function (codigoPostal) {
@@ -307,9 +322,8 @@
             var response = Ajax.responseText;
             console.log(response);
         };
-
         $scope.enviar = function (s) {
-            var URL = BASE_URL.concat('Sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSolicitud');
+            var URL = BASE_URL.concat('Sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSolicitudClaseDirigida');
 
             var Params = '&idTipoSolicitud=2&';
             Params += jQuery.param(s);
@@ -358,7 +372,7 @@
             restrict: 'A',
             require: '?ngModel',
             link: function (scope, element, attrs, ngModel) {
-                element = $("#FechaAbonoDiario");
+                element = $("#FechaNacimiento");
                 if (!ngModel)
                     return;
                 var optionsObj = {};
@@ -403,15 +417,17 @@
                                 <div class="form-group has-success has-feedback">
                                     <div class="col-md-12 col-sm-12 input-group-lg">
                                         <h3>Actividades</h3>
+                                        <div id="divSinResultados">
+                                        </div>
                                         <div id="actividades">
                                             <p ng-repeat="actividad in actividades" class="control-label col-md-4 col-sm-6 col-xs-12"><label class="control-label">
-                                                    <input type="checkbox" name="actividades" ng-model="s.actividades" ng-value="{{ actividad.idActividad}}">&nbsp; {{ actividad.NombreActividad}}</label><br/></p>
+                                                    <input type="checkbox" name="actividades" ng-model="s.Actividades" ng-value="{{ actividad.idActividad}}" ng-checked="selection.indexOf(actividad.idActividad) > -1" ng-click="toggleSelection(actividad.idActividad)" checklist-model="s.actividades" checklist-value="actividad">&nbsp; {{ actividad.NombreActividad}}</label><br/></p>
                                         </div>
                                     </div>
                                 </div>
                             </fieldset>
                             <ul class="pager">
-                                <li class="next"><a href="" ng-click="avanzar(1);">Siguiente &rarr;</a></li>
+                                <li class="btn next"><a ng-click="avanzar(1);" >Siguiente &rarr;</a></li>
                             </ul>
                         </div>
                         <div class="tab-pane active" id="tab2" ng-show="tab2">
@@ -456,20 +472,20 @@
                                             </span>
                                             <br />
                                         </div>                                
-                                        <div class="col-md-5 col-sm-5 input-group-lg">
+                                        <div class="col-md-5 col-sm-5 input-group-lg" ng-init="s.Sexo = 'M'">
                                             <label class="control-label" >Sexo</label><br>
-                                            <label class="control-label" ><input type="radio" ng-model="s.Sexo" name="Sexo" value="M" checked id="Sexo" required />&nbsp;Mujer&nbsp;</label>
-                                            <label class="control-label" ><input type="radio" ng-model="s.Sexo" name="Sexo" value="H" d id="Sexo"/>&nbsp;Hombre&nbsp;</label>
+                                            <label class="control-label" ><input type="radio" ng-model="s.Sexo" name="Sexo" value="M" id="Sexo" />&nbsp;Mujer&nbsp;</label>
+                                            <label class="control-label" ><input type="radio" ng-model="s.Sexo" name="Sexo" value="H" id="Sexo"/>&nbsp;Hombre&nbsp;</label>
                                         </div>
                                         <div class="col-md-5 col-sm-5 input-group-lg">
-                                            <label class="control-label" >Fecha nacimiento</label><input type="text" name="FechaNacimiento" ng-model="s.FechaNacimiento" datepicker class="form-control" id="FechaNacimiento" ng-change="esMenor();" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required placeholder="yyyy-mm-dd">
+                                            <label class="control-label" >Fecha nacimiento</label><input type="text" name="FechaNacimiento" ng-model="s.FechaNacimiento" datepicker class="form-control" id="FechaNacimiento" ng-change="esMenor(s.FechaNacimiento);" ng-pattern="/^(199\d|[2-9]\d{3})\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/" required placeholder="yyyy-mm-dd">
                                             <span style="color:red" ng-show="formulario.FechaNacimiento.$dirty && formulario.FechaNacimiento.$invalid">
                                                 <span ng-show="formulario.FechaNacimiento.$error.pattern">* Formato de fecha no valido.</span>
                                                 <span ng-show="formulario.FechaNacimiento.$error.required">* Fecha obligatoria.</span>
                                             </span>
                                         </div>
                                         <div class="col-md-5 col-sm-5 input-group-lg" ng-init="tutor = false">
-                                            <label class="control-label" ng-show="menor">Tutor legal</label><input type="text" name="Tutor" ng-model="s.tutor" class="form-control" required name="TutorLegal" placeholder="Alberto Fernandez" id="TutorLegal" ng-show="menor" ng-pattern="/^[a-zA-Z]*$/"/>
+                                            <label class="control-label" ng-show="menor">Tutor legal</label><input type="text" name="Tutor" ng-model="s.tutor" class="form-control" required name="TutorLegal" placeholder="Alberto Fernandez" id="TutorLegal" ng-show="menor" ng-pattern="/[a-zA-Z]$/"/>
                                         </div> 
                                     </div>
                                     <div class="col-md-12 col-sm-12 input-group-lg">
@@ -500,26 +516,26 @@
                                     <label class="control-label" >Localidad &nbsp;</label><input type="text" class="form-control" name="Localidad" ng-model="s.localidad" required  value="" placeholder="Madrid" id="Localidad"/>
                                 </div>
                                 <div class="col-md-2 col-sm-2 input-group-lg">
-                                    <label class="control-label" >Codigo Postal&nbsp;</label><input type="number" class="form-control" name="CP" ng-model="s.CP" min="01000" max="54999" step="5" id="CP" placeholder="28040" ng-pattern="/^[0-9]{5}/" />
+                                    <label class="control-label" >Codigo Postal&nbsp;</label><input type="number" class="form-control" name="CP" ng-model="s.CP" min="01000" max="54999" id="CP" placeholder="28040" ng-pattern="/^[0-9]{4,5}/" ng-change="obtenerProvincia(s.CP);" />
                                     <span style="color:red" ng-show="formulario.CP.$dirty && formulario.CP.$invalid">
                                         <span ng-show="formulario.CP.$error.pattern">* Formato de CP no valido.</span>
                                         <span ng-show="formulario.CP.$error.required">* CP obligatorio.</span>
-                                        <span class="error" ng-show="myForm.input.$error.number">* CP no valido </span>
+                                        <span ng-show="formulario.CP.$error.number">* CP no valido </span>
                                     </span>
                                 </div>
                                 <div class="col-md-3 col-sm-3 input-group-lg">
-                                    <label class="control-label" >Provincia&nbsp;</label><input type="text" class="form-control" name="Provincia" ng-model="s.Provincia" required  placeholder="Madrid" id="Provincia" ng-pattern="/^[a-zA-Z]*$/"/>
+                                    <label class="control-label" >Provincia&nbsp;</label><input type="text" class="form-control" name="Provincia" ng-model="s.Provincia" required  placeholder="Madrid" id="Provincia" readonly/>
                                     <br>
                                 </div>
                                 <div class="col-md-5 col-sm-5 input-group-lg">
-                                    <label class="control-label" >&nbsp;Telefono 1 &nbsp;</label> <input type="tel" class="form-control" name="Telefono1" ng-model="s.Telefono1" required ng-pattern="/[0-9]{9}/" placeholder="912344567" />
+                                    <label class="control-label" >&nbsp;Telefono 1 &nbsp;</label> <input type="tel" class="form-control" name="Telefono1" ng-model="s.Telefono1" required ng-pattern="/[0-9]{9}/" placeholder="912344567" maxlength="9"/>
                                     <span style="color:red" ng-show="formulario.Telefono1.$dirty && formulario.Telefono1.$invalid">
                                         <span ng-show="formulario.Telefono1.$error.pattern">* Formato de Telefono1 no valido.</span>
                                         <span ng-show="formulario.Telefono1.$error.required">* Telefono1 obligatorio.</span>
                                     </span>
                                 </div>
                                 <div class="col-md-5 col-sm-5 input-group-lg">
-                                    <label class="control-label" >&nbsp; Telefono 2 &nbsp;</label> <input type="tel" class="form-control" name="Telefono2" ng-model="s.Telefono2" ng-pattern="/[0-9]{9}/" Placeholder="600072897" />   
+                                    <label class="control-label" >&nbsp; Telefono 2 &nbsp;</label> <input type="tel" class="form-control" name="Telefono2" ng-model="s.Telefono2" ng-pattern="/[0-9]{9}/" Placeholder="600072897" maxlength="9" /> 
                                     <span style="color:red" ng-show="formulario.Telefono2.$dirty && formulario.Telefono2.$invalid">
                                         <span ng-show="formulario.Telefono2.$error.pattern">* Formato de Telefono2 no valido.</span>
                                     </span>
@@ -540,7 +556,7 @@
                             <fieldset>
                                 <div class="col-md-12 col-sm-12 input-group-lg">
                                     <label class="control-label" >Titular</label>
-                                    <input type="text" class="form-control" required pattern="^[a-zA-Z0-9]{4,12}$" name="Titular" ng-model="s.Titular" placeholder="Juan Gomez"/>
+                                    <input type="text" class="form-control" required ng-pattern="/[a-zA-Z]$/" name="Titular" ng-model="s.Titular" placeholder="Juan Gomez"/>
                                     <span style="color:red" ng-show="formulario.Titular.$dirty && formulario.Titular.$invalid">
                                         <span ng-show="formulario.Titular.$error.required">Titular obligatorio.</span>
                                         <span ng-show="formulario.Titular.$error.pattern">* Formato de Nombre Titular no valido.</span>
@@ -549,7 +565,7 @@
                                 </div>
                                 <div class="col-md-2 col-sm-2 input-group-lg">
                                     <label class="control-label" >&nbsp;IBAN</label>
-                                    <input type="text" class="form-control" required pattern="^[a-zA-Z0-9]{4}$" name="IBAN" ng-model="s.IBAN" maxlength="4" placeholder="ES00"/>
+                                    <input type="text" class="form-control" required ng-pattern="/^[a-zA-Z0-9]{4}$/" name="IBAN" ng-model="s.IBAN" maxlength="4" placeholder="ES00"/>
                                     <span style="color:red" ng-show="formulario.IBAN.$dirty && formulario.IBAN.$invalid">
                                         <span ng-show="formulario.IBAN.$error.pattern">* Formato de IBAN no valido.</span>
                                         <span ng-show="formulario.IBAN.$error.required">* IBAN obligatorio.</span>
@@ -557,7 +573,7 @@
                                 </div>
                                 <div class="col-md-2 col-sm-2 input-group-lg">
                                     <label class="control-label" >Entidad</label>
-                                    <input type="text" class="form-control" required pattern="^[0-9]{4}$" name="Entidad" ng-model="s.Entidad" maxlength="4" placeholder="4578"/>
+                                    <input type="text" class="form-control" required ng-pattern="/^[0-9]{4}$/" name="Entidad" ng-model="s.Entidad" maxlength="4" placeholder="4578"/>
                                     <span style="color:red" ng-show="formulario.Entidad.$dirty && formulario.Entidad.$invalid">
                                         <span ng-show="formulario.Entidad.$error.pattern">* Formato de Entidad no valido.</span>
                                         <span ng-show="formulario.Entidad.$error.required">* Entidad obligatorio.</span>
@@ -565,7 +581,7 @@
                                 </div>
                                 <div class="col-md-2 col-sm-2 input-group-lg">
                                     <label class="control-label" >Oficina</label>
-                                    <input type="text" class="form-control" required pattern="^[0-9]{4}$" name="Oficina" ng-model="s.Oficina" maxlength="4" placeholder="4348"/>
+                                    <input type="text" class="form-control" required ng-pattern="/^[0-9]{4}$/" name="Oficina" ng-model="s.Oficina" maxlength="4" placeholder="4348"/>
                                     <span style="color:red" ng-show="formulario.Oficina.$dirty && formulario.Oficina.$invalid">
                                         <span ng-show="formulario.Oficina.$error.pattern">* Formato de Oficina no valido.</span>
                                         <span ng-show="formulario.Oficina.$error.required">* Oficina obligatorio.</span>
@@ -574,7 +590,7 @@
 
                                 <div class="col-md-2 col-sm-2 input-group-lg">
                                     <label class="control-label" >&nbsp;DC</label>
-                                    <input type="text" class="form-control" required pattern="^[0-9]{2}$" name="DigitoControl" ng-model="s.DigitoControl" maxlength="2" placeholder="23"/>
+                                    <input type="text" class="form-control" required ng-pattern="/^[0-9]{2}$/" name="DigitoControl" ng-model="s.DigitoControl" maxlength="2" placeholder="23"/>
                                     <span style="color:red" ng-show="formulario.DigitoControl.$dirty && formulario.DigitoControl.$invalid">
                                         <span ng-show="formulario.DigitoControl.$error.pattern">* Formato de DigitoControl no valido.</span>
                                         <span ng-show="formulario.DigitoControl.$error.required">* DigitoControl obligatorio.</span>
@@ -582,7 +598,7 @@
                                 </div>
                                 <div class="col-md-4 col-sm-4 input-group-lg">
                                     <label class="control-label" >CTA/Libreta</label>
-                                    <input type="text" class="form-control" required pattern="^[0-9]{10}$" name="Cuenta" ng-model="s.Cuenta" maxlength="10" placeholder="4578784596"/>
+                                    <input type="text" class="form-control" required ng-pattern="/^[0-9]{10}$/" name="Cuenta" ng-model="s.Cuenta" maxlength="10" placeholder="4578784596"/>
                                     <span style="color:red" ng-show="formulario.Cuenta.$dirty && formulario.Cuenta.$invalid">
                                         <span ng-show="formulario.Cuenta.$error.pattern">* Formato de Cuenta no valido.</span>
                                         <span ng-show="formulario.Cuenta.$error.required">* Cuenta obligatorio.</span>
@@ -591,7 +607,7 @@
                             </fieldset>
                             <ul class="pager">
                                 <li class="previous"><a href="" ng-click="avanzar(2);">&larr; Anterior</a></li>
-                                <li class="next"><a href="" ng-click="enviar();">&nbsp;Enviar&nbsp;&nbsp;</a></li>
+                                <li class="btn next"><a ng-disabled="formulario.$invalid" ng-click="enviar(s);">&nbsp;Enviar&nbsp;&nbsp;</a></li>
                             </ul>
                         </div>
                     </div>
