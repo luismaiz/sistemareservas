@@ -13,7 +13,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">Ã—</button>
+                    <button type="button" class="close" data-dismiss="modal">Ã?</button>
                     <h3>Settings</h3>
                 </div>
                 <div class="modal-body">
@@ -45,6 +45,7 @@
 <!-- calender plugin -->
 <script src='Utilidades/bower_components/moment/min/moment.min.js'></script>
 <script src='Utilidades/bower_components/fullcalendar/dist/fullcalendar.min.js'></script>
+<script src='Utilidades/bower_components/fullcalendar/dist/lang/es.js'></script>
 <!-- data table plugin -->
 <script src='Utilidades/js/jquery.dataTables.min.js'></script>
 

@@ -119,7 +119,7 @@
 <div>
     <ul class="breadcrumb">
         <li>
-            <a href="#">Inicio</a>
+            <a href="Inicio.php">Inicio</a>
         </li>
         <li>
             <a href="#">Precios</a>

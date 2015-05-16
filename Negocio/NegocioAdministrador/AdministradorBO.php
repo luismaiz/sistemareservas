@@ -1,4 +1,5 @@
-<?php
+﻿<?php
+//error_reporting(0);
 
 require_once("../../ComunicacionesREST/Rest.php");
 require_once("../../Negocio/AccesoDatos/ConexionBD.php");
@@ -13,6 +14,9 @@ require_once("../../Negocio/Entidades/TipoabonoModel.class.php");
 require_once("../../Negocio/Entidades/helpers/DFC.class.php");
 require_once("../../Negocio/Entidades/DatosolicitudclasedirigidaModel.class.php");
 require_once("../../Negocio/Entidades/UsuarioModel.class.php");
+require_once("../../Negocio/Entidades/DatosolicitudabonomensualModel.class.php");
+require_once("../../Negocio/Entidades/DatosolicitudclasedirigidaModel.class.php");
+require_once("../../Negocio/Entidades/ActividadsolicitudclasedirigidaModel.class.php");
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -27,7 +31,7 @@ require_once("../../Negocio/Entidades/UsuarioModel.class.php");
  */
 class AdministradorBO extends Rest {
 
-    //put your code hereç
+    //put your code here
     private $con = NULL;
     private $_metodo;
     private $_argumentos;
@@ -69,8 +73,7 @@ class AdministradorBO extends Rest {
                 } else {//si no lo llamamos sin argumentos, al metodo del controlador  
                     call_user_func(array($this, $this->_metodo));
                 }
-            }
-            else
+            } else
                 $this->mostrarRespuesta($this->convertirJson($this->devolverError(0)), 404);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(0)), 404);
@@ -78,6 +81,200 @@ class AdministradorBO extends Rest {
 
     private function convertirJson($data) {
         return json_encode($data);
+    }
+
+    private function crearSolicitudAbonoMensual() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        $this->con = ConexionBD::getInstance();
+        $solicitud = new SolicitudModel();
+        $solAbonoMensual = new DatosolicitudabonomensualModel();
+
+        $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
+        $idTipoTarifa = $this->datosPeticion['idTipoTarifa'];
+        date_default_timezone_set("Europe/Madrid");
+        $FechaSolicitud = date("y/m/d H:i:s");
+        $Nombre = $this->datosPeticion['Nombre'];
+        $Apellidos = $this->datosPeticion['Apellidos'];
+        $DNI = $this->datosPeticion['DNI'];
+        $EMail = $this->datosPeticion['EMail'];
+        $Direccion = $this->datosPeticion['Direccion'];
+        $CP = $this->datosPeticion['CP'];
+        $Sexo = $this->datosPeticion['Sexo'];
+        $FechaNacimiento = $this->datosPeticion['FechaNacimiento'];
+        $TutorLegal = $this->datosPeticion['TutorLegal'];
+        $Localidad = $this->datosPeticion['Localidad'];
+        $Telefono1 = $this->datosPeticion['Telefono1'];
+        $Telefono2 = $this->datosPeticion['Telefono2'];
+        $Provincia = $this->datosPeticion['Provincia'];
+        $DescripcionSolicitud = $this->datosPeticion['DescripcionSolicitud'];
+        $Otros = $this->datosPeticion['Otros'];
+        $Localizador1 = md5($this->generarLocalizador($Nombre, $Apellidos, $FechaSolicitud, $DNI));
+        $Localizador = substr($Localizador1, 0, 6);
+        $anulado = 0;
+        $gestionado = 0;
+        /* Especificos */
+        $FechaInicio = $this->datosPeticion['FechaInicio'];
+        $FechaFin = $this->datosPeticion['FechaFin'];
+        $PrecioPagado = $this->datosPeticion['PrecioPagado'];
+        $tipoabono = $this->datosPeticion['idTipoAbono'];
+
+        //Modelo Solicitud
+        $solicitud->setIdTipoSolicitud($idTipoSolicitud);
+        $solicitud->setIdTipoTarifa($idTipoTarifa);
+        $solicitud->setFechaSolicitud($FechaSolicitud);
+        $solicitud->setNombre($Nombre);
+        $solicitud->setApellidos($Apellidos);
+        $solicitud->setDni($DNI);
+        $solicitud->setEMail($EMail);
+        $solicitud->setDireccion($Direccion);
+        $solicitud->setCp($CP);
+        $solicitud->setSexo($Sexo);
+        $solicitud->setFechaNacimiento($FechaNacimiento);
+        $solicitud->setTutorLegal($TutorLegal);
+        $solicitud->setLocalidad($Localidad);
+        $solicitud->setTelefono1($Telefono1);
+        $solicitud->setTelefono2($Telefono2);
+        $solicitud->setProvincia($Provincia);
+        $solicitud->setDescripcionSolicitud($DescripcionSolicitud);
+        $solicitud->setOtros($Otros);
+        $solicitud->setLocalizador($Localizador);
+        $solicitud->setAnulado($anulado);
+        $solicitud->setGestionado($gestionado);
+
+        //var_dump($solicitud);
+        //Modelo Datos Solicitud Abono Mensual
+        $solAbonoMensual->setIdTipoAbono($tipoabono);
+        $solAbonoMensual->setPrecioPagado($PrecioPagado);
+        $solAbonoMensual->setFechaInicio($FechaInicio);
+        $solAbonoMensual->setFechaFin($FechaFin);
+
+        //var_dump( $solAbonoMensual);
+        //Inicio Transaccion
+        try {
+            $this->con->beginTransaction();
+            $result1 = $solicitud->insertIntoDatabase($this->con);
+            $solAbonoMensual->setIdSolicitud($solicitud->getIdSolicitud());
+            $result2 = $solAbonoMensual->insertIntoDatabase($this->con);
+            $this->con->commit();
+        } catch (Exception $e) {
+            $this->con->rollBack();
+            echo "Fallo: " . $e->getMessage();
+        }
+
+        if (count($result1) === 1 && count($result2) === 1) {
+
+            $respuesta['estado'] = 'correcto';
+            $respuesta['solicitud']['IdSolicitud'] = $solicitud->getIdSolicitud();
+            $respuesta['solicitud']['Localizador'] = $solicitud->getLocalizador();
+            $respuesta['msg'] = 'solicitud creada correctamente';
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        } else
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
+    }
+
+    private function crearSolicitudClaseDirigida() {
+        /*  if ($_SERVER['REQUEST_METHOD'] != "POST") {
+          $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+          } */
+        $this->con = ConexionBD::getInstance();
+        $solicitud = new SolicitudModel();
+        $solClase = new DatosolicitudclasedirigidaModel();
+        $act = new ActividadsolicitudclasedirigidaModel();
+
+        $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
+        $idTipoTarifa = $this->datosPeticion['idTipoTarifa'];
+        date_default_timezone_set("Europe/Madrid");
+        $FechaSolicitud = date("y/m/d H:i:s");
+        $Nombre = $this->datosPeticion['Nombre'];
+        $Apellidos = $this->datosPeticion['Apellidos'];
+        $DNI = $this->datosPeticion['DNI'];
+        $EMail = $this->datosPeticion['EMail'];
+        $Direccion = $this->datosPeticion['Direccion'];
+        $CP = $this->datosPeticion['CP'];
+        $Sexo = $this->datosPeticion['Sexo'];
+        $FechaNacimiento = $this->datosPeticion['FechaNacimiento'];
+        $TutorLegal = $this->datosPeticion['TutorLegal'];
+        $Localidad = $this->datosPeticion['Localidad'];
+        $Telefono1 = $this->datosPeticion['Telefono1'];
+        $Telefono2 = $this->datosPeticion['Telefono2'];
+        $Provincia = $this->datosPeticion['Provincia'];
+        $DescripcionSolicitud = $this->datosPeticion['DescripcionSolicitud'];
+        $Otros = $this->datosPeticion['Otros'];
+        $Localizador1 = md5($this->generarLocalizador($Nombre, $Apellidos, $FechaSolicitud, $DNI));
+        $Localizador = substr($Localizador1, 0, 6);
+        $anulado = 0;
+        $gestionado = 0;
+        /* Especificos */
+        $Titular = $this->datosPeticion['Titular'];
+        $IBAN = $this->datosPeticion['IBAN'];
+        $Entidad = $this->datosPeticion['Entidad'];
+        $Oficina = $this->datosPeticion['Oficina'];
+        $DigitoControl = $this->datosPeticion['DigitoControl'];
+        $Cuenta = $this->datosPeticion['Cuenta'];
+        $actividad = $this->datosPeticion['IdActividad'];
+
+        //Modelo Solicitud
+        $solicitud->setIdTipoSolicitud($idTipoSolicitud);
+        $solicitud->setIdTipoTarifa($idTipoTarifa);
+        $solicitud->setFechaSolicitud($FechaSolicitud);
+        $solicitud->setNombre($Nombre);
+        $solicitud->setApellidos($Apellidos);
+        $solicitud->setDni($DNI);
+        $solicitud->setEMail($EMail);
+        $solicitud->setDireccion($Direccion);
+        $solicitud->setCp($CP);
+        $solicitud->setSexo($Sexo);
+        $solicitud->setFechaNacimiento($FechaNacimiento);
+        $solicitud->setTutorLegal($TutorLegal);
+        $solicitud->setLocalidad($Localidad);
+        $solicitud->setTelefono1($Telefono1);
+        $solicitud->setTelefono2($Telefono2);
+        $solicitud->setProvincia($Provincia);
+        $solicitud->setDescripcionSolicitud($DescripcionSolicitud);
+        $solicitud->setOtros($Otros);
+        $solicitud->setLocalizador($Localizador);
+        $solicitud->setAnulado($anulado);
+        $solicitud->setGestionado($gestionado);
+
+        //var_dump($solicitud);
+       
+        //Modelo Datos Solicitud Clase Dirigida
+        $solClase->setTitular(base64_encode($Titular));
+        $solClase->setIban(base64_encode($IBAN));
+        $solClase->setEntidad(base64_encode($Entidad));
+        $solClase->setOficina(base64_encode($Oficina));
+        $solClase->setDigitoControl(base64_encode($DigitoControl));
+        $solClase->setCuenta(base64_encode($Cuenta));
+        //var_dump($solClase);
+        
+        //Modelo Datos Actividadsolicitudclasedirigida
+        $act->setIdActividad($actividad);
+        
+        //Inicio Transaccion
+        try {
+            $this->con->beginTransaction();
+            $result1 = $solicitud->insertIntoDatabase($this->con);
+            $solClase->setIdSolicitud($solicitud->getIdSolicitud());
+            $result2 = $solClase->insertIntoDatabase($this->con);
+            $act->setIdSolicitud($solClase->getIdSolicitud());
+            $result3 = $act->insertIntoDatabase($this->con);
+            $this->con->commit();
+        } catch (Exception $e) {
+            $this->con->rollBack();
+            echo "Fallo: " . $e->getMessage();
+        }
+
+        if (count($result1) === 1 && count($result2) === 1 && count($result3) === 1) {
+
+            $respuesta['estado'] = 'correcto';
+            $respuesta['solicitud']['IdSolicitud'] = $solicitud->getIdSolicitud();
+            $respuesta['solicitud']['Localizador'] = $solicitud->getLocalizador();
+            $respuesta['msg'] = 'solicitud creada correctamente';
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        } else
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
     }
 
     private function crearSolicitud() {
@@ -110,7 +307,11 @@ class AdministradorBO extends Rest {
         $Provincia = $this->datosPeticion['Provincia'];
         $DescripcionSolicitud = $this->datosPeticion['DescripcionSolicitud'];
         $Otros = $this->datosPeticion['Otros'];
-        $Localizador = $this->generarLocalizador($Nombre, $Apellidos, $FechaSolicitud, $DNI);
+        $Localizador1 = md5($this->generarLocalizador($Nombre, $Apellidos, $FechaSolicitud, $DNI));
+        $Localizador = substr($Localizador1, 0, 6);
+        $FechaAbonoDiario = $this->datosPeticion['FechaAbonoDiario'];
+        $anulado = 0;
+        $gestionado = 0;
 
 
         //if (!$this->existeUsuario($email)) {  
@@ -163,6 +364,9 @@ class AdministradorBO extends Rest {
         $solicitud->setDescripcionSolicitud($DescripcionSolicitud);
         $solicitud->setOtros($Otros);
         $solicitud->setLocalizador($Localizador);
+        $solicitud->setFechaAbonoDiario($FechaAbonoDiario);
+        $solicitud->setAnulado($anulado);
+        $solicitud->setGestionado($gestionado);
 
         //var_dump($solicitud);
 
@@ -177,8 +381,7 @@ class AdministradorBO extends Rest {
             $respuesta['solicitud']['Localizador'] = $solicitud->getLocalizador();
             $respuesta['msg'] = 'solicitud creada correctamente';
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
-        }
-        else
+        } else
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
         //}  
         //else  
@@ -262,6 +465,7 @@ class AdministradorBO extends Rest {
             $DescripcionSolicitud = $this->datosPeticion['DescripcionSolicitud'];
             $Otros = $this->datosPeticion['Otros'];
             $Localizador = $this->datosPeticion['Localizador'];
+            $FechaAbonoDiario = $this->datosPeticion['FechaAbonoDiario'];
 
             if (!empty($idSolicitud)) {
                 /* $query = $this->_conn->prepare("update maestraprecios set Fecha=:Fecha,Nombre=:Nombre,Apellido1=:Apellido1,Apellido2=:Apellido2,DNI=:DNI,EMail=:EMail,
@@ -321,6 +525,7 @@ class AdministradorBO extends Rest {
                 $solicitud->setDescripcionSolicitud($DescripcionSolicitud);
                 $solicitud->setOtros($Otros);
                 $solicitud->setLocalizador($Localizador);
+                $solicitud->setFechaAbonoDiario($FechaAbonoDiario);
 
                 //var_dump($solicitud);
 
@@ -431,8 +636,7 @@ class AdministradorBO extends Rest {
             $respuesta['estado'] = 'correcto';
             $respuesta['msg'] = 'clase dirigida creada correctamente';
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
-        }
-        else
+        } else
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
         //}  
         //else  
@@ -442,7 +646,140 @@ class AdministradorBO extends Rest {
         //}  
     }
 
-   
+    //Metodos CRUD Usuario
+    private function obtenerUsuarios() {
+        if ($_SERVER['REQUEST_METHOD'] != "GET") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        //$query = $this->_conn->query("SELECT idSala,Nombre,Capacidad,Descripcion FROM sala");  
+        //$filas = $query->fetchAll(PDO::FETCH_ASSOC);  
+
+        $this->con = ConexionBD::getInstance();
+        $usuario = new UsuarioModel();
+
+        $filas = $usuario->findBySql($this->con, UsuarioModel::SQL_SELECT);
+
+        $num = count($filas);
+        if ($num > 0) {
+            $respuesta['estado'] = 'correcto';
+
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
+            $respuesta['usuarios'] = $array;
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        $this->mostrarRespuesta($this->devolverError(2), 204);
+    }
+
+    private function crearUsuario() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {
+
+        $NombreUsuario = $this->datosPeticion['NombreUsuario'];
+        $Password = md5($this->datosPeticion['Password']);
+        $TipoUsuario = $this->datosPeticion['TipoUsuario'];
+        date_default_timezone_set("Europe/Madrid");
+        $FechaAlta = date("y/m/d H:i:s");
+
+        $this->con = ConexionBD::getInstance();
+        $usuario = new UsuarioModel();
+
+        $usuario->setNombreUsuario($NombreUsuario);
+        $usuario->setPassword($Password);
+        $usuario->setTipoUsuario($TipoUsuario);
+        $usuario->setFechaAlta($FechaAlta);
+
+        $result = $usuario->insertIntoDatabase($this->con);
+
+        if ($result) {
+            //$id = $this->_conn->lastInsertId();  
+            $respuesta['estado'] = 'correcto';
+            $respuesta['msg'] = 'usuario creado correctamente';
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        } else
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
+    }
+
+    private function actualizarUsuario() {
+        if ($_SERVER['REQUEST_METHOD'] != "PUT") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        //echo $idUsuario . "<br/>";  
+        if (isset($this->datosPeticion['idUsuario'])) {
+            $idUsuario = $this->datosPeticion['idUsuario'];
+            $NombreUsuario = $this->datosPeticion['NombreUsuario'];
+            $Password = $this->datosPeticion['Password'];
+            $TipoUsuario = $this->datosPeticion['TipoUsuario'];
+
+            date_default_timezone_set("Europe/Madrid");
+            $Fecha = date("y/m/d H:i:s");
+
+            if (!empty($idUsuario)) {
+                $this->con = ConexionBD::getInstance();
+                $usuario = new UsuarioModel();
+
+                $usuario->setIdUsuario($idUsuario);
+                $usuario->setFechaBaja($Fecha);
+
+                $resultUpdate = $usuario->updateToDatabase($this->con);
+
+                $usuario->setIdUsuario($idUsuario);
+                $usuario->setNombreUsuario($NombreUsuario);
+                $usuario->setPassword($Password);
+                $usuario->setTipoUsuario($TipoUsuario);
+                $usuario->setFechaAlta($Fecha);
+
+                $resultInsert = $usuario->insertIntoDatabase($this->con);
+
+                if (count($resultUpdate) == 1 && count($resultInsert) == 1) {
+                    $resp = array('estado' => "correcto", "msg" => "precio actualizado");
+                    $this->mostrarRespuesta($this->convertirJson($resp), 200);
+                } else {
+                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+                }
+            }
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+    }
+
+    private function obtenerUsuario() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+
+        //el constructor del padre ya se encarga de sanear los datos de entrada  
+        $idUsuario = $this->datosPeticion['idUsuario'];
+
+        //consulta preparada ya hace mysqli_real_escape()  
+        /* $query = $this->_conn->prepare("SELECT idSala, Nombre, Capacidad, Descripcion FROM sala WHERE idSala=:idSala");
+          $query->bindValue(":idSala", $idSala);
+          $fila = $query->execute();
+
+          $query->execute(); */
+
+        $this->con = ConexionBD::getInstance();
+        $usuario = new UsuarioModel();
+
+        $fila = $usuario->findById($this->con, $idUsuario);
+
+
+        if ($fila) {
+            $respuesta['estado'] = 'correcto';
+            $respuesta['usuario']['idUsuario'] = $fila->getIdUsuario();
+            $respuesta['usuario']['NombreUsuario'] = $fila->getNombreUsuario();
+            $respuesta['usuario']['Password'] = $fila->getPassword();
+            $respuesta['usuario']['TipoUsuario'] = $fila->getTipoUsuario();
+            $respuesta['usuario']['FechaAlta'] = $fila->getFechaAlta();
+            $respuesta['usuario']['FechaBaja'] = $fila->getFechaBaja();
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+    }
+
     private function codigoQR() {
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
@@ -460,7 +797,7 @@ class AdministradorBO extends Rest {
         //html PNG location prefix
         $PNG_WEB_DIR = 'temp/';
 
-        include "phpqrcode/qrlib.php";
+        require_once "../UtilidadesNegocio/phpqrcode/qrlib.php";
 
         //ofcourse we need rights to create temp dir
         if (!file_exists($PNG_TEMP_DIR))
@@ -473,7 +810,7 @@ class AdministradorBO extends Rest {
 
         //echo $filename;
 
-        $data = 'http://pfgreservas.rightwatch.es/frontaladministrador/Inicio.php';
+        $data = 'http://pfgreservas.rightwatch.es/Frontal/Inicio.php';
 
         //processing form input
         //remember to sanitize user input in real-life solution !!!

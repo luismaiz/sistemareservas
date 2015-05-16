@@ -3,29 +3,29 @@
 <script type="text/javascript">
     var Ajax = new AjaxObj();
     var Actividades;
+    var Salas;
     var app = angular.module('Clases',  [])            
                      .config(function($locationProvider) {
                           $locationProvider.html5Mode(true);
                       });
                       
     function CargaClases($scope, $http,$location) {
-                          $scope.obtenerActividades = function() {
+                $scope.obtenerActividades = function() {
                 
-                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividades');
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividadesFiltro');
+                var Params = 'NombreActividad=' + '' + '&IntensidadActividad=' + '' + '&Grupo=' + '';    
                 
-                var Params = '';        
-	        Ajax.open("GET", Url, false);
+                Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-                                 
-                                 alert('estamos');
+                
+        
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')
                 {
                     $scope.actividades = JSON.parse(Ajax.responseText).actividades;
                     Actividades = $scope.actividades;
-                    alert(Actividades[0].NombreClase);
                 }
                 else
                 {
@@ -34,25 +34,38 @@
             };
             
             $scope.obtenerActividades();
+			
+		$scope.obtenerSalas = function() {
+		var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSalasFiltro');
+                var Params = 'NombreSala=' + '' + '&CapacidadSala=' + '';    
+                
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                Ajax.send(Params); 
+				
+				if ($scope.estado === 'correcto')
+    				{
+                                
+				$scope.salas = JSON.parse(Ajax.responseText).salas;
+				Salas = $scope.salas;
+				}
+            };
+            $scope.obtenerSalas();
      }
-                      
     
     jQuery(function($) {
         $('#external-events .fc-event').each(function() {				
-            // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
-            // it doesn't need to have a start or end
+            
             var eventObject = {
-                title: $.trim($(this).text()) // use the element's text as the event title
+                title: $.trim($(this).text()),
+                idActividad:$(this).attr('id')
             };
-
-            // store the Event Object in the DOM element so we can get to it later
+            
             $(this).data('eventObject', eventObject);
-
-            // make the event draggable using jQuery UI
             $(this).draggable({
                 zIndex: 999,
-                revert: true,      // will cause the event to go back to its
-                revertDuration: 0  //  original position after the drag
+                revert: true,      
+                revertDuration: 0  
             });		
         });
         /* initialize the calendar
@@ -63,13 +76,13 @@
         var m = date.getMonth();
         var y = date.getFullYear();
 
-        var calendar = $('#calendar').fullCalendar({
-            minTime: "10:00",
-            maxTime: "20:00",
+        $('#calendar').fullCalendar({
+            minTime: "09:00",
+            maxTime: "22:00",
             allDaySlot:false,
             timeFormat: 'H:mm' ,
-            
-            //isRTL: true,
+            hiddenDays: [ 0 ],
+                        
             buttonHtml: {
                 prev: '<i class="ace-icon fa fa-chevron-left"></i>',
                 next: '<i class="ace-icon fa fa-chevron-right"></i>'
@@ -82,16 +95,8 @@
             },
             eventLimit: true, // allow "more" link when too many events
             defaultView: 'agendaWeek',            
-            timeFormat: 'HH:mm',
             editable: true,
             droppable: true, // this allows things to be dropped onto the calendar !!!
-            businessHours: true, // display business hours
-            businessHours:
-                {
-                start: '10:00',
-                end:   '20:00',
-                dow: [ 1, 2, 3, 4, 5]
-            },
                     
             events: function(start, end, timezone, callback) {
                                 
@@ -102,93 +107,68 @@
                     async: true,
                     success: function(doc) {
                         var events = [];
-                        alert(doc.clases[0].idActividad);
+                        
                         for(i=0; i<doc.clases.length; i++){
-                            //alert(Actividades[i].idActividad);
-                            //alert(doc.clases[i].idActividad);
+                           
                             events.push({
                                 
                                 //hay que obtener el nombre de la actividad
-                                title: Actividades[doc.clases[i].idActividad].NombreActividad,
-                                idActividad: Actividades[doc.clases[i].idActividad].idActividad,
-                                intensidad: Actividades[doc.clases[i].idActividad].IntensidadActividad,
+                                title: Actividades[doc.clases[i].idActividad-1].NombreActividad,
+                                idActividad: Actividades[doc.clases[i].idActividad-1].idActividad,
                                 idSala: doc.clases[i].idSala,
+                                OcupacionClase: doc.clases[i].Ocupacion,
                                 idClase: doc.clases[i].idClase,
                                 allDay: false,
-                                //allDay: doc.clases[i].Dia === 0 ? false : true,
-                                //start: new Date(y, m, doc.clases[i].Dia, (doc.clases[i].HoraInicio).substring(0,2), (doc.clases[i].HoraInicio).substring(3,5)),
                                 start: doc.clases[i].Dia === 1 ? '' : new Date(new Date(doc.clases[i].FechaInicio).getUTCFullYear(), new Date(doc.clases[i].FechaInicio).getUTCMonth(), new Date(doc.clases[i].FechaInicio).getUTCDate(), (doc.clases[i].HoraInicio).substring(0,2), (doc.clases[i].HoraInicio).substring(3,5)),
-                                //end: doc.clases[i].FechaFin,//new Date(y, m, doc.clases[i].Dia, (doc.clases[i].HoraFin).substring(0,2), (doc.clases[i].HoraFin).substring(3,5)),
                                 end:  new Date(new Date(doc.clases[i].FechaInicio).getFullYear(), new Date(doc.clases[i].FechaInicio).getMonth(), new Date(doc.clases[i].FechaInicio).getDate(), (doc.clases[i].HoraFin).substring(0,2), (doc.clases[i].HoraFin).substring(3,5)),                                
-                                //constraint: 'businessHours',
-                                backgroundColor: "red" //Actividades[doc.clases[i].idActividad].Descripcion,
-                                //borderColor: Actividades[doc.clases[i].idActividad].idActividad.Descripcion
+                                backgroundColor: "#"+doc.clases[i].Ocupacion,
+                                borderColor: "#"+doc.clases[i].Ocupacion
                             });
                         }
                         callback(events);
                     }
                 });
             },
+            dayClick: function(date, jsEvent, view) {
+                $('#fullCalModal').modal();
+            },
                     
-            drop: function(event, allDay) { // this function is called when something is dropped   
-                     
-                 alert('hola');       
-                // retrieve the dropped element's stored Event Object
-                var $color = $(this).attr('color');
-                //alert("idActividad "+ $idActividad);
-                        
+            drop: function(event,date, allDay) { // this function is called when something is dropped   
+                var inicio = new Date((event._d).getFullYear(), (event._d).getMonth(), (event._d).getDate(), (event._d).getHours(), (event._d).getMinutes(), (event._d).getSeconds()).toUTCString();
+                var fin = new Date((event._d).getFullYear(), (event._d).getMonth(), (event._d).getDate(), ((event._d).getHours()+1), (event._d).getMinutes(), (event._d).getSeconds()).toUTCString();
+                var horainicio = (event._d).getUTCHours() + ":" + (event._d).getUTCMinutes() + ":" + (event._d).getUTCSeconds();
+                var horafin = (event._d).getUTCHours()+1 + ":" + (event._d).getUTCMinutes() + ":" + (event._d).getUTCSeconds();
+                                                
                 var originalEventObject = $(this).data('eventObject');
-                //alert("originalEventObject " + originalEventObject);
-                var $extraEventClass = $color//;$(this).attr('data-class');
-                //alert("$extraEventClass " + $extraEventClass);
-                var $idActividad = $(this).attr('idActividad');
-                alert("idActividad "+ $idActividad);
-                        
-                // we need to copy it, so that multiple events don't have a reference to the same object
+                var $idActividad = parseInt($(this).attr('id'));
                 var copiedEventObject = $.extend({}, originalEventObject);
-                //alert("copiedEventObject " + copiedEventObject);
-                        
-                var mes = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-                var semana = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
-			
-                // assign it the date that was reported
-                //Wed May 27 2015 02:00:00 GMT+0200 (Hora de verano romance)
-                copiedEventObject.start =  semana[(event._d).getUTCDay()] + " " + mes[event._d.getUTCMonth()] + " " + event._d.getUTCDate() + " " + event._d.getUTCFullYear() + " " + (event._d).getUTCHours() + ":" + (event._d).getUTCMinutes() + ":" + (event._d).getUTCSeconds() + "Z";
-                copiedEventObject.end =  semana[(event._d).getDay()] + " " + mes[event._d.getMonth()] + " " + event._d.getDate() + " " + event._d.getFullYear() + " " + (event._d).getHours() + ":" + (event._d).getMinutes() + ":" + (event._d).getSeconds() + "Z";
-                //alert(copiedEventObject.start);
+                copiedEventObject.start =  inicio;
+                copiedEventObject.end =  fin;
                 copiedEventObject.allDay = false;
-                copiedEventObject.color = $color;
-                if($extraEventClass) copiedEventObject['className'] = [$extraEventClass];                
-                var $HoraInicio = (event._d).getUTCHours() + ":" + (event._d).getUTCMinutes() + ":" + (event._d).getUTCSeconds();
-                var $HoraFin = (event._d).getHours() + ":" + (event._d).getMinutes() + ":" + (event._d).getSeconds();
-                var json = { idActividad:$idActividad, idSala:3, FechaInicio:(new Date(copiedEventObject.start)).toISOString().substring(0,10), HoraInicio:$HoraInicio, FechaFin:(new Date(copiedEventObject.end)).toISOString().substring(0,10),HoraFin:$HoraFin, Ocupacion:20, Dia:0, Publicada:1 };
-                //alert("json: " + jQuery.param(json));
-                // render the event on the calendar
-                // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+                var $HoraInicio = horainicio;
+                var $HoraFin = horafin;
                 $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);			
-                
-                alert((jQuery.param(json)));
+                                
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=crearClase');		
                 		
-                var Params ='idActividad='+  +
+                var Params ='idActividad='+ $idActividad +
                     '&idSala='+ 3 +
                     '&FechaInicio='+ (new Date(copiedEventObject.start)).toISOString().substring(0,10)+
-            '&HoraInicio='+ $HoraInicio+
-            '&FechaFin='+ (new Date(copiedEventObject.end)).toISOString().substring(0,10)+
-            '&HoraFin='+ $HoraFin+
-            '&Ocupacion='+ 20+
-            '&Dia='+ 0+
-            '&Publicada='+ 1;
+                    '&HoraInicio='+ $HoraInicio+
+                    '&FechaFin='+ (new Date(copiedEventObject.end)).toISOString().substring(0,10)+
+                    '&HoraFin='+ $HoraFin+
+                    '&Ocupacion='+ ''+
+                    '&Dia='+ 0+
+                    '&Publicada='+ 1;
 
                 Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
                 alert(Ajax.responseText);
-               
             },
             eventDrop: function(calEvent, delta) {                
-                var json = {idClase:calEvent.idClase,idActividad:calEvent.idActividad,idSala:calEvent.idSala,FechaInicio:calEvent.start._d.getUTCFullYear() + "-" + (calEvent.start._d.getUTCMonth()+1) + "-" + calEvent.start._d.getUTCDate(), HoraInicio:calEvent.start._d.getUTCHours() + ":" + calEvent.start._d.getUTCMinutes(), FechaFin:calEvent.end._d.getUTCFullYear() + "-" + (calEvent.end._d.getUTCMonth()+1) + "-" + calEvent.end._d.getUTCDate(), HoraFin:calEvent.end._d.getUTCHours() + ":" + calEvent.end._d.getUTCMinutes(), Ocupacion:20, Dia:calEvent._fullDay, Publicada:1};
+                var json = {idClase:calEvent.idClase,idActividad:calEvent.idActividad,idSala:calEvent.idSala,FechaInicio:calEvent.start._d.getUTCFullYear() + "-" + (calEvent.start._d.getUTCMonth()+1) + "-" + calEvent.start._d.getUTCDate(), HoraInicio:calEvent.start._d.getUTCHours() + ":" + calEvent.start._d.getUTCMinutes(), FechaFin:calEvent.end._d.getUTCFullYear() + "-" + (calEvent.end._d.getUTCMonth()+1) + "-" + calEvent.end._d.getUTCDate(), HoraFin:calEvent.end._d.getUTCHours() + ":" + calEvent.end._d.getUTCMinutes(), Ocupacion:calEvent.Ocupacion, Dia:calEvent._fullDay, Publicada:1};
                 $.ajax({
                     type: "POST",
                     url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=actualizarClase'),
@@ -204,7 +184,9 @@
                 }});
             },
             eventResize: function(calEvent) {
-                var json = {idClase:calEvent.idClase,idActividad:calEvent.idActividad,idSala:calEvent.idSala,FechaInicio:calEvent.start._d.getUTCFullYear() + "-" + (calEvent.start._d.getUTCMonth()+1) + "-" + calEvent.start._d.getUTCDate(), HoraInicio:calEvent.start._d.getUTCHours() + ":" + calEvent.start._d.getUTCMinutes(), FechaFin:calEvent.end._d.getUTCFullYear() + "-" + (calEvent.end._d.getUTCMonth()+1) + "-" + calEvent.end._d.getUTCDate(), HoraFin:calEvent.end._d.getUTCHours() + ":" + calEvent.end._d.getUTCMinutes(), Ocupacion:20, Dia:calEvent._fullDay, Publicada:1};
+                
+        
+                var json = {idClase:calEvent.idClase,idActividad:calEvent.idActividad,idSala:calEvent.idSala,FechaInicio:calEvent.start._d.getUTCFullYear() + "-" + (calEvent.start._d.getUTCMonth()+1) + "-" + calEvent.start._d.getUTCDate(), HoraInicio:calEvent.start._d.getUTCHours() + ":" + calEvent.start._d.getUTCMinutes(), FechaFin:calEvent.end._d.getUTCFullYear() + "-" + (calEvent.end._d.getUTCMonth()+1) + "-" + calEvent.end._d.getUTCDate(), HoraFin:calEvent.end._d.getUTCHours() + ":" + calEvent.end._d.getUTCMinutes(), Ocupacion:calEvent.Ocupacion, Dia:calEvent._fullDay, Publicada:1};
                 $.ajax({
                     type: "POST",
                     url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=actualizarClase'),
@@ -223,22 +205,15 @@
             selectHelper: true,
             
             eventClick: function(calEvent, jsEvent, view) {     
+            //var data = event.dataTransfer.getData("Text");
             
-            
-            $('#NombreClase').val(calEvent.idActividad);
-            $('#NombreSala').val(calEvent.idActividad);
-            //$('#eventUrl').attr('href',calEvent.idActividad);
+            $('#idActividad').val(calEvent.idActividad);
+            $('#idSala').val(calEvent.idSala);
+            $('#OcupacionClase').val(calEvent.OcupacionClase);
+            $('#FechaInicio').val(calEvent._start._d.toLocaleDateString() + " " + calEvent._start._d.getHours() + ":" + calEvent._start._d.getMinutes());
+            $('#FechaFin').val(calEvent._end._d.toLocaleDateString() + " " + calEvent._end._d.getHours() + ":" + calEvent._end._d.getMinutes());
             $('#fullCalModal').modal();
-                    $(document).ready(function(){
-                        $("#diaCompleto").keydown(function() {
-                            if($("#checkbox").is(':checked')) {  
-                                alert("EstÃ¡ activado");  
-                            } else {  
-                                alert("No estÃ¡ activado");  
-                            }  
-                        });  
-
-                    });  
+ 
                     $('#fechaInicio').datetimepicker({
                         dayOfWeekStart : 1,
                         lang:'es',
@@ -258,8 +233,6 @@
                         timepickerScrollbar:false
                         });   
                         
-                    
-                        
                     $('#fullCalModal').find('form').on('submit', function(ev){
                       var json = {idClase: calEvent.idClase, idActividad: calEvent.idActividad, idSala:calEvent.idSala, FechaInicio:$("#fechaInicio").val().substring(0,9), HoraInicio:$("#fechaInicio").val().substring(10,15), FechaFin:$("#fechaFin").val().substring(0,9), HoraFin:$("#fechaFin").val().substring(10,15), Dia:0, Ocupacion:20, Publicada:1};
                       $.ajax({
@@ -277,12 +250,12 @@
                     					
                         ev.preventDefault();
                         calEvent.title = $(this).find("input[type=text]").val();
-                        calendar.fullCalendar('updateEvent', calEvent);
+                        $('#calendar').fullCalendar('updateEvent', calEvent);
                         $('#fullCalModal').modal("hide");
                       });
                       
-                      $('#fullCalModal').find('button[data-action=delete]').on('click', function() {                        
-                        calendar.fullCalendar('removeEvents' , function(ev){
+                    $('#fullCalModal').find('button[data-action=delete]').on('click', function() {                        
+                        $('#calendar').fullCalendar('removeEvents' , function(ev){
                           $.ajax({
                             type: "POST",
                             url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=borrarClase'),
@@ -296,13 +269,14 @@
                             error: function( jqXHR, textStatus, errorThrown ) {
                             }
                           });
-                          return (ev._id == calEvent._id);
-                        })
+                          return (ev._id === calEvent._id);
+                        });
                         $('#fullCalModal').modal("hide");
                       });
 			
-                      $('#fullCalModal').modal('show').on('hidden', function(){
-                        $('#fullCalModal').remove();
+                    $('#fullCalModal').modal('show').on('hidden', function(){
+                    
+                    $('#fullCalModal').remove();
                       });                      
                     }
                   });
@@ -314,13 +288,13 @@
     <div class="col-xs-12">
         <!-- PAGE CONTENT BEGINS -->
         <div class="row">
-            <div class="col-sm-9">
+            <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
                 <div class="space"></div>
 
                 <div id="calendar"></div>
             </div>
 
-            <div class="col-sm-3">
+            <div class="col-lg-3  hidden-md hidden-sm hidden-xs">
                 <div class="widget-box transparent">
                     <div class="widget-header">
                         <h4>Actividades</h4>
@@ -329,7 +303,7 @@
                     <div class="widget-body" id="actividades">		
                         <div class='widget-main no-padding'>
                             <div id='external-events'>
-                                <div class='fc-event' ng_repeat="actividad in actividades"><i class='ace-icon fa fa-arrows'></i>
+                                <div id ="{{actividad.idActividad}}" class='fc-event' ng_repeat="actividad in actividades"><i class='ace-icon fa fa-arrows'></i>
                                 {{actividad.NombreActividad}}
                                 </div>
                                 </div>
@@ -347,35 +321,49 @@
                       <div class="modal-dialog">
                        <div class="modal-content">
                         <div class="modal-body">
-                         <button type="button" class="close" data-dismiss="modal" style="margin-top:-10px;">&times;</button>
-                         
-                          <form role="form" class="no-margin"  name="formulario">
+                            <div class="form-group">
+                            <div class="col-md-12">
+                          <form role="form" name="formulario">
+				<input  type="hidden" class="input-sm" name="idClase" id="idClase">
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <input ng-model="clase.idClase" type="hidden" class="input-sm" name="idClase" id="idClase">
-                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Nombre Clase</label>
-                                <input type="text" ng-model="clase.NombreClase" value="{{calEvent.idSala}}"  class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="nombreclase" id="NombreClase" required >
+                                <label class="control-label col-lg-4 col-md-12 col-sm-12 col-xs-12" >Actividad</label>
+                                <select  name="idActividad" id="idActividad" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
+                                    <option ng_repeat="actividad in actividades" value="{{actividad.idActividad}}">{{actividad.NombreActividad}}</option>
+                                </select>
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Nombre Sala</label>
-                                <input type="text" ng-model="clase.NombreSala"   class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="nombresala" id="NombreSala" required >
+                                <label class="control-label col-lg-4 col-md-12 col-sm-12 col-xs-12" >Sala</label>
+                                <select  name="idSala" id="idSala" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
+                                    <option ng_repeat="sala in salas" value="{{sala.idSala}}">{{sala.NombreSala}}</option>
+                                </select>
                                 </div>
-                              <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Actividad</label>
-                                <input type="text" ng-model="clase.Actividad"   class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="nombresala" id="NombreSala" required >
-                              </div>
-                                <div  class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Fecha Inicio</label>
-                                <input id="FechaInicio" ng_disabled="true" ng-model="clase.FechaInicio" type="text" class="input-sm col-md-2 col-sm-4 col-xs-7" name="FechaInicio">
+				<div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label col-lg-4 col-md-12 col-sm-12 col-xs-12" >Ocupacion</label>
+                                <input class="input-sm color" id="OcupacionClase" name="OcupacionClase" required>
                                 </div>
                                 <div  class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Fecha Fin</label>
-                                <input id="FechaFin" ng_disabled="true" ng-model="clase.FechaFin" type="text" class="input-sm col-md-2 col-sm-4 col-xs-7" name="FechaFin">
+                                <label class="control-label col-lg-4 col-md-12 col-sm-12 col-xs-12" >Fecha Inicio</label>
+                                <input ng_disabled="true" id="fechaInicio"  type="text" class="input-sm col-md-2 col-sm-4 col-xs-7" name="fechaInicio">
+                                </div>
+                                <div  class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label col-lg-4 col-md-12 col-sm-12 col-xs-12" >Hora Inicio</label>
+                                <input ng_disabled="true" id="horaInicio"  type="text" class="input-sm col-md-2 col-sm-4 col-xs-7" name="horaInicio">
+                                </div>
+                                <div  class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label col-lg-4 col-md-12 col-sm-12 col-xs-12" >Fecha Fin</label>
+                                <input ng_disabled="true" id="fechaFin" type="text" class="input-sm col-md-2 col-sm-4 col-xs-7" name="fechaFin">
+                                </div>
+                                <div  class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label col-lg-4 col-md-12 col-sm-12 col-xs-12" >Hora Fin</label>
+                                <input ng_disabled="true" id="horaFin" type="text" class="input-sm col-md-2 col-sm-4 col-xs-7" name="horaFin">
                                 </div>
                              </form>
+                            </div>
+                          </div>
                         </div>
                         <div class="modal-footer">
-                         <button type="button" class="btn btn-sm btn-danger" data-action="delete"><i class="ace-icon fa fa-trash-o"></i> Delete Event</button>
-                         <button type="button" class="btn btn-sm" data-dismiss="modal"><i class="ace-icon fa fa-times"></i> Cancel</button>
+                         <button type="button" class="btn btn-sm btn-danger" data-action="delete"><i class="ace-icon fa fa-trash-o"></i>Eliminar Clase</button>
+                         <button type="button" class="btn btn-sm" data-dismiss="modal"><i class="ace-icon fa fa-times"></i>Cancelar</button>
                        </div>
                       </div>
                      </div>

@@ -69,27 +69,14 @@ class ClasesBO extends Rest{
 
         $idActividad = $this->datosPeticion['idActividad'];
         $idSala = $this->datosPeticion['idSala'];
-        $FechaInicio = $this->datosPeticion['FechaInicio'];
+        $FechaInicio = date("Y-m-d",strtotime($this->datosPeticion['FechaInicio']));
         $HoraInicio = $this->datosPeticion['HoraInicio'];                
-        $FechaFin = $this->datosPeticion['FechaFin'];
+        $FechaFin = date("Y-m-d",strtotime($this->datosPeticion['FechaFin']));
         $HoraFin = $this->datosPeticion['HoraFin'];        
         $Ocupacion = $this->datosPeticion['Ocupacion'];
         $Dia = $this->datosPeticion['Dia'];
         $Publicada = $this->datosPeticion['Publicada'];
-
-        //if (!$this->existeUsuario($email)) {  
-        /* $query = $this->_conn->prepare("INSERT into clase(idClase, Actividad, Sala, Hora_Inicio, Hora_Fin, Ocupacion, Dia, Publicada) 
-          VALUES (:idClase, :Actividad, :Sala, :Hora_Inicio, :Hora_Fin, :Ocupacion, :Dia, :Publicada)");
-          $query->bindValue(":idClase", $idClase);
-          $query->bindValue(":Actividad", $Actividad);
-          $query->bindValue(":Sala", $Sala);
-          $query->bindValue(":Hora_Inicio", $Hora_Inicio);
-          $query->bindValue(":Hora_Fin", $Hora_Fin);
-          $query->bindValue(":Ocupacion", $Ocupacion);
-          $query->bindValue(":Dia", $Dia);
-          $query->bindValue(":Publicada", $Publicada);
-          $query->execute(); */
-
+        
         $this->con = ConexionBD::getInstance();
         $clase = new ClaseModel();
 
@@ -167,19 +154,7 @@ class ClasesBO extends Rest{
             $Publicada = $this->datosPeticion['Publicada'];
 
             if (!empty($idClase)) {
-                /* $query = $this->_conn->prepare("update clase set Hora_Inicio=:Hora_Inicio, Hora_Fin=:Hora_Fin, Ocupacion=:Ocupacion, Dia=:Dia, Publicada=:Publicada 
-                  WHERE idClase=:idClase and Actividad=:Actividad and Sala=:Sala");
-                  $query->bindValue(":idClase", $idClase);
-                  $query->bindValue(":Actividad", $Actividad);
-                  $query->bindValue(":Sala", $Sala);
-                  $query->bindValue(":Hora_Inicio", $Hora_Inicio);
-                  $query->bindValue(":Hora_Fin", $Hora_Fin);
-                  $query->bindValue(":Ocupacion", $Ocupacion);
-                  $query->bindValue(":Dia", $Dia);
-                  $query->bindValue(":Publicada", $Publicada);
-                  $query->execute();
-                  $filasActualizadas = $query->rowCount(); */
-
+                
                 $this->con = ConexionBD::getInstance();
                 $clase = new ClaseModel();
 
@@ -213,11 +188,7 @@ class ClasesBO extends Rest{
         $idClase = $this->datosPeticion['idClase'];
 
         if ($idClase >= 0) {
-            /* $query = $this->_conn->prepare("delete from clase WHERE idClase=:idClase");
-              $query->bindValue(":idClase", $idClase);
-              $query->execute(); */
-            //rowcount para insert, delete. update  
-            //$filasBorradas = $query->rowCount();
+            
             $this->con = ConexionBD::getInstance();
             $clase = new ClaseModel();
             $clase->setIdClase($idClase);
@@ -242,15 +213,7 @@ class ClasesBO extends Rest{
         //el constructor del padre ya se encarga de sanear los datos de entrada  
         $idClase = $this->datosPeticion['idClase'];
 
-        //consulta preparada ya hace mysqli_real_escape()  
-        /* $query = $this->_conn->prepare("SELECT idClase, Actividad, Sala, Hora_Inicio, Hora_Fin, Ocupacion, Dia, Publicada 
-          FROM clase WHERE idClase=:idClase");
-          $query->bindValue(":idClase", $idClase);
-          $fila = $query->execute();
-
-          $query->execute();^ */
-
-
+       
         $this->con = ConexionBD::getInstance();
         $clase = new ClaseModel();
 

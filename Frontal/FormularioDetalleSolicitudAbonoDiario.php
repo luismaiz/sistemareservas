@@ -153,10 +153,10 @@
 <div>
     <ul class="breadcrumb">
         <li>
-            <a href="#">Inicio</a>
+            <a href="Inicio.php">Inicio</a>
         </li>
         <li>
-            <a href="Salas.php">Solicitud</a>
+            <a href="Reservas.php">Solicitud</a>
         </li>
         <li>
             <a href="#">Abono Diario</a>

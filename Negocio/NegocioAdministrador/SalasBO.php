@@ -172,7 +172,12 @@ class SalasBO  extends Rest {
             $respuesta['salas'] = $array;
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
-        $this->mostrarRespuesta($this->devolverError(2), 204);
+		else
+        {
+            $respuesta['estado'] = 'No se encontraron datos';
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(2)), 400);
     }
 
     private function obtenerSala() {

@@ -13,6 +13,7 @@ class SalaModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTrac
 	const SQL_UPDATE='UPDATE `sala` SET `idSala`=?,`NombreSala`=?,`CapacidadSala`=?,`DescripcionSala`=?,`FechaAlta`=?,`FechaBaja`=? WHERE `idSala`=?';
 	const SQL_SELECT_PK='SELECT * FROM `sala` WHERE `idSala`=?';
 	const SQL_DELETE_PK='DELETE FROM `sala` WHERE `idSala`=?';
+	const SQL_SELECT='SELECT * FROM `sala`';
 	const FIELD_IDSALA=-1779113975;
 	const FIELD_NOMBRESALA=949418583;
 	const FIELD_CAPACIDADSALA=-86431542;

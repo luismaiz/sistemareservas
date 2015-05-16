@@ -201,10 +201,10 @@
 <div>
     <ul class="breadcrumb">
         <li>
-            <a href="#">Inicio</a>
+            <a href="Inicio.php">Inicio</a>
         </li>
         <li>
-            <a href="Salas.php">Solicitudes</a>
+            <a href="TipoSolicitud.php">Solicitudes</a>
         </li>
         <li>    
             <a href="#">Detalle Tipo Solicitud</a>

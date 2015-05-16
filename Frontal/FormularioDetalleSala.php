@@ -90,6 +90,9 @@
             };
 
             $scope.actualizarSala = function(){
+               
+               
+                  
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala');
                 var Params = 'idSala='+ $location.search().idSala +
                     '&NombreSala='+ document.getElementById('NombreSala').value +
@@ -110,6 +113,7 @@
                 {
                     document.getElementById('divError').style.display = 'block';
                 }
+            
             };
             
             
@@ -202,7 +206,7 @@
 <div>
     <ul class="breadcrumb">
         <li>
-            <a href="#">Inicio</a>
+            <a href="Inicio.php">Inicio</a>
         </li>
         <li>
             <a href="Salas.php">Salas</a>
@@ -271,7 +275,7 @@
                                 </div>
                                 
                                 <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Salas.php?detalle=1' " />
-                                <input style='display:none;' id="aceptar" class="box btn-primary" type="submit" value="Aceptar" ng-click="guardarSala();" ng-disabled="formulario.$invalid" />
+                                <input data-bb="confirm" style='display:none;' id="aceptar" class="box btn-primary" type="submit" value="Aceptar" ng-click="guardarSala();" ng-disabled="formulario.$invalid" />
                                 <input style='display:none;' id="anular" class="box btn-primary" type="submit" value="Anular" ng-click="anularSala();"/>
                                 <input style='display:none;' id="activar" class="box btn-primary" type="submit" value="Activar" ng-click="activarSala();"/>
                              
