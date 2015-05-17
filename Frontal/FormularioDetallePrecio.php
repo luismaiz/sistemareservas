@@ -341,12 +341,10 @@
                                         </table>
                         </div>
                     </div>
-                    <input class="box btn-primary " type="button" value="Cancelar" onClick=" window.location.href='Precios.php?detalle=1' " />
-                    <input style='display:none;' id="aceptar" class="box btn-primary" type="submit" value="Aceptar" ng-click="crearPrecio();" ng-disabled="formulario.$invalid" />
-                    <input style='display:none;' id="anular" class="box btn-primary" type="submit" value="Anular" ng-click="anularPrecio();"/>
-                    <input style='display:none;' id="activar" class="box btn-primary" type="submit" value="Activar" ng-click="activarPrecio();"/>
-                    
-
+                    <input style='display:none;' id="anular" class="btn btn-sm btn-danger" type="submit" value="Anular" ng-click="anularPrecio();"/>
+                     <input style='display:none;' id="aceptar" class="btn btn-sm btn-success" type="submit" value="Aceptar" ng-click="crearPrecio();" ng-disabled="formulario.$invalid" />
+                     <input style='display:none;' id="activar" class="btn btn-sm btn-action" type="submit" value="Activar" ng-click="activarPrecio();"/>
+                     <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='Precios.php?detalle=1' " />
             </div>
                                     </form>
 

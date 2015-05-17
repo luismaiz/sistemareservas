@@ -294,10 +294,10 @@
                     <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Fecha Baja</label>
                     <input ng_disabled="true" ng-model="actividad.FechaBaja" type="text" class="input-sm col-md-2 col-sm-4 col-xs-8" name="FechaBaja" id="FechaBaja" />
                     </div>
-                    <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Actividades.php?detalle=1' " />
-                    <input style='display:none;' id="aceptar" class="box btn-primary" type="button" value="Aceptar" ng-click="guardarActividad()" ng-disabled="formulario.$invalid"/>
-                    <input style='display:none;' id="anular" class="box btn-primary" type="submit" value="Anular" ng-click="anularActividad();"/>
-                    <input style='display:none;' id="activar" class="box btn-primary" type="submit" value="Activar" ng-click="activarActividad();"/>
+                     <input style='display:none;' id="anular" class="btn btn-sm btn-danger" type="submit" value="Anular" ng-click="anularActividad();"/>
+                     <input style='display:none;' id="aceptar" class="btn btn-sm btn-success" type="submit" value="Aceptar" ng-click="guardarActividad();" ng-disabled="formulario.$invalid" />
+                     <input style='display:none;' id="activar" class="btn btn-sm btn-action" type="submit" value="Activar" ng-click="activarActividad();"/>
+                     <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='Actividades.php?detalle=1' " />
                 </form>
             </div>
         </div>

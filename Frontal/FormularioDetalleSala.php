@@ -273,11 +273,10 @@
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Fecha Baja</label>
                                 <input id="FechaBaja" ng_disabled="true" ng-model="sala.FechaBaja" type="text" class="input-sm col-md-2 col-sm-4 col-xs-7" name="FechaBaja">
                                 </div>
-                                
-                                <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='Salas.php?detalle=1' " />
-                                <input data-bb="confirm" style='display:none;' id="aceptar" class="btn btn-sm btn-success" type="submit" value="Aceptar" ng-click="guardarSala();" ng-disabled="formulario.$invalid" />
                                 <input style='display:none;' id="anular" class="btn btn-sm btn-danger" type="submit" value="Anular" ng-click="anularSala();"/>
+                                <input data-bb="confirm" style='display:none;' id="aceptar" class="btn btn-sm btn-success" type="submit" value="Aceptar" ng-click="guardarSala();" ng-disabled="formulario.$invalid" />
                                 <input style='display:none;' id="activar" class="btn btn-sm btn-action" type="submit" value="Activar" ng-click="activarSala();"/>
+                                <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='Salas.php?detalle=1' " />
                              
                              </form>
                            </div>  

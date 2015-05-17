@@ -238,14 +238,11 @@
                                 <span ng-show="formulario.dni.$error.pattern">* Formato de DNI no válido 12345678-A</span>
                                 </span>
                                 </div>
-                                
-                                <input class="box btn-primary" type="button" value="Cancelar" onClick=" window.location.href='Reservas.php?detalle=1' " />
-                                <input ng_show="abonodiario.Gestionado=== '1' && abonodiario.Anulado=== '0'" id="actualizar" class="box btn-primary" type="submit" value="Modificar Solicitud" ng-click="actualizarSolicitud();" ng-disabled="formulario.$invalid"  />
-                                <input ng_show="abonodiario.Gestionado=== '0' && abonodiario.Anulado=== '0'" id="validacion" class="box btn-primary" type="submit" value="Validar Solicitud" ng-click="validarSolicitud();" ng-disabled="formulario.$invalid" />
-                                <input ng_show="abonodiario.Gestionado=== '1' && abonodiario.Anulado=== '0'" id="anulacion" class="box btn-primary" type="submit" value="Anular Solicitud" ng-click="anularSolicitud();"  />
-                                <input ng_show="abonodiario.Anulado=== '1'" id="anulacion" class="box btn-primary" type="submit" value="Activar Solicitud" ng-click="activarSolicitud();"  />
-                                
-                                
+                                <input ng_show="abonodiario.Gestionado=== '1' && abonodiario.Anulado=== '0'" id="anulacion" class="btn btn-sm btn-danger" type="submit" value="Anular Solicitud" ng-click="anularSolicitud();"  />
+                                <input ng_show="abonodiario.Gestionado=== '1' && abonodiario.Anulado=== '0'" id="actualizar" class="btn btn-sm btn-success" type="submit" value="Modificar Solicitud" ng-click="actualizarSolicitud();" ng-disabled="formulario.$invalid"  />
+                                <input ng_show="abonodiario.Gestionado=== '0' && abonodiario.Anulado=== '0'" id="validacion" class="btn btn-sm btn-success" type="submit" value="Validar Solicitud" ng-click="validarSolicitud();" ng-disabled="formulario.$invalid" />
+                                <input ng_show="abonodiario.Anulado=== '1'" id="anulacion" class="btn btn-sm btn-action" type="submit" value="Activar Solicitud" ng-click="activarSolicitud();"  />
+                                <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='Reservas.php?detalle=1' " />
                              </form>
                            </div>                                         
                         </div>
