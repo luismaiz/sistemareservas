@@ -46,6 +46,7 @@
                 $scope.tab4 = true;
             }
         };
+        /*
         $scope.toggleSelection = function (idActividad) {
 
             var idx = $scope.selection.indexOf(idActividad);
@@ -58,7 +59,7 @@
             else {
                 $scope.selection.push(idActividad);
             }
-        };
+        };*/
         $scope.obtenerProvincia = function (codigoPostal) {
             if (codigoPostal < 52999 && codigoPostal > 01000) {
                 var provincia = '';
@@ -420,8 +421,8 @@
                                         <div id="divSinResultados">
                                         </div>
                                         <div id="actividades">
-                                            <p ng-repeat="actividad in actividades" class="control-label col-md-4 col-sm-6 col-xs-12"><label class="control-label">
-                                                    <input type="checkbox" name="actividades" ng-model="s.Actividades" ng-value="{{ actividad.idActividad}}" ng-checked="selection.indexOf(actividad.idActividad) > -1" ng-click="toggleSelection(actividad.idActividad)" checklist-model="s.actividades" checklist-value="actividad">&nbsp; {{ actividad.NombreActividad}}</label><br/></p>
+                                            <label ng_repeat="actividad in actividades"   class="control-label col-md-4 col-sm-4 col-xs-4">
+                                                <input type="checkbox" name="actividades" ng-model="s.Actividades" ng-value="{{ actividad.idActividad}}" ng-checked="selection.indexOf(actividad.idActividad) > -1" ng-click="toggleSelection(actividad.idActividad)" checklist-model="actividad" checklist-value="actividad">&nbsp; {{ actividad.NombreActividad}}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -516,7 +517,7 @@
                                     <label class="control-label" >Localidad &nbsp;</label><input type="text" class="form-control" name="Localidad" ng-model="s.localidad" required  value="" placeholder="Madrid" id="Localidad"/>
                                 </div>
                                 <div class="col-md-2 col-sm-2 input-group-lg">
-                                    <label class="control-label" >Codigo Postal&nbsp;</label><input type="number" class="form-control" name="CP" ng-model="s.CP" min="01000" max="54999" id="CP" placeholder="28040" ng-pattern="/^[0-9]{4,5}/" ng-change="obtenerProvincia(s.CP);" />
+                                    <label class="control-label" >Codigo Postal&nbsp;</label><input type="number" class="form-control" name="CP" ng-model="s.CP" min="01000" max="54999" id="CP" placeholder="28040" ng-pattern="/^[0-9]{4,5}/" ng-change="obtenerProvincia(s.CP);" maxlength="5" />
                                     <span style="color:red" ng-show="formulario.CP.$dirty && formulario.CP.$invalid">
                                         <span ng-show="formulario.CP.$error.pattern">* Formato de CP no valido.</span>
                                         <span ng-show="formulario.CP.$error.required">* CP obligatorio.</span>

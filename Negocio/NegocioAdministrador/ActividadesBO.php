@@ -184,7 +184,7 @@ class ActividadesBO extends Rest {
     }
 
     private function obtenerActividad() {
-        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+        if ($_SERVER['REQUEST_METHOD'] != "GET") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
 
