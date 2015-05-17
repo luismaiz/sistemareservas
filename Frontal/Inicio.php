@@ -63,7 +63,28 @@
                 }
         
             };
-           $scope.obtenerabonos ();
+            $scope.obtenerabonos ();
+            
+            $scope.obtenerSolicitudesMes = function() {
+                
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesMes');
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes";
+                var Params = '';    
+                
+	        Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                
+                alert(Ajax.responseText);
+	
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                $scope.clases = parseInt(JSON.parse(Ajax.responseText).clases);
+                $scope.mensual = parseInt(JSON.parse(Ajax.responseText).mensual);
+                $scope.diario = parseInt(JSON.parse(Ajax.responseText).diario);
+                
+            };
+            $scope.obtenerSolicitudesMes ();
            
  
 }
@@ -80,7 +101,7 @@
     <div ng_controller="CargaSolicitudes">
 
         <div class="col-md-6 col-sm-6 col-xs-12">
-            <a  id="enlace" data-toggle="tooltip" title="{{numerosolicitudes}} nuevas solicitudes." class="well top-block" href="Reservas.php?solicitudes=1">
+            <a  id="enlace" data-toggle="tooltip" title="{{numerosolicitudes}}  nuevas solicitudes." class="well top-block" href="Reservas.php?solicitudes=1">
                 <i class="glyphicon glyphicon-user blue"></i>
                 <div id="abonosdiarios">Solicitudes Clases pendientes</div>
                 <div>{{numerosolicitudes}}</div>
@@ -95,43 +116,35 @@
                 <span class="notification" ng-bind="numeroabonos"></span>
             </a>
         </div>
-    </div>
-</div>
+    
 <div class="row"></div>
 <div class="row"></div><!--/row-->
 
 <div class="row">
-
-
     <div class="box col-md-6">
         <div class="box-inner">
             <div class="box-header well" data-original-title="">
                 <h2><i class="glyphicon glyphicon-list"></i> Estadistica semanal</h2>
-
-                <div class="box-icon">
-                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
-                            class="glyphicon glyphicon-chevron-up"></i></a>
-                </div>
             </div>
             <div class="box-content">
                 <ul class="dashboard-list">
                     <li>
                         <a href="#">
-                            <i class="glyphicon glyphicon-arrow-up"></i>
+                            <i class="glyphicon glyphicon-play"></i>
                             <span class="green">92</span>
                             Abonos mensuales
                         </a>
                     </li>
                     <li>
                         <a href="#">
-                            <i class="glyphicon glyphicon-arrow-down"></i>
+                            <i class="glyphicon glyphicon-play"></i>
                             <span class="red">15</span>
                             Clases Dirigidas
                         </a>
                     </li>
                     <li>
                         <a href="#">
-                            <i class="glyphicon glyphicon-minus"></i>
+                            <i class="glyphicon glyphicon-play"></i>
                             <span class="red">15</span>
                             Abono diario
                         </a>
@@ -146,32 +159,27 @@
         <div class="box-inner">
             <div class="box-header well" data-original-title="">
                 <h2><i class="glyphicon glyphicon-list"></i> Estadistica mensual</h2>
-
-                <div class="box-icon">
-                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
-                            class="glyphicon glyphicon-chevron-up"></i></a>
-                </div>
             </div>
             <div class="box-content">
                 <ul class="dashboard-list">
                     <li>
                         <a href="#">
-                            <i class="glyphicon glyphicon-arrow-up"></i>
-                            <span class="green">536</span>
+                            <i class="glyphicon glyphicon-play"></i>
+                            <span class="green" ng-bind="diario"></span>
                             Abonos diarios
                         </a>
                     </li>
                     <li>
                         <a href="#">
-                            <i class="glyphicon glyphicon-arrow-down"></i>
-                            <span class="red">450</span>
+                            <i class="glyphicon glyphicon-play"></i>
+                            <span class="red" ng-bind="clases"></span>
                             Reservas clases Dirigidas
                         </a>
                     </li>
                     <li>
                         <a href="#">
-                            <i class="glyphicon glyphicon-minus"></i>
-                            <span class="blue">360</span>
+                            <i class="glyphicon glyphicon-play"></i>
+                            <span class="blue" ng-bind="mensual"></span>
                             Abono mensual
                         </a>
                     </li>
@@ -184,7 +192,8 @@
     </div>
     <!--/span-->    
 </div><!--/row-->
-
+</div>
+</div>
 <!-- chart libraries start -->
 <!--<script src="bower_components/flot/excanvas.min.js"></script>-->
 <script src="Utilidades/bower_components/flot/jquery.flot.js"></script>

@@ -216,7 +216,7 @@ include 'config.php'
                                     <li class="nav-header">Menú Principal</li>
                                     <li><a class="ajax-link" href="Inicio.php"><i class="glyphicon glyphicon-home"></i><span> Inicio</span></a>
                                     </li>
-                                    <li><a class="ajax-link" href="Clases.php"><i class="glyphicon glyphicon-edit"></i><span> Clases</span></a>
+                                    <li><a class="ajax-link" href="Calendario.php"><i class="glyphicon glyphicon-edit"></i><span> Clases</span></a>
                                     </li>
                                 </ul>
                             </div>

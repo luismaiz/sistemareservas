@@ -694,6 +694,80 @@ class ReservasBO extends Rest{
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
     }
+    
+    private function obtenerSolicitudesMes() {
+        
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+                        
+        $this->con = ConexionBD::getInstance();
+        $solicitud = new SolicitudModel();
+        $solicitud->setIdTipoSolicitud(1);
+        
+        $filter=array(
+        new DFC(SolicitudModel::FIELD_IDTIPOSOLICITUD, '1', DFC::EXACT),
+        new DFC(SolicitudModel::FIELD_FECHASOLICITUD, date('Y,m-1'), DFC::GREATER)
+        );
+        
+        $filas = $solicitud->findByFilter($this->con,$filter);
+        
+        $solicitud->setIdTipoSolicitud(2);
+        $filtermensual=array(
+        new DFC(SolicitudModel::FIELD_IDTIPOSOLICITUD, '2', DFC::EXACT),
+        new DFC(SolicitudModel::FIELD_FECHASOLICITUD, date('Y,m-1'), DFC::GREATER)
+        );
+        
+        $filasmensual = $solicitud->findByFilter($this->con,$filtermensual);
+        
+        $solicitud->setIdTipoSolicitud(3);
+        $filterdiario=array(
+        new DFC(SolicitudModel::FIELD_IDTIPOSOLICITUD, '3', DFC::EXACT),
+        new DFC(SolicitudModel::FIELD_FECHASOLICITUD, date('Y,m-1'), DFC::GREATER)
+        );
+        
+        $filasdiario = $solicitud->findByFilter($this->con,$filterdiario);
+                                
+        $num = count($filas);
+        if ($num > 0) {
+            
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
+            //$respuesta['abonos'] = $array;
+            $respuesta['clases'] = $num;
+        }
+        else
+            $respuesta['clases']=0;
+        
+        $num = count($filasmensual);
+        if ($num > 0) {
+            
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filasmensual[$i]->toHash();
+            }
+            //$respuesta['abonos'] = $array;
+            $respuesta['mensual'] = $num;
+        }
+        else
+            $respuesta['mensual']=0;
+        
+        $num = count($filasdiario);
+        if ($num > 0) {
+            
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filasdiario[$i]->toHash();
+            }
+            //$respuesta['abonos'] = $array;
+            $respuesta['diario'] = $num;
+        }
+        else
+            $respuesta['diario'] = 0;
+        $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+    }
+    
 }
 
 $reservasBO = new ReservasBO();

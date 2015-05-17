@@ -148,7 +148,7 @@ if ($("#stackchart").length) {
 
 //DAtos
 //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesSemana";
-var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesSemana');
+var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesMes');
 
 var Params = '';    
 	        Ajax.open("POST", Url, false);
