@@ -475,8 +475,7 @@ class ReservasBO extends Rest{
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-                
-                        
+        
         $this->con = ConexionBD::getInstance();
         $sort = array(
             new DSC(SolicitudModel::FIELD_FECHASOLICITUD, DSC::ASC),
