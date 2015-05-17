@@ -54,16 +54,6 @@
      }
     
     jQuery(function($) {
-
- 
-        $('#fechaInicio').datetimepicker({
-                        lang:'es',
-                        format: 'd/m/Y H:i:00'//,
-                        });
-        $('#fechaFin').datetimepicker({
-                        lang:'es',
-                        format: 'd/m/Y H:i:00'//,
-                        }); 
         $('#external-events .fc-event').each(function() {				
             
             var eventObject = {
@@ -81,8 +71,12 @@
         /* initialize the calendar
 -----------------------------------------------------------------*/
 
+        var date = new Date();
+        var d = date.getDate();
+        var m = date.getMonth();
+        var y = date.getFullYear();
+
         $('#calendar').fullCalendar({
-            timezone: 'local',
             minTime: "09:00",
             maxTime: "22:00",
             allDaySlot:false,
@@ -95,17 +89,15 @@
             },
 	
             header: {
-                left: 'prev,next hoy',
+                left: '',
                 center: 'title',
-                right: ''
+                right: 'agendaWeek'
             },
             eventLimit: true, // allow "more" link when too many events
             defaultView: 'agendaWeek',            
             editable: true,
             droppable: true, // this allows things to be dropped onto the calendar !!!
-            selectable: true,
-            selectHelper: true,
-            
+                    
             events: function(start, end, timezone, callback) {
                                 
                 $.ajax({
@@ -117,16 +109,7 @@
                         var events = [];
                         
                         for(i=0; i<doc.clases.length; i++){
-                            
-                            // Split timestamp into [ Y, M, D, h, m, s ]
-                            
-                            var fechainicio = doc.clases[i].FechaInicio.toLocaleString().split(/[- :]/);
-                            var fechafin = doc.clases[i].FechaFin.toLocaleString().split(/[- :]/);
-                                                     
-                            // Apply each element to the Date function
-                            var Cfechainicio = new Date(fechainicio[0], fechainicio[1]-1, fechainicio[2], fechainicio[3], fechainicio[4], fechainicio[5]);
-                            var Cfechafin = new Date(fechafin[0], fechafin[1]-1, fechafin[2], fechafin[3], fechafin[4], fechafin[5]);
-                            
+                           
                             events.push({
                                 
                                 //hay que obtener el nombre de la actividad
@@ -136,8 +119,8 @@
                                 OcupacionClase: doc.clases[i].Ocupacion,
                                 idClase: doc.clases[i].idClase,
                                 allDay: false,
-                                start: Cfechainicio,
-                                end:  Cfechafin,
+                                start: doc.clases[i].Dia === 1 ? '' : new Date(new Date(doc.clases[i].FechaInicio).getUTCFullYear(), new Date(doc.clases[i].FechaInicio).getUTCMonth(), new Date(doc.clases[i].FechaInicio).getUTCDate(), (doc.clases[i].HoraInicio).substring(0,2), (doc.clases[i].HoraInicio).substring(3,5)),
+                                end:  new Date(new Date(doc.clases[i].FechaInicio).getFullYear(), new Date(doc.clases[i].FechaInicio).getMonth(), new Date(doc.clases[i].FechaInicio).getDate(), (doc.clases[i].HoraFin).substring(0,2), (doc.clases[i].HoraFin).substring(3,5)),                                
                                 backgroundColor: "#"+doc.clases[i].Ocupacion,
                                 borderColor: "#"+doc.clases[i].Ocupacion
                             });
@@ -146,36 +129,46 @@
                     }
                 });
             },
+            dayClick: function(date, jsEvent, view) {
+                $('#fullCalModal').modal();
+            },
+                    
             drop: function(event,date, allDay) { // this function is called when something is dropped   
                 var inicio = new Date((event._d).getFullYear(), (event._d).getMonth(), (event._d).getDate(), (event._d).getHours(), (event._d).getMinutes(), (event._d).getSeconds()).toUTCString();
                 var fin = new Date((event._d).getFullYear(), (event._d).getMonth(), (event._d).getDate(), ((event._d).getHours()+1), (event._d).getMinutes(), (event._d).getSeconds()).toUTCString();
+                var horainicio = (event._d).getUTCHours() + ":" + (event._d).getUTCMinutes() + ":" + (event._d).getUTCSeconds();
+                var horafin = (event._d).getUTCHours()+1 + ":" + (event._d).getUTCMinutes() + ":" + (event._d).getUTCSeconds();
+                                                
                 var originalEventObject = $(this).data('eventObject');
                 var $idActividad = parseInt($(this).attr('id'));
                 var copiedEventObject = $.extend({}, originalEventObject);
                 copiedEventObject.start =  inicio;
                 copiedEventObject.end =  fin;
                 copiedEventObject.allDay = false;
-                copiedEventObject.recurring = true;
-
-                $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);	
+                var $HoraInicio = horainicio;
+                var $HoraFin = horafin;
+                $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);			
                                 
-                var json = {idActividad:$idActividad,idSala:3,FechaInicio:inicio, FechaFin:fin, Ocupacion:'', Dia:0, Publicada:1};
-                $.ajax({
-                    type: "POST",
-                    url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=crearClase'),
-                    data: jQuery.param( json ),
-                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
-                    dataType: "json",
-                    async: true,
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=crearClase');		
+                		
+                var Params ='idActividad='+ $idActividad +
+                    '&idSala='+ 3 +
+                    '&FechaInicio='+ (new Date(copiedEventObject.start)).toISOString().substring(0,10)+
+                    '&HoraInicio='+ $HoraInicio+
+                    '&FechaFin='+ (new Date(copiedEventObject.end)).toISOString().substring(0,10)+
+                    '&HoraFin='+ $HoraFin+
+                    '&Ocupacion='+ ''+
+                    '&Dia='+ 0+
+                    '&Publicada='+ 1;
 
-                    success: function(data, textStatus) {
-                        alert("clase creada");
-                    },
-                    error: function( jqXHR, textStatus, errorThrown ) {
-                }}); 
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                
+                alert(Ajax.responseText);
             },
-            eventDrop: function(calEvent, delta) { 
-               var json = {idClase:calEvent.idClase,idActividad:calEvent.idActividad,idSala:calEvent.idSala,FechaInicio:calEvent.start._d.toUTCString(), FechaFin:calEvent.end._d.toUTCString(), Ocupacion:calEvent.OcupacionClase, Dia:calEvent._fullDay, Publicada:1};
+            eventDrop: function(calEvent, delta) {                
+                var json = {idClase:calEvent.idClase,idActividad:calEvent.idActividad,idSala:calEvent.idSala,FechaInicio:calEvent.start._d.getUTCFullYear() + "-" + (calEvent.start._d.getUTCMonth()+1) + "-" + calEvent.start._d.getUTCDate(), HoraInicio:calEvent.start._d.getUTCHours() + ":" + calEvent.start._d.getUTCMinutes(), FechaFin:calEvent.end._d.getUTCFullYear() + "-" + (calEvent.end._d.getUTCMonth()+1) + "-" + calEvent.end._d.getUTCDate(), HoraFin:calEvent.end._d.getUTCHours() + ":" + calEvent.end._d.getUTCMinutes(), Ocupacion:calEvent.Ocupacion, Dia:calEvent._fullDay, Publicada:1};
                 $.ajax({
                     type: "POST",
                     url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=actualizarClase'),
@@ -191,101 +184,8 @@
                 }});
             },
             eventResize: function(calEvent) {
-                
-                var json = {idClase:calEvent.idClase,idActividad:calEvent.idActividad,idSala:calEvent.idSala,FechaInicio:calEvent.start._d.toUTCString(), FechaFin:calEvent.end._d.toUTCString(), Ocupacion:calEvent.OcupacionClase, Dia:calEvent._fullDay, Publicada:1};
-                $.ajax({
-                    type: "POST",
-                    url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=actualizarClase'),
-                    data: jQuery.param( json ),
-                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
-                    dataType: "json",
-                    async: true,
-
-                    success: function(data, textStatus) {
-                        //alert("clase actualizada");
-                    },
-                    error: function( jqXHR, textStatus, errorThrown ) {
-                }});    
-            },
-            dayClick: function(date, jsEvent, view) {
-                $('#fullCalModal').modal();
-                $('#idActividad').attr("disabled", false);
-                $('#idSala').attr("disabled", false);    
-                $('#fullCalModal').find('button[data-action=crear]').show();
-                $('#fullCalModal').find('button[data-action=actualizar]').hide();
-                $('#fullCalModal').find('button[data-action=delete]').hide();
-                
-                $('#OcupacionClase').val('FFFFFF');
-                $('#OcupacionClase').css('background-color',"#FFFFFF");
-                
-                 $('#fullCalModal').find('button[data-action=crear]').on('click', function(ev) { 
-                                                                             
-                var fechainicio = $('#fechaInicio').val().trim().split(/[/ :]/);
-                var fechafin = $('#fechaFin').val().trim().split(/[/ :]/);
-                            
-                var Cfechainiciocarga = new Date(fechainicio[2],isNaN(parseInt(fechainicio[1].substring(0,2)))?fechainicio[1].substring(1,3)-1:fechainicio[1].substring(0,2)-1,fechainicio[0],fechainicio[3],fechainicio[4],fechainicio[5]);
-                var Cfechafincarga = new Date(fechafin[2],isNaN(parseInt(fechafin[1].substring(0,2)))?fechafin[1].substring(1,3)-1:fechafin[1].substring(0,2)-1,fechafin[0],fechafin[3],fechafin[4],fechafin[5]);
-                    
-                var json = {idActividad:$('#idActividad').val(),idSala:$('#idSala').val(),FechaInicio:Cfechainiciocarga.toUTCString(), FechaFin:Cfechafincarga.toUTCString(), Ocupacion:$('#OcupacionClase').val(), Dia:0, Publicada:1};
-                $.ajax({
-                    type: "POST",
-                    url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=crearClase'),
-                    data: jQuery.param( json ),
-                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
-                    dataType: "json",
-                    async: true,
-
-                    success: function(data, textStatus) {
-                        //alert("clase creada");
-                        //$('#calendar').fullCalendar('removeEvents');
-                        //$('#calendar').fullCalendar('addEventSource', events);         
-                        $('#calendar').fullCalendar('rerenderEvents' );
-                    },
-                    error: function( jqXHR, textStatus, errorThrown ) {
-                }});
-            var objeto = new Object();
-            
-            objeto.title= Actividades[$('#idActividad').val()-1].NombreActividad;
-            objeto.idActividad= $('#idActividad').val();
-            objeto.idSala= $('#idSala').val();
-            objeto.OcupacionClase= $('#OcupacionClase').val();
-            objeto.idClase= 0;
-            objeto.allDay= false;
-            objeto.start= Cfechainiciocarga.toUTCString();
-            objeto.end=  Cfechafincarga.toUTCString();
-            objeto.backgroundColor= "#"+ $('#OcupacionClase').val();
-            objeto.borderColor= "#"+ $('#OcupacionClase').val();
-            
-            $('#calendar').fullCalendar('renderEvent', objeto, true);
-                            
-                            $('#fullCalModal').modal("hide");
-                      });
-            },
-            
-            eventClick: function(calEvent, jsEvent, view) {     
-                                   
-            var Cfechainiciocarga = new Date(calEvent._start._d.getFullYear(),calEvent._start._d.getMonth(),calEvent._start._d.getDate(),calEvent._start._d.getHours(),calEvent._start._d.getMinutes(),calEvent._start._d.getSeconds());
-            var Cfechafincarga = new Date(calEvent._end._d.getFullYear(),calEvent._end._d.getMonth(),calEvent._end._d.getDate(),calEvent._end._d.getHours(),calEvent._end._d.getMinutes(),calEvent._end._d.getSeconds());
-            
-            $('#idActividad').val(calEvent.idActividad);
-            $('#idSala').val(calEvent.idSala);
-            $('#OcupacionClase').val(calEvent.OcupacionClase);
-            $('#OcupacionClase').css('background-color',"#"+calEvent.OcupacionClase);
-            $('#OcupacionClase').text('');
-            $('#fechaInicio').val(Cfechainiciocarga.toLocaleString());
-            $('#fechaFin').val(Cfechafincarga.toLocaleString());
-            
-            $('#fullCalModal').find('button[data-action=crear]').hide();
-            $('#fullCalModal').find('button[data-action=actualizar]').show();
-            $('#fullCalModal').find('button[data-action=delete]').show();
-            $('#idActividad').attr("disabled", true);
-            $('#idSala').attr("disabled", true);
-            $('#fullCalModal').find('button[data-action=actualizar]').on('click', function(ev){
-                var fechainicio = $('#fechaInicio').val().replace(/[^0-9]+/g, '');
-                var fechafin = $('#fechaFin').val().replace(/[^0-9]+/g, '');
-                var CfechainiciocargaActu = new Date(fechainicio.substring(4,8),fechainicio.substring(2,4)-1,fechainicio.substring(0,2),fechainicio.substring(8,10),fechainicio.substring(10,12),fechainicio.substring(12,14));
-                var CfechafincargaActu = new Date(fechafin.substring(4,8),fechafin.substring(2,4)-1,fechafin.substring(0,2),fechafin.substring(8,10),fechafin.substring(10,12),fechafin.substring(12,14));
-               var json = {idClase:calEvent.idClase,idActividad:calEvent.idActividad,idSala:calEvent.idSala,FechaInicio:CfechainiciocargaActu.toUTCString(), FechaFin:CfechafincargaActu.toUTCString(), Ocupacion:$('#OcupacionClase').val(), Dia:calEvent._fullDay, Publicada:1};
+                       
+                var json = {idClase:calEvent.idClase,idActividad:calEvent.idActividad,idSala:calEvent.idSala,FechaInicio:calEvent.start._d.getUTCFullYear() + "-" + (calEvent.start._d.getUTCMonth()+1) + "-" + calEvent.start._d.getUTCDate(), HoraInicio:calEvent.start._d.getUTCHours() + ":" + calEvent.start._d.getUTCMinutes(), FechaFin:calEvent.end._d.getUTCFullYear() + "-" + (calEvent.end._d.getUTCMonth()+1) + "-" + calEvent.end._d.getUTCDate(), HoraFin:calEvent.end._d.getUTCHours() + ":" + calEvent.end._d.getUTCMinutes(), Ocupacion:calEvent.Ocupacion, Dia:calEvent._fullDay, Publicada:1};
                 $.ajax({
                     type: "POST",
                     url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=actualizarClase'),
@@ -296,20 +196,75 @@
 
                     success: function(data, textStatus) {
                         alert("clase actualizada");
-                        ev.preventDefault();
-                        calEvent.title = $(this).find("input[type=text]").val();
-                        calEvent.Ocupacion = $('#OcupacionClase').val();
-                        $('#calendar').fullCalendar('updateEvent', calEvent);
                     },
                     error: function( jqXHR, textStatus, errorThrown ) {
                 }});    
+            },
+            selectable: true,
+            selectHelper: true,
+            
+            eventClick: function(calEvent, jsEvent, view) {     
+            //var data = event.dataTransfer.getData("Text");
+            
+            $('#idActividad').val(calEvent.idActividad);
+            $('#idSala').val(calEvent.idSala);
+            $('#OcupacionClase').val(calEvent.OcupacionClase);
+            $('#FechaInicio').val(calEvent._start._d.toLocaleDateString() + " " + calEvent._start._d.getHours() + ":" + calEvent._start._d.getMinutes());
+            $('#FechaFin').val(calEvent._end._d.toLocaleDateString() + " " + calEvent._end._d.getHours() + ":" + calEvent._end._d.getMinutes());
+            $('#fullCalModal').modal();
+ 
+//                    $('#fechaInicio').datetimepicker({
+//                        dayOfWeekStart : 1,
+//                        lang:'es',
+//                        disabledDates:[],
+//                        startDate: calEvent._start._d.toLocaleDateString() + " " + calEvent._start._d.getHours() + ":" + calEvent._start._d.getMinutes(),
+//                        timeFormat: "HH:mm:ss",
+//                        dateFormat: "yyyy-mm-dd",
+//                        timepickerScrollbar:false
+//                        });
+//                    $('#fechaFin').datetimepicker({
+//                        dayOfWeekStart : 1,
+//                        lang:'es',
+//                        disabledDates:[],
+//                        startDate: calEvent._start._d.toLocaleDateString() + " " + calEvent._start._d.getHours() + ":" + calEvent._start._d.getMinutes(),
+//                        timeFormat: "HH:mm:ss",
+//                        dateFormat: "yyyy-mm-dd",
+//                        timepickerScrollbar:false
+//                        });   
 
-                
-                $('#fullCalModal').modal("hide");
-                });
+                        $('#fechaInicio').datetimepicker({
+                        
+                        dateFormat:'dd-mm-yy'
+                        
+                        });
+                        $('#fechaFin').datetimepicker({
+                        
+                        dateFormat:'dd-mm-yy'
+                        
+                        }); 
+                        
+                    $('#fullCalModal').find('form').on('submit', function(ev){
+                      var json = {idClase: calEvent.idClase, idActividad: calEvent.idActividad, idSala:calEvent.idSala, FechaInicio:$("#fechaInicio").val().substring(0,9), HoraInicio:$("#fechaInicio").val().substring(10,15), FechaFin:$("#fechaFin").val().substring(0,9), HoraFin:$("#fechaFin").val().substring(10,15), Dia:0, Ocupacion:20, Publicada:1};
+                      $.ajax({
+                        type: "POST",
+                        url: BASE_URL.concat('sistemareservasNegocio/NegocioAdministrador/ClasesBO.php?url=actualizarClase'),
+                        data: jQuery.param( json ),
+                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                        dataType: "json",
+                        async: true,
+                        
+                        success: function(data, textStatus) {
+                        },
+                        error: function( jqXHR, textStatus, errorThrown ) {
+                        }});                    
+                    					
+                        ev.preventDefault();
+                        calEvent.title = $(this).find("input[type=text]").val();
+                        $('#calendar').fullCalendar('updateEvent', calEvent);
+                        $('#fullCalModal').modal("hide");
+                      });
                       
-                $('#fullCalModal').find('button[data-action=delete]').on('click', function() { 
-                    alert('borrar');
+                    $('#fullCalModal').find('button[data-action=delete]').on('click', function() {                        
                         $('#calendar').fullCalendar('removeEvents' , function(ev){
                           $.ajax({
                             type: "POST",
@@ -328,8 +283,32 @@
                         });
                         $('#fullCalModal').modal("hide");
                       });
+                      
+                    $('#fullCalModal').find('button[data-action=crear]').on('click', function() {                        
+                    var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=crearClase');		
+            
+                    alert($('#fechaInicio').val());
+                    var Params ='idActividad='+ $('#idActividad').val() +
+                    '&idSala='+ $('#idSala').val() +
+                    '&FechaInicio='+ $('#fechaInicio').val()+
+                    '&HoraInicio='+ ''+
+                    '&FechaFin='+ $('#fechaFin').val()+
+                    '&HoraFin='+ ''+
+                    '&Ocupacion='+ $('#OcupacionClase').val() +
+                    '&Dia='+ 0+
+                    '&Publicada='+ 1;
+
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                
+                alert(Ajax.responseText);
+                        $('#fullCalModal').modal("hide");
+                      });
+			
                     $('#fullCalModal').modal('show').on('hidden', function(){
-                        $('#fullCalModal').remove();
+                    
+                    $('#fullCalModal').remove();
                       });                      
                     }
                   });
@@ -371,56 +350,49 @@
                       <div class="modal-dialog">
                        <div class="modal-content">
                         <div class="modal-body">
-                            <label id="title" class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12" >Detalle Clase</label>
-                            <button type="button" class="close" data-dismiss="modal" style="margin-top:-10px;">&times;</button>
                             <div class="form-group">
                             <div class="col-md-12">
                           <form role="form" name="formulario">
 				<input  type="hidden" class="input-sm" name="idClase" id="idClase">
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <label id="title" class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12" ></label>
-                                </div>
-                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12" >Actividad</label>
-                                <select  ng-disabled="true" name="idActividad" id="idActividad" class="input-sm col-lg-6 col-md-6 col-sm-6 col-xs-12" >	
+                                <select  name="idActividad" id="idActividad" class="input-sm col-lg-6 col-md-6 col-sm-6 col-xs-12" >	
                                     <option ng_repeat="actividad in actividades" value="{{actividad.idActividad}}">{{actividad.NombreActividad}}</option>
                                 </select>
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12" >Sala</label>
-                                <select  ng-disabled="true" name="idSala" id="idSala" class="input-sm col-lg-6 col-md-6 col-sm-6 col-xs-12" >	
+                                <select  name="idSala" id="idSala" class="input-sm col-lg-6 col-md-6 col-sm-6 col-xs-12" >	
                                     <option ng_repeat="sala in salas" value="{{sala.idSala}}">{{sala.NombreSala}}</option>
                                 </select>
                                 </div>
 				<div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12" >Ocupacion</label>
                                 <input class="input-sm color" id="OcupacionClase" name="OcupacionClase" required>
-                                <span  class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.OcupacionClase.$dirty && formulario.OcupacionClase.$invalid">
-                                    <span ng-show="formulario.OcupacionClase.$error.required">* Indique la ocupación.</span>
-                                </span>
                                 </div>
                                 <div  class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <label class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12" >Inicio</label>
-                                <input id="fechaInicio"  type="text"  class="input-sm col-md-6 col-sm-6 col-xs-12" name="fechaInicio" required>
-                                <span  class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.fechaInicio.$dirty && formulario.fechaInicio.$invalid">
-                                    <span ng-show="formulario.fechaInicio.$error.required">* Fecha inicio obligatoria.</span>
-                                </span>
+                                <label class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12" >Fecha Inicio</label>
+                                <input id="fechaInicio"  type="text" class="input-sm col-md-6 col-sm-6 col-xs-7" name="fechaInicio">
                                 </div>
                                 <div  class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <label class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12" >Fin</label>
-                                <input id="fechaFin" type="text"  class="input-sm col-md-6 col-sm-6 col-xs-12" name="fechaFin" required>
-                                <span  class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.fechaFin.$dirty && formulario.fechaFin.$invalid">
-                                    <span ng-show="formulario.fechaFin.$error.required">* Fecha fin obligatoria.</span>
-                                </span>
+                                <label class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12" >Hora Inicio</label>
+                                <input id="horaInicio"  type="text" class="input-sm col-md-6 col-sm-6 col-xs-7" name="horaInicio">
+                                </div>
+                                <div  class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12" >Fecha Fin</label>
+                                <input id="fechaFin" type="text" class="input-sm col-md-6 col-sm-6 col-xs-7" name="fechaFin">
+                                </div>
+                                <div  class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12" >Hora Fin</label>
+                                <input id="horaFin" type="text" class="input-sm col-md-6 col-sm-6 col-xs-7" name="horaFin">
                                 </div>
                              </form>
                             </div>
                           </div>
                         </div>
                         <div class="modal-footer">
-                         <button id="eliminar" type="button" class="btn btn-sm btn-danger" data-action="delete"><i class="ace-icon fa fa-trash-o"></i>Eliminar Clase</button>
-                         <button id="actualizar" type="button" class="btn btn-sm btn-success" data-action="actualizar" ng-disabled="formulario.$invalid"></i>Actualizar Clase</button>
-                         <button id="crear" type="button" class="btn btn-sm btn-success" data-action="crear" ng-disabled="formulario.$invalid"></i>Crear Clase</button>
+                         <button type="button" class="btn btn-sm btn-danger" data-action="delete"><i class="ace-icon fa fa-trash-o"></i>Eliminar Clase</button>
+                         <button type="button" class="btn btn-sm btn-success" data-action="crear"></i>Crear Clase</button>
                          <button type="button" class="btn btn-sm" data-dismiss="modal"><i class="ace-icon fa fa-times"></i>Cancelar</button>
                        </div>
                       </div>

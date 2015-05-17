@@ -61,7 +61,7 @@ include 'config.php'
         <!--<link rel="stylesheet" href="Utilidades/calendario/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />-->
         <link rel="stylesheet" type="text/css" href="Utilidades/calendario/css/jquery.datetimepicker.css"/>
         <script src="Utilidades/calendario/js/jquery.datetimepicker.js" type="text/javascript"></script>
-        
+
         <script>
             //var BASE_URL = 'http://vw15115.dinaserver.com/hosting/reservascentro.es-web/';
             var BASE_URL = 'http://localhost:8080/';

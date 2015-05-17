@@ -69,10 +69,8 @@ class ClasesBO extends Rest{
 
         $idActividad = $this->datosPeticion['idActividad'];
         $idSala = $this->datosPeticion['idSala'];
-        $FechaInicio = date("Y-m-d",strtotime($this->datosPeticion['FechaInicio']));
-        $HoraInicio = $this->datosPeticion['HoraInicio'];                
-        $FechaFin = date("Y-m-d",strtotime($this->datosPeticion['FechaFin']));
-        $HoraFin = $this->datosPeticion['HoraFin'];        
+        $FechaInicio = date("Y-m-d H:i:s",strtotime($this->datosPeticion['FechaInicio']));
+        $FechaFin = date("Y-m-d H:i:s",strtotime($this->datosPeticion['FechaFin']));
         $Ocupacion = $this->datosPeticion['Ocupacion'];
         $Dia = $this->datosPeticion['Dia'];
         $Publicada = $this->datosPeticion['Publicada'];
@@ -83,9 +81,7 @@ class ClasesBO extends Rest{
         $clase->setIdActividad($idActividad);
         $clase->setIdSala($idSala);        
         $clase->setFechaInicio($FechaInicio);
-        $clase->setHoraInicio($HoraInicio);
         $clase->setFechaFin($FechaFin);
-        $clase->setHoraFin($HoraFin);
         $clase->setOcupacion($Ocupacion);
         $clase->setDia($Dia);
         $clase->setPublicada($Publicada);
@@ -143,34 +139,32 @@ class ClasesBO extends Rest{
         //echo $idUsuario . "<br/>";  
         if (isset($this->datosPeticion['idClase'])) {
             $idClase = $this->datosPeticion['idClase'];
-            $idActividad = $this->datosPeticion['idActividad'];
-            $idSala = $this->datosPeticion['idSala'];
-            $FechaInicio = $this->datosPeticion['FechaInicio'];
-            $HoraInicio = $this->datosPeticion['HoraInicio'];
-            $FechaFin = $this->datosPeticion['FechaFin'];
-            $HoraFin = $this->datosPeticion['HoraFin'];
+            //$idActividad = $this->datosPeticion['idActividad'];
+            //$idSala = $this->datosPeticion['idSala'];
+            $FechaInicio = date("Y-m-d H:i:s",strtotime($this->datosPeticion['FechaInicio']));
+            $FechaFin = date("Y-m-d H:i:s",strtotime($this->datosPeticion['FechaFin']));
             $Ocupacion = $this->datosPeticion['Ocupacion'];
             $Dia = $this->datosPeticion['Dia'];
             $Publicada = $this->datosPeticion['Publicada'];
+            
+            $this->con = ConexionBD::getInstance();
+            $clase = new ClaseModel();
+                        
+            $fila = $clase->findById($this->con,$this->datosPeticion['idClase']);
 
             if (!empty($idClase)) {
-                
-                $this->con = ConexionBD::getInstance();
-                $clase = new ClaseModel();
 
                 $clase->setIdClase($idClase);
-                $clase->setIdActividad($idActividad);
-                $clase->setIdSala($idSala);
+                $clase->setIdActividad($fila->getIdActividad());
+                $clase->setIdSala($fila->getIdSala());
                 $clase->setFechaInicio($FechaInicio);
-                $clase->setHoraInicio($HoraInicio);
                 $clase->setFechaFin($FechaFin);
-                $clase->setHoraFin($HoraFin);
                 $clase->setOcupacion($Ocupacion);
                 $clase->setDia($Dia);
                 $clase->setPublicada($Publicada);
 
-                $fila = $clase->updateToDatabase($this->con);
-                if (count($fila) == 1) {
+                $filasActualizadas = $clase->updateToDatabase($this->con);
+                if (count($filasActualizadas) == 1) {
                     $resp = array('estado' => "correcto", "msg" => "clase actualizada");
                     $this->mostrarRespuesta($this->convertirJson($resp), 200);
                 } else {
@@ -224,8 +218,6 @@ class ClasesBO extends Rest{
             $respuesta['clase']['idClase'] = $fila->getIdClase();
             $respuesta['clase']['Actividad'] = $fila->getIdActividad();
             $respuesta['clase']['idSala'] = $fila->getIdSala();
-            $respuesta['clase']['HoraInicio'] = $fila->getHoraInicio();
-            $respuesta['clase']['HoraFin'] = $fila->getHoraFin();
             $respuesta['clase']['Ocupacion'] = $fila->getOcupacion();
             $respuesta['clase']['Dia'] = $fila->getDia();
             $respuesta['clase']['Publicada'] = $fila->getPublicada();
