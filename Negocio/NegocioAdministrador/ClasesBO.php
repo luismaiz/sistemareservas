@@ -105,6 +105,52 @@ class ClasesBO extends Rest{
         //$this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);  
         //}  
     }
+    
+    private function crearClaseGMT() {
+
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {       	
+
+        $idActividad = $this->datosPeticion['idActividad'];
+        $idSala = $this->datosPeticion['idSala'];
+        $FechaInicio = gmdate("Y-m-d H:i:s",strtotime($this->datosPeticion['FechaInicio']));
+        $FechaFin = gmdate("Y-m-d H:i:s",strtotime($this->datosPeticion['FechaFin']));
+        $Ocupacion = $this->datosPeticion['Ocupacion'];
+        $Dia = $this->datosPeticion['Dia'];
+        $Publicada = $this->datosPeticion['Publicada'];
+        
+        $this->con = ConexionBD::getInstance();
+        $clase = new ClaseModel();
+
+        $clase->setIdActividad($idActividad);
+        $clase->setIdSala($idSala);        
+        $clase->setFechaInicio($FechaInicio);
+        $clase->setFechaFin($FechaFin);
+        $clase->setOcupacion($Ocupacion);
+        $clase->setDia($Dia);
+        $clase->setPublicada($Publicada);
+
+        $result = $clase->insertIntoDatabase($this->con);
+
+
+        if ($result) {
+
+            //$id = $this->_conn->lastInsertId();  
+            $respuesta['estado'] = 'correcto';
+            $respuesta['msg'] = 'clase creada correctamente';
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        else
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
+        //}  
+        //else  
+        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(8)), 400);  
+        //} else {  
+        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);  
+        //}  
+    }
 
     private function obtenerClases() {
         if ($_SERVER['REQUEST_METHOD'] != "GET") {
@@ -175,6 +221,48 @@ class ClasesBO extends Rest{
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
     }
 
+    private function actualizarClaseGMT() {
+         if ($_SERVER['REQUEST_METHOD'] != "POST") {
+           $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+         }
+        //echo $idUsuario . "<br/>";  
+        if (isset($this->datosPeticion['idClase'])) {
+            $idClase = $this->datosPeticion['idClase'];
+            //$idActividad = $this->datosPeticion['idActividad'];
+            //$idSala = $this->datosPeticion['idSala'];
+            $FechaInicio = gmdate("Y-m-d H:i:s",strtotime($this->datosPeticion['FechaInicio']));
+            $FechaFin = gmdate("Y-m-d H:i:s",strtotime($this->datosPeticion['FechaFin']));
+            $Ocupacion = $this->datosPeticion['Ocupacion'];
+            $Dia = $this->datosPeticion['Dia'];
+            $Publicada = $this->datosPeticion['Publicada'];
+            
+            $this->con = ConexionBD::getInstance();
+            $clase = new ClaseModel();
+                        
+            $fila = $clase->findById($this->con,$this->datosPeticion['idClase']);
+
+            if (!empty($idClase)) {
+
+                $clase->setIdClase($idClase);
+                $clase->setIdActividad($fila->getIdActividad());
+                $clase->setIdSala($fila->getIdSala());
+                $clase->setFechaInicio($FechaInicio);
+                $clase->setFechaFin($FechaFin);
+                $clase->setOcupacion($Ocupacion);
+                $clase->setDia($Dia);
+                $clase->setPublicada($Publicada);
+
+                $filasActualizadas = $clase->updateToDatabase($this->con);
+                if (count($filasActualizadas) == 1) {
+                    $resp = array('estado' => "correcto", "msg" => "clase actualizada");
+                    $this->mostrarRespuesta($this->convertirJson($resp), 200);
+                } else {
+                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+                }
+            }
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+    }
     private function borrarClase() {
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
