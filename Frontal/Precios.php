@@ -97,7 +97,7 @@
             
             if (typeof($location.search().detalle) !== "undefined")
             {
-                alert('hola');
+                //alert('hola');
                 $scope.resultado = localStorage.getItem('precios');
                 $scope.filtrosprecios = localStorage.getItem('filtrosprecios');
                 $scope.precios = (localStorage.getItem('precios')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).precios;

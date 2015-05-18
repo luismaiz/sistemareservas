@@ -75,7 +75,7 @@
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-                alert(Ajax.responseText);
+                //alert(Ajax.responseText);
 	
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
@@ -96,7 +96,7 @@
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-                alert(Ajax.responseText);
+                //alert(Ajax.responseText);
 	
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
@@ -153,14 +153,7 @@
                         <a href="#">
                             <i class="glyphicon glyphicon-play"></i>
                             <span class="green" ng-bind="diariosemana"></span>
-                            Abono diario
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="glyphicon glyphicon-play"></i>
-                            <span class="green" ng-bind="mensualsemana"></span>
-                            Abonos mensuales
+                            Abonos diarios
                         </a>
                     </li>
                     <li>
@@ -170,6 +163,14 @@
                             Reservas Clases Dirigidas
                         </a>
                     </li>
+                    <li>
+                        <a href="#">
+                            <i class="glyphicon glyphicon-play"></i>
+                            <span class="green" ng-bind="mensualsemana"></span>
+                            Abonos mensuales
+                        </a>
+                    </li>
+                    
                 </ul>
             </div>
             <div id="piechart" style="height:300px" data-bind="data"></div>
@@ -201,7 +202,7 @@
                         <a href="#">
                             <i class="glyphicon glyphicon-play"></i>
                             <span class="green" ng-bind="mensual"></span>
-                            Abono mensual
+                            Abonos mensuales
                         </a>
                     </li>
 

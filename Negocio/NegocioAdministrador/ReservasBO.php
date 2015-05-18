@@ -871,7 +871,7 @@ class ReservasBO extends Rest{
             $diaSemana=7;
  
         # A la fecha recibida, le restamos el dia de la semana y obtendremos el lunes
-        $primerDia=date("d-m-Y",mktime(0,0,0,$month,$day-$diaSemana+1,$year));
+        $primerDia=date("Y-m-s",mktime(0,0,0,$month,$day-$diaSemana+1,$year));
         
                 
         $solicitud = new SolicitudModel();

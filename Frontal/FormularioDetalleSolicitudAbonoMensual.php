@@ -22,11 +22,11 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-                alert(Ajax.responseText);
+                //alert(Ajax.responseText);
                 $scope.abonomensual = JSON.parse(Ajax.responseText).abonomensual;
                 $scope.datossolicitud = JSON.parse(Ajax.responseText).datossolicitud;
                 
-                alert(Ajax.responseText);
+                //alert(Ajax.responseText);
         
             };
             if (typeof($location.search().idSolicitud) !== "undefined")
