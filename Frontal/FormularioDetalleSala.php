@@ -132,7 +132,7 @@
                 
                 if ($scope.estado === 'correcto')
                 {
-                    document.getElementById('divBaja').style.display = 'none';
+                    document.getElementById('divBaja').style.display = 'inline';
                     document.getElementById('divCorrecto').style.display = 'block';
                     $scope.obtenerSalas($location.search().idSala);
                     document.getElementById('anular').style.display = 'none';
@@ -157,6 +157,7 @@
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
+                    document.getElementById('divBaja').style.display = 'none';
                     $scope.obtenerSalas($location.search().idSala);
                     document.getElementById('anular').style.display = 'inline';
                     document.getElementById('aceptar').style.display = 'inline';

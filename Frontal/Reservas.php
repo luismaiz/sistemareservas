@@ -156,6 +156,7 @@
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
+                    $scope.obtenerReservas();
                 }
                 else
                 {

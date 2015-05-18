@@ -329,7 +329,7 @@ class SalasBO  extends Rest {
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
     }
-            
+    
 }
 $salasBO = new SalasBO();
 $salasBO->procesarLLamada();

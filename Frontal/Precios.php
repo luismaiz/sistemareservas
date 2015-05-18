@@ -62,10 +62,11 @@
         
         
         $scope.obtenerPrecios = function() {
-            
-                $scope.filtrosprecios = [{filtroTipoSolicitud:document.getElementById("filtroTipoSolicitud").value,
-                    filtroTipoAbono:document.getElementById("filtroTipoAbono").value,
-                    filtroTipoTarifa:document.getElementById("filtroTipoTarifa").value}];
+                
+                $scope.filtrosprecios = 
+                        [{filtroTipoSolicitud:document.getElementById("filtroTipoSolicitud").selectedIndex,
+                        filtroTipoAbono:document.getElementById("filtroTipoAbono").selectedIndex,
+                        filtroTipoTarifa:document.getElementById("filtroTipoTarifa").selectedIndex}];
                 localStorage.setItem('filtrosprecios', JSON.stringify($scope.filtrosprecios));
             
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerPreciosFiltro');
@@ -96,13 +97,19 @@
             
             if (typeof($location.search().detalle) !== "undefined")
             {
+                alert('hola');
                 $scope.resultado = localStorage.getItem('precios');
                 $scope.filtrosprecios = localStorage.getItem('filtrosprecios');
                 $scope.precios = (localStorage.getItem('precios')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).precios;
             
-                document.getElementById("filtroTipoSolicitud").value = JSON.parse($scope.filtrosprecios)[0].filtroTipoSolicitud;
-                document.getElementById("filtroTipoAbono").value = JSON.parse($scope.filtrosprecios)[0].filtroTipoAbono;
-                document.getElementById("filtroTipoTarifa").value = JSON.parse($scope.filtrosprecios)[0].filtroTipoTarifa;
+                //document.getElementById("filtroTipoSolicitud").value = JSON.parse($scope.filtrosprecios)[0].filtroTipoSolicitud;
+                //document.getElementById("filtroTipoAbono").value = JSON.parse($scope.filtrosprecios)[0].filtroTipoAbono;
+                //document.getElementById("filtroTipoTarifa").value = JSON.parse($scope.filtrosprecios)[0].filtroTipoTarifa;
+                
+                
+                document.getElementById("filtroTipoSolicitud").selectedIndex = JSON.parse($scope.filtrosprecios)[0].filtroTipoSolicitud;
+                document.getElementById("filtroTipoAbono").selectedIndex = JSON.parse($scope.filtrosprecios)[0].filtroTipoAbono;
+                document.getElementById("filtroTipoTarifa").selectedIndex = JSON.parse($scope.filtrosprecios)[0].filtroTipoTarifa;
                 
                 $scope.obtenerPrecios();
             }

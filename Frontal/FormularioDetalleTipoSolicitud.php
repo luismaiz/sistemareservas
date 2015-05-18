@@ -153,6 +153,7 @@
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
+                    document.getElementById('divBaja').style.display = 'none';
                     $scope.obtenerTiposSolicitud($location.search().idTipoSolicitud);
                     document.getElementById('anular').style.display = 'inline';
                     document.getElementById('aceptar').style.display = 'inline';

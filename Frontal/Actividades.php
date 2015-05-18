@@ -114,8 +114,8 @@ $(function () {
                                                 <tr ng_repeat="actividad in actividades">
                                                     <td>{{actividad.NombreActividad}}</td>
                                                     <td>{{actividad.Descripcion}}</td>
-                                                    <td >
-                                                        <div ng-model="actividad.IntensidadActividad" ng-style="{'color' : actividad.IntensidadActividad}"></div>
+                                                    <td style="color: #{{actividad.IntensidadActividad}}">
+                                                        <div style="background-color: #{{actividad.IntensidadActividad}}" ng-model="actividad.IntensidadActividad" ></div>
                                                     </td>
                                                     <td>{{actividad.EdadMinima}}</td>
                                                     <td>{{actividad.EdadMaxima}}</td>
@@ -125,7 +125,10 @@ $(function () {
                                             </tbody>
                                             <tfoot class="hide-if-no-paging">
                                                     <tr>
-                                                        <td colspan="7" class="text-center">
+                                                        <td>
+                                                            
+                                                        </td>
+                                                        <td colspan="5" class="text-center">
                                                             <ul class="pagination pagination-centered">
 
                                                             </ul>

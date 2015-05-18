@@ -239,7 +239,7 @@
 </div>
 <div class=" row" ng-app="DetallePrecios">
 <div ng_controller="CargaDetallePrecios">
-    <div class="box ">
+    <div class="box col-md-12" ">
         <div class="box-inner">
             <div class="box-header well" data-original-title="">
                 <h2><i class="glyphicon glyphicon-edit"></i> Detalle Precio</h2>
@@ -255,8 +255,10 @@
                             </div>
                             </div>
             <div class="box-content">
-
-                <form ole="form"  name="formulario" novalidate="true">
+               <div class="row">
+                   <div class="form-group">
+                            <div class="col-md-12">
+                <form role="form"  name="formulario">
                     <ul class="nav nav-tabs" id="myTab">
                                 <li class="active"><a href="#datosprecio">Precio Actual</a></li>
                                 <li><a href="#historicoprecio">Histórico</a></li>
@@ -346,8 +348,10 @@
                      <input style='display:none;' id="activar" class="btn btn-sm btn-action" type="submit" value="Activar" ng-click="activarPrecio();"/>
                      <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='Precios.php?detalle=1' " />
             </div>
-                                    </form>
-
+         </form>
+                            </div>
+                   </div>
+               </div>
         </div>
 
 

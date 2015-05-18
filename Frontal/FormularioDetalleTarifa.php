@@ -132,6 +132,8 @@
                     document.getElementById('divBaja').style.display = 'none';
                     document.getElementById('divCorrecto').style.display = 'block';
                     $scope.obtenerTiposTarifa($location.search().idTipoTarifa);
+                    document.getElementById('anular').style.display = 'none';
+                    document.getElementById('aceptar').style.display = 'none';
                 }
                 else
                 {
@@ -152,7 +154,11 @@
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
+                    document.getElementById('divBaja').style.display = 'none';
                     $scope.obtenerTiposTarifa($location.search().idTipoTarifa);
+                    document.getElementById('anular').style.display = 'inline';
+                    document.getElementById('aceptar').style.display = 'inline';
+                    document.getElementById('activar').style.display = 'none';
                 }
                 else
                 {
