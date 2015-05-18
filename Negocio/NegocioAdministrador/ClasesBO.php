@@ -89,10 +89,11 @@ class ClasesBO extends Rest{
         $result = $clase->insertIntoDatabase($this->con);
 
 
-        if ($result) {
+        if ($result>0) {
 
             //$id = $this->_conn->lastInsertId();  
             $respuesta['estado'] = 'correcto';
+            $respuesta['idClase'] = $result;
             $respuesta['msg'] = 'clase creada correctamente';
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
@@ -135,10 +136,11 @@ class ClasesBO extends Rest{
         $result = $clase->insertIntoDatabase($this->con);
 
 
-        if ($result) {
+        if ($result>0) {
 
             //$id = $this->_conn->lastInsertId();  
             $respuesta['estado'] = 'correcto';
+            $respuesta['idClase'] = $result;
             $respuesta['msg'] = 'clase creada correctamente';
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
@@ -185,8 +187,8 @@ class ClasesBO extends Rest{
         //echo $idUsuario . "<br/>";  
         if (isset($this->datosPeticion['idClase'])) {
             $idClase = $this->datosPeticion['idClase'];
-            //$idActividad = $this->datosPeticion['idActividad'];
-            //$idSala = $this->datosPeticion['idSala'];
+            $idActividad = $this->datosPeticion['idActividad'];
+            $idSala = $this->datosPeticion['idSala'];
             $FechaInicio = date("Y-m-d H:i:s",strtotime($this->datosPeticion['FechaInicio']));
             $FechaFin = date("Y-m-d H:i:s",strtotime($this->datosPeticion['FechaFin']));
             $Ocupacion = $this->datosPeticion['Ocupacion'];
@@ -201,8 +203,8 @@ class ClasesBO extends Rest{
             if (!empty($idClase)) {
 
                 $clase->setIdClase($idClase);
-                $clase->setIdActividad($fila->getIdActividad());
-                $clase->setIdSala($fila->getIdSala());
+                $clase->setIdActividad($idActividad);
+                $clase->setIdSala($idSala);
                 $clase->setFechaInicio($FechaInicio);
                 $clase->setFechaFin($FechaFin);
                 $clase->setOcupacion($Ocupacion);
@@ -211,7 +213,7 @@ class ClasesBO extends Rest{
 
                 $filasActualizadas = $clase->updateToDatabase($this->con);
                 if (count($filasActualizadas) == 1) {
-                    $resp = array('estado' => "correcto", "msg" => "clase actualizada");
+                    $resp = array('estado' => "correcto");
                     $this->mostrarRespuesta($this->convertirJson($resp), 200);
                 } else {
                     $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
@@ -228,8 +230,8 @@ class ClasesBO extends Rest{
         //echo $idUsuario . "<br/>";  
         if (isset($this->datosPeticion['idClase'])) {
             $idClase = $this->datosPeticion['idClase'];
-            //$idActividad = $this->datosPeticion['idActividad'];
-            //$idSala = $this->datosPeticion['idSala'];
+            $idActividad = $this->datosPeticion['idActividad'];
+            $idSala = $this->datosPeticion['idSala'];
             $FechaInicio = gmdate("Y-m-d H:i:s",strtotime($this->datosPeticion['FechaInicio']));
             $FechaFin = gmdate("Y-m-d H:i:s",strtotime($this->datosPeticion['FechaFin']));
             $Ocupacion = $this->datosPeticion['Ocupacion'];
@@ -244,8 +246,8 @@ class ClasesBO extends Rest{
             if (!empty($idClase)) {
 
                 $clase->setIdClase($idClase);
-                $clase->setIdActividad($fila->getIdActividad());
-                $clase->setIdSala($fila->getIdSala());
+                $clase->setIdActividad($idActividad);
+                $clase->setIdSala($idSala);
                 $clase->setFechaInicio($FechaInicio);
                 $clase->setFechaFin($FechaFin);
                 $clase->setOcupacion($Ocupacion);
@@ -254,7 +256,7 @@ class ClasesBO extends Rest{
 
                 $filasActualizadas = $clase->updateToDatabase($this->con);
                 if (count($filasActualizadas) == 1) {
-                    $resp = array('estado' => "correcto", "msg" => "clase actualizada");
+                    $resp = array('estado' => "correcto");
                     $this->mostrarRespuesta($this->convertirJson($resp), 200);
                 } else {
                     $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);

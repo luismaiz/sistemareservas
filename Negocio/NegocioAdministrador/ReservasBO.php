@@ -343,6 +343,8 @@ class ReservasBO extends Rest{
             $solicitud = new SolicitudModel();
             $datosolicitud = new DatosolicitudabonomensualModel();
             
+            $datosolicitud->setIdSolicitud($this->datosPeticion['idSolicitud']);
+            
             $sortdatos = array(
             new DSC(DatosolicitudclasedirigidaModel::FIELD_IDSOLICITUD, DSC::ASC)
             );
@@ -380,6 +382,7 @@ class ReservasBO extends Rest{
                 $respuesta['abonomensual']['Provincia'] = $fila->getProvincia();
                 $respuesta['abonomensual']['Telefono1'] = $fila->getTelefono1();
                 $respuesta['abonomensual']['Telefono2'] = $fila->getTelefono2();
+                $respuesta['abonomensual']['Anulado'] = $fila->getAnulado();
                 $respuesta['datossolicitud'] = $arraydatos;
                 
                 
@@ -458,6 +461,7 @@ class ReservasBO extends Rest{
                 $respuesta['clasesdirigidas']['Telefono2'] = $fila->getTelefono2();
                 $respuesta['clasesdirigidas']['Provincia'] = $fila->getProvincia();
                 $respuesta['clasesdirigidas']['Sexo'] = $fila->getSexo();
+                $respuesta['clasesdirigidas']['Anulado'] = $fila->getAnulado();
                 $respuesta['datosbancarios'] = $arraybanco;
                 
                 $respuesta['actividades'] = $array;
@@ -612,6 +616,82 @@ class ReservasBO extends Rest{
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
     }
     
+    private function activarSolicitud() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+
+        if (isset($this->datosPeticion['idSolicitud'])) {
+
+            $this->con = ConexionBD::getInstance();
+            $solicitud = new SolicitudModel();
+
+            $idSolicitud = $this->datosPeticion['idSolicitud'];
+                        
+            if (!empty($idSolicitud)) {
+                                 
+                $fila = $solicitud->findById($this->con,$this->datosPeticion['idSolicitud']);
+                
+                $idTipoSolicitud= $fila ->getIdTipoSolicitud();
+                $idTipoTarifa = $fila->getIdTipoTarifa();
+                $FechaSolicitud = $fila->getFechaSolicitud();
+                $Nombre = $fila->getNombre();
+                $Apellidos =$fila->getApellidos();
+                $DNI= $fila->getDni();
+                $EMail  = $fila->getEMail();
+                $Direccion  = $fila->getDireccion();
+                $CP = $fila->getCp();
+                $Sexo = $fila->getSexo();
+                $FechaNacimiento = $fila->getFechaNacimiento();
+                $TutorLegal = $fila->getTutorLegal();
+                $Localidad= $fila->getLocalidad();
+                $Telefono1 = $fila->getTelefono1();
+                $Telefono2= $fila->getTelefono2();
+                $Provincia= $fila->getProvincia();
+                $DescripcionSolicitud= $fila->getDescripcionSolicitud();
+                $Otros= $fila->getOtros();
+                $Localizador= $fila->getLocalizador();
+                $Gestionado = $fila->getGestionado();
+                $Anulado = $fila->getAnulado();
+                $FechaDiario = $fila->getFechaAbonoDiario();
+                                
+                $solicitud->setIdSolicitud($idSolicitud);
+                $solicitud->setIdTipoSolicitud($idTipoSolicitud);
+                $solicitud->setIdTipoTarifa($idTipoTarifa);
+                $solicitud->setFechaSolicitud($FechaSolicitud);
+                $solicitud->setNombre($Nombre);
+                $solicitud->setApellidos($Apellidos);
+                $solicitud->setDni($DNI);
+                $solicitud->setEMail($EMail);
+                $solicitud->setDireccion($Direccion);
+                $solicitud->setCp($CP);
+                $solicitud->setSexo($Sexo);
+                $solicitud->setFechaNacimiento($FechaNacimiento);
+                $solicitud->setTutorLegal($TutorLegal);
+                $solicitud->setLocalidad($Localidad);
+                $solicitud->setTelefono1($Telefono1);
+                $solicitud->setTelefono2($Telefono2);
+                $solicitud->setProvincia($Provincia);
+                $solicitud->setDescripcionSolicitud($DescripcionSolicitud);
+                $solicitud->setOtros($Otros);
+                $solicitud->setLocalizador($Localizador);
+                $solicitud->setGestionado($Gestionado);
+                $solicitud->setAnulado(0);
+                $solicitud->setFechaAbonoDiario($FechaDiario);
+                
+                $filasActualizadas = $solicitud->updateToDatabase($this->con);
+                
+                if (count($filasActualizadas) == 1) {
+                    $resp = array('estado' => "correcto", "msg" => "Solictud validada");
+                    $this->mostrarRespuesta($this->convertirJson($resp), 200);
+                } else {
+                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+                }
+            }
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+    }
+    
     private function actualizarSolicitudAbonoDiario() {
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
@@ -695,7 +775,7 @@ class ReservasBO extends Rest{
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
     }
     
-    private function obtenerSolicitudesMes() {
+    private function obtenerSolicitudesMesEstadistica() {
         
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
@@ -707,7 +787,7 @@ class ReservasBO extends Rest{
         
         $filter=array(
         new DFC(SolicitudModel::FIELD_IDTIPOSOLICITUD, '1', DFC::EXACT),
-        new DFC(SolicitudModel::FIELD_FECHASOLICITUD, date('Y,m-1'), DFC::GREATER)
+        new DFC(SolicitudModel::FIELD_FECHASOLICITUD, date('Y-m-1'), DFC::GREATER)
         );
         
         $filas = $solicitud->findByFilter($this->con,$filter);
@@ -715,7 +795,7 @@ class ReservasBO extends Rest{
         $solicitud->setIdTipoSolicitud(2);
         $filtermensual=array(
         new DFC(SolicitudModel::FIELD_IDTIPOSOLICITUD, '2', DFC::EXACT),
-        new DFC(SolicitudModel::FIELD_FECHASOLICITUD, date('Y,m-1'), DFC::GREATER)
+        new DFC(SolicitudModel::FIELD_FECHASOLICITUD, date('Y-m-1'), DFC::GREATER)
         );
         
         $filasmensual = $solicitud->findByFilter($this->con,$filtermensual);
@@ -723,7 +803,7 @@ class ReservasBO extends Rest{
         $solicitud->setIdTipoSolicitud(3);
         $filterdiario=array(
         new DFC(SolicitudModel::FIELD_IDTIPOSOLICITUD, '3', DFC::EXACT),
-        new DFC(SolicitudModel::FIELD_FECHASOLICITUD, date('Y,m-1'), DFC::GREATER)
+        new DFC(SolicitudModel::FIELD_FECHASOLICITUD, date('Y-m-1'), DFC::GREATER)
         );
         
         $filasdiario = $solicitud->findByFilter($this->con,$filterdiario);
@@ -768,6 +848,97 @@ class ReservasBO extends Rest{
         //$this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
     }
     
+    private function obtenerSolicitudesSemanaEstadistica() {
+        
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+                        
+        $this->con = ConexionBD::getInstance();
+        
+        $year=date('Y');
+        $month=date('m');
+        $day=date('d');
+ 
+        # Obtenemos el numero de la semana
+        $semana=date("W",mktime(0,0,0,$month,$day,$year));
+ 
+        # Obtenemos el día de la semana de la fecha dada
+        $diaSemana=date("w",mktime(0,0,0,$month,$day,$year));
+ 
+        # el 0 equivale al domingo...
+        if($diaSemana==0)
+            $diaSemana=7;
+ 
+        # A la fecha recibida, le restamos el dia de la semana y obtendremos el lunes
+        $primerDia=date("d-m-Y",mktime(0,0,0,$month,$day-$diaSemana+1,$year));
+        
+                
+        $solicitud = new SolicitudModel();
+        $solicitud->setIdTipoSolicitud(1);
+        
+        $filter=array(
+        new DFC(SolicitudModel::FIELD_IDTIPOSOLICITUD, '1', DFC::EXACT),
+        new DFC(SolicitudModel::FIELD_FECHASOLICITUD, $primerDia, DFC::GREATER)
+        );
+        
+        $filas = $solicitud->findByFilter($this->con,$filter);
+        
+        $solicitud->setIdTipoSolicitud(2);
+        $filtermensual=array(
+        new DFC(SolicitudModel::FIELD_IDTIPOSOLICITUD, '2', DFC::EXACT),
+        new DFC(SolicitudModel::FIELD_FECHASOLICITUD, $primerDia, DFC::GREATER)
+        );
+        
+        $filasmensual = $solicitud->findByFilter($this->con,$filtermensual);
+        
+        $solicitud->setIdTipoSolicitud(3);
+        $filterdiario=array(
+        new DFC(SolicitudModel::FIELD_IDTIPOSOLICITUD, '3', DFC::EXACT),
+        new DFC(SolicitudModel::FIELD_FECHASOLICITUD, $primerDia, DFC::GREATER)
+        );
+        
+        $filasdiario = $solicitud->findByFilter($this->con,$filterdiario);
+                                
+        $num = count($filas);
+        if ($num > 0) {
+            
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
+            //$respuesta['abonos'] = $array;
+            $respuesta['clasessemana'] = $num;
+        }
+        else
+            $respuesta['clasessemana']=0;
+        
+        $num = count($filasmensual);
+        if ($num > 0) {
+            
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filasmensual[$i]->toHash();
+            }
+            //$respuesta['abonos'] = $array;
+            $respuesta['mensualsemana'] = $num;
+        }
+        else
+            $respuesta['mensualsemana']=0;
+        
+        $num = count($filasdiario);
+        if ($num > 0) {
+            
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filasdiario[$i]->toHash();
+            }
+            //$respuesta['abonos'] = $array;
+            $respuesta['diariosemana'] = $num;
+        }
+        else
+            $respuesta['diariosemana'] = 0;
+        $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+    }
 }
 
 $reservasBO = new ReservasBO();

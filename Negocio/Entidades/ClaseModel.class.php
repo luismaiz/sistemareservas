@@ -802,7 +802,8 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 		}
 		$stmt->closeCursor();
 		$this->notifyPristine();
-		return $affected;
+		//return $affected;
+                return $this->getidClase();
 	}
 
 

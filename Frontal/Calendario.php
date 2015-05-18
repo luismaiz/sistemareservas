@@ -133,10 +133,7 @@
                             var Cfechafin = new Date(fechafin[0], fechafin[1]-1, fechafin[2], fechafin[3], fechafin[4], fechafin[5]);
                             
                             events.push({
-                                
-                                //alert(arrayactividades.indexOf(10));
-                                //hay que obtener el nombre de la actividad
-                                //title: Actividades[doc.clases[i].idActividad-1].NombreActividad,
+                                id:doc.clases[i].idClase,
                                 title: Actividades[arrayactividades.indexOf(doc.clases[i].idActividad)].NombreActividad,
                                 idActividad: doc.clases[i].idActividad,
                                 idSala: doc.clases[i].idSala,
@@ -153,7 +150,8 @@
                     }
                 });
             },
-            drop: function(event,date, allDay) { // this function is called when something is dropped   
+            drop: function(event,date, allDay) { // this function is called when something is dropped 
+                
                 var inicio = new Date((event._d).getFullYear(), (event._d).getMonth(), (event._d).getDate(), (event._d).getHours(), (event._d).getMinutes(), (event._d).getSeconds()).toUTCString();
                 var fin = new Date((event._d).getFullYear(), (event._d).getMonth(), (event._d).getDate(), ((event._d).getHours()+1), (event._d).getMinutes(), (event._d).getSeconds()).toUTCString();
                 var originalEventObject = $(this).data('eventObject');
@@ -162,8 +160,6 @@
                 copiedEventObject.start =  inicio;
                 copiedEventObject.end =  fin;
                 copiedEventObject.allDay = false;
-                $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);	
-                                
                 var json = {idActividad:$idActividad,idSala:3,FechaInicio:inicio, FechaFin:fin, Ocupacion:'', Dia:0, Publicada:1};
                 $.ajax({
                     type: "POST",
@@ -174,13 +170,17 @@
                     async: true,
 
                     success: function(data, textStatus) {
-                        alert("clase creada");
+                        alert(data.idClase);
+                        copiedEventObject.idClase = data.idClase;
+                        copiedEventObject.id = data.idClase;
+                        $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
                     },
                     error: function( jqXHR, textStatus, errorThrown ) {
                 }}); 
             },
             eventDrop: function(calEvent, delta) { 
-               var json = {idClase:calEvent.idClase,idActividad:calEvent.idActividad,idSala:calEvent.idSala,FechaInicio:calEvent.start._d.toUTCString(), FechaFin:calEvent.end._d.toUTCString(), Ocupacion:calEvent.OcupacionClase, Dia:calEvent._fullDay, Publicada:1};
+               
+                var json = {idClase:calEvent.idClase,idActividad:calEvent.idActividad,idSala:calEvent.idSala,FechaInicio:calEvent.start._d.toUTCString(), FechaFin:calEvent.end._d.toUTCString(), Ocupacion:calEvent.OcupacionClase, Dia:calEvent._fullDay, Publicada:1};
                 $.ajax({
                     type: "POST",
                     url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=actualizarClaseGMT'),
@@ -190,7 +190,7 @@
                     async: false,
                         
                     success: function(data, textStatus) {
-                        alert("clase actualizada");
+                        //alert("clase actualizada");
                     },
                     error: function( jqXHR, textStatus, errorThrown ) {
                 }});
@@ -213,6 +213,7 @@
                 }});    
             },
             dayClick: function(date, jsEvent, view) {
+                
                 $('#fullCalModal').modal();
                 //$('#idActividad').attr("disabled", false);
                 //$('#idSala').attr("disabled", false);    
@@ -244,18 +245,18 @@
                     success: function(data, textStatus) {
                         var objeto = new Object();
             
-            objeto.title= Actividades[arrayactividades.indexOf($('#idActividad').val())].NombreActividad;
-            objeto.idActividad= $('#idActividad').val();
-            objeto.idSala= $('#idSala').val();
-            objeto.OcupacionClase= $('#OcupacionClase').val();
-            objeto.idClase= 0;
-            objeto.allDay= false;
-            objeto.start= Cfechainiciocarga;
-            objeto.end=  Cfechafincarga;
-            objeto.backgroundColor= "#"+ $('#OcupacionClase').val();
-            objeto.borderColor= "#"+ $('#OcupacionClase').val();
-            
-            $('#calendar').fullCalendar('renderEvent', objeto, true);
+                    objeto.title= Actividades[arrayactividades.indexOf($('#idActividad').val())].NombreActividad;
+                    objeto.idActividad= $('#idActividad').val();
+                    objeto.idSala= $('#idSala').val();
+                    objeto.OcupacionClase= $('#OcupacionClase').val();
+                    objeto.idClase= 0;
+                    objeto.allDay= false;
+                    objeto.start= Cfechainiciocarga;
+                    objeto.end=  Cfechafincarga;
+                    objeto.backgroundColor= "#"+ $('#OcupacionClase').val();
+                    objeto.borderColor= "#"+ $('#OcupacionClase').val();
+                    
+                    $('#calendar').fullCalendar('renderEvent', objeto, true);
                         
                     },
                     error: function( jqXHR, textStatus, errorThrown ) {
@@ -267,9 +268,21 @@
             },
             
             eventClick: function(calEvent, jsEvent, view) {     
-                                   
-            var Cfechainiciocarga = new Date(calEvent._start._d.getFullYear(),calEvent._start._d.getMonth(),calEvent._start._d.getDate(),calEvent._start._d.getHours(),calEvent._start._d.getMinutes(),calEvent._start._d.getSeconds());
-            var Cfechafincarga = new Date(calEvent._end._d.getFullYear(),calEvent._end._d.getMonth(),calEvent._end._d.getDate(),calEvent._end._d.getHours(),calEvent._end._d.getMinutes(),calEvent._end._d.getSeconds());
+            
+            var Cfechainiciocarga=null;
+            var Cfechafincarga =null;
+            
+            if(isNaN(calEvent.idSala))
+            {            
+            Cfechainiciocarga = new Date(calEvent._start._d.getFullYear(),calEvent._start._d.getMonth(),calEvent._start._d.getDate(),calEvent._start._d.getHours()-2,calEvent._start._d.getMinutes(),calEvent._start._d.getSeconds());
+            Cfechafincarga = new Date(calEvent._end._d.getFullYear(),calEvent._end._d.getMonth(),calEvent._end._d.getDate(),calEvent._end._d.getHours()-2,calEvent._end._d.getMinutes(),calEvent._end._d.getSeconds());    
+            
+            }
+            else
+            {
+            Cfechainiciocarga = new Date(calEvent._start._d.getFullYear(),calEvent._start._d.getMonth(),calEvent._start._d.getDate(),calEvent._start._d.getHours(),calEvent._start._d.getMinutes(),calEvent._start._d.getSeconds());
+            Cfechafincarga = new Date(calEvent._end._d.getFullYear(),calEvent._end._d.getMonth(),calEvent._end._d.getDate(),calEvent._end._d.getHours(),calEvent._end._d.getMinutes(),calEvent._end._d.getSeconds());
+            }
             
             $('#idActividad').val(calEvent.idActividad);
             $('#idSala').val(calEvent.idSala);
@@ -277,14 +290,11 @@
             $('#OcupacionClase').css('background-color',"#"+calEvent.OcupacionClase);
             $('#fechaInicio').val(Cfechainiciocarga.toLocaleString());
             $('#fechaFin').val(Cfechafincarga.toLocaleString());
-            
             $('#fullCalModal').find('button[data-action=crear]').hide();
             $('#fullCalModal').find('button[data-action=actualizar]').show();
             $('#fullCalModal').find('button[data-action=delete]').show();
-            //$('#idActividad').attr("disabled", true);
-            //$('#idSala').attr("disabled", true);
             $('#fullCalModal').find('button[data-action=actualizar]').on('click', function(ev){
-             alert('actualizar');
+                
                 var fechainicio=$('#fechaInicio').val().replace(/[^0-9]+/g, '');;
                 var fechafin = $('#fechaFin').val().replace(/[^0-9]+/g, '');;
                 var CfechainiciocargaActu=null;
@@ -311,7 +321,8 @@
                     CfechafincargaActu = new Date(fechafin.substring(4,8),fechafin.substring(2,4)-1,fechafin.substring(0,2),fechafin.substring(8,10),fechafin.substring(10,12),fechafin.substring(12,14));
                 }
                
-               var json = {idClase:calEvent.idClase,idActividad:calEvent.idActividad,idSala:calEvent.idSala,FechaInicio:CfechainiciocargaActu.toUTCString(), FechaFin:CfechafincargaActu.toUTCString(), Ocupacion:$('#OcupacionClase').val(), Dia:calEvent._fullDay, Publicada:1};
+               var json = {idClase:calEvent.idClase,idActividad:$('#idActividad').val(),idSala:$('#idSala').val(),FechaInicio:CfechainiciocargaActu.toUTCString(), FechaFin:CfechafincargaActu.toUTCString(), Ocupacion:$('#OcupacionClase').val(), Dia:calEvent._fullDay, Publicada:1};
+               
                 $.ajax({
                     type: "POST",
                     url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=actualizarClase'),
@@ -321,19 +332,10 @@
                     async: true,
 
                     success: function(data, textStatus) {
-//                        var objeto = new Object();
-//            
-//                    objeto.title= Actividades[$('#idActividad').val()-1].NombreActividad;
-//                    objeto.idActividad= $('#idActividad').val();
-//                    objeto.idSala= $('#idSala').val();
-//                    objeto.OcupacionClase= $('#OcupacionClase').val();
-//                    objeto.idClase= 0;
-//                    objeto.allDay= false;
-//                    objeto.start= CfechainiciocargaActu.toUTCString();
-//                    objeto.end=  CfechafincargaActu.toUTCString();
-//                    objeto.backgroundColor= "#"+ $('#OcupacionClase').val();
-//                    objeto.borderColor= "#"+ $('#OcupacionClase').val();
-//                    $('#calendar').fullCalendar('renderEvent', objeto, true);
+
+                            $('#calendar').fullCalendar('removeEvents',calEvent.id);
+                            $('#calendar').fullCalendar('refetchEvents');
+                            
                     },
                     error: function( jqXHR, textStatus, errorThrown ) {
                 }});    
@@ -341,10 +343,11 @@
                 
                 $('#fullCalModal').modal("hide");
                 
+                
                 });
                       
                 $('#fullCalModal').find('button[data-action=delete]').on('click', function() { 
-                    alert('borrar');
+                    
                         $('#calendar').fullCalendar('removeEvents' , function(ev){
                           $.ajax({
                             type: "POST",
@@ -363,7 +366,7 @@
                         });
                         $('#fullCalModal').modal("hide");
                       });
-                    $('#fullCalModal').modal('show').on('hidden', function(){
+                $('#fullCalModal').modal('show').on('hidden', function(){
                         $('#fullCalModal').remove();
                       });                      
                     }

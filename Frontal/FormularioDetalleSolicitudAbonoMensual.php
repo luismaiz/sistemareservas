@@ -22,7 +22,7 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-                //alert(Ajax.responseText);
+                alert(Ajax.responseText);
                 $scope.abonomensual = JSON.parse(Ajax.responseText).abonomensual;
                 $scope.datossolicitud = JSON.parse(Ajax.responseText).datossolicitud;
                 
@@ -119,6 +119,56 @@
         
         };   
         $scope.obtenerTipoTarifa();
+        
+        
+        
+        $scope.activarSolicitud = function(){
+                                   
+             
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=activarSolicitud');
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala";
+                var Params = 'idSolicitud='+ $location.search().idSolicitud;
+               
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+            
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divCorrecto').style.display = 'block';
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
+            };
+            
+            $scope.anularSolicitud = function(){
+                                   
+             
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=anularSolicitud');
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala";
+                var Params = 'idSolicitud='+ $location.search().idSolicitud;
+               
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+            
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divCorrecto').style.display = 'block';
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
+            };
+            
+            
             
             
         }
@@ -329,8 +379,8 @@
                                 </div>
                     </div>
                     </div>
-                                <input style='display:none;' id="anulacion" class="box btn-primary" type="submit" value="Anular Solicitud" ng-click="anularSolicitud();"  />
-                                <input style='display:none;' id="validacion" class="box btn-primary" type="submit" value="Validar Solicitud" ng-click="validarSolicitud();" ng-disabled="formulario.$invalid" />
+                                <input style='display:none;' id="anulacion" class="btn btn-sm btn-danger" type="submit" value="Anular Solicitud" ng-click="anularSolicitud();"  />
+                                <input style='display:none;' id="validacion" class="btn btn-sm btn-success" type="submit" value="Validar Solicitud" ng-click="validarSolicitud();" ng-disabled="formulario.$invalid" />
                                 <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='Reservas.php?detalle=1' " />
                                 
                              </form>

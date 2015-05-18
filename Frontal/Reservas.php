@@ -281,9 +281,10 @@
                                                         <a target="_self" ng_show="solicitud.idTipoSolicitud==1" href="FormularioDetalleSolicitudClasesDirigidas.php?idSolicitud={{solicitud.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
                                                         <a target="_self" ng_show="solicitud.idTipoSolicitud==2" href="FormularioDetalleSolicitudAbonoMensual.php?idSolicitud={{solicitud.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
                                                         <a target="_self" ng_show="solicitud.idTipoSolicitud==3" href="FormularioDetalleSolicitudAbonoDiario.php?idSolicitud={{solicitud.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
-                                                        <a target="_self" ng_show="solicitud.idTipoSolicitud==1 && solicitud.Gestionado==0" href="" class="btn btn-danger" ng_click="validarSolicitud(solicitud.idSolicitud);">Validar</a>
-                                                        <a target="_self" ng_show="solicitud.idTipoSolicitud==3 && solicitud.Gestionado==0" href="" class="btn btn-danger" ng_click="validarSolicitud(solicitud.idSolicitud);">Validar</a>
-                                                        <i class="glyphicon glyphicon-bell blue" ng_show="solicitud.idTipoTarifa!=1"></i>
+                                                        <a target="_self" ng_show="solicitud.idTipoSolicitud==1 && solicitud.Gestionado==0" href="" class="btn btn-success" ng_click="validarSolicitud(solicitud.idSolicitud);">Validar</a>
+                                                        <a target="_self" ng_show="solicitud.idTipoSolicitud==3 && solicitud.Gestionado==0" href="" class="btn btn-success" ng_click="validarSolicitud(solicitud.idSolicitud);">Validar</a>
+                                                        <a target="_self" ng_show="solicitud.Anulado!=='0'"  class="btn btn-danger">Anulada</a>
+                                                        <i class="glyphicon glyphicon-bell blue" ng_show="solicitud.idTipoTarifa!=1"></i></td>
                                                         
                                                     </td>
                                                 </tr>

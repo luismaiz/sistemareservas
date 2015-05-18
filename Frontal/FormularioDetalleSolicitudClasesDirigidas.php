@@ -24,7 +24,7 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-                //alert(Ajax.responseText);
+                alert(Ajax.responseText);
                 
                 $scope.clasesdirigidas = JSON.parse(Ajax.responseText).clasesdirigidas;
                 $scope.datosbancarios = JSON.parse(Ajax.responseText).datosbancarios;
@@ -200,6 +200,52 @@
             };
             
             $scope.obtenerActividades();
+            
+             $scope.activarSolicitud = function(){
+                                   
+             
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=activarSolicitud');
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala";
+                var Params = 'idSolicitud='+ $location.search().idSolicitud;
+               
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+            
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divCorrecto').style.display = 'block';
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
+            };
+            
+            $scope.anularSolicitud = function(){
+                                   
+             
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=anularSolicitud');
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala";
+                var Params = 'idSolicitud='+ $location.search().idSolicitud;
+               
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+            
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divCorrecto').style.display = 'block';
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
+            };
             
         }
             $.datepicker.regional['es'] = {
@@ -421,8 +467,9 @@
                                 </div>
                         </div>
                     </div>
-                                <input style='display:none;' id="anulacion" class="btn btn-sm btn-danger" type="submit" value="Anular Solicitud" ng-click="anularSolicitud();" />
-                                <input style='display:none;' id="validacion" class="btn btn-sm btn-success" type="submit" value="Validar Solicitud" ng-click="validarSolicitud();" ng-disabled="formulario.$invalid" />
+                                <input ng_show="clasesdirigidas.Gestionado=== '1' && clasesdirigidas.Anulado=== '0'" id="anulacion" class="btn btn-sm btn-danger" type="submit" value="Anular Solicitud" ng-click="anularSolicitud();" />
+                                <input ng_show="clasesdirigidas.Gestionado=== '0' && clasesdirigidas.Anulado=== '0'" id="validacion" class="btn btn-sm btn-success" type="submit" value="Validar Solicitud" ng-click="validarSolicitud();" ng-disabled="formulario.$invalid" />
+                                <input ng_show="clasesdirigidas.Anulado=== '1'" id="activacion" class="btn btn-sm btn-success" type="submit" value="Activar Solicitud" ng-click="activarSolicitud();" />
                                 <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='Reservas.php?detalle=1' " />
                                 
                                 

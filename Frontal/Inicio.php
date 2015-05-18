@@ -67,7 +67,7 @@
             
             $scope.obtenerSolicitudesMes = function() {
                 
-                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesMes');
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesMesEstadistica');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes";
                 var Params = '';    
                 
@@ -85,6 +85,27 @@
                 
             };
             $scope.obtenerSolicitudesMes ();
+            
+            $scope.obtenerSolicitudesSemana = function() {
+                
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesSemanaEstadistica');
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes";
+                var Params = '';    
+                
+	        Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                
+                alert(Ajax.responseText);
+	
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                $scope.clasessemana = parseInt(JSON.parse(Ajax.responseText).clasessemana);
+                $scope.mensualsemana = parseInt(JSON.parse(Ajax.responseText).mensualsemana);
+                $scope.diariosemana = parseInt(JSON.parse(Ajax.responseText).diariosemana);
+                
+            };
+            $scope.obtenerSolicitudesSemana ();
            
  
 }
@@ -131,22 +152,22 @@
                     <li>
                         <a href="#">
                             <i class="glyphicon glyphicon-play"></i>
-                            <span class="green">92</span>
+                            <span class="green" ng-bind="diariosemana"></span>
+                            Abono diario
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="glyphicon glyphicon-play"></i>
+                            <span class="green" ng-bind="mensualsemana"></span>
                             Abonos mensuales
                         </a>
                     </li>
                     <li>
                         <a href="#">
                             <i class="glyphicon glyphicon-play"></i>
-                            <span class="red">15</span>
-                            Clases Dirigidas
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="glyphicon glyphicon-play"></i>
-                            <span class="red">15</span>
-                            Abono diario
+                            <span class="green" ng-bind="clasessemana"></span>
+                            Reservas Clases Dirigidas
                         </a>
                     </li>
                 </ul>
@@ -172,14 +193,14 @@
                     <li>
                         <a href="#">
                             <i class="glyphicon glyphicon-play"></i>
-                            <span class="red" ng-bind="clases"></span>
+                            <span class="green" ng-bind="clases"></span>
                             Reservas clases Dirigidas
                         </a>
                     </li>
                     <li>
                         <a href="#">
                             <i class="glyphicon glyphicon-play"></i>
-                            <span class="blue" ng-bind="mensual"></span>
+                            <span class="green" ng-bind="mensual"></span>
                             Abono mensual
                         </a>
                     </li>

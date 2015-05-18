@@ -148,7 +148,7 @@ if ($("#stackchart").length) {
 
 //DAtos
 //var Url = "http://localhost:8080/sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesSemana";
-var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesMes');
+var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesMesEstadistica');
 
 var Params = '';    
 	        Ajax.open("POST", Url, false);
@@ -158,6 +158,17 @@ var Params = '';
                 var diario = JSON.parse(Ajax.responseText).diario;
                 var clases = JSON.parse(Ajax.responseText).clases;
                 var mensual = JSON.parse(Ajax.responseText).mensual;
+                
+var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesSemanaEstadistica');
+
+var Params = '';    
+	        Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos                
+                
+                var diariosemana = JSON.parse(Ajax.responseText).diariosemana;
+                var clasessemana = JSON.parse(Ajax.responseText).clasessemana;
+                var mensualsemana = JSON.parse(Ajax.responseText).mensualsemana;
 ////pie chart
 var data = [
     { label: "Diarios", data: parseInt(diario)},
@@ -165,8 +176,15 @@ var data = [
     { label: "Clases Dirigidas", data: parseInt(clases)}
 ];
 
+var datasemana = [
+    { label: "Diarios", data: parseInt(diariosemana)},
+    { label: "Mensuales", data: parseInt(mensualsemana)},
+    { label: "Clases Dirigidas", data: parseInt(clasessemana)}
+];
+
+
 if ($("#piechart").length) {
-    $.plot($("#piechart"), data,
+    $.plot($("#piechart"), datasemana,
         {
             series: {
                 pie: {
