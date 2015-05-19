@@ -66,9 +66,6 @@ class OcupacionActividad extends Rest {
                             $scope.estado = response.estado;
                             if ($scope.estado === 'correcto')
                                 $scope.actividad = response.actividad;
-                            var ia = $scope.actividad.IntensidadActividad;
-                            ia = '#' + ia.toString();
-                            $("#IntensidadActividad").css("background-color") = ia;
                         });
             });
         </script>
@@ -83,7 +80,7 @@ class OcupacionActividad extends Rest {
                             <fieldset>
                                 <div class="form-group has-success has-feedback">
                                     <div class="col-md-5 col-sm-5 input-group-lg">
-                                        <label class="control-label" > NombreActividad</label>
+                                        <label class="control-label" > Nombre de la Actividad</label>
                                         <input type="text" class="form-control" id="NombreActividad" ng-model="actividad.NombreActividad" readonly/>
                                     </div>
                                     <div class="col-md-4 col-sm-4 input-group-lg">
@@ -93,7 +90,7 @@ class OcupacionActividad extends Rest {
                                     </div>
                                     <div class="col-md-5 col-sm-5 input-group-lg">
                                         <label class="control-label" > Intensidad </label>
-                                        <input type="text" class="form-control" id="IntensidadActividad" ng-model="actividad.IntensidadActividad" readonly/>
+                                        <input type="color" class="form-control color" id="IntensidadActividad" ng-model="actividad.IntensidadActividad" ng-init="actividad.IntensidadActividad" readonly/>
                                         <br>
                                     </div>
                                     <div class="col-md-2 col-sm-2 input-group-lg">
