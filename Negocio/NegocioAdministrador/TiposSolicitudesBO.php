@@ -63,8 +63,6 @@ class TiposSolicitudesBO extends Rest{
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
-        
-        $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
         $NombreSolicitud = $this->datosPeticion['NombreSolicitud'];
         $DescripcionSolicitud = $this->datosPeticion['DescripcionSolicitud'];
         $FechaAlta =date("Y-m-d");
@@ -197,12 +195,18 @@ class TiposSolicitudesBO extends Rest{
         
         $tiposolicitud = new TiposolicitudModel();
         
-        if($this->datosPeticion['NombreSolicitud'])
-            $tiposolicitud->setNombreSolicitud($this->datosPeticion['NombreSolicitud']);
-        if($this->datosPeticion['DescripcionSolicitud'] != '')
-            $tiposolicitud->setDescripcionSolicitud($this->datosPeticion['DescripcionSolicitud']);
+        if($nomtiposolicitud != '')
+            $tiposolicitud->setNombreSolicitud($nomtiposolicitud);
+        if($destiposolicitud != '')
+            $tiposolicitud->setDescripcionSolicitud($destiposolicitud);
         
-        $filas = TiposolicitudModel::findByExample($this->con,$tiposolicitud,$sort);
+        $filter=array(
+        new DFC(TiposolicitudModel::FIELD_NOMBRESOLICITUD, $nomtiposolicitud, DFC::CONTAINS),
+        new DFC(TiposolicitudModel::FIELD_DESCRIPCIONSOLICITUD, $destiposolicitud, DFC::CONTAINS)
+        );
+        $filas=TiposolicitudModel::findByFilter($this->con, $filter, true, $sort);
+        
+        //$filas = TiposolicitudModel::findByExample($this->con,$tiposolicitud,$sort);
                                 
         $num = count($filas);
         if ($num > 0) {

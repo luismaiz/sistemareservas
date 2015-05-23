@@ -4,7 +4,19 @@
             var app = angular.module('BusquedaPrecios', ["ngStorage"])            
                      .config(function($locationProvider) {
                           $locationProvider.html5Mode(true);
-                      });            
+                      })
+                      .directive('myRepeatDirective', function() {
+                        return function(scope, element, attrs) {
+                        
+                        if (scope.$last){
+                        $('.footable').trigger('footable_initialized');
+                        $('.footable').trigger('footable_resize');
+                        $('.footable').data('footable').redraw();
+                        
+                        }
+                        };
+                        })   
+                        ;
                      
     
     function CargaBusquedaPrecios($scope, $http, $location,$localStorage) {
@@ -12,15 +24,21 @@
         $scope.obtenerTipoSolicitud = function(){
         
         var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitud');
-        //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitud";
-        
         var Params = '';
-
+        $scope.selectedsolicitud = 1;
         Ajax.open("GET", Url, false);
         Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
         Ajax.send(Params); // Enviamos los datos
-               
+
         $scope.tiposSolicitudes = JSON.parse(Ajax.responseText).tiposSolicitudes;
+            if (localStorage.getItem('filtrosprecios')!== null)
+		{
+		    $scope.selectedsolicitud = $scope.tiposSolicitudes[JSON.parse(localStorage.getItem('filtrosprecios'))[0].TipoSolicitud-1];
+		}
+                else
+                {
+                    $scope.selectedsolicitud = [0];
+                }
         
         };   
         $scope.obtenerTipoSolicitud();
@@ -29,16 +47,24 @@
         $scope.obtenerTipoAbono = function(){
         
         var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbono');		
-        //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbono";		
-        
+            
         var Params = '';
-
+        $scope.selectedabono = 1;    
         Ajax.open("GET", Url, false);
         Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
         Ajax.send(Params); // Enviamos los datos
         
-                       
         $scope.tiposAbonos = JSON.parse(Ajax.responseText).tiposAbonos;
+        if (localStorage.getItem('filtrosprecios')!== null)
+		{
+		    $scope.selectedabono = $scope.tiposAbonos[JSON.parse(localStorage.getItem('filtrosprecios'))[0].TipoAbono-1];
+		}
+                else
+                {
+                    $scope.selectedabono = [0];
+                }
+        
+        //$scope.tiposAbonos = JSON.parse(Ajax.responseText).tiposAbonos;
         
         };   
         $scope.obtenerTipoAbono();
@@ -47,27 +73,40 @@
         $scope.obtenerTipoTarifa = function(){
         
         var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifa');		
-        //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifa";		
-        
         var Params = '';
-
+        $scope.selectedtarifa = 1;    
         Ajax.open("GET", Url, false);
         Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
         Ajax.send(Params); // Enviamos los datos
-               
+        
         $scope.tiposTarifas = JSON.parse(Ajax.responseText).tiposTarifas;
+        if (localStorage.getItem('filtrosprecios')!== null)
+		{
+		    $scope.selectedtarifa = $scope.tiposTarifas[JSON.parse(localStorage.getItem('filtrosprecios'))[0].TipoTarifa-1];
+		}
+                else
+                {
+                    $scope.selectedtarifa = [0];
+                }        
+
+               
+        //$scope.tiposTarifas = JSON.parse(Ajax.responseText).tiposTarifas;
         
         };   
         $scope.obtenerTipoTarifa();
         
         
         $scope.obtenerPrecios = function() {
-                
-                $scope.filtrosprecios = 
-                        [{filtroTipoSolicitud:document.getElementById("filtroTipoSolicitud").selectedIndex,
-                        filtroTipoAbono:document.getElementById("filtroTipoAbono").selectedIndex,
-                        filtroTipoTarifa:document.getElementById("filtroTipoTarifa").selectedIndex}];
-                localStorage.setItem('filtrosprecios', JSON.stringify($scope.filtrosprecios));
+            
+                if (localStorage.getItem('filtrosprecios')!== null)
+                {
+					$scope.filtrosprecios = localStorage.getItem('filtrosprecios');
+										
+					$scope.selectedsolicitud = $scope.tiposSolicitudes[JSON.parse($scope.filtrosprecios)[0].TipoSolicitud-1];
+					$scope.selectedabono = $scope.tiposAbonos[JSON.parse($scope.filtrosprecios)[0].TipoAbono-1];
+                                        $scope.selectedtarifa = $scope.tiposTarifas[JSON.parse($scope.filtrosprecios)[0].TipoTarifa-1];
+                }
+          
             
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerPreciosFiltro');
                 
@@ -85,7 +124,7 @@
                 if ($scope.estado === 'correcto')
                 {
                     $scope.precios = JSON.parse(Ajax.responseText).precios;
-                    localStorage.setItem('precios', JSON.stringify($scope.precios));
+                    localStorage.removeItem('filtrosprecios');
                     document.getElementById('divSinResultados').style.display = 'none';
                 }
                 else
@@ -95,24 +134,24 @@
                 }
             };
             
-            if (typeof($location.search().detalle) !== "undefined")
+            if (localStorage.getItem('filtrosprecios')!== null)
             {
-                //alert('hola');
-                $scope.resultado = localStorage.getItem('precios');
-                $scope.filtrosprecios = localStorage.getItem('filtrosprecios');
-                $scope.precios = (localStorage.getItem('precios')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).precios;
-            
-                //document.getElementById("filtroTipoSolicitud").value = JSON.parse($scope.filtrosprecios)[0].filtroTipoSolicitud;
-                //document.getElementById("filtroTipoAbono").value = JSON.parse($scope.filtrosprecios)[0].filtroTipoAbono;
-                //document.getElementById("filtroTipoTarifa").value = JSON.parse($scope.filtrosprecios)[0].filtroTipoTarifa;
-                
-                
-                document.getElementById("filtroTipoSolicitud").selectedIndex = JSON.parse($scope.filtrosprecios)[0].filtroTipoSolicitud;
-                document.getElementById("filtroTipoAbono").selectedIndex = JSON.parse($scope.filtrosprecios)[0].filtroTipoAbono;
-                document.getElementById("filtroTipoTarifa").selectedIndex = JSON.parse($scope.filtrosprecios)[0].filtroTipoTarifa;
-                
-                $scope.obtenerPrecios();
+		$scope.obtenerPrecios();
             }
+                    
+                
+				
+            $scope.redirigirprecios = function(idPrecio)
+            {
+		    $scope.filtrosprecios = 
+                            [{                                    
+                            TipoSolicitud:document.getElementById("filtroTipoSolicitud").value,
+                            TipoAbono:document.getElementById("filtroTipoAbono").value,
+                            TipoTarifa:document.getElementById("filtroTipoTarifa").value}
+                            ];
+                            localStorage.setItem('filtrosprecios', JSON.stringify($scope.filtrosprecios));
+                            location.href = "FormularioDetallePrecio.php?idPrecio="+idPrecio;
+	    };
             
             
              $(function () {
@@ -149,19 +188,23 @@
                         <div class="col-md-12">
                             <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Tipo Solicitud</label>
-                                <select  id="filtroTipoSolicitud" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
+                                <select ng-model="selectedsolicitud" ng-options="tiposolicitud.NombreSolicitud for tiposolicitud in tiposSolicitudes track by tiposolicitud.idTipoSolicitud"  id="filtroTipoSolicitud" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" ></select>
+<!--                                <select  id="filtroTipoSolicitud" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
                                     <option ng_repeat="tiposolicitud in tiposSolicitudes" value="{{tiposolicitud.idTipoSolicitud}}">{{tiposolicitud.NombreSolicitud}}</option>
-                                </select>
+                                </select>-->
                                 <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Tipo Abono</label>
-                                <select  id="filtroTipoAbono" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
+                                <select ng-model="selectedabono" ng-options="tipoabono.NombreAbono for tipoabono in tiposAbonos track by tipoabono.idTipoAbono"  id="filtroTipoAbono" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	</select>
+<!--                                <select  id="filtroTipoAbono" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
                                     <option ng_repeat="tipoabono in tiposAbonos" value="{{tipoabono.idTipoAbono}}">{{tipoabono.NombreAbono}}</option>
-                                </select>
+                                </select>-->
                                 <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Tipo Tarifa</label>
-                                <select  id="filtroTipoTarifa" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
+                                <select ng-model="selectedtarifa" ng-options="tipotarifa.NombreTarifa for tipotarifa in tiposTarifas track by tipotarifa.idTipoTarifa"  id="filtroTipoTarifa" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	</select>
+<!--                                <select  id="filtroTipoTarifa" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
                                     <option ng_repeat="tipotarifa in tiposTarifas" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>
-                                </select>
+                                </select>-->
                                 
                             </div>	
+                          
                             <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerPrecios()"/>
                             <div class="box-content" id="precios">
                             <table class="footable table-striped table-bordered responsive" data-page-size="5" data-page-navigation=".pagination" id="tabla">
@@ -175,25 +218,34 @@
                                               </thead>      
                                                 </tr>
                                                 <tbody>
-                                                <tr ng_repeat="precio in precios">
-                                                    <td><select  ng_disabled="true">	
+                                                <tr ng_repeat="precio in precios" my-repeat-directive>
+                                                    <td>
+                                                    <!--<select ng_disabled="true" ng-model="precio.idTipoSolicitud" ng-options="tiposolicitud.NombreSolicitud for tiposolicitud in tiposSolicitudes track by tiposolicitud.idTipoSolicitud"   class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" ></select>	    -->
+<!--                                                    <select  ng_disabled="true">	
                                                             <option ng_repeat="tiposolicitud in tiposSolicitudes" ng_selected="{{precio.idTipoSolicitud}} == {{tiposolicitud.idTipoSolicitud}}">{{tiposolicitud.NombreSolicitud}}</option>
-                                                    </select></td>
-                                                    <td><select  ng_disabled="true">	
+                                                    </select>-->
+                                                    </td>
+                                                    <td>
+                                                    <!--<select ng_disabled="true" ng-model="precio.idTipoAbono" ng-options="tipoabono.NombreAbono for tipoabono in tiposAbonos track by tipoabono.idTipoAbono"  class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	</select>-->
+<!--                                                    <select  ng_disabled="true">	
                                                             <option ng_repeat="tipoabono in tiposAbonos" ng_selected="{{precio.idTipoAbono}} == {{tipoabono.idTipoAbono}}">{{tipoabono.NombreAbono}}</option>
-                                                    </select></td>
-                                                    <td><select  ng_disabled="true">	
+                                                    </select>-->
+                                                    </td>
+                                                    <td>
+                                                    <!--<select ng_disabled="true" ng-model="precio.idTipoTarifa" ng-options="tipotarifa.NombreTarifa for tipotarifa in tiposTarifas track by tipotarifa.idTipoTarifa"  class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	</select>-->
+<!--                                                    <select  ng_disabled="true">	
                                                             <option ng_repeat="tipotarifa in tiposTarifas" ng_selected="{{precio.idTipoTarifa}} == {{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>
-                                                    </select></td>
+                                                    </select>-->
+                                                    </td>
                                                     <td>{{precio.Precio}}€</td>
-                                                    <td class="center"><a target="_self" href="FormularioDetallePrecio.php?idPrecio={{precio.idPrecio}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
+                                                    <td class="center"><a target="_self" href="" ng_click="redirigirprecios(precio.idPrecio);" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
                                                     <a  ng_show="precio.FechaBaja!==null"  class="btn btn-danger">Anulado</a></td>
                                                 </tr>
                                                 </tbody>
                                                 <tfoot class="hide-if-no-paging">
                                                     <tr>
-                                                        <td colspan="7" class="text-center">
-                                                            <ul class="pagination pagination-centered">
+                                                        <td colspan="7" class="text-center hide-if-no-paging">
+                                                            <ul class="pagination">
 
                                                             </ul>
                                                         </td>

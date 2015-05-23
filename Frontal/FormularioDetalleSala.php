@@ -69,10 +69,10 @@
                     '&DescripcionSala='+ document.getElementById('DescripcionSala').value;
 
                 
-                Ajax.open("POST", Url, true);
+                Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-                
+                alert(Ajax.responseText);
                 
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
@@ -277,7 +277,7 @@
                                 <input style='display:none;' id="anular" class="btn btn-sm btn-danger" type="submit" value="Anular" ng-click="anularSala();"/>
                                 <input data-bb="confirm" style='display:none;' id="aceptar" class="btn btn-sm btn-success" type="submit" value="Aceptar" ng-click="guardarSala();" ng-disabled="formulario.$invalid" />
                                 <input style='display:none;' id="activar" class="btn btn-sm btn-action" type="submit" value="Activar" ng-click="activarSala();"/>
-                                <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='Salas.php?detalle=1' " />
+                                <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='Salas.php' " />
                              
                              </form>
                            </div>  

@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<!-- saved from url=(0060)http://localhost:8080/SistemaReservas/Frontal/Calendario.php -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}</style>
+        <meta charset="utf-8">
+        <title>Sistema de Reservas</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">
+
+
+        <!-- The styles -->
+        
+        <link href="./Sistema de Reservas_files/bootstrap-cerulean.min.css" rel="stylesheet" type="text/css">
+        <link href="http://localhost:8080/SistemaReservas/Frontal/Utilidades/css/charisma-app.css" rel="stylesheet">
+        <link href="http://localhost:8080/SistemaReservas/Frontal/Utilidades/bower_components/fullcalendar/dist/fullcalendar.css" rel="stylesheet">
+        <link href="http://localhost:8080/SistemaReservas/Frontal/Utilidades/bower_components/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print">
+        <link href="http://localhost:8080/SistemaReservas/Frontal/Utilidades/bower_components/chosen/chosen.min.css" rel="stylesheet">
+        <link href="http://localhost:8080/SistemaReservas/Frontal/Utilidades/bower_components/colorbox/example3/colorbox.css" rel="stylesheet">
+        <link href="http://localhost:8080/SistemaReservas/Frontal/Utilidades/bower_components/responsive-tables/responsive-tables.css" rel="stylesheet">
+        <link href="http://localhost:8080/SistemaReservas/Frontal/Utilidades/bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css" rel="stylesheet">
+        <link href="http://localhost:8080/SistemaReservas/Frontal/Utilidades/css/jquery.noty.css" rel="stylesheet">
+        <link href="http://localhost:8080/SistemaReservas/Frontal/Utilidades/css/noty_theme_default.css" rel="stylesheet">
+        
+        <link href="http://localhost:8080/SistemaReservas/Frontal/Utilidades/css/elfinder.min.css" rel="stylesheet">
+        <link href="http://localhost:8080/SistemaReservas/Frontal/Utilidades/css/elfinder.theme.css" rel="stylesheet">
+        <link href="http://localhost:8080/SistemaReservas/Frontal/Utilidades/css/jquery.iphone.toggle.css" rel="stylesheet">
+        <link href="http://localhost:8080/SistemaReservas/Frontal/Utilidades/css/uploadify.css" rel="stylesheet">
+        <link href="http://localhost:8080/SistemaReservas/Frontal/Utilidades/css/animate.min.css" rel="stylesheet">
+        <link href="./Sistema de Reservas_files/Angular.css" rel="stylesheet" type="text/css">
+        <link href="./Sistema de Reservas_files/footable.core.css" rel="stylesheet" type="text/css">
+        <link href="./Sistema de Reservas_files/footable.metro.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+                
+		<!-- The fav icon -->
+        <link rel="shortcut icon" href="http://localhost:8080/SistemaReservas/Frontal/Utilidades/img/favicon.ico">
+        
+        <script src="./Sistema de Reservas_files/angular.js" type="text/javascript"></script>
+        <!-- jQuery -->
+        <script src="./Sistema de Reservas_files/jquery.min.js"></script>
+        <script src="./Sistema de Reservas_files/jquery-1.10.2.js"></script>
+        <script src="./Sistema de Reservas_files/jquery-ui.js"></script>
+        <script src="./Sistema de Reservas_files/jscolor.js" type="text/javascript"></script>
+        <script src="./Sistema de Reservas_files/footable.js" type="text/javascript"></script>
+        <script src="./Sistema de Reservas_files/footable.sort.js" type="text/javascript"></script>
+        <script src="./Sistema de Reservas_files/footable.paginate.js" type="text/javascript"></script>
+        <script src="./Sistema de Reservas_files/ngStorage.min.js" type="text/javascript"></script>
+        <script src="./Sistema de Reservas_files/tab.js" type="text/javascript"></script>
+		        
+        
+        <!-- Calendario -->
+       <link rel="stylesheet" href="http://localhost:8080/SistemaReservas/Frontal/Utilidades/calendario/css/font-awesome.min.css">
+	    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300">
+		 <!-- ace styles -->
+        <!--<link rel="stylesheet" href="Utilidades/calendario/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />-->
+        <link rel="stylesheet" type="text/css" href="./Sistema de Reservas_files/jquery.datetimepicker.css">
+        <script src="./Sistema de Reservas_files/jquery.datetimepicker.js" type="text/javascript"></script>
+        <script src="./Sistema de Reservas_files/angular-footable.js" type="text/javascript"></script>
+        <script src="./Sistema de Reservas_files/jquery.bpopup.min.js" type="text/javascript"></script>
+        <script>
+            //var BASE_URL = 'http://vw15115.dinaserver.com/hosting/reservascentro.es-web/';
+            var BASE_URL = 'http://localhost:8080/';
+        function AjaxObj()
+        {
+            var xmlhttp = null;
+
+            if (window.XMLHttpRequest)
+            {
+                xmlhttp = new XMLHttpRequest();
+
+                if (xmlhttp.overrideMimeType)
+                {
+                    xmlhttp.overrideMimeType('text/xml');
+                }
+            }
+            else if (window.ActiveXObject)
+            {
+                // Internet Explorer    
+                try
+                {
+                    xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+                }
+                catch (e)
+                {
+                    try
+                    {
+                        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    catch (e)
+                    {
+                        xmlhttp = null;
+                    }
+                }
+
+                if (!xmlhttp && typeof XMLHttpRequest != 'undefined')
+                {
+                    xmlhttp = new XMLHttpRequest();
+
+                    if (!xmlhttp)
+                    {
+                        failed = true;
+                    }
+                }
+            }
+            return xmlhttp;
+        }
+                
+
+    </script>
+    </head>
+    
+    <body class="modal-open" style="padding-right: 17px;">
+
+            <!-- topbar starts -->
+            <div class="navbar navbar-default" role="navigation">
+                <div class="navbar-inner">
+                    <button type="button" class="navbar-toggle pull-left animated flip">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="http://localhost:8080/SistemaReservas/Frontal/Inicio.php"> <img alt="FMN Logo" src="./Sistema de Reservas_files/FMN.jpg" class="hidden-xs">
+                        <span>M-86</span></a>
+
+                    <!-- user dropdown starts -->
+                    <div class="btn-group pull-right">
+                        <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <i class="glyphicon glyphicon-user"></i><span class="hidden-sm hidden-xs"> administrador</span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="http://localhost:8080/SistemaReservas/Frontal/CerrarSesion.php">Cerrar sesion</a></li>
+                        </ul>
+                    </div>
+                    <!-- user dropdown ends -->
+                    <!-- user dropdown ends -->
+
+           
+                </div>
+            </div>
+            <!-- topbar ends -->
+
+        <div class="ch-container">
+            <div class="row">
+                    <!-- left menu starts -->
+                    <div class="col-sm-2 col-lg-2">
+                        <div class="sidebar-nav">
+                            <div class="nav-canvas" id="menuadministrador" style="display: block;">
+                                <div class="nav-sm nav nav-stacked">
+
+                                </div>
+                                <ul class="nav nav-pills nav-stacked main-menu">
+                                    <li class="nav-header">Menú Principal</li>
+                                    <li><a class="ajax-link" href="http://localhost:8080/SistemaReservas/Frontal/Inicio.php"><i class="glyphicon glyphicon-home"></i><span> Inicio</span></a>
+                                    </li>
+<!--                                    <li><a class="ajax-link" href="Calendario.php"><i class="glyphicon glyphicon-home"></i><span> Calendario</span></a>
+                                    </li>-->
+                                    <li><a class="ajax-link" href="http://localhost:8080/SistemaReservas/Frontal/Reservas.php"><i class="glyphicon glyphicon-edit"></i><span> Reservas </span></a>
+                                    </li>
+									<li class="active"><a class="ajax-link" href="./Sistema de Reservas_files/Sistema de Reservas.html"><i class="glyphicon glyphicon-edit"></i><span> Clases</span></a>
+                                    </li>
+									<li class="accordion">
+										<a href="http://localhost:8080/SistemaReservas/Frontal/Calendario.php#"><i class="glyphicon glyphicon-plus"></i><span> Mantenimiento</span></a>
+											<ul class="nav nav-pills nav-stacked">
+											<li><a class="ajax-link" href="http://localhost:8080/SistemaReservas/Frontal/Salas.php"><i class="glyphicon glyphicon-edit"></i><span> Salas</span></a></li>
+											<li><a class="ajax-link" href="http://localhost:8080/SistemaReservas/Frontal/Actividades.php"><i class="glyphicon glyphicon-edit"></i><span> Actividades</span></a></li>
+											<li><a class="ajax-link" href="http://localhost:8080/SistemaReservas/Frontal/TipoSolicitud.php"><i class="glyphicon glyphicon-edit"></i><span> Tipo Solicitud</span></a></li>
+											<li><a class="ajax-link" href="http://localhost:8080/SistemaReservas/Frontal/TipoAbono.php"><i class="glyphicon glyphicon-edit"></i><span> Tipo Abono</span></a></li>
+											<li><a class="ajax-link" href="http://localhost:8080/SistemaReservas/Frontal/TipoTarifa.php"><i class="glyphicon glyphicon-edit"></i><span> Tipo Tarifa</span></a></li>
+											<li><a class="ajax-link" href="http://localhost:8080/SistemaReservas/Frontal/Precios.php"><i class="glyphicon glyphicon-edit"></i><span> Precios</span></a></li>
+											</ul>
+									</li>
+                                    <li><a class="ajax-link" href="http://localhost:8080/SistemaReservas/Frontal/Informes.php"><i class="glyphicon glyphicon-eye-open"></i><span> Informes</span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            
+                            <div class="nav-canvas" id="menugestor" style="display: none;">
+                                <div class="nav-sm nav nav-stacked">
+
+                                </div>
+                                <ul class="nav nav-pills nav-stacked main-menu">
+                                    <li class="nav-header">Menú Principal</li>
+                                    <li><a class="ajax-link" href="http://localhost:8080/SistemaReservas/Frontal/Inicio.php"><i class="glyphicon glyphicon-home"></i><span> Inicio</span></a>
+                                    </li>
+                                    <li><a class="ajax-link" href="http://localhost:8080/SistemaReservas/Frontal/Reservas.php"><i class="glyphicon glyphicon-edit"></i><span> Reservas </span></a>
+                                    </li>
+									<li class="accordion">
+										<a href="http://localhost:8080/SistemaReservas/Frontal/Calendario.php#"><i class="glyphicon glyphicon-plus"></i><span> Mantenimiento</span></a>
+											<ul class="nav nav-pills nav-stacked">
+											<li><a class="ajax-link" href="http://localhost:8080/SistemaReservas/Frontal/Salas.php"><i class="glyphicon glyphicon-edit"></i><span> Salas</span></a></li>
+											<li><a class="ajax-link" href="http://localhost:8080/SistemaReservas/Frontal/Actividades.php"><i class="glyphicon glyphicon-edit"></i><span> Actividades</span></a></li>
+											<li><a class="ajax-link" href="http://localhost:8080/SistemaReservas/Frontal/TipoSolicitud.php"><i class="glyphicon glyphicon-edit"></i><span> Tipo Solicitud</span></a></li>
+											<li><a class="ajax-link" href="http://localhost:8080/SistemaReservas/Frontal/TipoAbono.php"><i class="glyphicon glyphicon-edit"></i><span> Tipo Abono</span></a></li>
+											<li><a class="ajax-link" href="http://localhost:8080/SistemaReservas/Frontal/TipoTarifa.php"><i class="glyphicon glyphicon-edit"></i><span> Tipo Tarifa</span></a></li>
+											<li><a class="ajax-link" href="http://localhost:8080/SistemaReservas/Frontal/Precios.php"><i class="glyphicon glyphicon-edit"></i><span> Precios</span></a></li>
+											</ul>
+									</li>
+                                    <li><a class="ajax-link" href="http://localhost:8080/SistemaReservas/Frontal/Informes.php"><i class="glyphicon glyphicon-eye-open"></i><span> Informes</span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="nav-canvas" id="menumonitor" style="display: none;">
+                                <div class="nav-sm nav nav-stacked">
+
+                                </div>
+                                <ul class="nav nav-pills nav-stacked main-menu">
+                                    <li class="nav-header">Menú Principal</li>
+                                    <li><a class="ajax-link" href="http://localhost:8080/SistemaReservas/Frontal/Inicio.php"><i class="glyphicon glyphicon-home"></i><span> Inicio</span></a>
+                                    </li>
+                                    <li class="active"><a class="ajax-link" href="./Sistema de Reservas_files/Sistema de Reservas.html"><i class="glyphicon glyphicon-edit"></i><span> Clases</span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/span-->
+                    <!-- left menu ends -->
+                    <noscript>
+                    &lt;div class="alert alert-block col-md-12"&gt;
+                        &lt;h4 class="alert-heading"&gt;Warning!&lt;/h4&gt;
+                    &lt;/div&gt;
+                    </noscript>
+
+                    <div id="content" class="col-lg-10 col-sm-10">
+                        <!-- content starts -->
+
+
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+    var Ajax = new AjaxObj();
+    var Actividades;
+    var arrayactividades=[];
+    var Salas;
+    var app = angular.module('Clases',  [])            
+                     .config(function($locationProvider) {
+                          $locationProvider.html5Mode(true);
+                      });
+                      
+    function CargaClases($scope, $http,$location) {
+                $scope.obtenerActividades = function() {
+                
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividadesFiltro');
+                var Params = 'NombreActividad=' + '' + '&IntensidadActividad=' + '' + '&Grupo=' + '';    
+                
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                        
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    $scope.actividades = JSON.parse(Ajax.responseText).actividades;
+                    Actividades = $scope.actividades;
+                    
+                    
+                    for (var i=0;i<Actividades.length;i++)
+                    {
+                        arrayactividades[i] = (Actividades[i].idActividad);
+                    }
+                }
+                else
+                {
+                    $scope.actividades = [];
+                }
+            };
+            
+            $scope.obtenerActividades();
+			
+		$scope.obtenerSalas = function() {
+		var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSalasFiltro');
+                var Params = 'NombreSala=' + '' + '&CapacidadSala=' + '';    
+                
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                Ajax.send(Params); 
+				
+				if ($scope.estado === 'correcto')
+    				{
+                                
+				$scope.salas = JSON.parse(Ajax.responseText).salas;
+				Salas = $scope.salas;
+				}
+            };
+            $scope.obtenerSalas();
+     }
+    
+    jQuery(function($) {
+
+ 
+        $('#fechaInicio').datetimepicker({
+                        lang:'es',
+                        format: 'd/m/Y H:i:00'//,
+                        });
+        $('#fechaFin').datetimepicker({
+                        lang:'es',
+                        format: 'd/m/Y H:i:00'//,
+                        }); 
+        $('#external-events .fc-event').each(function() {				
+            
+            var eventObject = {
+                title: $.trim($(this).text()),
+                idActividad:$(this).attr('id')
+            };
+            
+            $(this).data('eventObject', eventObject);
+            $(this).draggable({
+                zIndex: 999,
+                revert: true,      
+                revertDuration: 0  
+            });		
+        });
+        /* initialize the calendar
+-----------------------------------------------------------------*/
+
+        $('#calendar').fullCalendar({
+            minTime: "09:00",
+            maxTime: "22:00",
+            allDaySlot:false,
+            timeFormat: 'H:mm' ,
+            lazyFetching: false,
+            hiddenDays: [ 0 ],
+                        
+            buttonHtml: {
+                prev: '<i class="ace-icon fa fa-chevron-left"></i>',
+                next: '<i class="ace-icon fa fa-chevron-right"></i>'
+            },
+	
+            header: {
+                left: 'prev,next hoy',
+                center: 'title',
+                right: ''
+            },
+            eventLimit: true, // allow "more" link when too many events
+            defaultView: 'agendaWeek',            
+            editable: true,
+            droppable: true, // this allows things to be dropped onto the calendar !!!
+            selectable: true,
+            selectHelper: true,
+            
+            events: function(start, end, timezone, callback) {
+                            
+                $.ajax({
+                    url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=obtenerClases'),
+                    dataType: "json",
+                    data: "",
+                    async: true,
+                    success: function(doc) {
+                        
+                        var events = [];
+                        
+                        for(i=0; i<doc.clases.length; i++){
+                            
+                            // Split timestamp into [ Y, M, D, h, m, s ]
+                            
+                            var fechainicio = doc.clases[i].FechaInicio.toLocaleString().split(/[- :]/);
+                            var fechafin = doc.clases[i].FechaFin.toLocaleString().split(/[- :]/);
+                                                     
+                            // Apply each element to the Date function
+                            var Cfechainicio = new Date(fechainicio[0], fechainicio[1]-1, fechainicio[2], fechainicio[3], fechainicio[4], fechainicio[5]);
+                            var Cfechafin = new Date(fechafin[0], fechafin[1]-1, fechafin[2], fechafin[3], fechafin[4], fechafin[5]);
+                            
+                            events.push({
+                                id:doc.clases[i].idClase,
+                                title: Actividades[arrayactividades.indexOf(doc.clases[i].idActividad)].NombreActividad,
+                                idActividad: doc.clases[i].idActividad,
+                                idSala: doc.clases[i].idSala,
+                                OcupacionClase: doc.clases[i].Ocupacion,
+                                idClase: doc.clases[i].idClase,
+                                allDay: false,
+                                start: Cfechainicio,
+                                end:  Cfechafin,
+                                backgroundColor: "#"+doc.clases[i].Ocupacion,
+                                borderColor: "#"+doc.clases[i].Ocupacion
+                            });
+                        }
+						
+                        callback(events);
+                    }
+                });
+            },
+            drop: function(event,date, allDay) { // this function is called when something is dropped 
+                
+                var inicio = new Date((event._d).getFullYear(), (event._d).getMonth(), (event._d).getDate(), (event._d).getHours(), (event._d).getMinutes(), (event._d).getSeconds()).toUTCString();
+                var fin = new Date((event._d).getFullYear(), (event._d).getMonth(), (event._d).getDate(), ((event._d).getHours()+1), (event._d).getMinutes(), (event._d).getSeconds()).toUTCString();
+                var originalEventObject = $(this).data('eventObject');
+                var $idActividad = parseInt($(this).attr('id'));
+                var copiedEventObject = $.extend({}, originalEventObject);
+                copiedEventObject.start =  inicio;
+                copiedEventObject.end =  fin;
+                copiedEventObject.allDay = false;
+                var json = {idActividad:$idActividad,idSala:3,FechaInicio:inicio, FechaFin:fin, Ocupacion:'', Dia:0, Publicada:1};
+                $.ajax({
+                    type: "POST",
+                    url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=crearClaseGMT'),
+                    data: jQuery.param( json ),
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    dataType: "json",
+                    async: true,
+
+                    success: function(data, textStatus) {
+                        
+                        copiedEventObject.idClase = data.idClase;
+                        copiedEventObject.id = data.idClase;
+                        copiedEventObject.idSala = 3;
+                        copiedEventObject.idActividad = $idActividad;
+                        copiedEventObject.FechaInicio = inicio;
+                        copiedEventObject.FechaFin = fin;
+                        copiedEventObject.Ocupacion = '';
+                        $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+                    },
+                    error: function( jqXHR, textStatus, errorThrown ) {
+                }}); 
+				
+            },
+            eventDrop: function(calEvent, delta) { 
+               
+                var json = {idClase:calEvent._id,idActividad:calEvent.idActividad,idSala:calEvent.idSala,FechaInicio:calEvent.start._d.toUTCString(), FechaFin:calEvent.end._d.toUTCString(), Ocupacion:calEvent.OcupacionClase, Dia:calEvent._fullDay, Publicada:1};
+                $.ajax({
+                    type: "POST",
+                    url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=actualizarClaseGMT'),
+                    data: jQuery.param( json ),
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    dataType: "json",
+                    async: false,
+                        
+                    success: function(data, textStatus) {
+                        
+                        //$('#calendar').fullCalendar('updateEvent',calEvent, true);
+                    },
+                    error: function( jqXHR, textStatus, errorThrown ) {
+                }});
+				
+            },
+            eventResize: function(calEvent) {
+                
+                var json = {idClase:calEvent.idClase,idActividad:calEvent.idActividad,idSala:calEvent.idSala,FechaInicio:calEvent.start._d.toUTCString(), FechaFin:calEvent.end._d.toUTCString(), Ocupacion:calEvent.OcupacionClase, Dia:calEvent._fullDay, Publicada:1};
+                $.ajax({
+                    type: "POST",
+                    url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=actualizarClaseGMT'),
+                    data: jQuery.param( json ),
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    dataType: "json",
+                    async: true,
+
+                    success: function(data, textStatus) {
+                        //$('#calendar').fullCalendar('updateEvent',calEvent, true);
+                    },
+                    error: function( jqXHR, textStatus, errorThrown ) {
+                }});    
+				
+            },
+            dayClick: function(date, jsEvent, view) {
+                
+                $('#fullCalModal').modal();
+                
+                //$('#idActividad').attr("disabled", false);
+                //$('#idSala').attr("disabled", false);    
+                $('#fullCalModal').find('button[data-action=crear]').show();
+                $('#fullCalModal').find('button[data-action=actualizar]').hide();
+                $('#fullCalModal').find('button[data-action=delete]').hide();
+                $('#fechaInicio').val('');
+                $('#fechaFin').val('');
+                $('#OcupacionClase').val('FFFFFF');
+                $('#OcupacionClase').css('background-color',"#FFFFFF");
+                
+                 //$('#fullCalModal').find('button[data-action=crear]').on('click', function(ev) { 
+                $('#crear').on('click', function(ev) { 
+                var fechainicio = $('#fechaInicio').val().trim().split(/[/ :]/);
+                var fechafin = $('#fechaFin').val().trim().split(/[/ :]/);
+                            
+                var Cfechainiciocarga = new Date(fechainicio[2],isNaN(parseInt(fechainicio[1].substring(0,2)))?fechainicio[1].substring(1,3)-1:fechainicio[1].substring(0,2)-1,fechainicio[0],fechainicio[3],fechainicio[4],fechainicio[5]);
+                var Cfechafincarga = new Date(fechafin[2],isNaN(parseInt(fechafin[1].substring(0,2)))?fechafin[1].substring(1,3)-1:fechafin[1].substring(0,2)-1,fechafin[0],fechafin[3],fechafin[4],fechafin[5]);
+                    
+                var json = {idActividad:$('#idActividad').val(),idSala:$('#idSala').val(),FechaInicio:Cfechainiciocarga.toUTCString(), FechaFin:Cfechafincarga.toUTCString(), Ocupacion:$('#OcupacionClase').val(), Dia:0, Publicada:1};
+                $.ajax({
+                    type: "POST",
+                    url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=crearClase'),
+                    data: jQuery.param( json ),
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    dataType: "json",
+                    async: true,
+
+                    success: function(data, textStatus) {
+                        var objeto = new Object();
+                    objeto.id = data.id;        
+                    objeto.title= Actividades[arrayactividades.indexOf($('#idActividad').val())].NombreActividad;
+                    objeto.idActividad= $('#idActividad').val();
+                    objeto.idSala= $('#idSala').val();
+                    objeto.OcupacionClase= $('#OcupacionClase').val();
+                    objeto.idClase= 0;
+                    objeto.allDay= false;
+                    objeto.start= Cfechainiciocarga;
+                    objeto.end=  Cfechafincarga;
+                    objeto.backgroundColor= "#"+ $('#OcupacionClase').val();
+                    objeto.borderColor= "#"+ $('#OcupacionClase').val();
+                    objeto.dow=[1,2,3,4];
+                    
+                    $('#calendar').fullCalendar('renderEvent', objeto, true);
+         
+
+                    },
+                    error: function( jqXHR, textStatus, errorThrown ) {
+                }});
+                            $('#fullCalModal').modal("close");
+                            $('#fullCalModal').modal("hide");
+         
+                            
+                      });
+            },
+            
+            eventClick: function(calEvent, jsEvent, view) {  
+                       
+            
+            var Cfechainiciocarga=null;
+            var Cfechafincarga =null;
+            
+            if(isNaN(calEvent.idSala))
+            {            
+            Cfechainiciocarga = new Date(calEvent._start._d.getFullYear(),calEvent._start._d.getMonth(),calEvent._start._d.getDate(),calEvent._start._d.getHours()-2,calEvent._start._d.getMinutes(),calEvent._start._d.getSeconds());
+            Cfechafincarga = new Date(calEvent._end._d.getFullYear(),calEvent._end._d.getMonth(),calEvent._end._d.getDate(),calEvent._end._d.getHours()-2,calEvent._end._d.getMinutes(),calEvent._end._d.getSeconds());    
+            
+            }
+            else
+            {
+            Cfechainiciocarga = new Date(calEvent._start._d.getFullYear(),calEvent._start._d.getMonth(),calEvent._start._d.getDate(),calEvent._start._d.getHours(),calEvent._start._d.getMinutes(),calEvent._start._d.getSeconds());
+            Cfechafincarga = new Date(calEvent._end._d.getFullYear(),calEvent._end._d.getMonth(),calEvent._end._d.getDate(),calEvent._end._d.getHours(),calEvent._end._d.getMinutes(),calEvent._end._d.getSeconds());
+            }
+            
+            $('#idActividad').val(calEvent.idActividad);
+            $('#idSala').val(calEvent.idSala);
+            $('#OcupacionClase').val(calEvent.OcupacionClase);
+            $('#OcupacionClase').css('background-color',"#"+calEvent.OcupacionClase);
+            $('#fechaInicio').val(Cfechainiciocarga.toLocaleString());
+            $('#fechaFin').val(Cfechafincarga.toLocaleString());
+            $('#fullCalModal').find('button[data-action=crear]').hide();
+            $('#fullCalModal').find('button[data-action=actualizar]').show();
+            $('#fullCalModal').find('button[data-action=delete]').show();
+            //$('#fullCalModal').find('button[data-action=actualizar]').on('click', function(ev){
+            $('#actualizar').on('click', function(ev) { 
+                //alert(calEvent.id);
+                
+                var fechainicio=$('#fechaInicio').val().replace(/[^0-9]+/g, '');;
+                var fechafin = $('#fechaFin').val().replace(/[^0-9]+/g, '');;
+                var CfechainiciocargaActu=null;
+                var CfechafincargaActu = null;
+                
+                if (fechainicio.length <14)
+                {
+                    fechainicio = $('#fechaInicio').val().trim().split(/[/ :]/);
+                    CfechainiciocargaActu = new Date(fechainicio[2],fechainicio[1]-1,fechainicio[0],fechainicio[3],fechainicio[4],fechainicio[5]);
+                }
+                else
+                {
+                    fechainicio = $('#fechaInicio').val().replace(/[^0-9]+/g, '');
+                    CfechainiciocargaActu = new Date(fechainicio.substring(4,8),fechainicio.substring(2,4)-1,fechainicio.substring(0,2),fechainicio.substring(8,10),fechainicio.substring(10,12),fechainicio.substring(12,14));
+                }
+                if (fechafin.length <14)
+                {
+                    fechafin = $('#fechaFin').val().trim().split(/[/ :]/);
+                    CfechafincargaActu = new Date(fechafin[2],fechafin[1]-1,fechafin[0],fechafin[3],fechafin[4],fechafin[5]);
+                }
+                else
+                {
+                    fechafin = $('#fechaFin').val().replace(/[^0-9]+/g, '');
+                    CfechafincargaActu = new Date(fechafin.substring(4,8),fechafin.substring(2,4)-1,fechafin.substring(0,2),fechafin.substring(8,10),fechafin.substring(10,12),fechafin.substring(12,14));
+                }
+               
+               var json = {idClase:calEvent.idClase,idActividad:$('#idActividad').val(),idSala:$('#idSala').val(),FechaInicio:CfechainiciocargaActu.toUTCString(), FechaFin:CfechafincargaActu.toUTCString(), Ocupacion:$('#OcupacionClase').val(), Dia:calEvent._fullDay, Publicada:1};
+               
+                $.ajax({
+                    type: "POST",
+                    url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=actualizarClase'),
+                    data: jQuery.param( json ),
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    dataType: "json",
+                    async: true,
+
+                    success: function(data, textStatus) {
+                        calEvent.id = calEvent.idClase;
+                        calEvent.idActividad =$('#idActividad').val();
+                        calEvent.idSala =$('#idSala').val();
+                        calEvent.start = CfechainiciocargaActu;
+                        calEvent.end = CfechafincargaActu;
+                        calEvent.OcupacionClase=$('#OcupacionClase').val();
+                        calEvent.backgroundColor= "#"+$('#OcupacionClase').val();
+                        calEvent.borderColor= "#"+$('#OcupacionClase').val();
+
+                        $('#calendar').fullCalendar('updateEvent',calEvent, false);
+
+                    },
+                    error: function( jqXHR, textStatus, errorThrown ) {
+                }});    
+		                
+                        $('#fullCalModal').modal("hide");
+                return false;
+                });
+                      
+                //$('#fullCalModal').find('button[data-action=delete]').on('click', function() { 
+                $('#eliminar').on('click', function() { 
+                    if(calEvent.handled !== true) // This will prevent event triggering more then once
+        {
+            alert('Clicked');
+            calEvent.handled = true;
+        }
+                        //$('#calendar').fullCalendar('removeEvents' , function(calEvent._id){
+                            $.ajax({
+                            type: "POST",
+                            url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=borrarClase'),
+                            data: jQuery.param( {idClase: calEvent._id} ),//JSON.stringify(json),
+                            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                            dataType: "json",
+                            async: true,
+
+                            success: function(data, textStatus) {
+                                
+                                $('#calendar').fullCalendar('removeEvents' , calEvent._id);
+                            },
+                            error: function( jqXHR, textStatus, errorThrown ) {
+                            }
+                          });
+                          //return (ev._id === calEvent._id);
+                        //});
+                        
+                        $('#fullCalModal').modal("close");
+                        $('#fullCalModal').remove();
+                        return false;
+                      });
+			$('#fullCalModal').modal('show').on('hidden', function(){
+                        $('#fullCalModal').remove();
+                      });
+                      
+                    }
+                  });
+                })
+
+</script>
+<div class="row ng-scope" ng-app="Clases">
+    <div ng_controller="CargaClases" class="ng-scope">
+    <div class="col-xs-12">
+        <!-- PAGE CONTENT BEGINS -->
+        <div class="row">
+            <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                <div class="space"></div>
+
+                <div id="calendar" class="fc fc-ltr"><table class="fc-header" style="width:100%"><tbody><tr><td class="fc-header-left"><span class="fc-button fc-button-prev fc-state-default fc-corner-left" unselectable="on"><span class="fc-icon fc-icon-left-single-arrow"></span></span><span class="fc-button fc-button-next fc-state-default fc-corner-right" unselectable="on"><span class="fc-icon fc-icon-right-single-arrow"></span></span><span class="fc-header-space"></span></td><td class="fc-header-center"><span class="fc-header-title"><h2>18 - 23 de may. del 2015</h2></span></td><td class="fc-header-right"></td></tr></tbody></table><div class="fc-content" style=""><div class="fc-view fc-view-agendaWeek fc-agenda" unselectable="on"><table style="width:100%" class="fc-agenda-days fc-border-separate" cellspacing="0"><thead><tr class="fc-first fc-last"><th class="fc-agenda-axis fc-widget-header fc-first" style="width: 50px;">&nbsp;</th><th class="fc-mon fc-col0 fc-widget-header" style="width: 126px;">lun. 18/05</th><th class="fc-tue fc-col1 fc-widget-header" style="width: 126px;">mar. 19/05</th><th class="fc-wed fc-col2 fc-widget-header" style="width: 126px;">mié. 20/05</th><th class="fc-thu fc-col3 fc-widget-header" style="width: 126px;">jue. 21/05</th><th class="fc-fri fc-col4 fc-widget-header" style="width: 126px;">vie. 22/05</th><th class="fc-sat fc-col5 fc-widget-header fc-last">sáb. 23/05</th><th class="fc-agenda-gutter fc-widget-header fc-last" style="display: none;">&nbsp;</th></tr></thead><tbody><tr class="fc-first fc-last"><th class="fc-agenda-axis fc-widget-header fc-first">&nbsp;</th><td class="fc-col0 fc-mon fc-widget-content fc-past"><div style="height: 545px;"><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-col1 fc-tue fc-widget-content fc-past"><div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-col2 fc-wed fc-widget-content fc-past"><div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-col3 fc-thu fc-widget-content fc-past"><div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-col4 fc-fri fc-widget-content fc-state-highlight fc-today"><div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-col5 fc-sat fc-widget-content fc-future fc-last"><div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-agenda-gutter fc-widget-content fc-last" style="display: none;">&nbsp;</td></tr></tbody></table><div style="position: absolute; z-index: 2; left: 0px; width: 100%; top: 22px;"><div style="position: absolute; width: 100%; overflow-x: hidden; overflow-y: auto; height: 545px;"><div style="position:relative;width:100%;overflow:hidden"><div class="fc-event-container" style="position:absolute;z-index:8;top:0;left:0"><div class="fc-event fc-event-vert fc-event-draggable fc-event-start fc-event-end" style="position: absolute; top: 167px; left: 431px; border-color: rgb(255, 51, 28); width: 56.65px; height: 40px; background-color: rgb(255, 51, 28);"><div class="fc-event-inner"><div class="fc-event-time">13:00 - 14:00</div><div class="fc-event-title">Perfecionamiento</div></div><div class="fc-event-bg"></div><div class="ui-resizable-handle ui-resizable-s">=</div></div><div class="fc-event fc-event-vert fc-event-draggable fc-event-start fc-event-end" style="position: absolute; top: 293px; left: 431px; border-color: rgb(25, 171, 255); width: 95.975px; height: 40px; background-color: rgb(25, 171, 255);"><div class="fc-event-inner"><div class="fc-event-time">16:00 - 17:00</div><div class="fc-event-title">Dominio acuatico</div></div><div class="fc-event-bg"></div><div class="ui-resizable-handle ui-resizable-s">=</div></div><div class="fc-event fc-event-vert fc-event-draggable fc-event-start fc-event-end" style="position: absolute; top: 167px; left: 470.325px; border-color: rgb(255, 51, 28); width: 56.65px; height: 40px; background-color: rgb(255, 51, 28);"><div class="fc-event-inner"><div class="fc-event-time">13:00 - 14:00</div><div class="fc-event-title">Perfecionamiento</div></div><div class="fc-event-bg"></div><div class="ui-resizable-handle ui-resizable-s">=</div></div><div class="fc-event fc-event-vert fc-event-draggable fc-event-start fc-event-end" style="position: absolute; top: 293px; left: 489.9875px; border-color: rgb(255, 25, 117); width: 56.9875px; height: 40px; background-color: rgb(255, 25, 117);"><div class="fc-event-inner"><div class="fc-event-time">16:00 - 17:00</div><div class="fc-event-title">Dominio acuatico</div></div><div class="fc-event-bg"></div><div class="ui-resizable-handle ui-resizable-s">=</div></div><div class="fc-event fc-event-vert fc-event-draggable fc-event-start fc-event-end" style="position: absolute; top: 167px; left: 509.65px; border-color: rgb(255, 51, 28); width: 37.325px; height: 40px; background-color: rgb(255, 51, 28);"><div class="fc-event-inner"><div class="fc-event-time">13:00 - 14:00</div><div class="fc-event-title">Perfecionamiento</div></div><div class="fc-event-bg"></div><div class="ui-resizable-handle ui-resizable-s">=</div></div></div><table class="fc-agenda-slots" style="width:100%" cellspacing="0"><tbody><tr class="fc-slot0 "><th class="fc-agenda-axis fc-widget-header" style="width: 50px;">9</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot1 fc-minor"><th class="fc-agenda-axis fc-widget-header">&nbsp;</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot2 "><th class="fc-agenda-axis fc-widget-header">10</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot3 fc-minor"><th class="fc-agenda-axis fc-widget-header">&nbsp;</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot4 "><th class="fc-agenda-axis fc-widget-header">11</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot5 fc-minor"><th class="fc-agenda-axis fc-widget-header">&nbsp;</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot6 "><th class="fc-agenda-axis fc-widget-header">12</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot7 fc-minor"><th class="fc-agenda-axis fc-widget-header">&nbsp;</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot8 "><th class="fc-agenda-axis fc-widget-header">13</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot9 fc-minor"><th class="fc-agenda-axis fc-widget-header">&nbsp;</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot10 "><th class="fc-agenda-axis fc-widget-header">14</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot11 fc-minor"><th class="fc-agenda-axis fc-widget-header">&nbsp;</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot12 "><th class="fc-agenda-axis fc-widget-header">15</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot13 fc-minor"><th class="fc-agenda-axis fc-widget-header">&nbsp;</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot14 "><th class="fc-agenda-axis fc-widget-header">16</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot15 fc-minor"><th class="fc-agenda-axis fc-widget-header">&nbsp;</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot16 "><th class="fc-agenda-axis fc-widget-header">17</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot17 fc-minor"><th class="fc-agenda-axis fc-widget-header">&nbsp;</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot18 "><th class="fc-agenda-axis fc-widget-header">18</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot19 fc-minor"><th class="fc-agenda-axis fc-widget-header">&nbsp;</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot20 "><th class="fc-agenda-axis fc-widget-header">19</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot21 fc-minor"><th class="fc-agenda-axis fc-widget-header">&nbsp;</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot22 "><th class="fc-agenda-axis fc-widget-header">20</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot23 fc-minor"><th class="fc-agenda-axis fc-widget-header">&nbsp;</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot24 "><th class="fc-agenda-axis fc-widget-header">21</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr><tr class="fc-slot25 fc-minor"><th class="fc-agenda-axis fc-widget-header">&nbsp;</th><td class="fc-widget-content"><div style="position:relative">&nbsp;</div></td></tr></tbody></table><div class="fc-event fc-event-vert fc-event-start fc-event-end fc-select-helper" style="position: absolute; top: 230px; left: 178px; opacity: 0.5; width: 121px; height: 21px;"><div class="fc-event-inner"><div class="fc-event-time">14:30 - 15:00</div><div class="fc-event-title"></div></div><div class="fc-event-bg"></div></div></div></div></div></div></div></div>
+            </div>
+            <div class="col-lg-3  hidden-md hidden-sm hidden-xs">
+                <div class="widget-box transparent">
+                    <div class="widget-header">
+                        <h4>Actividades</h4>
+                    </div>
+                    <div class="widget-body" id="actividades">		
+                        <div class="widget-main no-padding">
+                            <div id="external-events">
+                                <!-- ngRepeat: actividad in actividades --><div id="1" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Matro natacion
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="2" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Iniciacion deportiva
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="3" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Actividad 3
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="4" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Bebes
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="5" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Enseñanza
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="6" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Benjamin
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="7" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Perfecionamiento
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="10" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Adaptacion acuatica
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="11" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                ESC. INI.COMP
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="12" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Dominio acuatico
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="13" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Natacion juvenil
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="14" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Aprendizaje
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="15" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Aquarunning
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="16" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Nat mantenimiento
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="17" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Relajacion acuatica
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="18" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Nat Man Deportivo
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="19" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Gim Mantenimiento
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="20" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Premamas
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="21" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Aerofitnes
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="22" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Mamas
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="23" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Pilates
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="24" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Aquafitnes
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="25" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Bici sala
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="26" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Aprendizaje
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="27" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Nat Mantenimiento
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="28" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Gimnasia acuatica
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="29" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Gim mantenimiento mayores
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="32" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Actividad Aerobica
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="33" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Prueba Activida
+                                </div><!-- end ngRepeat: actividad in actividades --><div id="35" class="fc-event ng-scope ng-binding ui-draggable ui-draggable-handle" ng_repeat="actividad in actividades" style="position: relative;"><i class="ace-icon fa fa-arrows"></i>
+                                Natación 2
+                                </div><!-- end ngRepeat: actividad in actividades -->
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE CONTENT ENDS -->
+    </div><!-- /.col -->
+    
+    <div id="fullCalModal" class="modal fade in" style="display: block;" aria-hidden="false">
+                      <div class="modal-dialog">
+                       <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="color3">
+                            <label id="title" class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12">Detalle Clase</label>
+                            <button type="button" class="close" data-dismiss="modal" style="margin-top:-10px;">×</button>
+                            </div>
+                            <div class="form-group">
+                            <div class="col-md-12">
+                          <form role="form" name="formulario" class="ng-pristine ng-valid">
+				<input type="hidden" class="input-sm" name="idClase" id="idClase">
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label id="title" class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12"></label>
+                                </div>
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12">Actividad</label>
+                                <select name="idActividad" id="idActividad" class="input-sm col-lg-6 col-md-6 col-sm-6 col-xs-12">	
+                                    <!-- ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="1" class="ng-scope ng-binding">Matro natacion</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="2" class="ng-scope ng-binding">Iniciacion deportiva</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="3" class="ng-scope ng-binding">Actividad 3</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="4" class="ng-scope ng-binding">Bebes</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="5" class="ng-scope ng-binding">Enseñanza</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="6" class="ng-scope ng-binding">Benjamin</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="7" class="ng-scope ng-binding">Perfecionamiento</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="10" class="ng-scope ng-binding">Adaptacion acuatica</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="11" class="ng-scope ng-binding">ESC. INI.COMP</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="12" class="ng-scope ng-binding">Dominio acuatico</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="13" class="ng-scope ng-binding">Natacion juvenil</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="14" class="ng-scope ng-binding">Aprendizaje</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="15" class="ng-scope ng-binding">Aquarunning</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="16" class="ng-scope ng-binding">Nat mantenimiento</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="17" class="ng-scope ng-binding">Relajacion acuatica</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="18" class="ng-scope ng-binding">Nat Man Deportivo</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="19" class="ng-scope ng-binding">Gim Mantenimiento</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="20" class="ng-scope ng-binding">Premamas</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="21" class="ng-scope ng-binding">Aerofitnes</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="22" class="ng-scope ng-binding">Mamas</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="23" class="ng-scope ng-binding">Pilates</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="24" class="ng-scope ng-binding">Aquafitnes</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="25" class="ng-scope ng-binding">Bici sala</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="26" class="ng-scope ng-binding">Aprendizaje</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="27" class="ng-scope ng-binding">Nat Mantenimiento</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="28" class="ng-scope ng-binding">Gimnasia acuatica</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="29" class="ng-scope ng-binding">Gim mantenimiento mayores</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="32" class="ng-scope ng-binding">Actividad Aerobica</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="33" class="ng-scope ng-binding">Prueba Activida</option><!-- end ngRepeat: actividad in actividades --><option ng_repeat="actividad in actividades" value="35" class="ng-scope ng-binding">Natación 2</option><!-- end ngRepeat: actividad in actividades -->
+                                </select>
+                                </div>
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12">Sala</label>
+                                <select name="idSala" id="idSala" class="input-sm col-lg-6 col-md-6 col-sm-6 col-xs-12">	
+                                    <!-- ngRepeat: sala in salas --><option ng_repeat="sala in salas" value="20" class="ng-scope ng-binding">Sala 1</option><!-- end ngRepeat: sala in salas --><option ng_repeat="sala in salas" value="21" class="ng-scope ng-binding">Sala 2 p</option><!-- end ngRepeat: sala in salas --><option ng_repeat="sala in salas" value="22" class="ng-scope ng-binding">Sala 3</option><!-- end ngRepeat: sala in salas --><option ng_repeat="sala in salas" value="23" class="ng-scope ng-binding">sala 4</option><!-- end ngRepeat: sala in salas --><option ng_repeat="sala in salas" value="24" class="ng-scope ng-binding">Sala 5</option><!-- end ngRepeat: sala in salas --><option ng_repeat="sala in salas" value="25" class="ng-scope ng-binding">sala 6</option><!-- end ngRepeat: sala in salas --><option ng_repeat="sala in salas" value="26" class="ng-scope ng-binding">sala 7</option><!-- end ngRepeat: sala in salas --><option ng_repeat="sala in salas" value="27" class="ng-scope ng-binding">sala 8</option><!-- end ngRepeat: sala in salas --><option ng_repeat="sala in salas" value="3" class="ng-scope ng-binding">Sin Asignar</option><!-- end ngRepeat: sala in salas -->
+                                </select>
+                                </div>
+				<div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12">Ocupacion</label>
+                                <input class="input-sm color" id="OcupacionClase" name="OcupacionClase" required="" autocomplete="off" style="color: rgb(0, 0, 0); background-image: none; background-color: rgb(255, 255, 255);">
+                                <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12 ng-hide" style="color:red" ng-show="formulario.OcupacionClase.$dirty &amp;&amp; formulario.OcupacionClase.$invalid">
+                                    <span ng-show="formulario.OcupacionClase.$error.required" class="ng-hide">* Indique la ocupación.</span>
+                                </span>
+                                </div>
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12">Inicio</label>
+                                <input id="fechaInicio" type="text" class="input-sm col-md-6 col-sm-6 col-xs-12" name="fechaInicio" required="">
+                                <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12 ng-hide" style="color:red" ng-show="formulario.fechaInicio.$dirty &amp;&amp; formulario.fechaInicio.$invalid">
+                                    <span ng-show="formulario.fechaInicio.$error.required" class="ng-hide">* Fecha inicio obligatoria.</span>
+                                </span>
+                                </div>
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12">Fin</label>
+                                <input id="fechaFin" type="text" class="input-sm col-md-6 col-sm-6 col-xs-12" name="fechaFin" required="">
+                                <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12 ng-hide" style="color:red" ng-show="formulario.fechaFin.$dirty &amp;&amp; formulario.fechaFin.$invalid">
+                                    <span ng-show="formulario.fechaFin.$error.required" class="ng-hide">* Fecha fin obligatoria.</span>
+                                </span>
+                                </div>
+                             </form>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                         <button id="eliminar" type="button" class="btn btn-sm btn-danger" data-action="delete" style="display: none;"><i class="ace-icon fa fa-trash-o"></i>Eliminar Clase</button>
+                         <button id="actualizar" type="button" class="btn btn-sm btn-success" data-action="actualizar" ng-disabled="formulario.$invalid" style="display: none;">Actualizar Clase</button>
+                         <button id="crear" type="button" class="btn btn-sm btn-success" data-action="crear" ng-disabled="formulario.$invalid">Crear Clase</button>
+                         <button type="button" class="btn btn-sm" data-dismiss="modal"><i class="ace-icon fa fa-times"></i>Cancelar</button>
+                       </div>
+                      </div>
+                     </div>
+    </div>
+    
+
+    </div>
+</div><!-- /.row -->
+    <!-- content ends -->
+    </div><!--/#content.col-md-0-->
+</div><!--/fluid-row-->
+
+    <hr>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">�?</button>
+                    <h3>Settings</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Here settings can be configured...</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="http://localhost:8080/SistemaReservas/Frontal/Calendario.php#" class="btn btn-default" data-dismiss="modal">Close</a>
+                    <a href="http://localhost:8080/SistemaReservas/Frontal/Calendario.php#" class="btn btn-primary" data-dismiss="modal">Save changes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="row">
+        <p class="col-md-9 col-sm-9 col-xs-12 copyright">© Sistema Reservas
+                2015</p>
+        
+    </footer>
+
+</div><!--/.fluid-container-->
+
+<!-- external javascript -->
+
+<script src="./Sistema de Reservas_files/bootstrap.min.js"></script>
+
+<!-- library for cookie management -->
+<script src="./Sistema de Reservas_files/jquery.cookie.js"></script>
+<!-- calender plugin -->
+<script src="./Sistema de Reservas_files/moment.min.js"></script>
+<script src="./Sistema de Reservas_files/fullcalendar.min.js"></script>
+<script src="./Sistema de Reservas_files/es.js"></script>
+<!-- data table plugin -->
+<script src="./Sistema de Reservas_files/jquery.dataTables.min.js"></script>
+
+<!-- select or dropdown enhancer -->
+<script src="./Sistema de Reservas_files/chosen.jquery.min.js"></script>
+<!-- plugin for gallery image view -->
+<script src="./Sistema de Reservas_files/jquery.colorbox-min.js"></script>
+<!-- notification plugin -->
+<script src="./Sistema de Reservas_files/jquery.noty.js"></script>
+<!-- library for making tables responsive -->
+<script src="./Sistema de Reservas_files/responsive-tables.js"></script>
+<!-- tour plugin -->
+<script src="./Sistema de Reservas_files/bootstrap-tour.min.js"></script>
+<!-- star rating plugin -->
+<script src="./Sistema de Reservas_files/jquery.raty.min.js"></script>
+<!-- for iOS style toggle switch -->
+<script src="./Sistema de Reservas_files/jquery.iphone.toggle.js"></script>
+<!-- autogrowing textarea plugin -->
+<script src="./Sistema de Reservas_files/jquery.autogrow-textarea.js"></script>
+<!-- multiple file upload plugin -->
+<script src="./Sistema de Reservas_files/jquery.uploadify-3.1.min.js"></script>
+<!-- history.js for cross-browser state change on ajax -->
+<script src="./Sistema de Reservas_files/jquery.history.js"></script>
+<!-- application script for Charisma demo -->
+<script src="./Sistema de Reservas_files/charisma.js"></script>
+
+<script src="./Sistema de Reservas_files/angular-footable.js" type="text/javascript"></script>
+
+
+<div class="xdsoft_datetimepicker xdsoft_noselect xdsoft_"><div class="xdsoft_datepicker active"><div class="xdsoft_mounthpicker"><button type="button" class="xdsoft_prev" style="visibility: visible;"></button><button type="button" class="xdsoft_today_button" style="visibility: visible;"></button><div class="xdsoft_label xdsoft_month"><span>Mayo</span><div class="xdsoft_select xdsoft_monthselect xdsoft_scroller_box"><div style="margin-top: 0px;"><div class="xdsoft_option " data-value="0">Enero</div><div class="xdsoft_option " data-value="1">Febrero</div><div class="xdsoft_option " data-value="2">Marzo</div><div class="xdsoft_option " data-value="3">Abril</div><div class="xdsoft_option xdsoft_current" data-value="4">Mayo</div><div class="xdsoft_option " data-value="5">Junio</div><div class="xdsoft_option " data-value="6">Julio</div><div class="xdsoft_option " data-value="7">Agosto</div><div class="xdsoft_option " data-value="8">Septiembre</div><div class="xdsoft_option " data-value="9">Octubre</div><div class="xdsoft_option " data-value="10">Noviembre</div><div class="xdsoft_option " data-value="11">Diciembre</div></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="display: block; height: 10px; margin-top: 0px;"></div></div></div><i></i></div><div class="xdsoft_label xdsoft_year"><span>2015</span><div class="xdsoft_select xdsoft_yearselect xdsoft_scroller_box"><div style="margin-top: 0px;"><div class="xdsoft_option " data-value="1950">1950</div><div class="xdsoft_option " data-value="1951">1951</div><div class="xdsoft_option " data-value="1952">1952</div><div class="xdsoft_option " data-value="1953">1953</div><div class="xdsoft_option " data-value="1954">1954</div><div class="xdsoft_option " data-value="1955">1955</div><div class="xdsoft_option " data-value="1956">1956</div><div class="xdsoft_option " data-value="1957">1957</div><div class="xdsoft_option " data-value="1958">1958</div><div class="xdsoft_option " data-value="1959">1959</div><div class="xdsoft_option " data-value="1960">1960</div><div class="xdsoft_option " data-value="1961">1961</div><div class="xdsoft_option " data-value="1962">1962</div><div class="xdsoft_option " data-value="1963">1963</div><div class="xdsoft_option " data-value="1964">1964</div><div class="xdsoft_option " data-value="1965">1965</div><div class="xdsoft_option " data-value="1966">1966</div><div class="xdsoft_option " data-value="1967">1967</div><div class="xdsoft_option " data-value="1968">1968</div><div class="xdsoft_option " data-value="1969">1969</div><div class="xdsoft_option " data-value="1970">1970</div><div class="xdsoft_option " data-value="1971">1971</div><div class="xdsoft_option " data-value="1972">1972</div><div class="xdsoft_option " data-value="1973">1973</div><div class="xdsoft_option " data-value="1974">1974</div><div class="xdsoft_option " data-value="1975">1975</div><div class="xdsoft_option " data-value="1976">1976</div><div class="xdsoft_option " data-value="1977">1977</div><div class="xdsoft_option " data-value="1978">1978</div><div class="xdsoft_option " data-value="1979">1979</div><div class="xdsoft_option " data-value="1980">1980</div><div class="xdsoft_option " data-value="1981">1981</div><div class="xdsoft_option " data-value="1982">1982</div><div class="xdsoft_option " data-value="1983">1983</div><div class="xdsoft_option " data-value="1984">1984</div><div class="xdsoft_option " data-value="1985">1985</div><div class="xdsoft_option " data-value="1986">1986</div><div class="xdsoft_option " data-value="1987">1987</div><div class="xdsoft_option " data-value="1988">1988</div><div class="xdsoft_option " data-value="1989">1989</div><div class="xdsoft_option " data-value="1990">1990</div><div class="xdsoft_option " data-value="1991">1991</div><div class="xdsoft_option " data-value="1992">1992</div><div class="xdsoft_option " data-value="1993">1993</div><div class="xdsoft_option " data-value="1994">1994</div><div class="xdsoft_option " data-value="1995">1995</div><div class="xdsoft_option " data-value="1996">1996</div><div class="xdsoft_option " data-value="1997">1997</div><div class="xdsoft_option " data-value="1998">1998</div><div class="xdsoft_option " data-value="1999">1999</div><div class="xdsoft_option " data-value="2000">2000</div><div class="xdsoft_option " data-value="2001">2001</div><div class="xdsoft_option " data-value="2002">2002</div><div class="xdsoft_option " data-value="2003">2003</div><div class="xdsoft_option " data-value="2004">2004</div><div class="xdsoft_option " data-value="2005">2005</div><div class="xdsoft_option " data-value="2006">2006</div><div class="xdsoft_option " data-value="2007">2007</div><div class="xdsoft_option " data-value="2008">2008</div><div class="xdsoft_option " data-value="2009">2009</div><div class="xdsoft_option " data-value="2010">2010</div><div class="xdsoft_option " data-value="2011">2011</div><div class="xdsoft_option " data-value="2012">2012</div><div class="xdsoft_option " data-value="2013">2013</div><div class="xdsoft_option " data-value="2014">2014</div><div class="xdsoft_option xdsoft_current" data-value="2015">2015</div><div class="xdsoft_option " data-value="2016">2016</div><div class="xdsoft_option " data-value="2017">2017</div><div class="xdsoft_option " data-value="2018">2018</div><div class="xdsoft_option " data-value="2019">2019</div><div class="xdsoft_option " data-value="2020">2020</div><div class="xdsoft_option " data-value="2021">2021</div><div class="xdsoft_option " data-value="2022">2022</div><div class="xdsoft_option " data-value="2023">2023</div><div class="xdsoft_option " data-value="2024">2024</div><div class="xdsoft_option " data-value="2025">2025</div><div class="xdsoft_option " data-value="2026">2026</div><div class="xdsoft_option " data-value="2027">2027</div><div class="xdsoft_option " data-value="2028">2028</div><div class="xdsoft_option " data-value="2029">2029</div><div class="xdsoft_option " data-value="2030">2030</div><div class="xdsoft_option " data-value="2031">2031</div><div class="xdsoft_option " data-value="2032">2032</div><div class="xdsoft_option " data-value="2033">2033</div><div class="xdsoft_option " data-value="2034">2034</div><div class="xdsoft_option " data-value="2035">2035</div><div class="xdsoft_option " data-value="2036">2036</div><div class="xdsoft_option " data-value="2037">2037</div><div class="xdsoft_option " data-value="2038">2038</div><div class="xdsoft_option " data-value="2039">2039</div><div class="xdsoft_option " data-value="2040">2040</div><div class="xdsoft_option " data-value="2041">2041</div><div class="xdsoft_option " data-value="2042">2042</div><div class="xdsoft_option " data-value="2043">2043</div><div class="xdsoft_option " data-value="2044">2044</div><div class="xdsoft_option " data-value="2045">2045</div><div class="xdsoft_option " data-value="2046">2046</div><div class="xdsoft_option " data-value="2047">2047</div><div class="xdsoft_option " data-value="2048">2048</div><div class="xdsoft_option " data-value="2049">2049</div><div class="xdsoft_option " data-value="2050">2050</div></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="display: block; height: 10px; margin-top: 0px;"></div></div></div><i></i></div><button type="button" class="xdsoft_next" style="visibility: visible;"></button></div><div class="xdsoft_calendar"><table><thead><tr><th>Dom</th><th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th><th>Sáb</th></tr></thead><tbody><tr><td data-date="26" data-month="3" data-year="2015" class="xdsoft_date xdsoft_day_of_week0 xdsoft_date xdsoft_other_month xdsoft_weekend" title=""><div>26</div></td><td data-date="27" data-month="3" data-year="2015" class="xdsoft_date xdsoft_day_of_week1 xdsoft_date xdsoft_other_month" title=""><div>27</div></td><td data-date="28" data-month="3" data-year="2015" class="xdsoft_date xdsoft_day_of_week2 xdsoft_date xdsoft_other_month" title=""><div>28</div></td><td data-date="29" data-month="3" data-year="2015" class="xdsoft_date xdsoft_day_of_week3 xdsoft_date xdsoft_other_month" title=""><div>29</div></td><td data-date="30" data-month="3" data-year="2015" class="xdsoft_date xdsoft_day_of_week4 xdsoft_date xdsoft_other_month" title=""><div>30</div></td><td data-date="1" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week5 xdsoft_date" title=""><div>1</div></td><td data-date="2" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week6 xdsoft_date xdsoft_weekend" title=""><div>2</div></td></tr><tr><td data-date="3" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week0 xdsoft_date xdsoft_weekend" title=""><div>3</div></td><td data-date="4" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week1 xdsoft_date" title=""><div>4</div></td><td data-date="5" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week2 xdsoft_date" title=""><div>5</div></td><td data-date="6" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week3 xdsoft_date" title=""><div>6</div></td><td data-date="7" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week4 xdsoft_date" title=""><div>7</div></td><td data-date="8" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week5 xdsoft_date" title=""><div>8</div></td><td data-date="9" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week6 xdsoft_date xdsoft_weekend" title=""><div>9</div></td></tr><tr><td data-date="10" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week0 xdsoft_date xdsoft_weekend" title=""><div>10</div></td><td data-date="11" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week1 xdsoft_date" title=""><div>11</div></td><td data-date="12" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week2 xdsoft_date" title=""><div>12</div></td><td data-date="13" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week3 xdsoft_date" title=""><div>13</div></td><td data-date="14" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week4 xdsoft_date" title=""><div>14</div></td><td data-date="15" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week5 xdsoft_date" title=""><div>15</div></td><td data-date="16" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week6 xdsoft_date xdsoft_weekend" title=""><div>16</div></td></tr><tr><td data-date="17" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week0 xdsoft_date xdsoft_weekend" title=""><div>17</div></td><td data-date="18" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week1 xdsoft_date" title=""><div>18</div></td><td data-date="19" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week2 xdsoft_date" title=""><div>19</div></td><td data-date="20" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week3 xdsoft_date" title=""><div>20</div></td><td data-date="21" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week4 xdsoft_date" title=""><div>21</div></td><td data-date="22" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week5 xdsoft_date xdsoft_current xdsoft_today" title=""><div>22</div></td><td data-date="23" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week6 xdsoft_date xdsoft_weekend" title=""><div>23</div></td></tr><tr><td data-date="24" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week0 xdsoft_date xdsoft_weekend" title=""><div>24</div></td><td data-date="25" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week1 xdsoft_date" title=""><div>25</div></td><td data-date="26" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week2 xdsoft_date" title=""><div>26</div></td><td data-date="27" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week3 xdsoft_date" title=""><div>27</div></td><td data-date="28" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week4 xdsoft_date" title=""><div>28</div></td><td data-date="29" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week5 xdsoft_date" title=""><div>29</div></td><td data-date="30" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week6 xdsoft_date xdsoft_weekend" title=""><div>30</div></td></tr><tr><td data-date="31" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week0 xdsoft_date xdsoft_weekend" title=""><div>31</div></td><td data-date="1" data-month="5" data-year="2015" class="xdsoft_date xdsoft_day_of_week1 xdsoft_date xdsoft_other_month" title=""><div>1</div></td><td data-date="2" data-month="5" data-year="2015" class="xdsoft_date xdsoft_day_of_week2 xdsoft_date xdsoft_other_month" title=""><div>2</div></td><td data-date="3" data-month="5" data-year="2015" class="xdsoft_date xdsoft_day_of_week3 xdsoft_date xdsoft_other_month" title=""><div>3</div></td><td data-date="4" data-month="5" data-year="2015" class="xdsoft_date xdsoft_day_of_week4 xdsoft_date xdsoft_other_month" title=""><div>4</div></td><td data-date="5" data-month="5" data-year="2015" class="xdsoft_date xdsoft_day_of_week5 xdsoft_date xdsoft_other_month" title=""><div>5</div></td><td data-date="6" data-month="5" data-year="2015" class="xdsoft_date xdsoft_day_of_week6 xdsoft_date xdsoft_other_month xdsoft_weekend" title=""><div>6</div></td></tr></tbody></table></div><button class="xdsoft_save_selected blue-gradient-button" style="display: none;">Save Selected</button></div><div class="xdsoft_timepicker active"><button type="button" class="xdsoft_prev"></button><div class="xdsoft_time_box xdsoft_scroller_box"><div class="xdsoft_time_variant" style="margin-top: 0px;"><div class="xdsoft_time " data-hour="0" data-minute="0">00:00</div><div class="xdsoft_time " data-hour="1" data-minute="0">01:00</div><div class="xdsoft_time " data-hour="2" data-minute="0">02:00</div><div class="xdsoft_time " data-hour="3" data-minute="0">03:00</div><div class="xdsoft_time " data-hour="4" data-minute="0">04:00</div><div class="xdsoft_time " data-hour="5" data-minute="0">05:00</div><div class="xdsoft_time " data-hour="6" data-minute="0">06:00</div><div class="xdsoft_time " data-hour="7" data-minute="0">07:00</div><div class="xdsoft_time " data-hour="8" data-minute="0">08:00</div><div class="xdsoft_time " data-hour="9" data-minute="0">09:00</div><div class="xdsoft_time " data-hour="10" data-minute="0">10:00</div><div class="xdsoft_time " data-hour="11" data-minute="0">11:00</div><div class="xdsoft_time " data-hour="12" data-minute="0">12:00</div><div class="xdsoft_time " data-hour="13" data-minute="0">13:00</div><div class="xdsoft_time " data-hour="14" data-minute="0">14:00</div><div class="xdsoft_time " data-hour="15" data-minute="0">15:00</div><div class="xdsoft_time " data-hour="16" data-minute="0">16:00</div><div class="xdsoft_time " data-hour="17" data-minute="0">17:00</div><div class="xdsoft_time " data-hour="18" data-minute="0">18:00</div><div class="xdsoft_time " data-hour="19" data-minute="0">19:00</div><div class="xdsoft_time " data-hour="20" data-minute="0">20:00</div><div class="xdsoft_time xdsoft_current" data-hour="21" data-minute="0">21:00</div><div class="xdsoft_time " data-hour="22" data-minute="0">22:00</div><div class="xdsoft_time " data-hour="23" data-minute="0">23:00</div></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="display: block; height: 10px; margin-top: 0px;"></div></div></div><button type="button" class="xdsoft_next"></button></div></div><div class="xdsoft_datetimepicker xdsoft_noselect xdsoft_"><div class="xdsoft_datepicker active"><div class="xdsoft_mounthpicker"><button type="button" class="xdsoft_prev" style="visibility: visible;"></button><button type="button" class="xdsoft_today_button" style="visibility: visible;"></button><div class="xdsoft_label xdsoft_month"><span>Mayo</span><div class="xdsoft_select xdsoft_monthselect xdsoft_scroller_box"><div style="margin-top: 0px;"><div class="xdsoft_option " data-value="0">Enero</div><div class="xdsoft_option " data-value="1">Febrero</div><div class="xdsoft_option " data-value="2">Marzo</div><div class="xdsoft_option " data-value="3">Abril</div><div class="xdsoft_option xdsoft_current" data-value="4">Mayo</div><div class="xdsoft_option " data-value="5">Junio</div><div class="xdsoft_option " data-value="6">Julio</div><div class="xdsoft_option " data-value="7">Agosto</div><div class="xdsoft_option " data-value="8">Septiembre</div><div class="xdsoft_option " data-value="9">Octubre</div><div class="xdsoft_option " data-value="10">Noviembre</div><div class="xdsoft_option " data-value="11">Diciembre</div></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="display: block; height: 10px; margin-top: 0px;"></div></div></div><i></i></div><div class="xdsoft_label xdsoft_year"><span>2015</span><div class="xdsoft_select xdsoft_yearselect xdsoft_scroller_box"><div style="margin-top: 0px;"><div class="xdsoft_option " data-value="1950">1950</div><div class="xdsoft_option " data-value="1951">1951</div><div class="xdsoft_option " data-value="1952">1952</div><div class="xdsoft_option " data-value="1953">1953</div><div class="xdsoft_option " data-value="1954">1954</div><div class="xdsoft_option " data-value="1955">1955</div><div class="xdsoft_option " data-value="1956">1956</div><div class="xdsoft_option " data-value="1957">1957</div><div class="xdsoft_option " data-value="1958">1958</div><div class="xdsoft_option " data-value="1959">1959</div><div class="xdsoft_option " data-value="1960">1960</div><div class="xdsoft_option " data-value="1961">1961</div><div class="xdsoft_option " data-value="1962">1962</div><div class="xdsoft_option " data-value="1963">1963</div><div class="xdsoft_option " data-value="1964">1964</div><div class="xdsoft_option " data-value="1965">1965</div><div class="xdsoft_option " data-value="1966">1966</div><div class="xdsoft_option " data-value="1967">1967</div><div class="xdsoft_option " data-value="1968">1968</div><div class="xdsoft_option " data-value="1969">1969</div><div class="xdsoft_option " data-value="1970">1970</div><div class="xdsoft_option " data-value="1971">1971</div><div class="xdsoft_option " data-value="1972">1972</div><div class="xdsoft_option " data-value="1973">1973</div><div class="xdsoft_option " data-value="1974">1974</div><div class="xdsoft_option " data-value="1975">1975</div><div class="xdsoft_option " data-value="1976">1976</div><div class="xdsoft_option " data-value="1977">1977</div><div class="xdsoft_option " data-value="1978">1978</div><div class="xdsoft_option " data-value="1979">1979</div><div class="xdsoft_option " data-value="1980">1980</div><div class="xdsoft_option " data-value="1981">1981</div><div class="xdsoft_option " data-value="1982">1982</div><div class="xdsoft_option " data-value="1983">1983</div><div class="xdsoft_option " data-value="1984">1984</div><div class="xdsoft_option " data-value="1985">1985</div><div class="xdsoft_option " data-value="1986">1986</div><div class="xdsoft_option " data-value="1987">1987</div><div class="xdsoft_option " data-value="1988">1988</div><div class="xdsoft_option " data-value="1989">1989</div><div class="xdsoft_option " data-value="1990">1990</div><div class="xdsoft_option " data-value="1991">1991</div><div class="xdsoft_option " data-value="1992">1992</div><div class="xdsoft_option " data-value="1993">1993</div><div class="xdsoft_option " data-value="1994">1994</div><div class="xdsoft_option " data-value="1995">1995</div><div class="xdsoft_option " data-value="1996">1996</div><div class="xdsoft_option " data-value="1997">1997</div><div class="xdsoft_option " data-value="1998">1998</div><div class="xdsoft_option " data-value="1999">1999</div><div class="xdsoft_option " data-value="2000">2000</div><div class="xdsoft_option " data-value="2001">2001</div><div class="xdsoft_option " data-value="2002">2002</div><div class="xdsoft_option " data-value="2003">2003</div><div class="xdsoft_option " data-value="2004">2004</div><div class="xdsoft_option " data-value="2005">2005</div><div class="xdsoft_option " data-value="2006">2006</div><div class="xdsoft_option " data-value="2007">2007</div><div class="xdsoft_option " data-value="2008">2008</div><div class="xdsoft_option " data-value="2009">2009</div><div class="xdsoft_option " data-value="2010">2010</div><div class="xdsoft_option " data-value="2011">2011</div><div class="xdsoft_option " data-value="2012">2012</div><div class="xdsoft_option " data-value="2013">2013</div><div class="xdsoft_option " data-value="2014">2014</div><div class="xdsoft_option xdsoft_current" data-value="2015">2015</div><div class="xdsoft_option " data-value="2016">2016</div><div class="xdsoft_option " data-value="2017">2017</div><div class="xdsoft_option " data-value="2018">2018</div><div class="xdsoft_option " data-value="2019">2019</div><div class="xdsoft_option " data-value="2020">2020</div><div class="xdsoft_option " data-value="2021">2021</div><div class="xdsoft_option " data-value="2022">2022</div><div class="xdsoft_option " data-value="2023">2023</div><div class="xdsoft_option " data-value="2024">2024</div><div class="xdsoft_option " data-value="2025">2025</div><div class="xdsoft_option " data-value="2026">2026</div><div class="xdsoft_option " data-value="2027">2027</div><div class="xdsoft_option " data-value="2028">2028</div><div class="xdsoft_option " data-value="2029">2029</div><div class="xdsoft_option " data-value="2030">2030</div><div class="xdsoft_option " data-value="2031">2031</div><div class="xdsoft_option " data-value="2032">2032</div><div class="xdsoft_option " data-value="2033">2033</div><div class="xdsoft_option " data-value="2034">2034</div><div class="xdsoft_option " data-value="2035">2035</div><div class="xdsoft_option " data-value="2036">2036</div><div class="xdsoft_option " data-value="2037">2037</div><div class="xdsoft_option " data-value="2038">2038</div><div class="xdsoft_option " data-value="2039">2039</div><div class="xdsoft_option " data-value="2040">2040</div><div class="xdsoft_option " data-value="2041">2041</div><div class="xdsoft_option " data-value="2042">2042</div><div class="xdsoft_option " data-value="2043">2043</div><div class="xdsoft_option " data-value="2044">2044</div><div class="xdsoft_option " data-value="2045">2045</div><div class="xdsoft_option " data-value="2046">2046</div><div class="xdsoft_option " data-value="2047">2047</div><div class="xdsoft_option " data-value="2048">2048</div><div class="xdsoft_option " data-value="2049">2049</div><div class="xdsoft_option " data-value="2050">2050</div></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="display: block; height: 10px; margin-top: 0px;"></div></div></div><i></i></div><button type="button" class="xdsoft_next" style="visibility: visible;"></button></div><div class="xdsoft_calendar"><table><thead><tr><th>Dom</th><th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th><th>Sáb</th></tr></thead><tbody><tr><td data-date="26" data-month="3" data-year="2015" class="xdsoft_date xdsoft_day_of_week0 xdsoft_date xdsoft_other_month xdsoft_weekend" title=""><div>26</div></td><td data-date="27" data-month="3" data-year="2015" class="xdsoft_date xdsoft_day_of_week1 xdsoft_date xdsoft_other_month" title=""><div>27</div></td><td data-date="28" data-month="3" data-year="2015" class="xdsoft_date xdsoft_day_of_week2 xdsoft_date xdsoft_other_month" title=""><div>28</div></td><td data-date="29" data-month="3" data-year="2015" class="xdsoft_date xdsoft_day_of_week3 xdsoft_date xdsoft_other_month" title=""><div>29</div></td><td data-date="30" data-month="3" data-year="2015" class="xdsoft_date xdsoft_day_of_week4 xdsoft_date xdsoft_other_month" title=""><div>30</div></td><td data-date="1" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week5 xdsoft_date" title=""><div>1</div></td><td data-date="2" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week6 xdsoft_date xdsoft_weekend" title=""><div>2</div></td></tr><tr><td data-date="3" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week0 xdsoft_date xdsoft_weekend" title=""><div>3</div></td><td data-date="4" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week1 xdsoft_date" title=""><div>4</div></td><td data-date="5" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week2 xdsoft_date" title=""><div>5</div></td><td data-date="6" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week3 xdsoft_date" title=""><div>6</div></td><td data-date="7" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week4 xdsoft_date" title=""><div>7</div></td><td data-date="8" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week5 xdsoft_date" title=""><div>8</div></td><td data-date="9" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week6 xdsoft_date xdsoft_weekend" title=""><div>9</div></td></tr><tr><td data-date="10" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week0 xdsoft_date xdsoft_weekend" title=""><div>10</div></td><td data-date="11" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week1 xdsoft_date" title=""><div>11</div></td><td data-date="12" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week2 xdsoft_date" title=""><div>12</div></td><td data-date="13" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week3 xdsoft_date" title=""><div>13</div></td><td data-date="14" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week4 xdsoft_date" title=""><div>14</div></td><td data-date="15" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week5 xdsoft_date" title=""><div>15</div></td><td data-date="16" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week6 xdsoft_date xdsoft_weekend" title=""><div>16</div></td></tr><tr><td data-date="17" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week0 xdsoft_date xdsoft_weekend" title=""><div>17</div></td><td data-date="18" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week1 xdsoft_date" title=""><div>18</div></td><td data-date="19" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week2 xdsoft_date" title=""><div>19</div></td><td data-date="20" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week3 xdsoft_date" title=""><div>20</div></td><td data-date="21" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week4 xdsoft_date" title=""><div>21</div></td><td data-date="22" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week5 xdsoft_date xdsoft_current xdsoft_today" title=""><div>22</div></td><td data-date="23" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week6 xdsoft_date xdsoft_weekend" title=""><div>23</div></td></tr><tr><td data-date="24" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week0 xdsoft_date xdsoft_weekend" title=""><div>24</div></td><td data-date="25" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week1 xdsoft_date" title=""><div>25</div></td><td data-date="26" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week2 xdsoft_date" title=""><div>26</div></td><td data-date="27" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week3 xdsoft_date" title=""><div>27</div></td><td data-date="28" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week4 xdsoft_date" title=""><div>28</div></td><td data-date="29" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week5 xdsoft_date" title=""><div>29</div></td><td data-date="30" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week6 xdsoft_date xdsoft_weekend" title=""><div>30</div></td></tr><tr><td data-date="31" data-month="4" data-year="2015" class="xdsoft_date xdsoft_day_of_week0 xdsoft_date xdsoft_weekend" title=""><div>31</div></td><td data-date="1" data-month="5" data-year="2015" class="xdsoft_date xdsoft_day_of_week1 xdsoft_date xdsoft_other_month" title=""><div>1</div></td><td data-date="2" data-month="5" data-year="2015" class="xdsoft_date xdsoft_day_of_week2 xdsoft_date xdsoft_other_month" title=""><div>2</div></td><td data-date="3" data-month="5" data-year="2015" class="xdsoft_date xdsoft_day_of_week3 xdsoft_date xdsoft_other_month" title=""><div>3</div></td><td data-date="4" data-month="5" data-year="2015" class="xdsoft_date xdsoft_day_of_week4 xdsoft_date xdsoft_other_month" title=""><div>4</div></td><td data-date="5" data-month="5" data-year="2015" class="xdsoft_date xdsoft_day_of_week5 xdsoft_date xdsoft_other_month" title=""><div>5</div></td><td data-date="6" data-month="5" data-year="2015" class="xdsoft_date xdsoft_day_of_week6 xdsoft_date xdsoft_other_month xdsoft_weekend" title=""><div>6</div></td></tr></tbody></table></div><button class="xdsoft_save_selected blue-gradient-button" style="display: none;">Save Selected</button></div><div class="xdsoft_timepicker active"><button type="button" class="xdsoft_prev"></button><div class="xdsoft_time_box xdsoft_scroller_box"><div class="xdsoft_time_variant" style="margin-top: 0px;"><div class="xdsoft_time " data-hour="0" data-minute="0">00:00</div><div class="xdsoft_time " data-hour="1" data-minute="0">01:00</div><div class="xdsoft_time " data-hour="2" data-minute="0">02:00</div><div class="xdsoft_time " data-hour="3" data-minute="0">03:00</div><div class="xdsoft_time " data-hour="4" data-minute="0">04:00</div><div class="xdsoft_time " data-hour="5" data-minute="0">05:00</div><div class="xdsoft_time " data-hour="6" data-minute="0">06:00</div><div class="xdsoft_time " data-hour="7" data-minute="0">07:00</div><div class="xdsoft_time " data-hour="8" data-minute="0">08:00</div><div class="xdsoft_time " data-hour="9" data-minute="0">09:00</div><div class="xdsoft_time " data-hour="10" data-minute="0">10:00</div><div class="xdsoft_time " data-hour="11" data-minute="0">11:00</div><div class="xdsoft_time " data-hour="12" data-minute="0">12:00</div><div class="xdsoft_time " data-hour="13" data-minute="0">13:00</div><div class="xdsoft_time " data-hour="14" data-minute="0">14:00</div><div class="xdsoft_time " data-hour="15" data-minute="0">15:00</div><div class="xdsoft_time " data-hour="16" data-minute="0">16:00</div><div class="xdsoft_time " data-hour="17" data-minute="0">17:00</div><div class="xdsoft_time " data-hour="18" data-minute="0">18:00</div><div class="xdsoft_time " data-hour="19" data-minute="0">19:00</div><div class="xdsoft_time " data-hour="20" data-minute="0">20:00</div><div class="xdsoft_time xdsoft_current" data-hour="21" data-minute="0">21:00</div><div class="xdsoft_time " data-hour="22" data-minute="0">22:00</div><div class="xdsoft_time " data-hour="23" data-minute="0">23:00</div></div><div class="xdsoft_scrollbar"><div class="xdsoft_scroller" style="display: block; height: 10px; margin-top: 0px;"></div></div></div><button type="button" class="xdsoft_next"></button></div></div><div id="cboxOverlay" style="display: none;"></div><div id="colorbox" class="" role="dialog" tabindex="-1" style="display: none;"><div id="cboxWrapper"><div><div id="cboxTopLeft" style="float: left;"></div><div id="cboxTopCenter" style="float: left;"></div><div id="cboxTopRight" style="float: left;"></div></div><div style="clear: left;"><div id="cboxMiddleLeft" style="float: left;"></div><div id="cboxContent" style="float: left;"><div id="cboxTitle" style="float: left;"></div><div id="cboxCurrent" style="float: left;"></div><button type="button" id="cboxPrevious"></button><button type="button" id="cboxNext"></button><button id="cboxSlideshow"></button><div id="cboxLoadingOverlay" style="float: left;"></div><div id="cboxLoadingGraphic" style="float: left;"></div></div><div id="cboxMiddleRight" style="float: left;"></div></div><div style="clear: left;"><div id="cboxBottomLeft" style="float: left;"></div><div id="cboxBottomCenter" style="float: left;"></div><div id="cboxBottomRight" style="float: left;"></div></div></div><div style="position: absolute; width: 9999px; visibility: hidden; display: none; max-width: none;"></div></div><div class="modal-backdrop fade in"></div></body></html>

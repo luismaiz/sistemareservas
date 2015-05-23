@@ -199,7 +199,11 @@ class TarifasBO extends Rest{
         if($destipotarifa != '')
             $tipotarifa->setDescripcionTarifa($destipotarifa);
         
-        $filas = TipotarifaModel::findByExample($this->con,$tipotarifa,$sort);
+        $filter=array(
+        new DFC(TipotarifaModel::FIELD_NOMBRETARIFA, $nomtipotarifa, DFC::CONTAINS),
+        new DFC(TipotarifaModel::FIELD_DESCRIPCIONTARIFA, $destipotarifa, DFC::CONTAINS)
+        );
+        $filas=TipotarifaModel::findByFilter($this->con, $filter, true, $sort);
                                 
         $num = count($filas);
         if ($num > 0) {

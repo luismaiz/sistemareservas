@@ -1,10 +1,24 @@
 <?php require('Cabecera.php'); ?>
 <script>
             var Ajax = new AjaxObj();
-            var app = angular.module('BusquedaSalas',  ["ngStorage"])            
+            var app = angular.module('BusquedaSalas',  ['ngStorage'])            
                      .config(function($locationProvider) {
                           $locationProvider.html5Mode(true);
-                      });
+                      })
+                      .directive('myRepeatDirective', function() {
+                        return function(scope, element, attrs) {
+                        
+                        if (scope.$last){
+                        $('.footable').trigger('footable_initialized');
+                        $('.footable').trigger('footable_resize');
+                        $('.footable').data('footable').redraw();
+                        
+                        }
+                        };
+                        })   
+                        ;
+                  
+					  
             
             function CargaSalas($scope, $http,$location,$localStorage) {
             
@@ -12,11 +26,13 @@
                     
             $scope.obtenerSalas = function() {
                 
-                $scope.filtrossalas = [{filtronombresala:document.getElementById("filtronombresala").value,
-                    filtrocapacidadsala:document.getElementById("filtrocapacidadsala").value}
-                    ];
-                localStorage.setItem('filtrosSalas', JSON.stringify($scope.filtrossalas));
-                
+				if (localStorage.getItem('filtrosSalas')!== null)
+				{
+					$scope.filtrossalas = localStorage.getItem('filtrosSalas');
+					document.getElementById("filtronombresala").value = JSON.parse($scope.filtrossalas)[0].filtronombresala;
+					document.getElementById("filtrocapacidadsala").value = JSON.parse($scope.filtrossalas)[0].filtrocapacidadsala;
+				}
+                              
                 
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSalasFiltro');
                 //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSalasFiltro";
@@ -34,7 +50,7 @@
                 if ($scope.estado === 'correcto')
                 {
                     $scope.salas = JSON.parse(Ajax.responseText).salas;
-                    localStorage.setItem('salas', JSON.stringify($scope.salas));
+                    localStorage.removeItem('filtrosSalas');
                     document.getElementById('divSinResultados').style.display = 'none';
                 }
                 else
@@ -44,23 +60,30 @@
                 }
         
             };
-            
-            if (typeof($location.search().detalle) !== "undefined")
+			
+			if (localStorage.getItem('filtrosSalas')!== null)
             {
-                $scope.resultado = localStorage.getItem('salas');
-                $scope.filtrossalas = localStorage.getItem('filtrosSalas');
-                $scope.salas = (localStorage.getItem('salas')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).salas;
-            
-                document.getElementById("filtronombresala").value = JSON.parse($scope.filtrossalas)[0].filtronombresala;
-                document.getElementById("filtrocapacidadsala").value = JSON.parse($scope.filtrossalas)[0].filtrocapacidadsala;
-                
-                $scope.obtenerSalas();
+				$scope.obtenerSalas();
             }
-            
-            $(function () {
-                $('.footable').footable();
-                });
+                    
+                
+				
+				$scope.redirigirsalas = function(idSala)
+		{
+		    $scope.filtrossalas = [{filtronombresala:document.getElementById("filtronombresala").value,
+                    filtrocapacidadsala:document.getElementById("filtrocapacidadsala").value}
+                    ];
+                localStorage.setItem('filtrosSalas', JSON.stringify($scope.filtrossalas));
+		    location.href = "FormularioDetalleSala.php?idSala="+idSala;
+		};
+                
+                $(function () {
+        $('.footable').footable();
+    });    
+		
 }
+
+
         </script>
 <div>
     <ul class="breadcrumb">
@@ -95,42 +118,40 @@
                                 </div>
                                 <input class="box btn-primary" type="submit" value="Buscar" ng_click="obtenerSalas()"/>
                                 <div class="box-content" id="salas">
-                                        <table class="footable table-striped table-bordered responsive" data-page-size="5" data-page-navigation=".pagination" id="tabla" >
+                                        <table class="table footable table-striped table-bordered" data-page-size="5" data-page-navigation=".pagination">
                                             <thead>
                                                 <tr>
                                                     <th>Nombre</th>
-                                                    <th data-type="numeric">Capacidad</th>
-                                                    <th>Descripción</th>
-                                                    <th data-type="numeric" data-value="303892481155">Fecha Alta</th>
-                                                    <th data-type="numeric" data-value="303892481155">Fecha Baja</th>
+                                                    <th data-hide="phone" data-type="numeric" >Capacidad</th>
+                                                    <th data-hide="phone,tablet">Descripción</th>
+                                                    <th data-hide="phone,tablet" data-type="numeric" data-value="303892481155">Fecha Alta</th>
+                                                    <th data-hide="phone,tablet" data-type="numeric" data-value="303892481155">Fecha Baja</th>
                                                     <th data-sort-ignore="true"></th>
                                                     
                                                 </tr>
                                               </thead>
                                               <tbody>
-                                                <tr ng_repeat="sala in salas">
-                                                    <td>{{sala.NombreSala}}</td>
-                                                    <td>{{sala.CapacidadSala}}</td>
-                                                    <td>{{sala.DescripcionSala}}</td>
-                                                    <td>{{sala.FechaAlta |date:'dd-MM-yyyy' }}</td>
-                                                    <td>{{sala.FechaBaja |date:'dd-MM-yyyy'}}</td>
-                                                    <td class="center"><a target="_self" href="FormularioDetalleSala.php?idSala={{sala.idSala}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
+                                                <tr ng_repeat="sala in salas" my-repeat-directive>
+                                                    <td >{{sala.NombreSala}}</td>
+                                                    <td data-hide="phone">{{sala.CapacidadSala}}</td>
+                                                    <td data-hide="phone,tablet">{{sala.DescripcionSala}}</td>
+                                                    <td data-hide="phone,tablet">{{sala.FechaAlta |date:'dd-MM-yyyy' }}</td>
+                                                    <td data-hide="phone,tablet">{{sala.FechaBaja |date:'dd-MM-yyyy'}}</td>
+                                                    <td class="center">
+						    <a target="_self"  href="" class="btn btn-info" ng_click="redirigirsalas(sala.idSala);"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
                                                     <a target="_self" ng_show="sala.FechaBaja!==null"  class="btn btn-danger">Anulada</a></td>
                                                 </tr>
                                                 </tbody>
-                                                <tfoot class="hide-if-no-paging">
+						<tfoot class="hide-if-no-paging">
                                                     <tr>
-                                                        <td colspan="7" class="text-center">
-                                                            <ul class="pagination pagination-centered">
-
-                                                            </ul>
+                                                        <td colspan="6" class="text-center hide-if-no-paging">
+                                                            <ul class="pagination"></ul>
                                                         </td>
                                                     </tr>
                                                 </tfoot>
-                                               
+                        
                                         </table>
-                                   </div>
-                                
+                               
                                 <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleSala.php' "/>
                            </div>
                         </div>
@@ -140,7 +161,7 @@
             </div>
         </div>
     </div>
-
+   
 
 
 <?php require('Pie.php'); ?>

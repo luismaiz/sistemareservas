@@ -5,23 +5,30 @@
 var app = angular.module('BusquedaTiposTarifas', ["ngStorage"])            
                      .config(function($locationProvider) {
                           $locationProvider.html5Mode(true);
-                      });
+                      })
+                      .directive('myRepeatDirective', function() {
+                        return function(scope, element, attrs) {
+                        if (scope.$last){
+                            $('.footable').trigger('footable_initialized');
+                            $('.footable').trigger('footable_resize');
+                            $('.footable').data('footable').redraw();
+                        }
+                        };
+                        });
 
 function CargaTiposTarifas($scope, $http,$location,$localStorage) {
     
     $scope.tipostarifas = [];
     
-    
     $scope.obtenerTiposTarifas = function() {
-                
-                $scope.filtrosTarifas = [{filtronombretarifa:document.getElementById("filtronombretarifa").value,
-                                    filtrodescripciontarifa:document.getElementById("filtrodescripciontarifa").value}
-                    ];
-                localStorage.setItem('filtrosTarifas', JSON.stringify($scope.filtrosTarifas));
-                
+        
+                if (localStorage.getItem('filtrosTarifas')!== null)
+		{
+		$scope.filtrosTarifas = localStorage.getItem('filtrosTarifas');
+		document.getElementById("filtronombretarifa").value = JSON.parse($scope.filtrosTarifas)[0].filtronombretarifa;
+		document.getElementById("filtrodescripciontarifa").value = JSON.parse($scope.filtrosTarifas)[0].filtrodescripciontarifa;
+		}
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifasFiltro');
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifasFiltro";
-                
                 var Params = 'NombreTarifa=' + document.getElementById("filtronombretarifa").value + '&DescripcionTarifa=' + document.getElementById("filtrodescripciontarifa").value;    
                 
 	        Ajax.open("POST", Url, false);
@@ -33,7 +40,7 @@ function CargaTiposTarifas($scope, $http,$location,$localStorage) {
                 if ($scope.estado === 'correcto')
                 {
                     $scope.tipostarifas = JSON.parse(Ajax.responseText).tipostarifas;  
-                    localStorage.setItem('tipostarifas', JSON.stringify($scope.tipostarifas));
+                    localStorage.removeItem('filtrosTarifas');
                     document.getElementById('divSinResultados').style.display = 'none';
                 }
                 else
@@ -44,17 +51,19 @@ function CargaTiposTarifas($scope, $http,$location,$localStorage) {
         
             };
             
-            if (typeof($location.search().detalle) !== "undefined")
+            if (localStorage.getItem('filtrosTarifas')!== null)
             {
-            $scope.resultado = localStorage.getItem('tipostarifas');
-            $scope.filtrosTarifas = localStorage.getItem('filtrosTarifas');
-            $scope.tipostarifas = (localStorage.getItem('tipostarifas')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).tipostarifas;
-                        
-            document.getElementById("filtronombretarifa").value = JSON.parse($scope.filtrosTarifas)[0].filtronombretarifa;
-            document.getElementById("filtrodescripciontarifa").value = JSON.parse($scope.filtrosTarifas)[0].filtrodescripciontarifa;
-            
             $scope.obtenerTiposTarifas();
-            } 
+            }
+            
+            $scope.redirigirtarifas = function(idTipoTarifa)
+	    {
+		    $scope.filtrosTarifas = [{filtronombretarifa:document.getElementById("filtronombretarifa").value,
+                    filtrodescripciontarifa:document.getElementById("filtrodescripciontarifa").value}
+                    ];
+                localStorage.setItem('filtrosTarifas', JSON.stringify($scope.filtrosTarifas));
+		    location.href = "FormularioDetalleTarifa.php?idTipoTarifa="+idTipoTarifa;
+		};
             $(function () {
                 $('.footable').footable();
                 });
@@ -95,30 +104,30 @@ function CargaTiposTarifas($scope, $http,$location,$localStorage) {
                                        
                                 <div class="box-content" id="tipostarifas">
                                      
-                                       <table class="footable table-striped table-bordered responsive" data-page-size="5" data-page-navigation=".pagination" id="tabla">
+                                       <table class="table footable table-striped table-bordered" data-page-size="5" data-page-navigation=".pagination" id="tabla">
                                             <thead>
                                                 <tr>
                                                     <th>Nombre</th>
-                                                    <th>Descripcion</th>
-                                                    <th>Fecha Alta</th>
-                                                    <th>Fecha Baja</th>
+                                                    <th data-hide="phone">Descripcion</th>
+                                                    <th data-hide="phone,tablet">Fecha Alta</th>
+                                                    <th data-hide="phone,tablet">Fecha Baja</th>
                                                     <th data-sort-ignore="true"></th>
                                                     
                                                 </tr>
                                               </thead>
                                               <tbody>
-                                                <tr ng_repeat="tipotarifa in tipostarifas">
-                                                    <td>{{tipotarifa.NombreTarifa}}</td>
-                                                    <td>{{tipotarifa.DescripcionTarifa}}</td>
-                                                    <td>{{tipotarifa.FechaAlta|date:'dd-MM-yyyy'}}</td>
-                                                    <td>{{tipotarifa.FechaBaja|date:'dd-MM-yyyy'}}</td>
-                                                    <td class="center"><a target="_self" href="FormularioDetalleTarifa.php?idTipoTarifa={{tipotarifa.idTipoTarifa}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
+                                                <tr ng_repeat="tipotarifa in tipostarifas" my-repeat-directive>
+                                                    <td data-hide="phone">{{tipotarifa.NombreTarifa}}</td>
+                                                    <td data-hide="phone,tablet">{{tipotarifa.DescripcionTarifa}}</td>
+                                                    <td data-hide="phone,tablet">{{tipotarifa.FechaAlta|date:'dd-MM-yyyy'}}</td>
+                                                    <td data-hide="phone,tablet">{{tipotarifa.FechaBaja|date:'dd-MM-yyyy'}}</td>
+                                                    <td class="center"><a target="_self" href="" ng_click="redirigirtarifas(tipotarifa.idTipoTarifa);" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
                                                     <a target="_self" ng_show="tipotarifa.FechaBaja!==null"  class="btn btn-danger">Anulada</a></td>
                                                 </tr>
                                             </tbody>
                                             <tfoot class="hide-if-no-paging">
                                                     <tr>
-                                                        <td colspan="7" class="text-center">
+                                                        <td colspan="7" class="text-center hide-if-no-paging">
                                                             <ul class="pagination pagination-centered">
 
                                                             </ul>

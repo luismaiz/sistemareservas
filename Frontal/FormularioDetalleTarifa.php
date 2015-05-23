@@ -37,6 +37,7 @@
                     $scope.tipotarifa.FechaBaja = null;
                     document.getElementById('anular').style.display = 'inline';
                     document.getElementById('aceptar').style.display = 'inline';
+                    document.getElementById('activar').style.display = 'none';
                 }
         
             };
@@ -76,7 +77,7 @@
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
-                    $scope.obtenerTiposTarifa($location.search().idTipoTarifa);
+                    //$scope.obtenerTiposTarifa($location.search().idTipoTarifa);
                 }
                 else
                 {
@@ -249,15 +250,15 @@
                                 <input ng-model="tipotarifa.idTipoTarifa" type="hidden" class="input-sm" name="idTipoTarifa" id="idTipoTarifa">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Nombre Tarifa</label>
                                 <input ng-model="tipotarifa.NombreTarifa"  type="text" class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="nombretarifa" id="NombreTarifa" required >
-                                <span style="color:red" ng-show="formulario.nombretarifa.$dirty && formulario.nombretarifa.$invalid">
-                                <span ng-show="formulario.nombretarifa.$error.required">Nombre de tarifa obligatorio.</span>
+                                <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.nombretarifa.$dirty && formulario.nombretarifa.$invalid">
+                                <span ng-show="formulario.nombretarifa.$error.required">* Nombre de tarifa obligatorio.</span>
                                  </span>
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Descripción Tarifa</label>
                                 <input ng-model="tipotarifa.DescripcionTarifa" ng-required="true" type="text" class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12"  name="descripciontarifa" id="DescripcionTarifa">
-                                <span style="color:red" ng-show="formulario.descripciontarifa.$dirty && formulario.descripciontarifa.$invalid">
-                                <span ng-show="formulario.descripciontarifa.$error.required">Descripción de tarifa obligatorio.</span>
+                                <span class="col-lg-2 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.descripciontarifa.$dirty && formulario.descripciontarifa.$invalid">
+                                <span ng-show="formulario.descripciontarifa.$error.required">* Descripción de tarifa obligatoria.</span>
                                  </span>
                                 </div>
                                  <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -271,7 +272,7 @@
                                 <input style='display:none;' id="anular" class="btn btn-sm btn-danger" type="submit" value="Anular" ng-click="anularTipoTarifa();"/>
                                 <input style='display:none;' id="aceptar" class="btn btn-sm btn-success" type="submit" value="Aceptar" ng-click="guardarTipoTarifa();" ng-disabled="formulario.$invalid" />
                                 <input style='display:none;' id="activar" class="btn btn-sm btn-action" type="submit" value="Activar" ng-click="activarTipoTarifa();"/>
-                                <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='TipoTarifa.php?detalle=1' " />
+                                <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='TipoTarifa.php' " />
 
                 </form>
                             </div>

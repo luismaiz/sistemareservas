@@ -6,28 +6,106 @@
             var app = angular.module('BusquedaReservas', ["ngStorage"])            
                      .config(function($locationProvider) {
                           $locationProvider.html5Mode(true);
-                      });
+                      })
+                      .directive('myRepeatDirective', function() {
+                        return function(scope, element, attrs) {
+                        
+                        if (scope.$last){
+                        $('.footable').trigger('footable_initialized');
+                        $('.footable').trigger('footable_resize');
+                        $('.footable').data('footable').redraw();
+                        
+                        }
+                        };
+                        })   
+                        ;
+                        
     
     function CargaBusquedaReservas($scope,$http, $location,$localStorage) {
         
         $scope.solicitudes = [];
         $scope.abonos = [];
+		
+		       
+	$scope.obtenerTipoSolicitud = function(){
+
+        var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitud');
+
+        var Params = '';
+		
+        Ajax.open("GET", Url, false);
+        Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
+        Ajax.send(Params); // Enviamos los datos
+               
+        $scope.tiposSolicitudes = JSON.parse(Ajax.responseText).tiposSolicitudes;
+		
+		if (localStorage.getItem('filtros')!== null)
+		{
+		    $scope.selected = $scope.tiposSolicitudes[JSON.parse(localStorage.getItem('filtros'))[0].TipoSolicitud-1];
+		}
+                else
+                {
+                    $scope.selected = [0];
+                }
                 
-        if (typeof($location.search().detalle) !== "undefined")
-        {
-            $scope.saved = localStorage.getItem('solicitudes');
-            $scope.filtrosguardados = localStorage.getItem('filtros');
-            $scope.solicitudes = (localStorage.getItem('solicitudes')!==null) ? JSON.parse($scope.saved) : JSON.parse(Ajax.responseText).solicitudes;
-            
-            document.getElementById("filtroLocalizador").value = JSON.parse($scope.filtrosguardados)[0].Localizador;
-            document.getElementById("filtroNombre").value = JSON.parse($scope.filtrosguardados)[0].Nombre;
-            document.getElementById("filtroApellidos").value = JSON.parse($scope.filtrosguardados)[0].Apellidos;
-            document.getElementById("filtroDni").value = JSON.parse($scope.filtrosguardados)[0].Dni;
-            document.getElementById("filtroEmail").value = JSON.parse($scope.filtrosguardados)[0].Email;      
-            document.getElementById("filtroFechaSolicitud").value = JSON.parse($scope.filtrosguardados)[0].FechaSolicitud;
-            document.getElementById("filtroTipoSolicitud").value = JSON.parse($scope.filtrosguardados)[0].TipoSolicitud;
-            document.getElementById("filtroGestionado").value = JSON.parse($scope.filtrosguardados)[0].Gestionado;
-        }
+		
+        };   
+        $scope.obtenerTipoSolicitud();
+		$scope.obtenerReservas = function() {
+				$scope.solicitudes = [];
+				
+				if (localStorage.getItem('filtros')!== null)
+				{
+					//$scope.saved = localStorage.getItem('solicitudes');
+					$scope.filtros = localStorage.getItem('filtros');
+					//$scope.solicitudes = (localStorage.getItem('solicitudes')!==null) ? JSON.parse($scope.saved) : JSON.parse(Ajax.responseText).solicitudes;
+					document.getElementById("filtroLocalizador").value = JSON.parse($scope.filtros)[0].Localizador;
+					document.getElementById("filtroNombre").value = JSON.parse($scope.filtros)[0].Nombre;
+					document.getElementById("filtroApellidos").value = JSON.parse($scope.filtros)[0].Apellidos;
+					document.getElementById("filtroDni").value = JSON.parse($scope.filtros)[0].Dni;
+					document.getElementById("filtroEmail").value = JSON.parse($scope.filtros)[0].Email;      
+					document.getElementById("filtroFechaSolicitudDesde").value = JSON.parse($scope.filtros)[0].FechaSolicitudDesde;
+                                        document.getElementById("filtroFechaSolicitudHasta").value = JSON.parse($scope.filtros)[0].FechaSolicitudHasta;
+					$scope.selected = $scope.tiposSolicitudes[JSON.parse($scope.filtros)[0].TipoSolicitud-1];
+					document.getElementById("filtroGestionado").value = JSON.parse($scope.filtros)[0].Gestionado;
+				}
+                             
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerReservasFiltro');
+                var Params =  'Localizador=' + document.getElementById("filtroLocalizador").value + 
+                '&Nombre=' + document.getElementById("filtroNombre").value +    
+                '&Apellidos='+ document.getElementById("filtroApellidos").value +
+                '&DNI=' + document.getElementById("filtroDni").value +
+                '&Email=' + document.getElementById("filtroEmail").value +
+                '&FechaSolicitudDesde=' + document.getElementById("filtroFechaSolicitudDesde").value +
+                '&FechaSolicitudHasta=' + document.getElementById("filtroFechaSolicitudHasta").value +
+                '&TipoSolicitud=' + $scope.selected.idTipoSolicitud +
+                '&Gestionado=' + document.getElementById("filtroGestionado").value;
+                
+		Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                //alert(Ajax.responseText);
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    $scope.solicitudes = JSON.parse(Ajax.responseText).solicitudes;
+                    localStorage.removeItem('filtros');
+                    document.getElementById('divSinResultados').style.display = 'none';
+                }
+                else
+                {
+                    $scope.solicitudes = [];
+                    document.getElementById('divSinResultados').style.display = 'block';
+                }
+            };	
+			
+            if (localStorage.getItem('filtros')!== null)
+            {
+                
+				$scope.obtenerReservas();
+            }
+        
         
         $scope.obtenerReservasSolicitudesPendientes = function() {
                 
@@ -35,21 +113,21 @@
                 $scope.abonos = [];
                 
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesPendientes');
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerSolicitudesPendientes";
-                
+      
                 var Params = 'TipoSolicitud=1';    
                 
 	        Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-                  //  alert(Ajax.responseText);
+                  
                                         
                 $scope.solicitudes = JSON.parse(Ajax.responseText).solicitudes;
-                localStorage.setItem('solicitudes', JSON.stringify($scope.solicitudes));
+                
                 
             };
             if (typeof($location.search().solicitudes) !== "undefined")
             {
+                
                 $scope.obtenerReservasSolicitudesPendientes();
             }
         $scope.obtenerAbonosPendientes = function() {
@@ -57,8 +135,7 @@
                 $scope.solicitudes = [];
                 $scope.abonos = [];
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes');
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerAbonosPendientes";
-                
+        
                 var Params = 'TipoSolicitud=3';    
                 
 	        Ajax.open("POST", Url, false);
@@ -67,7 +144,7 @@
                 
   //              alert(Ajax.responseText);
                 $scope.solicitudes = JSON.parse(Ajax.responseText).abonos;
-                localStorage.setItem('solicitudes', JSON.stringify($scope.solicitudes));
+                
         
             };
             if (typeof($location.search().abonos) !== "undefined")
@@ -77,72 +154,13 @@
             }
             
             
-        $scope.obtenerTipoSolicitud = function(){
-        
-        
-        var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitud');
-        //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitud";		
-        
-        var Params = '';
-
-        Ajax.open("GET", Url, false);
-        Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
-        Ajax.send(Params); // Enviamos los datos
+       
                
-        $scope.tiposSolicitudes = JSON.parse(Ajax.responseText).tiposSolicitudes;
-        
-        };   
-        $scope.obtenerTipoSolicitud();
-                
-                     
-        $scope.obtenerReservas = function() {
-            
-                $scope.solicitudes = [];
-                $scope.filtros = [{Localizador:document.getElementById("filtroLocalizador").value,
-                    Nombre:document.getElementById("filtroNombre").value,
-                    Apellidos:document.getElementById("filtroApellidos").value,
-                    Dni:document.getElementById("filtroDni").value,
-                    Email:document.getElementById("filtroEmail").value,
-                    FechaSolicitud:document.getElementById("filtroFechaSolicitud").value,
-                    TipoSolicitud:document.getElementById("filtroTipoSolicitud").value,
-                    Gestionado:document.getElementById("filtroGestionado").value}];
-                localStorage.setItem('filtros', JSON.stringify($scope.filtros));
-                
-                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerReservasFiltro');
-                
-                var Params =  'Localizador=' + document.getElementById("filtroLocalizador").value + 
-                '&Nombre=' + document.getElementById("filtroNombre").value +    
-                '&Apellidos='+ document.getElementById("filtroApellidos").value +
-                '&DNI=' + document.getElementById("filtroDni").value +
-                '&Email=' + document.getElementById("filtroEmail").value +
-                '&FechaSolicitud=' + document.getElementById("filtroFechaSolicitud").value +
-                '&TipoSolicitud=' + document.getElementById("filtroTipoSolicitud").value +
-                '&Gestionado=' + document.getElementById("filtroGestionado").value;
-                
-	        Ajax.open("POST", Url, false);
-                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                Ajax.send(Params); // Enviamos los datos
-                //alert(Ajax.responseText);
-                $scope.estado = JSON.parse(Ajax.responseText).estado;
-                
-                if ($scope.estado === 'correcto')
-                {
-                    $scope.solicitudes = JSON.parse(Ajax.responseText).solicitudes;
-                    localStorage.setItem('solicitudes', JSON.stringify($scope.solicitudes));
-                    document.getElementById('divSinResultados').style.display = 'none';
-                }
-                else
-                {
-                    $scope.solicitudes = [];
-                    document.getElementById('divSinResultados').style.display = 'block';
-                }
-            };
-            
         $scope.validarSolicitud = function(idSolicitud){
                           
              
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=validarSolicitud');
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala";
+                
                 var Params = 'idSolicitud='+ idSolicitud;
                
                 Ajax.open("POST", Url, false);
@@ -165,6 +183,52 @@
             $(function () {
                 $('.footable').footable();
                 });
+		$scope.redirigirdiario = function(idSolicitud)
+		{
+		    $scope.filtros = [{Localizador:document.getElementById("filtroLocalizador").value,
+                    Nombre:document.getElementById("filtroNombre").value,
+                    Apellidos:document.getElementById("filtroApellidos").value,
+                    Dni:document.getElementById("filtroDni").value,
+                    Email:document.getElementById("filtroEmail").value,
+                    FechaSolicitudDesde:document.getElementById("filtroFechaSolicitudDesde").value,
+                    FechaSolicitudHasta:document.getElementById("filtroFechaSolicitudHasta").value,
+                    TipoSolicitud:document.getElementById("filtroTipoSolicitud").value,
+                    Gestionado:document.getElementById("filtroGestionado").value}];
+                    localStorage.setItem('filtros', JSON.stringify($scope.filtros));
+		    location.href = "FormularioDetalleSolicitudAbonoDiario.php?idSolicitud="+idSolicitud;
+		};
+		
+                $scope.redirigirclases = function(idSolicitud)
+		{
+		    $scope.filtros = [{Localizador:document.getElementById("filtroLocalizador").value,
+                    Nombre:document.getElementById("filtroNombre").value,
+                    Apellidos:document.getElementById("filtroApellidos").value,
+                    Dni:document.getElementById("filtroDni").value,
+                    Email:document.getElementById("filtroEmail").value,
+                    FechaSolicitudDesde:document.getElementById("filtroFechaSolicitudDesde").value,
+                    FechaSolicitudHasta:document.getElementById("filtroFechaSolicitudHasta").value,
+                    TipoSolicitud:document.getElementById("filtroTipoSolicitud").value,
+                    Gestionado:document.getElementById("filtroGestionado").value}];
+                    localStorage.setItem('filtros', JSON.stringify($scope.filtros));
+		    location.href = "FormularioDetalleSolicitudClasesDirigidas.php?idSolicitud="+idSolicitud;
+		};
+                
+                $scope.redirigirmensual = function(idSolicitud)
+		{
+		    $scope.filtros = [{Localizador:document.getElementById("filtroLocalizador").value,
+                    Nombre:document.getElementById("filtroNombre").value,
+                    Apellidos:document.getElementById("filtroApellidos").value,
+                    Dni:document.getElementById("filtroDni").value,
+                    Email:document.getElementById("filtroEmail").value,
+                    FechaSolicitudDesde:document.getElementById("filtroFechaSolicitudDesde").value,
+                    FechaSolicitudHasta:document.getElementById("filtroFechaSolicitudHasta").value,
+                    TipoSolicitud:document.getElementById("filtroTipoSolicitud").value,
+                    Gestionado:document.getElementById("filtroGestionado").value}];
+                    localStorage.setItem('filtros', JSON.stringify($scope.filtros));
+		    location.href = "FormularioDetalleSolicitudAbonoMensual.php?idSolicitud="+idSolicitud;
+		};
+				
+		
          
     }
     
@@ -188,7 +252,12 @@
  $.datepicker.setDefaults($.datepicker.regional['es']);
             
             $(function() {
-                $( "#filtroFechaSolicitud" ).datepicker({
+                $( "#filtroFechaSolicitudDesde" ).datepicker({
+                    dateFormat:'dd-mm-yy'
+                });
+            });
+            $(function() {
+                $( "#filtroFechaSolicitudHasta" ).datepicker({
                     dateFormat:'dd-mm-yy'
                 });
             });
@@ -226,9 +295,9 @@
                                 <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Localizador</label>
                                 <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" id="filtroLocalizador" name="filtroLocalizador" value="">	
                                 <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Tipo Solicitud</label>
-                                <select  id="filtroTipoSolicitud" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
-                                    <option ng_repeat="tiposolicitud in tiposSolicitudes" value="{{tiposolicitud.idTipoSolicitud}}">{{tiposolicitud.NombreSolicitud}}</option>
-                                </select>
+                                <select ng-model="selected" ng-options="tiposolicitud.NombreSolicitud for tiposolicitud in tiposSolicitudes track by tiposolicitud.idTipoSolicitud"  id="filtroTipoSolicitud" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
+				<option value="">-- Tipo Solicitud --</option>
+                              </select>
                             </div>
                             <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12">Nombre</label>
@@ -243,10 +312,15 @@
                                 <input type="email" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" required id="filtroEmail" name="filtroEmail"/>
                             </div>
                             <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Fecha Solicitud</label>
-                                <input type="text" class="input-sm col-lg-4  col-md-4 col-sm-4 col-xs-7" id="filtroFechaSolicitud" name="filtroFechaSolicitud"/>
+                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Fecha Solicitud Desde</label>
+                                <input type="text" class="input-sm col-lg-4  col-md-4 col-sm-4 col-xs-7" id="filtroFechaSolicitudDesde" name="filtroFechaSolicitudDesde"/>
+                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Fecha Solicitud Hasta</label>
+                                <input type="text" class="input-sm col-lg-4  col-md-4 col-sm-4 col-xs-7" id="filtroFechaSolicitudHasta" name="filtroFechaSolicitudHasta"/>
+                            </div>
+                            <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Gestionado</label>
                                 <select  id="filtroGestionado" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
+                                    <option value="">-- Estado --</option>
                                     <option value="1">Gestionado</option>
                                     <option value="0">Pendiente</option>
                                 </select>
@@ -255,32 +329,31 @@
                                 <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerReservas()"/>
                            
                             <div class="box-content" id="reservas">
-                            <table class="footable table-striped responsive" data-page-size="10" data-page="true">
+                            <table class="table footable table-striped table-bordered" data-page-size="10" data-page="true">
                                             <thead>
                                                 <tr>
                                                     <th>Localizador</th>
                                                     <th>Apellidos</th>
-                                                    <th>Nombre</th>
-                                                    <th>Fecha Solicitud</th>
-                                                    <th>Tipo Solicitud</th>
+                                                    <th data-hide="phone">Nombre</th>
+                                                    <th data-hide="phone,tablet">Fecha Solicitud</th>
+                                                    <th data-hide="phone,tablet">Tipo Solicitud</th>
                                                     <th data-sort-ignore="true"></th>
                                                 </tr>
                                               </thead>    
-                                              <tr ng_repeat="solicitud in solicitudes">
+                                              <tr ng_repeat="solicitud in solicitudes" my-repeat-directive>
                                                     <td>{{solicitud.Localizador}}</td>
                                                     <td>{{solicitud.Apellidos}}</td>
-                                                    <td>{{solicitud.Nombre}}</td>
-                                                    <td>{{solicitud.FechaSolicitud |date:'dd-MM-yyyy'}}</td>
-                                                    <td>
+                                                    <td data-hide="phone">{{solicitud.Nombre}}</td>
+                                                    <td data-hide="phone,tablet">{{solicitud.FechaSolicitud |date:'dd-MM-yyyy'}}</td>
+                                                    <td data-hide="phone,tablet">
                                                         <p ng_show="solicitud.idTipoSolicitud==1">Clase Dirigida</p>
                                                         <p ng_show="solicitud.idTipoSolicitud==2">Mensual</p>
                                                         <p ng_show="solicitud.idTipoSolicitud==3">Diario</p>
                                                     </td>
                                                     <td class="center">
-                                                        <a target="_self" ng_show="solicitud.idTipoSolicitud==1" href="FormularioDetalleSolicitudClasesDirigidas.php?idSolicitud={{solicitud.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
-                                                        <a target="_self" ng_show="solicitud.idTipoSolicitud==2" href="FormularioDetalleSolicitudAbonoMensual.php?idSolicitud={{solicitud.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
-                                                        <a target="_self" ng_show="solicitud.idTipoSolicitud==3" href="FormularioDetalleSolicitudAbonoDiario.php?idSolicitud={{solicitud.idSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
-                                                        <a target="_self"  ng_show="solicitud.idTipoSolicitud==1 && solicitud.Gestionado==0" href="" class="btn btn-success" ng_click="validarSolicitud(solicitud.idSolicitud);">Validar</a>
+                                                        <a target="_self" ng_show="solicitud.idTipoSolicitud==1" href="" class="btn btn-info" ng_click="redirigirclases(solicitud.idSolicitud);"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
+                                                        <a target="_self" ng_show="solicitud.idTipoSolicitud==2" href="" class="btn btn-info" ng_click="redirigirmensual(solicitud.idSolicitud);"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
+                                                        <a target="_self"  ng_show="solicitud.idTipoSolicitud==3" href="" class="btn btn-info" ng_click="redirigirdiario(solicitud.idSolicitud);"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
                                                         <a target="_self"  ng_show="solicitud.idTipoSolicitud==3 && solicitud.Gestionado==0" href="" class="btn btn-success" ng_click="validarSolicitud(solicitud.idSolicitud);">Validar</a>
                                                         <a target="_self" ng_show="solicitud.Anulado!=='0'"  class="btn btn-danger">Anulada</a>
                                                         <i class="glyphicon glyphicon-bell blue" ng_show="solicitud.idTipoTarifa!=1"></i></td>
@@ -289,8 +362,8 @@
                                                 </tr>
                                                 <tfoot class="hide-if-no-paging">
                                                     <tr>
-                                                        <td colspan="7" class="text-center">
-                                                            <ul display="inline" class="pagination pagination-centered">
+                                                        <td colspan="7" class="text-center hide-if-no-paging">
+                                                            <ul display="inline" class="pagination pagination-centered hide-if-no-paging">
                                                             </ul>
                                                         </td>
                                                     </tr>

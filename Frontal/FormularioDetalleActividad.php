@@ -48,7 +48,7 @@
              else
             {
                 document.getElementById('aceptar').style.display = 'inline';
-                document.getElementById('activar').style.display = 'none';
+                //document.getElementById('activar').style.display = 'none';
             }
             
             $scope.guardarActividad = function() {
@@ -80,7 +80,7 @@
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
-                    $scope.obtenerActividad($location.search().idActividad);
+                    //$scope.obtenerActividad($location.search().idActividad);
                 }
                 else
                 {
@@ -134,7 +134,7 @@
                 
                 if ($scope.estado === 'correcto')
                 {
-                    document.getElementById('divBaja').style.display = 'none';
+                    document.getElementById('divBaja').style.display = 'inline';
                     document.getElementById('divCorrecto').style.display = 'block';
                     $scope.obtenerActividad($location.search().idActividad);
                     document.getElementById('anular').style.display = 'none';
@@ -248,22 +248,22 @@
                     <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Nombre Actividad</label>
                     <input ng-model="actividad.idActividad" type="hidden" class="input-sm col-md-4" name="idActividad" id="idActividad">                    
                     <input ng-model="actividad.NombreActividad" type="text" class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12"  id="NombreActividad" name="NombreActividad" required/>
-                    <span style="color:red" ng-show="formulario.NombreActividad.$dirty && formulario.NombreActividad.$invalid">
-                                <span ng-show="formulario.NombreActividad.$error.required">Nombre de actividad obligatorio.</span>
+                    <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.NombreActividad.$dirty && formulario.NombreActividad.$invalid">
+                                <span ng-show="formulario.NombreActividad.$error.required">* Nombre de actividad obligatorio.</span>
                     </span>
                     </div>
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Descripcion</label>
                     <input ng-model="actividad.DescripcionActividad" type="text" class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12" id="Descripcion" name="Descripcion" required/>
-                    <span style="color:red" ng-show="formulario.Descripcion.$dirty && formulario.Descripcion.$invalid">
-                                <span ng-show="formulario.Descripcion.$error.required">Descripción de actividad obligatorio.</span>
+                    <span class="col-lg-2 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.Descripcion.$dirty && formulario.Descripcion.$invalid">
+                                <span ng-show="formulario.Descripcion.$error.required">* Descripción de actividad obligatorio.</span>
                     </span>
                     </div>
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Intensidad Actividad</label>
                     <input class="input-sm color" ng-model="actividad.IntensidadActividad"   id="IntensidadActividad" name="IntensidadActividad" required>
-                    <span style="color:red" ng-show="formulario.IntensidadActividad.$dirty && formulario.IntensidadActividad.$invalid">
-                                <span ng-show="formulario.IntensidadActividad.$error.required">Intensidad de actividad obligatorio.</span>
+                    <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12"  style="color:red" ng-show="formulario.IntensidadActividad.$dirty && formulario.IntensidadActividad.$invalid">
+                                <span ng-show="formulario.IntensidadActividad.$error.required">* Intensidad de actividad obligatorio.</span>
                     </span>
                    
                     </div>    
@@ -298,7 +298,7 @@
                      <input style='display:none;' id="anular" class="btn btn-sm btn-danger" type="submit" value="Anular" ng-click="anularActividad();"/>
                      <input style='display:none;' id="aceptar" class="btn btn-sm btn-success" type="submit" value="Aceptar" ng-click="guardarActividad();" ng-disabled="formulario.$invalid" />
                      <input style='display:none;' id="activar" class="btn btn-sm btn-action" type="submit" value="Activar" ng-click="activarActividad();"/>
-                     <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='Actividades.php?detalle=1' " />
+                     <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='Actividades.php' " />
                 </form>
             </div>
         </div>

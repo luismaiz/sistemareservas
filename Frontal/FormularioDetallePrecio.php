@@ -270,33 +270,33 @@
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Tipo Solicitud</label>
                                 <select  name="idTipoSolicitud" id="idTipoSolicitud" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
                                     <option ng_repeat="tiposolicitud in tiposSolicitudes" ng_selected="{{precio.idTipoSolicitud}} === null ? {{tiposolicitud.idTipoSolicitud}} === {{precio.idTipoSolicitud}} : {{tiposolicitud.idTipoSolicitud}}==={{precio.idTipoSolicitud}}" value="{{tiposolicitud.idTipoSolicitud}}">{{tiposolicitud.NombreSolicitud}}</option>
-                                    <!--<option ng_repeat="tiposolicitud in tiposSolicitudes"  value="{{tiposolicitud.idTipoSolicitud}}">{{tiposolicitud.NombreSolicitud}}</option>-->
-                                </select>
-                    <!--</div>-->
-                    <!--<div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">--> 
-                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Tipo Abono</label>
-                                <select name="idTipoAbono" id="idTipoAbono" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
-                                    <option ng_repeat="tipoabono in tiposAbonos" ng_selected="{{precio.idTipoAbono}} === null ? {{tipoabono.idTipoAbono}} === {{precio.idTipoAbono}} : {{tipoabono.idTipoAbono}} === {{precio.idTipoAbono}}" value="{{tipoabono.idTipoAbono}}">{{tipoabono.NombreAbono}}</option>
-                                    <!--<option ng_repeat="tipoabono in tiposAbonos" value="{{tipoabono.idTipoAbono}}">{{tipoabono.NombreAbono}}</option>-->
-                                </select>
-                    <!--</div>-->
-                    <!--<div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">--> 
-                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Tipo Tarifa</label>
-                                <select  name="idTipoTarifa" id="idTipoTarifa" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
-                                    <option ng_repeat="tipotarifa in tiposTarifas" ng_selected="{{precio.idTipoTarifa}} === null ? {{tipotarifa.idTipoTarifa}} === {{precio.idTipoTarifa}} : {{tipotarifa.idTipoTarifa}}==={{precio.idTipoTarifa}}" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>
-                                    <!--<option ng_repeat="tipotarifa in tiposTarifas" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>-->-->
+                                    <option ng_repeat="tiposolicitud in tiposSolicitudes"  value="{{tiposolicitud.idTipoSolicitud}}">{{tiposolicitud.NombreSolicitud}}</option>
                                 </select>
                     </div>
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
-                    <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >NombrePrecio</label>
-                    <input type="text" ng-model="precio.NombrePrecio"   class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="NombrePrecio" id="NombrePrecio">
+                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Tipo Abono</label>
+                                <select name="idTipoAbono" id="idTipoAbono" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
+                                    <option ng_repeat="tipoabono in tiposAbonos" ng_selected="{{precio.idTipoAbono}} === null ? {{tipoabono.idTipoAbono}} === {{precio.idTipoAbono}} : {{tipoabono.idTipoAbono}} === {{precio.idTipoAbono}}" value="{{tipoabono.idTipoAbono}}">{{tipoabono.NombreAbono}}</option>
+                                    <option ng_repeat="tipoabono in tiposAbonos" value="{{tipoabono.idTipoAbono}}">{{tipoabono.NombreAbono}}</option>
+                                </select>
+                    </div>
+                    <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Tipo Tarifa</label>
+                                <select  name="idTipoTarifa" id="idTipoTarifa" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
+                                    <option ng_repeat="tipotarifa in tiposTarifas" ng_selected="{{precio.idTipoTarifa}} === null ? {{tipotarifa.idTipoTarifa}} === {{precio.idTipoTarifa}} : {{tipotarifa.idTipoTarifa}}==={{precio.idTipoTarifa}}" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>
+                                    <option ng_repeat="tipotarifa in tiposTarifas" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>
+                                </select>
+                    </div>
+                    <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                    <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Nombre Precio</label>
+                    <input type="text" ng-model="precio.NombrePrecio"   class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="NombrePrecio" id="NombrePrecio" required>
                     <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.NombrePrecio.$dirty && formulario.NombrePrecio.$invalid">
                                 <span ng-show="formulario.NombrePrecio.$error.required">* Nombre de precio obligatorio.</span>
                                  </span>
                     </div>
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
-                    <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >DescripcionPrecio</label>
-                    <input type="text" ng-model="precio.DescripcionPrecio"   class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="DescripcionPrecio" id="DescripcionPrecio">
+                    <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Descripcion Precio</label>
+                    <input type="text" ng-model="precio.DescripcionPrecio"   class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="DescripcionPrecio" id="DescripcionPrecio" required>
                     <span class="col-lg-2 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.DescripcionPrecio.$dirty && formulario.DescripcionPrecio.$invalid">
                                 <span ng-show="formulario.DescripcionPrecio.$error.required">* Descripción de precio obligatorio.</span>
                     </span>
@@ -346,7 +346,7 @@
                     <input style='display:none;' id="anular" class="btn btn-sm btn-danger" type="submit" value="Anular" ng-click="anularPrecio();"/>
                      <input style='display:none;' id="aceptar" class="btn btn-sm btn-success" type="submit" value="Aceptar" ng-click="crearPrecio();" ng-disabled="formulario.$invalid" />
                      <input style='display:none;' id="activar" class="btn btn-sm btn-action" type="submit" value="Activar" ng-click="activarPrecio();"/>
-                     <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='Precios.php?detalle=1' " />
+                     <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='Precios.php' " />
             </div>
          </form>
                             </div>

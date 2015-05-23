@@ -233,7 +233,16 @@ class SalasBO  extends Rest {
         if($capsala != '')
             $sala->setCapacidadSala($capsala);
         
-        $filas = SalaModel::findByExample($this->con,$sala,$sort);
+        
+        $filter=array(
+        new DFC(SalaModel::FIELD_NOMBRESALA, $nomsala, DFC::CONTAINS),
+        new DFC(SalaModel::FIELD_CAPACIDADSALA, $capsala, DFC::CONTAINS)
+        );
+        $filas=SalaModel::findByFilter($this->con, $filter, true, $sort);
+        
+        
+        
+        //$filas = SalaModel::findByExample($this->con,$sala,$sort);
                                 
         $num = count($filas);
         if ($num > 0) {

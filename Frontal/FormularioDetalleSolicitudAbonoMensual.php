@@ -22,7 +22,7 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-                //alert(Ajax.responseText);
+                alert(Ajax.responseText);
                 $scope.abonomensual = JSON.parse(Ajax.responseText).abonomensual;
                 $scope.datossolicitud = JSON.parse(Ajax.responseText).datossolicitud;
                 
@@ -167,10 +167,6 @@
                     document.getElementById('divError').style.display = 'block';
                 }
             };
-            
-            
-            
-            
         }
         
             $.datepicker.regional['es'] = {
@@ -244,7 +240,7 @@
                         <h3></h3>
                         <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Fecha Solicitud</label>
-                                <input ng_disabled="true" n ng-model="abonomensual.FechaSolicitud" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="FechaSolicitud" id="FechaSolicitud" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required>
+                                <input ng_disabled="true" ng-model="abonomensual.FechaSolicitud" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="FechaSolicitud" id="FechaSolicitud" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required>
                                 <span class="col-md-6 col-sm-5 col-XS-12" style="color:red" ng-show="formulario.FechaSolicitud.$dirty && formulario.FechaSolicitud.$invalid">
                                      <span ng-show="formulario.FechaSolicitud.$error.pattern">* Formato de fecha no valido.</span>
                                     <span ng-show="formulario.FechaSolicitud.$error.required">* Fecha obligatoria.</span>
@@ -381,7 +377,7 @@
                     </div>
                                 <input style='display:none;' id="anulacion" class="btn btn-sm btn-danger" type="submit" value="Anular Solicitud" ng-click="anularSolicitud();"  />
                                 <input style='display:none;' id="validacion" class="btn btn-sm btn-success" type="submit" value="Validar Solicitud" ng-click="validarSolicitud();" ng-disabled="formulario.$invalid" />
-                                <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='Reservas.php?detalle=1' " />
+                                <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='Reservas.php' " />
                                 
                              </form>
                            </div>                                         

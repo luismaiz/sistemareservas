@@ -213,6 +213,38 @@ class ActividadesBO extends Rest {
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
     }
+	
+	private function obtenerActividadOcupacion() {
+        if ($_SERVER['REQUEST_METHOD'] != "GET") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+
+        //el constructor del padre ya se encarga de sanear los datos de entrada  
+        $idActividad = $this->datosPeticion['idActividad'];
+        $this->con = ConexionBD::getInstance();
+        $actividad = new ActividadModel();
+
+        $actividad->setIdActividad($idActividad);
+        $fila = $actividad->findById($this->con, $idActividad);
+
+
+        if ($fila) {
+            $respuesta['estado'] = 'correcto';
+            $respuesta['actividad']['idActividad'] = $fila->getIdActividad();
+            $respuesta['actividad']['NombreActividad'] = $fila->getNombreActividad();
+            $respuesta['actividad']['IntensidadActividad'] = $fila->getIntensidadActividad();
+            $respuesta['actividad']['DescripcionActividad'] = $fila->getDescripcion();
+            $respuesta['actividad']['EdadMinima'] = $fila->getEdadMinima();
+            $respuesta['actividad']['EdadMaxima'] = $fila->getEdadMaxima();
+            $respuesta['actividad']['Grupo'] = $fila->getGrupo();
+            $respuesta['actividad']['Descripcion'] = $fila->getDescripcion();
+            $respuesta['actividad']['FechaAlta'] = date("d-m-Y",strtotime($fila->getFechaAlta()));
+            $respuesta['actividad']['FechaBaja'] = date("d-m-Y",strtotime($fila->getFechaBaja()));
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+    }
+	
     
     private function obtenerActividadesFiltro() {
         
@@ -240,7 +272,14 @@ class ActividadesBO extends Rest {
         if($grupo != '')
             $actividad->setGrupo($grupo);
         
-        $filas = ActividadModel::findByExample($this->con,$actividad,$sort);
+         $filter=array(
+        new DFC(ActividadModel::FIELD_NOMBREACTIVIDAD, $nombre, DFC::CONTAINS),
+        new DFC(ActividadModel::FIELD_INTENSIDADACTIVIDAD, $intensidad, DFC::CONTAINS),
+        new DFC(ActividadModel::FIELD_GRUPO, $grupo, DFC::CONTAINS),
+        );
+        $filas=ActividadModel::findByFilter($this->con, $filter, true, $sort);
+        
+        //$filas = ActividadModel::findByExample($this->con,$actividad,$sort);
                                 
         $num = count($filas);
         if ($num > 0) {

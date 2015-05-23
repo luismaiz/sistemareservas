@@ -13,7 +13,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">Ã?</button>
+                    <button type="button" class="close" data-dismiss="modal">ï¿½?</button>
                     <h3>Settings</h3>
                 </div>
                 <div class="modal-body">
@@ -72,22 +72,7 @@
 <!-- application script for Charisma demo -->
 <script src="Utilidades/js/charisma.js"></script>
 
-<?php //Google Analytics code for tracking my demo site, you can remove this.
-if ($_SERVER['HTTP_HOST'] == 'usman.it') {
-    ?>
-    <script>
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-26532312-1']);
-        _gaq.push(['_trackPageview']);
-        (function () {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
-        })();
-    </script>
-<?php } ?>
+<script src="Utilidades/js/angular-footable.js" type="text/javascript"></script>
 
 </body>
 </html>

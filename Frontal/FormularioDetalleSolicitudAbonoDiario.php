@@ -265,7 +265,7 @@
                                 <input ng_show="abonodiario.Gestionado=== '1' && abonodiario.Anulado=== '0'" id="actualizar" class="btn btn-sm btn-success" type="submit" value="Modificar Solicitud" ng-click="actualizarSolicitud();" ng-disabled="formulario.$invalid"  />
                                 <input ng_show="abonodiario.Gestionado=== '0' && abonodiario.Anulado=== '0'" id="validacion" class="btn btn-sm btn-success" type="submit" value="Validar Solicitud" ng-click="validarSolicitud();" ng-disabled="formulario.$invalid" />
                                 <input ng_show="abonodiario.Anulado=== '1'" id="activacion" class="btn btn-sm btn-success" type="submit" value="Activar Solicitud" ng-click="activarSolicitud();"  />
-                                <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='Reservas.php?detalle=1' " />
+                                <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='Reservas.php' " />
                              </form>
                            </div>                                         
                         </div>

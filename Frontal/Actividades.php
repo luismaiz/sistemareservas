@@ -6,7 +6,19 @@
     var app = angular.module('BusquedaActividades',  ["ngStorage"])            
                      .config(function($locationProvider) {
                           $locationProvider.html5Mode(true);
-                      });
+                      })
+                      .directive('myRepeatDirective', function() {
+                        return function(scope, element, attrs) {
+                        
+                        if (scope.$last){
+                        $('.footable').trigger('footable_initialized');
+                        $('.footable').trigger('footable_resize');
+                        $('.footable').data('footable').redraw();
+                        
+                        }
+                        };
+                        })   
+                        ;
     
     function CargaActividades($scope, $http,$location,$localStorage) {
             
@@ -14,14 +26,15 @@
                 
             $scope.obtenerActividades = function() {
                 
-                $scope.filtrosActividades = [{filtroactividad:document.getElementById("filtroactividad").value,
-                                    filtrointensidad:document.getElementById("filtrointensidad").value,
-                                    filtrogrupo:document.getElementById("filtrogrupo").value}
-                    ];
-                localStorage.setItem('filtrosActividades', JSON.stringify($scope.filtrosActividades));
+                if (localStorage.getItem('filtrosActividades')!== null)
+				{
+					$scope.filtrosActividades = localStorage.getItem('filtrosActividades');
+					document.getElementById("filtroactividad").value = JSON.parse($scope.filtrosActividades)[0].filtroactividad;
+					document.getElementById("filtrointensidad").value = JSON.parse($scope.filtrosActividades)[0].filtrointensidad;
+                                        document.getElementById("filtrogrupo").value = JSON.parse($scope.filtrosActividades)[0].filtrogrupo;
+				}
                 
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividadesFiltro');
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividadesFiltro";
                 var Params = 'NombreActividad=' + document.getElementById("filtroactividad").value + 
                         '&IntensidadActividad=' + document.getElementById("filtrointensidad").value +    
                         '&Grupo=' + document.getElementById("filtrogrupo").value;        
@@ -34,7 +47,7 @@
                 if ($scope.estado === 'correcto')
                 {
                     $scope.actividades = JSON.parse(Ajax.responseText).actividades;
-                    localStorage.setItem('actividades', JSON.stringify($scope.actividades));
+                    localStorage.removeItem('filtrosActividades');
                     document.getElementById('divSinResultados').style.display = 'none';
                 }
                 else
@@ -44,20 +57,21 @@
                 }
         
             };
-            
-            if (typeof($location.search().detalle) !== "undefined")
+            	if (localStorage.getItem('filtrosActividades')!== null)
             {
-            $scope.resultado = localStorage.getItem('actividades');
-            $scope.filtrosActividades = localStorage.getItem('filtrosActividades');
-            $scope.actividades = (localStorage.getItem('actividades')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).actividades;
+				$scope.obtenerActividades();
+            }
             
-            document.getElementById("filtroactividad").value = JSON.parse($scope.filtrosActividades)[0].filtroactividad;
-            document.getElementById("filtrointensidad").value = JSON.parse($scope.filtrosActividades)[0].filtrointensidad;
-            document.getElementById("filtrogrupo").value = JSON.parse($scope.filtrosActividades)[0].filtrogrupo;
-            
-            $scope.obtenerActividades();
-            }    
-$(function () {
+		$scope.redirigiractividades = function(idActividad)
+		{
+		    $scope.filtrosActividades = [{filtroactividad:document.getElementById("filtroactividad").value,
+                    filtrointensidad:document.getElementById("filtrointensidad").value,
+                    filtrogrupo:document.getElementById("filtrogrupo").value}
+                    ];
+                localStorage.setItem('filtrosActividades', JSON.stringify($scope.filtrosActividades));
+		    location.href = "FormularioDetalleActividad.php?idActividad="+idActividad;
+		};    
+                $(function () {
                 $('.footable').footable();
                 });
 }
@@ -98,39 +112,35 @@ $(function () {
                                             </div>
                                                 <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerActividades();"/>
                                                  <div class="box-content" id="actividades">
-                                        <table class="footable table-striped table-bordered responsive" data-page-size="5" data-page-navigation=".pagination" id="tabla">
+                                        <table class="table footable table-striped table-bordered" data-page-size="5" data-page-navigation=".pagination" id="tabla">
                                             <thead>
                                                 <tr>
-                                                    <th>Nombre</th>
-                                                    <th>Descripción</th>
+                                                    <th>Actividad</th>
+                                                    <th data-hide="phone,tablet">Descripción</th>
                                                     <th>Intensidad</th>
-                                                    <th data-type="numeric">Edad Mínima</th>
-                                                    <th data-type="numeric">Edad Máxima</th>
+                                                    <th data-hide="phone,tablet" data-type="numeric">Edad Mínima</th>
+                                                    <th data-hide="phone,tablet" data-type="numeric">Edad Máxima</th>
                                                     <th data-sort-ignore="true"></th>
                                                     
                                                 </tr>
                                               </thead>
                                               <tbody>
-                                                <tr ng_repeat="actividad in actividades">
+                                                <tr ng_repeat="actividad in actividades" my-repeat-directive>
                                                     <td>{{actividad.NombreActividad}}</td>
-                                                    <td>{{actividad.Descripcion}}</td>
+                                                    <td data-hide="phone,tablet">{{actividad.Descripcion}}</td>
                                                     <td style="color: #{{actividad.IntensidadActividad}}">
                                                         <div style="background-color: #{{actividad.IntensidadActividad}}" ng-model="actividad.IntensidadActividad" ></div>
                                                     </td>
-                                                    <td>{{actividad.EdadMinima}}</td>
-                                                    <td>{{actividad.EdadMaxima}}</td>
-                                                    <td class="center"><a target="_self" href="FormularioDetalleActividad.php?idActividad={{actividad.idActividad}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
+                                                    <td data-hide="phone,tablet">{{actividad.EdadMinima}}</td>
+                                                    <td data-hide="phone,tablet">{{actividad.EdadMaxima}}</td>
+                                                    <td class="center"><a target="_self" href=""ng_click="redirigiractividades(actividad.idActividad);" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
                                                     <a target="_self" ng_show="actividad.FechaBaja!==null"  class="btn btn-danger">Anulada</a></td>
                                                 </tr>
                                             </tbody>
                                             <tfoot class="hide-if-no-paging">
                                                     <tr>
-                                                        <td>
-                                                            
-                                                        </td>
-                                                        <td colspan="5" class="text-center">
-                                                            <ul class="pagination pagination-centered">
-
+                                                        <td colspan="6" class="text-center hide-if-no-paging">
+                                                            <ul class="pagination">
                                                             </ul>
                                                         </td>
                                                     </tr>

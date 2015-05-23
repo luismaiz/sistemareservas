@@ -164,9 +164,13 @@ class ReservasBO extends Rest{
         
         $tsolicitud = $this->datosPeticion['TipoSolicitud'];
         $gestionado = $this->datosPeticion['Gestionado'];
-             
-        $fsolicitud = date("Y-m-d",strtotime($this->datosPeticion['FechaSolicitud']));
         
+        if($this->datosPeticion['FechaSolicitudDesde'] != '')
+        $fsolicituddesde = date("Y-m-d",strtotime($this->datosPeticion['FechaSolicitudDesde']));
+             
+        if($this->datosPeticion['FechaSolicitudHasta'] != '')
+        $fsolicitudhasta = date("Y-m-d",strtotime($this->datosPeticion['FechaSolicitudHasta']));
+             
         
         $this->con = ConexionBD::getInstance();
         $sort = array(
@@ -178,25 +182,28 @@ class ReservasBO extends Rest{
         
         $solicitud = new SolicitudModel();
         
-        if($loc != '')
-            $solicitud->setLocalizador($loc);
-        if($nom != '')
-            $solicitud->setNombre($nom);
-        if($ape != '')
-            $solicitud->setApellidos($ape);
-        if($dni != '')
-            $solicitud->setDni($dni);
-        if($mail != '')
-            $solicitud->setEMail($mail);
-        if($this->datosPeticion['FechaSolicitud'] != '')
-            $solicitud->setFechaSolicitud($fsolicitud);
-        if($tsolicitud != '')
-            $solicitud->setIdTipoSolicitud($tsolicitud);
-        if($gestionado != '')
-            $solicitud->setGestionado($gestionado);
+        
+        $filter=array(
+        new DFC(SolicitudModel::FIELD_LOCALIZADOR, $loc, DFC::CONTAINS),
+        new DFC(SolicitudModel::FIELD_NOMBRE, $nom, DFC::CONTAINS),
+        new DFC(SolicitudModel::FIELD_APELLIDOS, $ape, DFC::CONTAINS),
+        new DFC(SolicitudModel::FIELD_DNI, $dni, DFC::CONTAINS),
+        new DFC(SolicitudModel::FIELD_EMAIL, $mail, DFC::CONTAINS)
+        );
+        if($this->datosPeticion['FechaSolicitudDesde'] != '')
+        array_push($filter, new DFC(SolicitudModel::FIELD_FECHASOLICITUD, $fsolicituddesde, DFC::GREATER));
+        if($this->datosPeticion['FechaSolicitudHasta'] != '')
+        array_push($filter, new DFC(SolicitudModel::FIELD_FECHASOLICITUD, $fsolicitudhasta, DFC::SMALLER));
+        if($this->datosPeticion['TipoSolicitud']!='')
+        array_push($filter, new DFC(SolicitudModel::FIELD_IDTIPOSOLICITUD, $tsolicitud, DFC::EXACT));
+        if($this->datosPeticion['Gestionado']!='')
+        array_push($filter, new DFC(SolicitudModel::FIELD_GESTIONADO, $gestionado, DFC::EXACT));
+        
+        $filas=SolicitudModel::findByFilter($this->con, $filter, true, $sort);
         
         
-        $filas = SolicitudModel::findByExample($this->con,$solicitud,$sort);
+        
+        //$filas = SolicitudModel::findByExample($this->con,$solicitud,$sort);
                                 
         $num = count($filas);
         if ($num > 0) {
@@ -346,11 +353,16 @@ class ReservasBO extends Rest{
             $datosolicitud->setIdSolicitud($this->datosPeticion['idSolicitud']);
             
             $sortdatos = array(
-            new DSC(DatosolicitudclasedirigidaModel::FIELD_IDSOLICITUD, DSC::ASC)
+            new DSC(DatosolicitudabonomensualModel::FIELD_IDSOLICITUD, DSC::ASC)
             );
-            
-            $filadatosbancarios =  DatosolicitudabonomensualModel::findByExample($this->con,$datosolicitud,$sortdatos);
+//            
             $fila = $solicitud->findById($this->con,$this->datosPeticion['idSolicitud']);
+//            $filterdatos=array(
+//                new DFC(DatosolicitudabonomensualModel::FIELD_IDSOLICITUD, $this->datosPeticion['idSolicitud'], DFC::EXACT)
+//            );
+//            $filadatos = $datosolicitud->findByFilter($this->con,$filterdatos);
+            
+            
             $filadatos =  DatosolicitudabonomensualModel::findByExample($this->con,$datosolicitud,$sortdatos);
             
             $num = count($filadatos);
@@ -416,9 +428,18 @@ class ReservasBO extends Rest{
             new DSC(DatosolicitudclasedirigidaModel::FIELD_IDSOLICITUD, DSC::ASC)
             );
             
+                        
             $fila = $solicitud->findById($this->con,$this->datosPeticion['idSolicitud']);
-            $filaactividades = ActividadsolicitudclasedirigidaModel::findByExample($this->con,$actividades,$sort);
-            $filadatosbancarios =  DatosolicitudclasedirigidaModel::findByExample($this->con,$datosbancarios,$sortdatos);
+            
+            $filteractividades=array(
+                new DFC(ActividadsolicitudclasedirigidaModel::FIELD_IDSOLICITUD, $this->datosPeticion['idSolicitud'], DFC::EXACT)
+            );
+            $filaactividades = $actividades->findByFilter($this->con,$filteractividades);
+            
+            $filterdatosbancarios=array(
+                new DFC(DatosolicitudclasedirigidaModel::FIELD_IDSOLICITUD, $this->datosPeticion['idSolicitud'], DFC::EXACT)
+            );
+            $filadatosbancarios = $datosbancarios->findByFilter($this->con,$filterdatosbancarios);
             
             $num = count($filaactividades);
             if ($num > 0) {

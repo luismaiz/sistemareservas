@@ -77,7 +77,7 @@
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
-                    $scope.obtenerTiposAbono($location.search().idTipoAbono);
+                    //$scope.obtenerTiposAbono($location.search().idTipoAbono);
                 }
                 else
                 {
@@ -247,14 +247,14 @@
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Nombre Abono</label>
                                 <input ng-model="tipoabono.NombreAbono"  type="text" class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="nombreabono" id="NombreAbono" required>
                                 <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.nombreabono.$dirty && formulario.nombreabono.$invalid">
-                                <span ng-show="formulario.nombreabono.$error.required">Nombre de abono obligatorio.</span>
+                                <span ng-show="formulario.nombreabono.$error.required">* Nombre de abono obligatorio.</span>
                                  </span>
                       </div>          
                       <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Descripción Abono</label>
                                 <input ng-model="tipoabono.DescripcionAbono" ng-required="true" type="textarea" class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12"  name="descripcionabono" id="DescripcionAbono">
                                 <span class="col-lg-2 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.descripcionabono.$dirty && formulario.descripcionabono.$invalid">
-                                <span ng-show="formulario.descripcionabono.$error.required">Descripción de abono obligatorio.</span>
+                                <span ng-show="formulario.descripcionabono.$error.required">* Descripción de abono obligatorio.</span>
                                 </span>
                       </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -268,7 +268,7 @@
                                 <input style='display:none;' id="anular" class="btn btn-sm btn-danger" type="submit" value="Anular" ng-click="anularTipoAbono();"/>
                                 <input style='display:none;' id="aceptar" class="btn btn-sm btn-success" type="submit" value="Aceptar" ng-click="guardarTipoAbono();" ng-disabled="formulario.$invalid" />
                                 <input style='display:none;' id="activar" class="btn btn-sm btn-action" type="submit" value="Activar" ng-click="activarTipoAbono();"/>
-                                <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='TipoAbono.php?detalle=1' " />
+                                <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='TipoAbono.php' " />
                    
                 </form>
             </div>

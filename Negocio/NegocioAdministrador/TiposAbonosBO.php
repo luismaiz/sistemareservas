@@ -159,13 +159,6 @@ class TiposAbonosBO extends Rest{
         //el constructor del padre ya se encarga de sanear los datos de entrada  
         $idTipoAbono = $this->datosPeticion['idTipoAbono'];
 
-        //consulta preparada ya hace mysqli_real_escape()  
-        /* $query = $this->_conn->prepare("SELECT idTipoSolicitud,NombreSolicitud,DescripcionSolicitud,FechaAlta,FechaBaja FROM tiposolicitud WHERE idTipoSolicitud=:idTipoSolicitud");
-          $query->bindValue(":idTipoSolicitud", $idTipoSolicitud);
-          $fila = $query->execute();
-
-          $query->execute(); */
-
         $this->con = ConexionBD::getInstance();
         $tipoabono = new TipoabonoModel();
 
@@ -205,7 +198,13 @@ class TiposAbonosBO extends Rest{
         if($destipoabomo != '')
             $tipoabono->setDescripcionAbono($destipoabomo);
         
-        $filas = TipoabonoModel::findByExample($this->con,$tipoabono,$sort);
+        $filter=array(
+        new DFC(TipoabonoModel::FIELD_NOMBREABONO, $nomtipoabono, DFC::CONTAINS),
+        new DFC(TipoabonoModel::FIELD_DESCRIPCIONABONO, $destipoabomo, DFC::CONTAINS)
+        );
+        $filas=TipoabonoModel::findByFilter($this->con, $filter, true, $sort);
+        
+        //$filas = TipoabonoModel::findByExample($this->con,$tipoabono,$sort);
                                 
         $num = count($filas);
         if ($num > 0) {

@@ -5,7 +5,19 @@
 var app = angular.module('BusquedaTiposSolicitudes', ["ngStorage"])            
                      .config(function($locationProvider) {
                           $locationProvider.html5Mode(true);
-                      });
+                      })
+                      .directive('myRepeatDirective', function() {
+                        return function(scope, element, attrs) {
+                        
+                        if (scope.$last){
+                        $('.footable').trigger('footable_initialized');
+                        $('.footable').trigger('footable_resize');
+                        $('.footable').data('footable').redraw();
+                        
+                        }
+                        };
+                        })   
+                        ;
 
 function CargaTiposSolicitudes($scope, $http,$location,$localStorage) {
     
@@ -14,27 +26,26 @@ function CargaTiposSolicitudes($scope, $http,$location,$localStorage) {
         
     $scope.obtenerTiposSolicitudes = function() {
         
-                $scope.filtrosSolicitudes = [{filtronombresolicitud:document.getElementById("filtronombresolicitud").value,
-                                    filtrodescripcionsolicitud:document.getElementById("filtrodescripcionsolicitud").value}
-                    ];
-                localStorage.setItem('filtrosSolicitudes', JSON.stringify($scope.filtrosSolicitudes));
-                
+                if (localStorage.getItem('filtrosSolicitudes')!== null)
+		{
+		$scope.filtrosSolicitudes = localStorage.getItem('filtrosSolicitudes');
+		document.getElementById("filtronombresolicitud").value = JSON.parse($scope.filtrosSolicitudes)[0].filtronombresolicitud;
+		document.getElementById("filtrodescripcionsolicitud").value = JSON.parse($scope.filtrosSolicitudes)[0].filtrodescripcionsolicitud;
+		}
+                              
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitudesFiltro');
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TiposSolicitudesBO.php?url=obtenerTiposSolicitudesFiltro";
-                
                 var Params = 'NombreSolicitud=' + document.getElementById("filtronombresolicitud").value + '&DescripcionSolicitud=' + document.getElementById("filtrodescripcionsolicitud").value;    
                 
 	        Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-	
-                
+	               
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')
                 {
                     $scope.tipossolicitudes = JSON.parse(Ajax.responseText).tipossolicitudes;
-                    localStorage.setItem('tipossolicitudes', JSON.stringify($scope.tipossolicitudes));
+                    localStorage.removeItem('filtrosSolicitudes');
                     document.getElementById('divSinResultados').style.display = 'none';
                 }
                 else
@@ -45,17 +56,19 @@ function CargaTiposSolicitudes($scope, $http,$location,$localStorage) {
         
             };
             
-            if (typeof($location.search().detalle) !== "undefined")
+            if (localStorage.getItem('filtrosSolicitudes')!== null)
             {
-            $scope.resultado = localStorage.getItem('tipossolicitudes');
-            $scope.filtrosSolicitudes = localStorage.getItem('filtrosSolicitudes');
-            $scope.tipossolicitudes = (localStorage.getItem('tipossolicitudes')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).tipossolicitudes;
-            
-            document.getElementById("filtronombresolicitud").value = JSON.parse($scope.filtrosSolicitudes)[0].filtronombresolicitud;
-            document.getElementById("filtrodescripcionsolicitud").value = JSON.parse($scope.filtrosSolicitudes)[0].filtrodescripcionsolicitud;
-            
             $scope.obtenerTiposSolicitudes();
-            } 
+            }
+            
+            $scope.redirigirtiposolicitudes = function(idTipoSolicitud)
+	    {
+		    $scope.filtrosSolicitudes = [{filtronombresolicitud:document.getElementById("filtronombresolicitud").value,
+                    filtrodescripcionsolicitud:document.getElementById("filtrodescripcionsolicitud").value}
+                    ];
+                localStorage.setItem('filtrosSolicitudes', JSON.stringify($scope.filtrosSolicitudes));
+		    location.href = "FormularioDetalleTipoSolicitud.php?idTipoSolicitud="+idTipoSolicitud;
+		};
             
             $(function () {
                 $('.footable').footable();
@@ -98,30 +111,30 @@ function CargaTiposSolicitudes($scope, $http,$location,$localStorage) {
                                        
                                 <div class="box-content" id="tipossolicitudes">
                                      
-                                       <table class="footable table-striped table-bordered responsive" data-page-size="5" data-page-navigation=".pagination" id="tabla">
+                                       <table class="table footable table-striped table-bordered" data-page-size="5" data-page-navigation=".pagination" id="tabla">
                                             <thead>
                                                 <tr>
-                                                    <th>Nombre</h6></th>
-                                                    <th>Descripcion</th>
-                                                    <th>Fecha Alta</th>
-                                                    <th>Fecha Baja</th>
+                                                    <th data-hide="phone">Nombre</h6></th>
+                                                    <th data-hide="phone,tablet">Descripcion</th>
+                                                    <th data-hide="phone,tablet">Fecha Alta</th>
+                                                    <th data-hide="phone,tablet">Fecha Baja</th>
                                                     <th data-sort-ignore="true"></th>
                                                     
                                                 </tr>
                                               </thead>
                                               <tbody>
-                                                <tr ng_repeat="tiposolicitud in tipossolicitudes">
-                                                    <td>{{tiposolicitud.NombreSolicitud}}</td>
-                                                    <td>{{tiposolicitud.DescripcionSolicitud}}</td>
-                                                    <td>{{tiposolicitud.FechaAlta |date:'dd-MM-yyyy'}}</td>
-                                                    <td>{{tiposolicitud.FechaBaja |date:'dd-MM-yyyy'}}</td>
-                                                    <td class="center"><a target="_self" href="FormularioDetalleTipoSolicitud.php?idTipoSolicitud={{tiposolicitud.idTipoSolicitud}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
+                                                <tr ng_repeat="tiposolicitud in tipossolicitudes" my-repeat-directive>
+                                                    <td data-hide="phone">{{tiposolicitud.NombreSolicitud}}</td>
+                                                    <td data-hide="phone,tablet">{{tiposolicitud.DescripcionSolicitud}}</td>
+                                                    <td data-hide="phone,tablet">{{tiposolicitud.FechaAlta |date:'dd-MM-yyyy'}}</td>
+                                                    <td data-hide="phone,tablet">{{tiposolicitud.FechaBaja |date:'dd-MM-yyyy'}}</td>
+                                                    <td class="center"><a target="_self" href="" ng_click="redirigirtiposolicitudes(tiposolicitud.idTipoSolicitud);" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
                                                     <a target="_self" ng_show="tiposolicitud.FechaBaja!==null"  class="btn btn-danger">Anulada</a></td>
                                                 </tr>
                                             </tbody>
                                             <tfoot class="hide-if-no-paging">
                                                     <tr>
-                                                        <td colspan="7" class="text-center">
+                                                        <td colspan="7" class="text-center hide-if-no-paging">
                                                             <ul class="pagination pagination-centered">
 
                                                             </ul>

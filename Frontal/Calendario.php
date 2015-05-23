@@ -86,12 +86,14 @@
         });
         /* initialize the calendar
 -----------------------------------------------------------------*/
-
+        var CalLoading = true;
+        var lastView;;
         $('#calendar').fullCalendar({
             minTime: "09:00",
             maxTime: "22:00",
             allDaySlot:false,
             timeFormat: 'H:mm' ,
+            lazyFetching: false,
             hiddenDays: [ 0 ],
                         
             buttonHtml: {
@@ -112,13 +114,14 @@
             selectHelper: true,
             
             events: function(start, end, timezone, callback) {
-                                
+                            
                 $.ajax({
                     url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=obtenerClases'),
                     dataType: "json",
                     data: "",
-                    async: true,
+                    async: false,
                     success: function(doc) {
+                        
                         var events = [];
                         
                         for(i=0; i<doc.clases.length; i++){
@@ -146,6 +149,7 @@
                                 borderColor: "#"+doc.clases[i].Ocupacion
                             });
                         }
+						
                         callback(events);
                     }
                 });
@@ -167,20 +171,26 @@
                     data: jQuery.param( json ),
                     contentType: "application/x-www-form-urlencoded; charset=utf-8",
                     dataType: "json",
-                    async: true,
+                    async: false,
 
                     success: function(data, textStatus) {
-                        alert(data.idClase);
+                        
                         copiedEventObject.idClase = data.idClase;
                         copiedEventObject.id = data.idClase;
+                        copiedEventObject.idSala = 3;
+                        copiedEventObject.idActividad = $idActividad;
+                        copiedEventObject.FechaInicio = inicio;
+                        copiedEventObject.FechaFin = fin;
+                        copiedEventObject.Ocupacion = '';
                         $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
                     },
                     error: function( jqXHR, textStatus, errorThrown ) {
                 }}); 
+				
             },
             eventDrop: function(calEvent, delta) { 
                
-                var json = {idClase:calEvent.idClase,idActividad:calEvent.idActividad,idSala:calEvent.idSala,FechaInicio:calEvent.start._d.toUTCString(), FechaFin:calEvent.end._d.toUTCString(), Ocupacion:calEvent.OcupacionClase, Dia:calEvent._fullDay, Publicada:1};
+                var json = {idClase:calEvent._id,idActividad:calEvent.idActividad,idSala:calEvent.idSala,FechaInicio:calEvent.start._d.toUTCString(), FechaFin:calEvent.end._d.toUTCString(), Ocupacion:calEvent.OcupacionClase, Dia:calEvent._fullDay, Publicada:1};
                 $.ajax({
                     type: "POST",
                     url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=actualizarClaseGMT'),
@@ -190,14 +200,18 @@
                     async: false,
                         
                     success: function(data, textStatus) {
-                        //alert("clase actualizada");
+                        
+                        $('#calendar').fullCalendar('updateEvent',calEvent, false);
                     },
                     error: function( jqXHR, textStatus, errorThrown ) {
                 }});
+				
             },
             eventResize: function(calEvent) {
                 
-                var json = {idClase:calEvent.idClase,idActividad:calEvent.idActividad,idSala:calEvent.idSala,FechaInicio:calEvent.start._d.toUTCString(), FechaFin:calEvent.end._d.toUTCString(), Ocupacion:calEvent.OcupacionClase, Dia:calEvent._fullDay, Publicada:1};
+                             
+                
+                var json = {idClase:calEvent._id,idActividad:calEvent.idActividad,idSala:calEvent.idSala,FechaInicio:calEvent.start._d.toUTCString(), FechaFin:calEvent.end._d.toUTCString(), Ocupacion:calEvent.OcupacionClase, Dia:calEvent._fullDay, Publicada:1};
                 $.ajax({
                     type: "POST",
                     url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=actualizarClaseGMT'),
@@ -207,14 +221,16 @@
                     async: true,
 
                     success: function(data, textStatus) {
-                        //alert("clase actualizada");
+                        $('#calendar').fullCalendar('updateEvent',calEvent, true);
                     },
                     error: function( jqXHR, textStatus, errorThrown ) {
                 }});    
+				
             },
             dayClick: function(date, jsEvent, view) {
                 
                 $('#fullCalModal').modal();
+                
                 //$('#idActividad').attr("disabled", false);
                 //$('#idSala').attr("disabled", false);    
                 $('#fullCalModal').find('button[data-action=crear]').show();
@@ -225,8 +241,9 @@
                 $('#OcupacionClase').val('FFFFFF');
                 $('#OcupacionClase').css('background-color',"#FFFFFF");
                 
-                 $('#fullCalModal').find('button[data-action=crear]').on('click', function(ev) { 
-                                                                             
+                 //$('#fullCalModal').find('button[data-action=crear]').on('click', function(ev) { 
+                $('#crear').on('click', function(ev) { 
+                $('#fullCalModal').modal("hide");
                 var fechainicio = $('#fechaInicio').val().trim().split(/[/ :]/);
                 var fechafin = $('#fechaFin').val().trim().split(/[/ :]/);
                             
@@ -240,11 +257,11 @@
                     data: jQuery.param( json ),
                     contentType: "application/x-www-form-urlencoded; charset=utf-8",
                     dataType: "json",
-                    async: true,
+                    async: false,
 
                     success: function(data, textStatus) {
                         var objeto = new Object();
-            
+                    objeto.id = data.id;        
                     objeto.title= Actividades[arrayactividades.indexOf($('#idActividad').val())].NombreActividad;
                     objeto.idActividad= $('#idActividad').val();
                     objeto.idSala= $('#idSala').val();
@@ -255,19 +272,18 @@
                     objeto.end=  Cfechafincarga;
                     objeto.backgroundColor= "#"+ $('#OcupacionClase').val();
                     objeto.borderColor= "#"+ $('#OcupacionClase').val();
+                    objeto.dow=[1,2,3,4];
                     
                     $('#calendar').fullCalendar('renderEvent', objeto, true);
-                        
+
                     },
                     error: function( jqXHR, textStatus, errorThrown ) {
                 }});
-            
                             
-                            $('#fullCalModal').modal("hide");
                       });
             },
-            
-            eventClick: function(calEvent, jsEvent, view) {     
+            eventClick: function(calEvent, jsEvent, view) { 
+               
             
             var Cfechainiciocarga=null;
             var Cfechafincarga =null;
@@ -284,6 +300,7 @@
             Cfechafincarga = new Date(calEvent._end._d.getFullYear(),calEvent._end._d.getMonth(),calEvent._end._d.getDate(),calEvent._end._d.getHours(),calEvent._end._d.getMinutes(),calEvent._end._d.getSeconds());
             }
             
+            $('#fullCalModal').modal('show');
             $('#idActividad').val(calEvent.idActividad);
             $('#idSala').val(calEvent.idSala);
             $('#OcupacionClase').val(calEvent.OcupacionClase);
@@ -293,7 +310,10 @@
             $('#fullCalModal').find('button[data-action=crear]').hide();
             $('#fullCalModal').find('button[data-action=actualizar]').show();
             $('#fullCalModal').find('button[data-action=delete]').show();
-            $('#fullCalModal').find('button[data-action=actualizar]').on('click', function(ev){
+            //$('#fullCalModal').find('button[data-action=actualizar]').on('click', function(ev){
+            $('#actualizar').on('click',function(ev) { 
+                $('#fullCalModal').modal("hide");   
+                $('#actualizar').off('click');   
                 
                 var fechainicio=$('#fechaInicio').val().replace(/[^0-9]+/g, '');;
                 var fechafin = $('#fechaFin').val().replace(/[^0-9]+/g, '');;
@@ -323,53 +343,60 @@
                
                var json = {idClase:calEvent.idClase,idActividad:$('#idActividad').val(),idSala:$('#idSala').val(),FechaInicio:CfechainiciocargaActu.toUTCString(), FechaFin:CfechafincargaActu.toUTCString(), Ocupacion:$('#OcupacionClase').val(), Dia:calEvent._fullDay, Publicada:1};
                
+                
                 $.ajax({
                     type: "POST",
                     url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=actualizarClase'),
                     data: jQuery.param( json ),
                     contentType: "application/x-www-form-urlencoded; charset=utf-8",
                     dataType: "json",
-                    async: true,
-
+                    async: false,
+                        
                     success: function(data, textStatus) {
+                        calEvent.id = calEvent.idClase;
+                        calEvent.idActividad =$('#idActividad').val();
+                        calEvent.idSala =$('#idSala').val();
+                        calEvent.start = CfechainiciocargaActu;
+                        calEvent.end = CfechafincargaActu;
+                        calEvent.OcupacionClase=$('#OcupacionClase').val();
+                        calEvent.backgroundColor= "#"+$('#OcupacionClase').val();
+                        calEvent.borderColor= "#"+$('#OcupacionClase').val();
 
-                            $('#calendar').fullCalendar('removeEvents',calEvent.id);
-                            $('#calendar').fullCalendar('refetchEvents');
-                            
+                        $('#calendar').fullCalendar('updateEvent',calEvent, false);
                     },
                     error: function( jqXHR, textStatus, errorThrown ) {
-                }});    
-
+                }});
+        
+               });
+            $('#eliminar').on('click', function(ev) { 
                 
-                $('#fullCalModal').modal("hide");
-                
-                
-                });
-                      
-                $('#fullCalModal').find('button[data-action=delete]').on('click', function() { 
-                    
-                        $('#calendar').fullCalendar('removeEvents' , function(ev){
-                          $.ajax({
+                $('#fullCalModal').modal("hide");   
+                $('#eliminar').off('click');
+            
+                        //$('#calendar').fullCalendar('removeEvents' , function(calEvent._id){
+                            $.ajax({
                             type: "POST",
                             url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=borrarClase'),
-                            data: jQuery.param( {idClase: calEvent.idClase} ),//JSON.stringify(json),
+                            data: jQuery.param( {idClase: calEvent._id} ),//JSON.stringify(json),
                             contentType: "application/x-www-form-urlencoded; charset=utf-8",
                             dataType: "json",
-                            async: true,
+                            async: false,
 
                             success: function(data, textStatus) {
+                                
+                                $('#calendar').fullCalendar('removeEvents' , calEvent._id);
                             },
                             error: function( jqXHR, textStatus, errorThrown ) {
                             }
                           });
-                          return (ev._id === calEvent._id);
-                        });
-                        $('#fullCalModal').modal("hide");
                       });
-                $('#fullCalModal').modal('show').on('hidden', function(){
-                        $('#fullCalModal').remove();
-                      });                      
+                      $('#cancelar').on('click',function(ev){
+                            $('#cancelar').off('click');
+                            }
+                        );
+                      
                     }
+                    
                   });
                 })
 
@@ -409,6 +436,7 @@
                       <div class="modal-dialog">
                        <div class="modal-content">
                         <div class="modal-body">
+                            
                             <label id="title" class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12" >Detalle Clase</label>
                             <button type="button" class="close" data-dismiss="modal" style="margin-top:-10px;">&times;</button>
                             <div class="form-group">
@@ -420,14 +448,16 @@
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12" >Actividad</label>
-                                <select   name="idActividad" id="idActividad" class="input-sm col-lg-6 col-md-6 col-sm-6 col-xs-12" >	
-                                    <option ng_repeat="actividad in actividades" value="{{actividad.idActividad}}">{{actividad.NombreActividad}}</option>
+                                <!--<select   name="idActividad" id="idActividad" class="input-sm col-lg-6 col-md-6 col-sm-6 col-xs-12" >	-->
+                                    <!--<option ng_repeat="actividad in actividades" value="{{actividad.idActividad}}">{{actividad.NombreActividad}}</option>-->
+                                    <select ng-model="selectedActividades" ng-options="actividad.NombreActividad for actividad in actividades track by actividad.idActividad"  id="idActividad" name="idActividad" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
                                 </select>
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12" >Sala</label>
-                                <select   name="idSala" id="idSala" class="input-sm col-lg-6 col-md-6 col-sm-6 col-xs-12" >	
-                                    <option ng_repeat="sala in salas" value="{{sala.idSala}}">{{sala.NombreSala}}</option>
+                                <!--<select   name="idSala" id="idSala" class="input-sm col-lg-6 col-md-6 col-sm-6 col-xs-12" >	-->
+                                    <!--<option ng_repeat="sala in salas" value="{{sala.idSala}}">{{sala.NombreSala}}</option>-->
+                                    <select ng-model="selectedSalas" ng-options="sala.NombreSala for sala in salas track by sala.idSala"  name="idSala" id="idSala" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
                                 </select>
                                 </div>
 				<div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -459,7 +489,7 @@
                          <button id="eliminar" type="button" class="btn btn-sm btn-danger" data-action="delete"><i class="ace-icon fa fa-trash-o"></i>Eliminar Clase</button>
                          <button id="actualizar" type="button" class="btn btn-sm btn-success" data-action="actualizar" ng-disabled="formulario.$invalid"></i>Actualizar Clase</button>
                          <button id="crear" type="button" class="btn btn-sm btn-success" data-action="crear" ng-disabled="formulario.$invalid"></i>Crear Clase</button>
-                         <button type="button" class="btn btn-sm" data-dismiss="modal"><i class="ace-icon fa fa-times"></i>Cancelar</button>
+                         <button id ="cancelar"type="button" class="btn btn-sm" data-dismiss="modal"><i class="ace-icon fa fa-times"></i>Cancelar</button>
                        </div>
                       </div>
                      </div>
