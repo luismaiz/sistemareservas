@@ -249,10 +249,10 @@ class ClasesBO extends Rest{
 
         $fila = $clase->findById($this->con, $idClase);
 
-        if ($fila > 0) {
+        if (count($fila) > 0) {
             $respuesta['estado'] = 'correcto';
             $respuesta['clase']['idClase'] = $fila->getIdClase();
-            $respuesta['clase']['Actividad'] = $fila->getIdActividad();
+            $respuesta['clase']['idActividad'] = $fila->getIdActividad();
             $respuesta['clase']['idSala'] = $fila->getIdSala();
             $respuesta['clase']['HoraInicio'] = $fila->getHoraInicio();
             $respuesta['clase']['HoraFin'] = $fila->getHoraFin();

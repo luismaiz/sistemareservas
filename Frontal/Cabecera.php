@@ -1,10 +1,10 @@
 <?php
-session_start();
+/*session_start();
 if (!isset($_SESSION['User'])) {
     echo($_SESSION['User']);
     header("location: ../index.php");
 }
-include 'config.php'
+include 'config.php'*/
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -247,24 +247,21 @@ class AdministradorBO extends Rest {
         $solClase->setOficina(base64_encode($Oficina));
         $solClase->setDigitoControl(base64_encode($DigitoControl));
         $solClase->setCuenta(base64_encode($Cuenta));
-        //var_dump($solClase);
+        var_dump($solClase);
         //Modelo Datos Actividadsolicitudclasedirigida
-        $a = '';
-        foreach ($a as $actividad) {
-            $act = new ActividadsolicitudclasedirigidaModel();
-            $act->setIdActividad($a);
-        }
-
-
+        //var_dump($actividad);
+        
         //Inicio Transaccion
         try {
             $this->con->beginTransaction();
             $result1 = $solicitud->insertIntoDatabase($this->con);
             $solClase->setIdSolicitud($solicitud->getIdSolicitud());
             $result2 = $solClase->insertIntoDatabase($this->con);
-            foreach ($a as $actividad) {
+            $a = explode(',',$actividad);
+            for($i=0; $a[$i]; $i++) {
+                //var_dump($a[$i]);
                 $act = new ActividadsolicitudclasedirigidaModel();
-                $act->setIdActividad($a);
+                $act->setIdActividad($a[$i]);
                 $act->setIdSolicitud($solClase->getIdSolicitud());
                 $result3 = $act->insertIntoDatabase($this->con);
             }

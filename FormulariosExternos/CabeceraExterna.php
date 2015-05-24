@@ -24,6 +24,43 @@
         <script src="templates/yoo_subway/warp/js/warp.js"></script>
         <link href="../Frontal/Utilidades/css/Angular.css" rel="stylesheet" type="text/css"/>
         <script src="../Frontal/Utilidades/js/angular-1.2.9/angular-1.2.9/angular.js" type="text/javascript"></script>
+        <style>            
+            #ck-button {
+                margin:4px;
+                background-color:#EFEFEF;
+                border-radius:4px;
+                border:1px solid #D0D0D0;
+                overflow:auto;
+                float:left;
+            }
+
+            #ck-button:hover {
+                background:red;
+            }
+
+            #ck-button label {
+                float:left;
+                width:100%;
+                height:4em;
+            }
+
+            #ck-button label span {
+                text-align:center;
+                padding:3px 0px;
+                display:block;
+            }
+
+            #ck-button label input {
+                position:absolute;
+                top:-20px;
+            }
+
+            #ck-button input:checked + span {
+                background-color:#911;
+                color:#fff;
+            }
+        </style>
+        <script src="https://www.paypalobjects.com/js/external/dg.js" type="text/javascript"></script>
     </head>
     <body id="page" class="page  noblog  transparency-25 system-transparent">
         <div id="page-body">

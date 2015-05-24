@@ -280,8 +280,8 @@
             $scope.calcularPrecio($scope.s.FechaInicio, $scope.s.idTipoAbono, $scope.s.idTipoTarifa);
         };
         $scope.calcularPrecio = function (fechaInicio, abono, tarifa) {
-            var URL2 = BASE_URL.concat('Sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerPreciosFiltro');
-            var Params = 'TipoSolicitud=2' +
+            var URL2 = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerPreciosFiltro');
+            var Params = '&TipoSolicitud=2' +
                     '&TipoAbono=' + abono +
                     '&TipoTarifa=' + tarifa;
 
@@ -311,7 +311,7 @@
             $scope.s.PrecioPagado = precioPago;
         };
         //Obtener Tipo Abonos
-        var URL = BASE_URL.concat('Sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbono');
+        var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbono');
         $http.get(URL)
                 .success(function (response) {
 
@@ -351,14 +351,22 @@
                 $scope.tab1 = true;
                 $scope.tab2 = false;
                 $scope.tab3 = false;
+                $scope.tab4 = false;
             } else if (idTab === 1) {
                 $scope.tab1 = false;
                 $scope.tab2 = true;
                 $scope.tab3 = false;
+                $scope.tab4 = false;
             } else if (idTab === 2) {
                 $scope.tab1 = false;
                 $scope.tab2 = false;
                 $scope.tab3 = true;
+                $scope.tab4 = false;
+            } else if (idTab === 3) {
+                $scope.tab1 = false;
+                $scope.tab2 = false;
+                $scope.tab3 = false;
+                $scope.tab4 = true;
             }
         };
         $scope.calcularFecha = function (fecha) {
@@ -398,7 +406,7 @@
             }
         };
         $scope.codigoQR = function (Params) {
-            var URL = BASE_URL.concat('Sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=codigoQR');
+            var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=codigoQR');
 
             Ajax.open("POST", URL, false);
             Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -406,13 +414,35 @@
             var response = Ajax.responseText;
             console.log(response);
         };
+        
+        $scope.pagar = function (s) {
+            
+            
+            
+            var Params = '&cmd=_cart' +
+                         '&upload=1' +
+                         '&business=mariosgsg@gmail.com' +
+                         'shopping_url=http://pfgreservas.rigthwatch.es' +
+                         'currency_code=EUR' +
+                         'return=http://pfgreservas.rigthwatch.es' +
+                         'notify_url=http://pfgreservas.rigthwatch.es' +
+                         'rm=1' +                         
+                         'item_number_1=AbonoDiario' +
+                         'item_name_1=AbonoDiario' +
+                         'amount_1=10.05' +
+                         'quantity_1=1'; 
+            
+            
+        };
 
         $scope.enviar = function (s) {
-            var URL = BASE_URL.concat('Sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSolicitudAbonoMensual');
+            var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSolicitudAbonoMensual');
 
             var Params = '&idTipoSolicitud=2&';
-            Params += jQuery.param(s);
-            Ajax.open("POST", URL, false);
+            Params += jQuery.param(s);            
+            
+            $scope.pagar(Params);
+            /*Ajax.open("POST", URL, false);
             Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             Ajax.send(Params); // Enviamos los datos
             var response = Ajax.responseText;
@@ -431,7 +461,7 @@
             console.log($scope.solicitud);
             Params += '&Localizador=' + $scope.solicitud.Localizador;
             console.log(Params);
-            $scope.codigoQR(Params);
+            $scope.codigoQR(Params);*/
         };
 
         $.datepicker.regional['es'] = {
@@ -449,6 +479,9 @@
             firstDay: 1,
             isRTL: false,
             showMonthAfterYear: false,
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "1900:2016",
             yearSuffix: ''
         };
         $.datepicker.setDefaults($.datepicker.regional['es']);
@@ -555,12 +588,12 @@
     });
 
 
-</script>    
+</script>   
 <div class="row" ng-app="solicitudAbonoMensual" ng-controller="RegistrarSolicitudAbonoMensualController">
     <div id="maininner" class="col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2 col-xs-12 col-sm-10 col-sm-offset-1" >
         <section id="content">
             <h2>Solicitud Abono Mensual</h2>
-            <form class="submission box style" name="formulario" novalidate>
+            <form class="submission box style" name="formulario" novalidate action="https://www.paypal.com/webapps/adaptivepayment/flow/pay" target="PPDGFrame" class="standard">
                 <div class="alert alert-danger" id="divError" style='display:none;'>
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                     <strong>Error</strong> Se ha producido un error al realizar la operación.
@@ -595,7 +628,7 @@
                                         <br>
                                     </div>
                                     <div class="col-md-6 col-sm-6 input-group-lg">
-                                        <label class="control-label" >Fecha de Inicio</label><input type="text" datepickerAbono name="FechaInicio" id="FechaInicio" ng-model="s.FechaInicio" class="form-control" id="FechaInicio" ng-pattern="/^(199\d|[2-9]\d{3})\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/" required placeholder="yyyy-mm-dd" ng-change="calcularFechaFin(s.FechaInicio);"/>
+                                        <label class="control-label" >Fecha de Inicio</label><input type="text" datepickerAbono name="FechaInicio" id="FechaInicio" ng-model="s.FechaInicio" class="form-control" id="FechaInicio" ng-pattern="/^(199\d|[2-9]\d{3})\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/" required placeholder="yyyy-mm-dd" readonly ng-change="calcularFechaFin(s.FechaInicio);"/>
                                         <span style="color:red" ng-show="formulario.FechaInicio.$dirty && formulario.FechaInicio.$invalid">
                                             <span ng-show="formulario.FechaInicio.$error.pattern">* Formato de fecha no valido.</span>
                                             <span ng-show="formulario.FechaInicio.$error.required">* Fecha obligatoria.</span>
@@ -667,7 +700,7 @@
                                     <label class="control-label" ><input type="radio" ng-model="s.Sexo" name="Sexo" value="H" d id="Sexo"/>&nbsp;Hombre&nbsp;</label>
                                 </div>
                                 <div class="col-md-5 col-sm-5 input-group-lg">
-                                    <label class="control-label" >Fecha nacimiento</label><input type="text" datepicker name="FechaNacimiento" ng-model="s.FechaNacimiento" class="form-control" id="FechaNacimiento" ng-change="esMenor();" ng-pattern="/^(199\d|[2-9]\d{3})\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/" required placeholder="yyyy-mm-dd">
+                                    <label class="control-label" >Fecha nacimiento</label><input type="text" datepicker name="FechaNacimiento" ng-model="s.FechaNacimiento" class="form-control" id="FechaNacimiento" ng-change="esMenor();" ng-pattern="/^(198\d|[2-9]\d{3})\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/" readonly required placeholder="yyyy-mm-dd">
                                     <span style="color:red" ng-show="formulario.FechaNacimiento.$dirty && formulario.FechaNacimiento.$invalid">
                                         <span ng-show="formulario.FechaNacimiento.$error.pattern">* Formato de fecha no valido.</span>
                                         <span ng-show="formulario.FechaNacimiento.$error.required">* Fecha obligatoria.</span>
@@ -735,9 +768,50 @@
                         </fieldset>
                         <ul class="pager">
                             <li class="previous"><a ng-click="avanzar(1);">&larr; Anterior</a></li>
-                            <li class="btn next"><a ng-click="enviar(s);" ng-disabled="formulario.$invalid">&nbsp;Enviar&nbsp;&nbsp;</a></li>
+                            <li class="btn next"><a ng-click="avanzar(3);" ng-disabled="formulario.$invalid">&nbsp;Siguiente&nbsp;&nbsp;</a></li>
                         </ul>
-                    </div>
+                    </div>                    
+                    <div class="tab-pane active" id="tab4" ng-show="tab4">
+                        
+                        <label for="buy">Buy Now:</label>
+                        <input type="image" id="submitBtn" value="Pay with PayPal" src="https://www.paypalobjects.com/en_US/i/btn/btn_paynowCC_LG.gif">
+                        
+                        <input id="type" type="hidden" name="expType" value="light"> 
+                        
+                        <input id="paykey" type="hidden" name="paykey" value="MNQM92BD6AUS8HPL">
+                        <input id="preapprovalkey" type="hidden" name="preapprovalkey" value="MNQM92BD6AUS8HPL">
+                        
+                        
+                        <script type="text/javascript" charset="utf-8">
+                            var embeddedPPFlow = new PAYPAL.apps.DGFlow({trigger: 'submitBtn'});
+                            
+                            dgFlow = top.dgFlow || top.opener.top.dgFlow; 
+                            dgFlow.closeFlow(); 
+                            top.close();
+                        </script>
+                        
+                        
+                    <fieldset>
+                        <div class="form-group has-success has-feedback">						
+                            <input name="cmd" type="hidden" value="_cart" /> <!-- comprar varios productos -->
+                            <input name="upload" type="hidden" value="1" /> <!--  -->
+                            <input name="business" type="hidden" value="businesstest@pfgreservas.com" /> <!-- cuenta vendedor -->
+                            <input name="shopping_url" type="hidden" value="http://pfgreservas.rigthwatch.es" /> <!-- dirección tienda -->
+                            <input name="currency_code" type="hidden" value="EUR" /> <!-- tipo moneda -->
+                            <input name="return" type="hidden" value=""> <!-- pago realizado -->
+                            <input name="cancel_return" type="hidden" value=""> <!-- pago no realizado -->
+                            <input name="notify_url" type="hidden" value="">  <!-- control de pago -->
+                            <input type="hidden" name="no_shipping" value="1"> <!-- no pedir direccion de entrega -->
+                            <input name="rm" type="hidden" value="1"> <!-- numero de productos  -->
+                            <!--AbonoDiario ; Nombre: AbonoDiario ; Valor : 10.05 , Cantidad : 1<br>-->
+                            <input name="item_number_1" type="hidden" value="AbonoDiario"> <!-- identificador del producto -->
+                            <input name="item_name_1" type="hidden" value="AbonoDiario">  <!-- nombre del producto -->
+                            <input name="amount_1" type="hidden" value="10.05">  <!-- precio del producto -->
+                            <input name="quantity_1" type="hidden" value="1">  <!-- cantidad del producto -->
+                        </div>
+
+                    </fieldset>
+                    </div>                    
                 </div>
             </form>
         </section>
