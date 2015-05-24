@@ -267,22 +267,25 @@ class PreciosBO extends Rest{
         
         $precio = new PrecioModel();
         
-        if($tsolicitud != '')
+        if($tsolicitud != 0)
             $precio->setIdTipoSolicitud($tsolicitud);
-        if($tabono != '')
+        if($tabono != 0)
             $precio->setIdTipoAbono($tabono);
-        if($ttarifa != '')
+        if($ttarifa != 0)
             $precio->setIdTipoTarifa($ttarifa);
         //$precio->setFechaBaja($fechabaja);
         
         //$filas = PrecioModel::findByExample($this->con,$precio,$sort);
         
         $filter=array(
-        new DFC(PrecioModel::FIELD_FECHABAJA, 's', DFC::IS_NULL),
-        new DFC(PrecioModel::FIELD_IDTIPOSOLICITUD, $tsolicitud, DFC::EXACT),
-        new DFC(PrecioModel::FIELD_IDTIPOABONO, $tabono, DFC::EXACT),
-        new DFC(PrecioModel::FIELD_IDTIPOTARIFA, $ttarifa, DFC::EXACT)
-        );
+        new DFC(PrecioModel::FIELD_FECHABAJA, 's', DFC::IS_NULL));
+                
+        if($tsolicitud != 0)
+            array_push($filter, new DFC(PrecioModel::FIELD_IDTIPOSOLICITUD, $tsolicitud, DFC::EXACT));
+        if($tabono != 0)
+            array_push($filter, new DFC(PrecioModel::FIELD_IDTIPOABONO, $tabono, DFC::EXACT));
+        if($ttarifa != 0)
+            array_push($filter, new DFC(PrecioModel::FIELD_IDTIPOTARIFA, $ttarifa, DFC::EXACT));
         
         $filas = PrecioModel::findByFilter($this->con,$filter);
                                 

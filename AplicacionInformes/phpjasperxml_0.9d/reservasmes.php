@@ -7,15 +7,10 @@ include_once('class/tcpdf/tcpdf.php');
 include_once("class/PHPJasperXML.inc.php");
 include_once ('setting.php');
 
-
-
-
-echo('hola');
-
 $PHPJasperXML = new PHPJasperXML();
 //$PHPJasperXML->debugsql=true;
 $PHPJasperXML->arrayParameter=array("parameter1"=>1);
-$PHPJasperXML->load_xml_file("reservasmes.jrxml");
+$PHPJasperXML->load_xml_file("reservassmes.jrxml");
 
 $PHPJasperXML->transferDBtoArray($server,$user,$pass,$db);
 $PHPJasperXML->outpage("I");    //page output method I:standard output  D:Download file

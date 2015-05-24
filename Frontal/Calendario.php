@@ -93,7 +93,7 @@
             maxTime: "22:00",
             allDaySlot:false,
             timeFormat: 'H:mm' ,
-            lazyFetching: false,
+            lazyFetching: true,
             hiddenDays: [ 0 ],
                         
             buttonHtml: {
@@ -123,7 +123,6 @@
                     success: function(doc) {
                         
                         var events = [];
-                        
                         for(i=0; i<doc.clases.length; i++){
                             
                             // Split timestamp into [ Y, M, D, h, m, s ]
@@ -154,7 +153,7 @@
                     }
                 });
             },
-            drop: function(event,date, allDay) { // this function is called when something is dropped 
+            drop: function(event,allDay) { // this function is called when something is dropped 
                 
                 var inicio = new Date((event._d).getFullYear(), (event._d).getMonth(), (event._d).getDate(), (event._d).getHours(), (event._d).getMinutes(), (event._d).getSeconds()).toUTCString();
                 var fin = new Date((event._d).getFullYear(), (event._d).getMonth(), (event._d).getDate(), ((event._d).getHours()+1), (event._d).getMinutes(), (event._d).getSeconds()).toUTCString();
@@ -171,25 +170,30 @@
                     data: jQuery.param( json ),
                     contentType: "application/x-www-form-urlencoded; charset=utf-8",
                     dataType: "json",
-                    async: false,
+                    async: true,
 
                     success: function(data, textStatus) {
                         
                         copiedEventObject.idClase = data.idClase;
                         copiedEventObject.id = data.idClase;
-                        copiedEventObject.idSala = 3;
+                        //copiedEventObject.idSala = 3;
                         copiedEventObject.idActividad = $idActividad;
-                        copiedEventObject.FechaInicio = inicio;
-                        copiedEventObject.FechaFin = fin;
+                        copiedEventObject.start = inicio;
+                        copiedEventObject.end = fin;
                         copiedEventObject.Ocupacion = '';
-                        $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+                        //$('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+                        $('#calendar').fullCalendar('removeEvents' );
+                        $('#calendar').fullCalendar( 'refetchEvents' );
                     },
                     error: function( jqXHR, textStatus, errorThrown ) {
                 }}); 
 				
             },
             eventDrop: function(calEvent, delta) { 
-               
+                
+               var originalEventObject = $(this).data('eventObject');
+                var $idActividad = parseInt($(this).attr('id'));
+                var copiedEventObject = $.extend({}, originalEventObject);
                 var json = {idClase:calEvent._id,idActividad:calEvent.idActividad,idSala:calEvent.idSala,FechaInicio:calEvent.start._d.toUTCString(), FechaFin:calEvent.end._d.toUTCString(), Ocupacion:calEvent.OcupacionClase, Dia:calEvent._fullDay, Publicada:1};
                 $.ajax({
                     type: "POST",
@@ -197,11 +201,14 @@
                     data: jQuery.param( json ),
                     contentType: "application/x-www-form-urlencoded; charset=utf-8",
                     dataType: "json",
-                    async: false,
+                    async: true,
                         
                     success: function(data, textStatus) {
+                                                                
+                    //$('#calendar').fullCalendar('updateEvent',calEvent, true);
+                    $('#calendar').fullCalendar('removeEvents' );
+                    $('#calendar').fullCalendar( 'refetchEvents' );
                         
-                        $('#calendar').fullCalendar('updateEvent',calEvent, false);
                     },
                     error: function( jqXHR, textStatus, errorThrown ) {
                 }});
@@ -209,7 +216,7 @@
             },
             eventResize: function(calEvent) {
                 
-                             
+                                          
                 
                 var json = {idClase:calEvent._id,idActividad:calEvent.idActividad,idSala:calEvent.idSala,FechaInicio:calEvent.start._d.toUTCString(), FechaFin:calEvent.end._d.toUTCString(), Ocupacion:calEvent.OcupacionClase, Dia:calEvent._fullDay, Publicada:1};
                 $.ajax({
@@ -221,7 +228,12 @@
                     async: true,
 
                     success: function(data, textStatus) {
-                        $('#calendar').fullCalendar('updateEvent',calEvent, true);
+                        
+                        //$('#calendar').fullCalendar('updateEvent',calEvent, true);
+                        //$('#calendar').fullCalendar( 'refetchEvents' );
+                        //$('#calendar').fullCalendar('rerenderEvents'); 
+                        $('#calendar').fullCalendar('removeEvents' );
+                        $('#calendar').fullCalendar( 'refetchEvents' );
                     },
                     error: function( jqXHR, textStatus, errorThrown ) {
                 }});    
@@ -242,49 +254,10 @@
                 $('#OcupacionClase').css('background-color',"#FFFFFF");
                 
                  //$('#fullCalModal').find('button[data-action=crear]').on('click', function(ev) { 
-                $('#crear').on('click', function(ev) { 
-                $('#fullCalModal').modal("hide");
-                var fechainicio = $('#fechaInicio').val().trim().split(/[/ :]/);
-                var fechafin = $('#fechaFin').val().trim().split(/[/ :]/);
-                            
-                var Cfechainiciocarga = new Date(fechainicio[2],isNaN(parseInt(fechainicio[1].substring(0,2)))?fechainicio[1].substring(1,3)-1:fechainicio[1].substring(0,2)-1,fechainicio[0],fechainicio[3],fechainicio[4],fechainicio[5]);
-                var Cfechafincarga = new Date(fechafin[2],isNaN(parseInt(fechafin[1].substring(0,2)))?fechafin[1].substring(1,3)-1:fechafin[1].substring(0,2)-1,fechafin[0],fechafin[3],fechafin[4],fechafin[5]);
-                    
-                var json = {idActividad:$('#idActividad').val(),idSala:$('#idSala').val(),FechaInicio:Cfechainiciocarga.toUTCString(), FechaFin:Cfechafincarga.toUTCString(), Ocupacion:$('#OcupacionClase').val(), Dia:0, Publicada:1};
-                $.ajax({
-                    type: "POST",
-                    url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=crearClase'),
-                    data: jQuery.param( json ),
-                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
-                    dataType: "json",
-                    async: false,
-
-                    success: function(data, textStatus) {
-                        var objeto = new Object();
-                    objeto.id = data.id;        
-                    objeto.title= Actividades[arrayactividades.indexOf($('#idActividad').val())].NombreActividad;
-                    objeto.idActividad= $('#idActividad').val();
-                    objeto.idSala= $('#idSala').val();
-                    objeto.OcupacionClase= $('#OcupacionClase').val();
-                    objeto.idClase= 0;
-                    objeto.allDay= false;
-                    objeto.start= Cfechainiciocarga;
-                    objeto.end=  Cfechafincarga;
-                    objeto.backgroundColor= "#"+ $('#OcupacionClase').val();
-                    objeto.borderColor= "#"+ $('#OcupacionClase').val();
-                    objeto.dow=[1,2,3,4];
-                    
-                    $('#calendar').fullCalendar('renderEvent', objeto, true);
-
-                    },
-                    error: function( jqXHR, textStatus, errorThrown ) {
-                }});
-                            
-                      });
+                
             },
             eventClick: function(calEvent, jsEvent, view) { 
-               
-            
+            $( "#calendar").unbind( "eventClick" );
             var Cfechainiciocarga=null;
             var Cfechafincarga =null;
             
@@ -302,6 +275,7 @@
             
             $('#fullCalModal').modal('show');
             $('#idActividad').val(calEvent.idActividad);
+            $('#idClase').val(calEvent.idClase);
             $('#idSala').val(calEvent.idSala);
             $('#OcupacionClase').val(calEvent.OcupacionClase);
             $('#OcupacionClase').css('background-color',"#"+calEvent.OcupacionClase);
@@ -310,38 +284,73 @@
             $('#fullCalModal').find('button[data-action=crear]').hide();
             $('#fullCalModal').find('button[data-action=actualizar]').show();
             $('#fullCalModal').find('button[data-action=delete]').show();
+            
+            
+            
             //$('#fullCalModal').find('button[data-action=actualizar]').on('click', function(ev){
-            $('#actualizar').on('click',function(ev) { 
-                $('#fullCalModal').modal("hide");   
-                $('#actualizar').off('click');   
+            
+            
+                      
+                       $('#fullCalModal').modal('show').on('hidden', function(){
+                       $('#fullCalModal').remove();
+                      });
+                    }                                   
+                   
+                    
+                  });
+                  
+                  $('#eliminar').on('click', function(ev) { 
+            
+                            //$('#calendar').fullCalendar('removeEvents' , function(calEvent._id){
+                            $.ajax({
+                            type: "POST",
+                            url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=borrarClase'),
+                            data: jQuery.param( {idClase: $('#idClase').val()} ),//JSON.stringify(json),
+                            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                            dataType: "json",
+                            async: true,
+
+                            success: function(data, textStatus) {
+                                
+                                $('#calendar').fullCalendar('removeEvents' , $('#idClase').val());
+                                //$( "#calendar").bind( "eventClick" );
+                                //$('#calendar').fullCalendar( 'refetchEvents' );
+                                //$('#calendar').fullCalendar('rerenderEvents'); 
+                            },
+                            error: function( jqXHR, textStatus, errorThrown ) {
+                            }
+                          });
+                          $('#fullCalModal').modal("hide");   
+                      });
+                      
+                  $('#actualizar').on('click',function(ev) { 
+                    var fechainicio=$('#fechaInicio').val().replace(/[^0-9]+/g, '');;
+                    var fechafin = $('#fechaFin').val().replace(/[^0-9]+/g, '');;
+                    var CfechainiciocargaActu=null;
+                    var CfechafincargaActu = null;
                 
-                var fechainicio=$('#fechaInicio').val().replace(/[^0-9]+/g, '');;
-                var fechafin = $('#fechaFin').val().replace(/[^0-9]+/g, '');;
-                var CfechainiciocargaActu=null;
-                var CfechafincargaActu = null;
-                
-                if (fechainicio.length <14)
-                {
-                    fechainicio = $('#fechaInicio').val().trim().split(/[/ :]/);
-                    CfechainiciocargaActu = new Date(fechainicio[2],fechainicio[1]-1,fechainicio[0],fechainicio[3],fechainicio[4],fechainicio[5]);
-                }
-                else
-                {
-                    fechainicio = $('#fechaInicio').val().replace(/[^0-9]+/g, '');
-                    CfechainiciocargaActu = new Date(fechainicio.substring(4,8),fechainicio.substring(2,4)-1,fechainicio.substring(0,2),fechainicio.substring(8,10),fechainicio.substring(10,12),fechainicio.substring(12,14));
-                }
-                if (fechafin.length <14)
-                {
-                    fechafin = $('#fechaFin').val().trim().split(/[/ :]/);
-                    CfechafincargaActu = new Date(fechafin[2],fechafin[1]-1,fechafin[0],fechafin[3],fechafin[4],fechafin[5]);
-                }
-                else
+                    if (fechainicio.length <14)
+                    {
+                        fechainicio = $('#fechaInicio').val().trim().split(/[/ :]/);
+                        CfechainiciocargaActu = new Date(fechainicio[2],fechainicio[1]-1,fechainicio[0],fechainicio[3],fechainicio[4],fechainicio[5]);
+                    }
+                    else
+                    {
+                        fechainicio = $('#fechaInicio').val().replace(/[^0-9]+/g, '');
+                        CfechainiciocargaActu = new Date(fechainicio.substring(4,8),fechainicio.substring(2,4)-1,fechainicio.substring(0,2),fechainicio.substring(8,10),fechainicio.substring(10,12),fechainicio.substring(12,14));
+                    }
+                    if (fechafin.length <14)
+                    {
+                        fechafin = $('#fechaFin').val().trim().split(/[/ :]/);
+                        CfechafincargaActu = new Date(fechafin[2],fechafin[1]-1,fechafin[0],fechafin[3],fechafin[4],fechafin[5]);
+                    }
+                    else
                 {
                     fechafin = $('#fechaFin').val().replace(/[^0-9]+/g, '');
                     CfechafincargaActu = new Date(fechafin.substring(4,8),fechafin.substring(2,4)-1,fechafin.substring(0,2),fechafin.substring(8,10),fechafin.substring(10,12),fechafin.substring(12,14));
                 }
                
-               var json = {idClase:calEvent.idClase,idActividad:$('#idActividad').val(),idSala:$('#idSala').val(),FechaInicio:CfechainiciocargaActu.toUTCString(), FechaFin:CfechafincargaActu.toUTCString(), Ocupacion:$('#OcupacionClase').val(), Dia:calEvent._fullDay, Publicada:1};
+               var json = {idClase:$('#idClase').val(),idActividad:$('#idActividad').val(),idSala:$('#idSala').val(),FechaInicio:CfechainiciocargaActu.toUTCString(), FechaFin:CfechafincargaActu.toUTCString(), Ocupacion:$('#OcupacionClase').val(), Dia:0, Publicada:1};
                
                 
                 $.ajax({
@@ -350,54 +359,75 @@
                     data: jQuery.param( json ),
                     contentType: "application/x-www-form-urlencoded; charset=utf-8",
                     dataType: "json",
-                    async: false,
+                    async: true,
                         
                     success: function(data, textStatus) {
-                        calEvent.id = calEvent.idClase;
-                        calEvent.idActividad =$('#idActividad').val();
-                        calEvent.idSala =$('#idSala').val();
-                        calEvent.start = CfechainiciocargaActu;
-                        calEvent.end = CfechafincargaActu;
-                        calEvent.OcupacionClase=$('#OcupacionClase').val();
-                        calEvent.backgroundColor= "#"+$('#OcupacionClase').val();
-                        calEvent.borderColor= "#"+$('#OcupacionClase').val();
-
-                        $('#calendar').fullCalendar('updateEvent',calEvent, false);
+                        
+                        //$('#calendar').fullCalendar('removeEvents' , $('#idClase').val());
+                        $('#calendar').fullCalendar('removeEvents' );
+                        $('#calendar').fullCalendar( 'refetchEvents' );
+//                        var calEvent= new Object();
+//                        calEvent.id = $('#idClase').val();
+//                        calEvent.idClase = $('#idClase').val();
+//                        calEvent.idActividad =$('#idActividad').val();
+//                        calEvent.idSala =$('#idSala').val();
+//                        calEvent.allDay = false;
+//                        calEvent.start = CfechainiciocargaActu;
+//                        calEvent.end = CfechafincargaActu;
+//                        calEvent.OcupacionClase=$('#OcupacionClase').val();
+//                        calEvent.backgroundColor= "#"+$('#OcupacionClase').val();
+//                        calEvent.borderColor= "#"+$('#OcupacionClase').val();
+//
+//                        $('#calendar').fullCalendar('updateEvent',calEvent, false);
                     },
                     error: function( jqXHR, textStatus, errorThrown ) {
                 }});
-        
-               });
-            $('#eliminar').on('click', function(ev) { 
-                
-                $('#fullCalModal').modal("hide");   
-                $('#eliminar').off('click');
-            
-                        //$('#calendar').fullCalendar('removeEvents' , function(calEvent._id){
-                            $.ajax({
-                            type: "POST",
-                            url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=borrarClase'),
-                            data: jQuery.param( {idClase: calEvent._id} ),//JSON.stringify(json),
-                            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-                            dataType: "json",
-                            async: false,
-
-                            success: function(data, textStatus) {
-                                
-                                $('#calendar').fullCalendar('removeEvents' , calEvent._id);
-                            },
-                            error: function( jqXHR, textStatus, errorThrown ) {
-                            }
-                          });
-                      });
-                      $('#cancelar').on('click',function(ev){
-                            $('#cancelar').off('click');
-                            }
-                        );
-                      
-                    }
                     
-                  });
+                    $('#fullCalModal').modal("hide");   
+               });  
+               
+                  $('#crear').on('click', function(ev) { 
+                $('#fullCalModal').modal("hide");
+                var fechainicio = $('#fechaInicio').val().trim().split(/[/ :]/);
+                var fechafin = $('#fechaFin').val().trim().split(/[/ :]/);
+                            
+                var Cfechainiciocarga = new Date(fechainicio[2],isNaN(parseInt(fechainicio[1].substring(0,2)))?fechainicio[1].substring(1,3)-1:fechainicio[1].substring(0,2)-1,fechainicio[0],fechainicio[3],fechainicio[4],fechainicio[5]);
+                var Cfechafincarga = new Date(fechafin[2],isNaN(parseInt(fechafin[1].substring(0,2)))?fechafin[1].substring(1,3)-1:fechafin[1].substring(0,2)-1,fechafin[0],fechafin[3],fechafin[4],fechafin[5]);
+                    
+                var json = {idActividad:$('#idActividad').val(),idSala:$('#idSala').val(),FechaInicio:Cfechainiciocarga.toUTCString(), FechaFin:Cfechafincarga.toUTCString(), Ocupacion:$('#OcupacionClase').val(), Dia:0, Publicada:1};
+                $.ajax({
+                    type: "POST",
+                    url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=crearClase'),
+                    data: jQuery.param( json ),
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    dataType: "json",
+                    async: true,
+
+                    success: function(data, textStatus) {
+                        var objeto = new Object();
+                    objeto.id = data.id;        
+                    objeto.title= Actividades[arrayactividades.indexOf($('#idActividad').val())].NombreActividad;
+                    objeto.idActividad= $('#idActividad').val();
+                    objeto.idSala= $('#idSala').val();
+                    objeto.OcupacionClase= $('#OcupacionClase').val();
+                    objeto.idClase= 0;
+                    objeto.allDay= false;
+                    objeto.start= Cfechainiciocarga;
+                    objeto.end=  Cfechafincarga;
+                    objeto.backgroundColor= "#"+ $('#OcupacionClase').val();
+                    objeto.borderColor= "#"+ $('#OcupacionClase').val();
+                    objeto.dow=[1,2,3,4];
+                    
+                    //$('#calendar').fullCalendar('renderEvent', objeto, true);
+                    $('#calendar').fullCalendar('removeEvents' );
+                    $('#calendar').fullCalendar( 'refetchEvents' );
+
+                    },
+                    error: function( jqXHR, textStatus, errorThrown ) {
+                }});
+                            
+                      });
+                  
                 })
 
 </script>
@@ -448,16 +478,16 @@
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12" >Actividad</label>
-                                <!--<select   name="idActividad" id="idActividad" class="input-sm col-lg-6 col-md-6 col-sm-6 col-xs-12" >	-->
-                                    <!--<option ng_repeat="actividad in actividades" value="{{actividad.idActividad}}">{{actividad.NombreActividad}}</option>-->
-                                    <select ng-model="selectedActividades" ng-options="actividad.NombreActividad for actividad in actividades track by actividad.idActividad"  id="idActividad" name="idActividad" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
+                                <select   name="idActividad" id="idActividad" class="input-sm col-lg-6 col-md-6 col-sm-6 col-xs-12" >	
+                                    <option ng_repeat="actividad in actividades" value="{{actividad.idActividad}}">{{actividad.NombreActividad}}</option>
+                                    <!--<select ng-model="selectedActividades" ng-options="actividad.NombreActividad for actividad in actividades track by actividad.idActividad"  id="idActividad" name="idActividad" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >-->	
                                 </select>
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12" >Sala</label>
-                                <!--<select   name="idSala" id="idSala" class="input-sm col-lg-6 col-md-6 col-sm-6 col-xs-12" >	-->
-                                    <!--<option ng_repeat="sala in salas" value="{{sala.idSala}}">{{sala.NombreSala}}</option>-->
-                                    <select ng-model="selectedSalas" ng-options="sala.NombreSala for sala in salas track by sala.idSala"  name="idSala" id="idSala" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
+                                <select   name="idSala" id="idSala" class="input-sm col-lg-6 col-md-6 col-sm-6 col-xs-12" >	
+                                    <option ng_repeat="sala in salas" value="{{sala.idSala}}">{{sala.NombreSala}}</option>
+                                    <!--<select ng-model="selectedSalas" ng-options="sala.NombreSala for sala in salas track by sala.idSala"  name="idSala" id="idSala" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >-->	
                                 </select>
                                 </div>
 				<div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">

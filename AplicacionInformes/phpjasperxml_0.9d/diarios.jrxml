@@ -2,21 +2,35 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="421" orientation="Landscape" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="578900e3-0c5e-4102-8e31-dc6c573ab805">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="168"/>
+	<property name="ireport.y" value="35"/>
 	<parameter name="parameter1" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[new java.lang.Integer(0)]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT
-Nombre,
-Apellidos,
-Localizador,
-FechaSolicitud,
-DATE_ADD(curdate(), INTERVAL(1-DAYOFMONTH(curdate())) DAY)
-FROM `solicitud` 
-WHERE fechasolicitud >= DATE_ADD(curdate(), INTERVAL(1-DAYOFMONTH(curdate())) DAY) and idtiposolicitud = 3
+		<![CDATA[SELECT 
 
-and anulado = 0]]>
+YEAR(fechasolicitud) AS AÑO, 
+CASE WHEN MONTH(fechasolicitud) = 1 THEN "Enero"
+WHEN MONTH(fechasolicitud) = 2 THEN "Febrero"
+WHEN MONTH(fechasolicitud) = 3 THEN "Marzo"
+WHEN MONTH(fechasolicitud) = 4 THEN "Abril"
+WHEN MONTH(fechasolicitud) = 5 THEN "Mayo"
+WHEN MONTH(fechasolicitud) = 6 THEN "Junio"
+WHEN MONTH(fechasolicitud) = 7 THEN "Julio"
+WHEN MONTH(fechasolicitud) = 8 THEN "Agosto"
+WHEN MONTH(fechasolicitud) = 9 THEN "Septiembre"
+WHEN MONTH(fechasolicitud) = 10 THEN "Octubre"
+WHEN MONTH(fechasolicitud) = 11 THEN "Noviembre"
+WHEN MONTH(fechasolicitud) = 12 THEN "Diciembre"
+ELSE "esto no es un mes" END AS MESespañol,
+tipotarifa.NombreTarifa,
+count(idsolicitud) as Reservas
+
+FROM `solicitud` inner join tipotarifa on solicitud.idtipotarifa = tipotarifa.idtipotarifa
+
+WHERE idtiposolicitud = 3 and anulado = 0
+
+group by año,MESespañol, solicitud.idtipotarifa]]>
 	</queryString>
 	<field name="AÑO" class="java.lang.Integer"/>
 	<field name="MESespañol" class="java.lang.String"/>
@@ -91,7 +105,7 @@ and anulado = 0]]>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="434" y="87" width="80" height="20" uuid="914d893a-3d28-4e7e-9188-7a92439e732e"/>
+				<reportElement x="395" y="87" width="117" height="20" uuid="914d893a-3d28-4e7e-9188-7a92439e732e"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>

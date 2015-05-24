@@ -25,7 +25,7 @@
         
         $scope.solicitudes = [];
         $scope.abonos = [];
-		
+	//localStorage.removeItem('filtros');
 		       
 	$scope.obtenerTipoSolicitud = function(){
 
@@ -38,14 +38,15 @@
         Ajax.send(Params); // Enviamos los datos
                
         $scope.tiposSolicitudes = JSON.parse(Ajax.responseText).tiposSolicitudes;
-		
+        
+	$scope.tiposSolicitudes.unshift({idTipoSolicitud:'0',NombreSolicitud:"--Tipo Solicitud--"});	
 		if (localStorage.getItem('filtros')!== null)
 		{
-		    $scope.selected = $scope.tiposSolicitudes[JSON.parse(localStorage.getItem('filtros'))[0].TipoSolicitud-1];
+		    $scope.selected = $scope.tiposSolicitudes[JSON.parse(localStorage.getItem('filtros'))[0].TipoSolicitud];
 		}
                 else
                 {
-                    $scope.selected = [0];
+                    $scope.selected = $scope.tiposSolicitudes[0];
                 }
                 
 		
@@ -66,10 +67,11 @@
 					document.getElementById("filtroEmail").value = JSON.parse($scope.filtros)[0].Email;      
 					document.getElementById("filtroFechaSolicitudDesde").value = JSON.parse($scope.filtros)[0].FechaSolicitudDesde;
                                         document.getElementById("filtroFechaSolicitudHasta").value = JSON.parse($scope.filtros)[0].FechaSolicitudHasta;
-					$scope.selected = $scope.tiposSolicitudes[JSON.parse($scope.filtros)[0].TipoSolicitud-1];
+					$scope.selected = $scope.tiposSolicitudes[JSON.parse($scope.filtros)[0].TipoSolicitud];
 					document.getElementById("filtroGestionado").value = JSON.parse($scope.filtros)[0].Gestionado;
 				}
                              
+                             alert($scope.selected.idTipoSolicitud);
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerReservasFiltro');
                 var Params =  'Localizador=' + document.getElementById("filtroLocalizador").value + 
                 '&Nombre=' + document.getElementById("filtroNombre").value +    
@@ -296,7 +298,6 @@
                                 <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" id="filtroLocalizador" name="filtroLocalizador" value="">	
                                 <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Tipo Solicitud</label>
                                 <select ng-model="selected" ng-options="tiposolicitud.NombreSolicitud for tiposolicitud in tiposSolicitudes track by tiposolicitud.idTipoSolicitud"  id="filtroTipoSolicitud" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
-				<option value="">-- Tipo Solicitud --</option>
                               </select>
                             </div>
                             <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">

@@ -8,10 +8,6 @@ include_once("class/PHPJasperXML.inc.php");
 include_once ('setting.php');
 
 
-
-
-echo('hola');
-
 $PHPJasperXML = new PHPJasperXML();
 //$PHPJasperXML->debugsql=true;
 $PHPJasperXML->arrayParameter=array("parameter1"=>1);

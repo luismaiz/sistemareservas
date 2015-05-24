@@ -28,7 +28,7 @@ count(idsolicitud) as Reservas
 
 FROM `solicitud` left join tipotarifa on solicitud.idtipotarifa = tipotarifa.idtipotarifa
 
-WHERE idtiposolicitud = 3 and anulado = 0
+WHERE idtiposolicitud = 1 and anulado = 0
 
 group by año,MESespañol, solicitud.idtipotarifa]]>
 	</queryString>

@@ -194,7 +194,7 @@ class ReservasBO extends Rest{
         array_push($filter, new DFC(SolicitudModel::FIELD_FECHASOLICITUD, $fsolicituddesde, DFC::GREATER));
         if($this->datosPeticion['FechaSolicitudHasta'] != '')
         array_push($filter, new DFC(SolicitudModel::FIELD_FECHASOLICITUD, $fsolicitudhasta, DFC::SMALLER));
-        if($this->datosPeticion['TipoSolicitud']!='')
+        if($this->datosPeticion['TipoSolicitud']!=0)
         array_push($filter, new DFC(SolicitudModel::FIELD_IDTIPOSOLICITUD, $tsolicitud, DFC::EXACT));
         if($this->datosPeticion['Gestionado']!='')
         array_push($filter, new DFC(SolicitudModel::FIELD_GESTIONADO, $gestionado, DFC::EXACT));
