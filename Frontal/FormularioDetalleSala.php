@@ -1,4 +1,6 @@
-<?php require('Cabecera.php'); ?> 
+<?php 
+header('Content-Type: application/json; charset=UTF-8');
+require('Cabecera.php'); ?> 
 <script>
            
             var Ajax = new AjaxObj();
@@ -20,7 +22,7 @@
                 Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-                    
+                    alert(Ajax.responseText);
                 $scope.sala = JSON.parse(Ajax.responseText).sala;
                 $scope.sala.CapacidadSala = parseInt($scope.sala.CapacidadSala);
                 
@@ -63,7 +65,8 @@
                                 
                 
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=crearSala');		
-                		
+                	
+//                   //alert(accentEncode(document.getElementById('NombreSala').value));     
                 var Params ='NombreSala='+ document.getElementById('NombreSala').value +
                     '&CapacidadSala='+ document.getElementById('CapacidadSala').value +
                     '&DescripcionSala='+ document.getElementById('DescripcionSala').value;
@@ -71,6 +74,7 @@
                 
                 Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+               
                 Ajax.send(Params); // Enviamos los datos
                 alert(Ajax.responseText);
                 
@@ -86,6 +90,10 @@
                 {
                     document.getElementById('divError').style.display = 'block';
                 }
+        
+        
+        
+     
         
             };
 
@@ -246,21 +254,21 @@
                                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                  <input ng-model="sala.idSala" type="hidden" class="input-sm" name="idSala" id="idSala">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Nombre Sala</label>
-                                <input type="text" ng-model="sala.NombreSala"   class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="nombresala" id="NombreSala" required >
+                                <input ng-disabled="sala.FechaBaja!==null"  type="text" ng-model="sala.NombreSala"   class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="nombresala" id="NombreSala" required >
                                 <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.nombresala.$dirty && formulario.nombresala.$invalid">
                                 <span ng-show="formulario.nombresala.$error.required">* Nombre de sala obligatorio.</span>
                                  </span>
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Descripción</label>
-                                <input type="text" ng-model="sala.DescripcionSala"  class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12"  name="descripcionsala" id="DescripcionSala" required>
+                                <input ng-disabled="sala.FechaBaja!==null" type="text" ng-model="sala.DescripcionSala"  class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12"  name="descripcionsala" id="DescripcionSala" required>
                                 <span class="col-lg-2 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.descripcionsala.$dirty && formulario.descripcionsala.$invalid">
                                 <span ng-show="formulario.descripcionsala.$error.required">* Descripción de sala obligatorio.</span>
                                 </span>
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">                                
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Capacidad</label>
-                                <input type="text" ng-model="sala.CapacidadSala"  class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" name="capacidadsala" id="CapacidadSala" required ng-pattern="/^\d+$/"  >
+                                <input ng-disabled="sala.FechaBaja!==null" type="text" ng-model="sala.CapacidadSala"  class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" name="capacidadsala" id="CapacidadSala" required ng-pattern="/^\d+$/"  >
                                 <span  class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.capacidadsala.$dirty && formulario.capacidadsala.$invalid">
                                     <span ng-show="formulario.capacidadsala.$error.required">* Capacidad de sala obligatoria.</span>
                                     <span ng-show="formulario.capacidadsala.$error.pattern">* Capacidad de sala numérica.</span>
@@ -275,7 +283,7 @@
                                 <input id="FechaBaja" ng_disabled="true" ng-model="sala.FechaBaja" type="text" class="input-sm col-md-2 col-sm-4 col-xs-7" name="FechaBaja">
                                 </div>
                                 <input style='display:none;' id="anular" class="btn btn-sm btn-danger" type="submit" value="Anular" ng-click="anularSala();"/>
-                                <input data-bb="confirm" style='display:none;' id="aceptar" class="btn btn-sm btn-success" type="submit" value="Aceptar" ng-click="guardarSala();" ng-disabled="formulario.$invalid" />
+                                <input style='display:none;' id="aceptar" class="btn btn-sm btn-success" type="submit" value="Aceptar" ng-click="guardarSala();" ng-disabled="formulario.$invalid" />
                                 <input style='display:none;' id="activar" class="btn btn-sm btn-action" type="submit" value="Activar" ng-click="activarSala();"/>
                                 <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='Salas.php' " />
                              

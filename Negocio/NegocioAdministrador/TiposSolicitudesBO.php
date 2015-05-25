@@ -71,8 +71,8 @@ class TiposSolicitudesBO extends Rest{
         $this->con = ConexionBD::getInstance();
         $tiposolicitud = new TiposolicitudModel();
 
-        $tiposolicitud->setNombreSolicitud($NombreSolicitud);
-        $tiposolicitud->setDescripcionSolicitud($DescripcionSolicitud);
+        $tiposolicitud->setNombreSolicitud(html_entity_decode($NombreSolicitud));
+        $tiposolicitud->setDescripcionSolicitud(html_entity_decode($DescripcionSolicitud));
         $tiposolicitud->setFechaAlta($FechaAlta);
         $tiposolicitud->setFechaBaja($FechaBaja);
 
@@ -131,8 +131,8 @@ class TiposSolicitudesBO extends Rest{
             if (!empty($idTipoSolicitud)) {
 
                 $tiposolicitud->setIdTipoSolicitud($idTipoSolicitud);
-                $tiposolicitud->setNombreSolicitud($NombreSolicitud);
-                $tiposolicitud->setDescripcionSolicitud($DescripcionSolicitud);
+                $tiposolicitud->setNombreSolicitud(html_entity_decode($NombreSolicitud));
+                $tiposolicitud->setDescripcionSolicitud(html_entity_decode($DescripcionSolicitud));
                 $tiposolicitud->setFechaAlta($fila->getFechaAlta());
                 $tiposolicitud->setFechaBaja($fila->getFechaBaja());
 

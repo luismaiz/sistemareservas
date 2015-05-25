@@ -246,14 +246,14 @@
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <input ng-model="tiposolicitud.idTipoSolicitud" type="hidden" class="input-sm" name="idTipoSolicitud" id="idTipoSolicitud">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Nombre Solicitud</label>
-                                <input ng-model="tiposolicitud.NombreSolicitud"  type="text" class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="nombresolicitud" id="NombreSolicitud" required >
+                                <input  ng-disabled="tiposolicitud.FechaBaja!==null"ng-model="tiposolicitud.NombreSolicitud"  type="text" class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="nombresolicitud" id="NombreSolicitud" required >
                                 <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.nombresolicitud.$dirty && formulario.nombresolicitud.$invalid">
                                 <span ng-show="formulario.nombresolicitud.$error.required">* Nombre de solicitud obligatorio.</span>
                                  </span>
                     </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Descripción Solicitud</label>
-                                <input ng-model="tiposolicitud.DescripcionSolicitud" ng-required="true" type="text" class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12"  name="descripcionsolicitud" id="DescripcionSolicitud">
+                                <input ng-disabled="tiposolicitud.FechaBaja!==null" ng-model="tiposolicitud.DescripcionSolicitud" ng-required="true" type="text" class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12"  name="descripcionsolicitud" id="DescripcionSolicitud">
                                 <span class="col-lg-2 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.descripcionsolicitud.$dirty && formulario.descripcionsolicitud.$invalid">
                                 <span ng-show="formulario.descripcionsolicitud.$error.required">* Descripción de solicitud obligatoria.</span>
                                  </span>

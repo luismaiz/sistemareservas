@@ -738,10 +738,10 @@ class ReservasBO extends Rest{
                 $idTipoTarifa = $fila->getIdTipoTarifa();
                 $FechaSolicitud = $fila->getFechaSolicitud();
                 $FechaAbonoDiario = $fila->getFechaAbonoDiario();
-                $Nombre = $nom;
-                $Apellidos =$ape;
+                $Nombre = html_entity_decode($nom);
+                $Apellidos =html_entity_decode($ape);
                 $DNI= $dni;
-                $EMail  = $mail;
+                $EMail  = html_entity_decode($mail);
                 $Direccion  = $fila->getDireccion();
                 $CP = $fila->getCp();
                 $Sexo = $fila->getSexo();
@@ -795,6 +795,189 @@ class ReservasBO extends Rest{
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
     }
+    
+    private function actualizarSolicitudAbonoMensual() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        
+        if (isset($this->datosPeticion['idSolicitud'])) {
+            
+            $nom = $this->datosPeticion['Nombre'];
+            $ape = $this->datosPeticion['Apellidos'];
+            $dni = $this->datosPeticion['DNI'];
+            $mail = $this->datosPeticion['Mail'];
+            $direccion=$this->datosPeticion['Direccion'];
+            $localidad=$this->datosPeticion['Localidad'];
+            $provincia=$this->datosPeticion['Provincia'];
+            $cpostal=$this->datosPeticion['Cpostal'];
+            $telefono1=$this->datosPeticion['Telefono1'];
+            $telefono2 =$this->datosPeticion['Telefono2'];
+            $idTipoAbono=$this->datosPeticion['TipoAbono'];
+            $idTipoTarifa =$this->datosPeticion['TipoTarifa'];
+
+            $this->con = ConexionBD::getInstance();
+            $solicitud = new SolicitudModel();
+
+            $idSolicitud = $this->datosPeticion['idSolicitud'];
+                        
+            if (!empty($idSolicitud)) {
+                                 
+                $fila = $solicitud->findById($this->con,$this->datosPeticion['idSolicitud']);
+                
+                $idTipoSolicitud= $fila ->getIdTipoSolicitud();
+                $idTipoTarifa = $idTipoTarifa;
+                $FechaSolicitud = $fila->getFechaSolicitud();
+                $FechaAbonoDiario = $fila->getFechaAbonoDiario();
+                $Nombre = html_entity_decode($nom);
+                $Apellidos =html_entity_decode($ape);
+                $DNI= $dni;
+                $EMail  = html_entity_decode($mail);
+                $Direccion  = html_entity_decode($direccion);
+                $CP = $cpostal;
+                $Sexo = $fila->getSexo();
+                $FechaNacimiento = $fila->getFechaNacimiento();
+                $TutorLegal = $fila->getTutorLegal();
+                $Localidad= html_entity_decode($localidad);
+                $Telefono1 = $telefono1;
+                $Telefono2= $telefono2;
+                $Provincia= html_entity_decode($provincia);
+                $DescripcionSolicitud= $fila->getDescripcionSolicitud();
+                $Otros= $fila->getOtros();
+                $Localizador= $fila->getLocalizador();
+                $Gestionado = $fila->getGestionado();
+                $Anulado = $fila->getAnulado();
+                $FechaDiario = $fila->getFechaAbonoDiario();
+                                
+                $solicitud->setIdSolicitud($idSolicitud);
+                $solicitud->setIdTipoSolicitud($idTipoSolicitud);
+                $solicitud->setIdTipoTarifa($idTipoTarifa);
+                $solicitud->setFechaSolicitud($FechaSolicitud);
+                $solicitud->setFechaAbonoDiario($FechaAbonoDiario);
+                $solicitud->setNombre($Nombre);
+                $solicitud->setApellidos($Apellidos);
+                $solicitud->setDni($DNI);
+                $solicitud->setEMail($EMail);
+                $solicitud->setDireccion($Direccion);
+                $solicitud->setCp($CP);
+                $solicitud->setSexo($Sexo);
+                $solicitud->setFechaNacimiento($FechaNacimiento);
+                $solicitud->setTutorLegal($TutorLegal);
+                $solicitud->setLocalidad($Localidad);
+                $solicitud->setTelefono1($Telefono1);
+                $solicitud->setTelefono2($Telefono2);
+                $solicitud->setProvincia($Provincia);
+                $solicitud->setDescripcionSolicitud($DescripcionSolicitud);
+                $solicitud->setOtros($Otros);
+                $solicitud->setLocalizador($Localizador);
+                $solicitud->setGestionado(1);
+                $solicitud->setAnulado($Anulado);
+                $solicitud->setFechaAbonoDiario($FechaDiario);
+                
+                $filasActualizadas = $solicitud->updateToDatabase($this->con);
+                
+                if (count($filasActualizadas) == 1) {
+                    $resp = array('estado' => "correcto", "msg" => "Solictud validada");
+                    $this->mostrarRespuesta($this->convertirJson($resp), 200);
+                } else {
+                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+                }
+            }
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+    }
+    
+    private function actualizarSolicitudClaseDirigida() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        
+        if (isset($this->datosPeticion['idSolicitud'])) {
+            
+            $nom = $this->datosPeticion['Nombre'];
+            $ape = $this->datosPeticion['Apellidos'];
+            $dni = $this->datosPeticion['DNI'];
+            $mail = $this->datosPeticion['Mail'];
+            $direccion=$this->datosPeticion['Direccion'];
+            $localidad=$this->datosPeticion['Localidad'];
+            $provincia=$this->datosPeticion['Provincia'];
+            $cpostal=$this->datosPeticion['Cpostal'];
+            $telefono1=$this->datosPeticion['Telefono1'];
+            $telefono2 =$this->datosPeticion['Telefono2'];
+            $idTipoAbono=$this->datosPeticion['TipoAbono'];
+            $idTipoTarifa =$this->datosPeticion['TipoTarifa'];
+
+            $this->con = ConexionBD::getInstance();
+            $solicitud = new SolicitudModel();
+
+            $idSolicitud = $this->datosPeticion['idSolicitud'];
+                        
+            if (!empty($idSolicitud)) {
+                                 
+                $fila = $solicitud->findById($this->con,$this->datosPeticion['idSolicitud']);
+                
+                $idTipoSolicitud= $fila ->getIdTipoSolicitud();
+                $idTipoTarifa = $idTipoTarifa;
+                $FechaSolicitud = $fila->getFechaSolicitud();
+                $FechaAbonoDiario = $fila->getFechaAbonoDiario();
+                $Nombre = html_entity_decode($nom);
+                $Apellidos =html_entity_decode($ape);
+                $DNI= $dni;
+                $EMail  = html_entity_decode($mail);
+                $Direccion  = html_entity_decode($direccion);
+                $CP = $cpostal;
+                $Sexo = $fila->getSexo();
+                $FechaNacimiento = $fila->getFechaNacimiento();
+                $TutorLegal = $fila->getTutorLegal();
+                $Localidad= html_entity_decode($localidad);
+                $Telefono1 = $telefono1;
+                $Telefono2= $telefono2;
+                $Provincia= html_entity_decode($provincia);
+                $DescripcionSolicitud= $fila->getDescripcionSolicitud();
+                $Otros= $fila->getOtros();
+                $Localizador= $fila->getLocalizador();
+                $Gestionado = $fila->getGestionado();
+                $Anulado = $fila->getAnulado();
+                $FechaDiario = $fila->getFechaAbonoDiario();
+                                
+                $solicitud->setIdSolicitud($idSolicitud);
+                $solicitud->setIdTipoSolicitud($idTipoSolicitud);
+                $solicitud->setIdTipoTarifa($idTipoTarifa);
+                $solicitud->setFechaSolicitud($FechaSolicitud);
+                $solicitud->setFechaAbonoDiario($FechaAbonoDiario);
+                $solicitud->setNombre($Nombre);
+                $solicitud->setApellidos($Apellidos);
+                $solicitud->setDni($DNI);
+                $solicitud->setEMail($EMail);
+                $solicitud->setDireccion($Direccion);
+                $solicitud->setCp($CP);
+                $solicitud->setSexo($Sexo);
+                $solicitud->setFechaNacimiento($FechaNacimiento);
+                $solicitud->setTutorLegal($TutorLegal);
+                $solicitud->setLocalidad($Localidad);
+                $solicitud->setTelefono1($Telefono1);
+                $solicitud->setTelefono2($Telefono2);
+                $solicitud->setProvincia($Provincia);
+                $solicitud->setDescripcionSolicitud($DescripcionSolicitud);
+                $solicitud->setOtros($Otros);
+                $solicitud->setLocalizador($Localizador);
+                $solicitud->setGestionado(1);
+                $solicitud->setAnulado($Anulado);
+                $solicitud->setFechaAbonoDiario($FechaDiario);
+                
+                $filasActualizadas = $solicitud->updateToDatabase($this->con);
+                
+                if (count($filasActualizadas) == 1) {
+                    $resp = array('estado' => "correcto", "msg" => "Solictud validada");
+                    $this->mostrarRespuesta($this->convertirJson($resp), 200);
+                } else {
+                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+                }
+            }
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+    }
+    
     
     private function obtenerSolicitudesMesEstadistica() {
         
@@ -892,7 +1075,7 @@ class ReservasBO extends Rest{
             $diaSemana=7;
  
         # A la fecha recibida, le restamos el dia de la semana y obtendremos el lunes
-        $primerDia=date("Y-m-s",mktime(0,0,0,$month,$day-$diaSemana+1,$year));
+        $primerDia=date("Y-m-d",mktime(0,0,0,$month,$day-$diaSemana,$year));
         
                 
         $solicitud = new SolicitudModel();

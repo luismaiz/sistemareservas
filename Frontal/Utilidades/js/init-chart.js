@@ -286,3 +286,4 @@ if ($("#realtimechart").length) {
 
     update();
 }
+

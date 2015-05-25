@@ -73,8 +73,8 @@ class TiposAbonosBO extends Rest{
         $this->con = ConexionBD::getInstance();
         $tipoabono = new TipoabonoModel();
 
-        $tipoabono->setNombreAbono($NombreAbono);
-        $tipoabono->setDescripcionAbono($DescripcionAbono);
+        $tipoabono->setNombreAbono(html_entity_decode($NombreAbono));
+        $tipoabono->setDescripcionAbono(html_entity_decode($DescripcionAbono));
         $tipoabono->setFechaAlta($FechaAlta);
         $tipoabono->setFechaBaja($FechaBaja);
 
@@ -133,8 +133,8 @@ class TiposAbonosBO extends Rest{
             if (!empty($idTipoAbono)) {
                 
                 $tipoabono->setIdTipoAbono($idTipoAbono);
-                $tipoabono->setNombreAbono($NombreAbono);
-                $tipoabono->setDescripcionAbono($DescripcionAbono);
+                $tipoabono->setNombreAbono(html_entity_decode($NombreAbono));
+                $tipoabono->setDescripcionAbono(html_entity_decode($DescripcionAbono));
                 $tipoabono->setFechaAlta($fila->getFechaAlta());
                 $tipoabono->setFechaBaja($fila->getFechaBaja());
 

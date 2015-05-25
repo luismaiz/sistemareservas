@@ -383,8 +383,8 @@
                                 </span>
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                     <label class="control-label" >Mujer</label>  <input ng_disabled="true" type="radio"  name="Sexo" value="M"  id="Sexo"/>
-                                     <label class="control-label" >Hombre</label>  <input ng_disabled="true" type="radio" name="Sexo" value="H" checked="checked" id="Sexo"/>
+                                    <label class="control-label" >Mujer</label>  <input ng_disabled="true" type="radio"  name="Sexo" ng-model="clasesdirigidas.Sexo" value="M"  id="Sexo"/>
+                                     <label class="control-label" >Hombre</label>  <input ng_disabled="true" type="radio" name="Sexo" ng-model="clasesdirigidas.Sexo" value="H" checked="checked" id="Sexo"/>
                                 </div>
                     </div>
                     <div class="tab-pane" id="direccion">

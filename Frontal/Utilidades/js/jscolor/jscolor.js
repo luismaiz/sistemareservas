@@ -9,7 +9,51 @@
  * @link    http://jscolor.com
  */
 
+var accentEncode = function (tx)
+{
+	var rp = String(tx);
+	//
+	rp = rp.replace(/á/g, '&aacute;');
+	rp = rp.replace(/é/g, '&eacute;');
+	rp = rp.replace(/í/g, '&iacute;');
+	rp = rp.replace(/ó/g, '&oacute;');
+	rp = rp.replace(/ú/g, '&uacute;');
+	rp = rp.replace(/ñ/g, '&ntilde;');
+	rp = rp.replace(/ü/g, '&uuml;');
+	//
+	rp = rp.replace(/Á/g, '&Aacute;');
+	rp = rp.replace(/É/g, '&Eacute;');
+	rp = rp.replace(/Í/g, '&Iacute;');
+	rp = rp.replace(/Ó/g, '&Oacute;');
+	rp = rp.replace(/Ú/g, '&Uacute;');
+	rp = rp.replace(/Ñ/g, '&Ntilde;');
+	rp = rp.replace(/Ü/g, '&Uuml;');
+	//
+	return rp;
+};
 
+var accentDecode = function (tx)
+{
+	var rp = String(tx);
+	//
+	rp = rp.replace(/&aacute;/g, 'á');
+	rp = rp.replace(/&eacute;/g, 'é');
+	rp = rp.replace(/&iacute;/g, 'í');
+	rp = rp.replace(/&oacute;/g, 'ó');
+	rp = rp.replace(/&uacute;/g, 'ú');
+	rp = rp.replace(/&ntilde;/g, 'ñ');
+	rp = rp.replace(/&uuml;/g, 'ü');
+	//
+	rp = rp.replace(/&Aacute;/g, 'Á');
+	rp = rp.replace(/&Eacute;/g, 'É');
+	rp = rp.replace(/&Iacute;/g, 'Í');
+	rp = rp.replace(/&Oacute;/g, 'Ó');
+	rp = rp.replace(/&Uacute;/g, 'Ú');
+	rp = rp.replace(/&Ñtilde;/g, 'Ñ');
+	rp = rp.replace(/&Üuml;/g, 'Ü');
+	//
+	return rp;
+};
 var jscolor = {
 
 

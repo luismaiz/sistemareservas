@@ -290,21 +290,21 @@
                     </div>
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
                     <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Nombre Precio</label>
-                    <input type="text" ng-model="precio.NombrePrecio"   class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="NombrePrecio" id="NombrePrecio" required>
+                    <input ng-disabled="precio.FechaBaja!==null" type="text" ng-model="precio.NombrePrecio"   class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="NombrePrecio" id="NombrePrecio" required>
                     <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.NombrePrecio.$dirty && formulario.NombrePrecio.$invalid">
                                 <span ng-show="formulario.NombrePrecio.$error.required">* Nombre de precio obligatorio.</span>
                                  </span>
                     </div>
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
                     <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Descripcion Precio</label>
-                    <input type="text" ng-model="precio.DescripcionPrecio"   class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="DescripcionPrecio" id="DescripcionPrecio" required>
+                    <input ng-disabled="precio.FechaBaja!==null" type="text" ng-model="precio.DescripcionPrecio"   class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="DescripcionPrecio" id="DescripcionPrecio" required>
                     <span class="col-lg-2 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.DescripcionPrecio.$dirty && formulario.DescripcionPrecio.$invalid">
                                 <span ng-show="formulario.DescripcionPrecio.$error.required">* Descripción de precio obligatorio.</span>
                     </span>
                     </div>
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
                     <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Precio</label>
-                    <input type="text" ng-model="precio.Precio" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" name="Precio" id="Precio">
+                    <input ng-disabled="precio.FechaBaja!==null" type="text" ng-model="precio.Precio" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" name="Precio" id="Precio">
                     </div>
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
                     <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >FechaAlta</label>

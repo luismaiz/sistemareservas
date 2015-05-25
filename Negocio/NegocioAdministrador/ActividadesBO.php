@@ -69,12 +69,12 @@ class ActividadesBO extends Rest {
 
         $actividad = new ActividadModel();
 
-        $actividad->setNombreActividad($NombreActividad);
+        $actividad->setNombreActividad(html_entity_decode($NombreActividad));
         $actividad->setIntensidadActividad($IntensidadActividad);
         $actividad->setEdadMinima($EdadMinima);
         $actividad->setEdadMaxima($EdadMaxima);
         $actividad->setGrupo($Grupo);
-        $actividad->setDescripcion($Descripcion);
+        $actividad->setDescripcion(html_entity_decode($Descripcion));
         $actividad->setFechaAlta($FechaAlta);
         $actividad->setFechaBaja($FechaBaja);
 
@@ -137,12 +137,12 @@ class ActividadesBO extends Rest {
                 
 
                 $actividad->setIdActividad($idActividad);
-                $actividad->setNombreActividad($NombreActividad);
+                $actividad->setNombreActividad(html_entity_decode($NombreActividad));
                 $actividad->setIntensidadActividad($IntensidadActividad);
                 $actividad->setEdadMinima($EdadMinima);
                 $actividad->setEdadMaxima($EdadMaxima);
                 $actividad->setGrupo($Grupo);
-                $actividad->setDescripcion($Descripcion);
+                $actividad->setDescripcion(html_entity_decode($Descripcion));
                 $actividad->setFechaAlta($fila->getFechaAlta());
                 $actividad->setFechaBaja($fila->getFechaBaja());
 

@@ -11,9 +11,11 @@
 Nombre,
 Apellidos,
 Localizador,
-FechaSolicitud
+FechaSolicitud,
+DATE_ADD(curdate(), INTERVAL(1-DAYOFMONTH(curdate())) DAY)
 FROM `solicitud` 
-WHERE fechasolicitud > DATE_ADD(curdate(), INTERVAL(1-DAYOFWEEK(curdate())) +1 DAY) and idtiposolicitud = 3
+WHERE fechasolicitud >= DATE_ADD(curdate(), INTERVAL(1-DAYOFMONTH(curdate())) DAY) and idtiposolicitud = 3
+
 and anulado = 0]]>
 	</queryString>
 	<field name="Nombre" class="java.lang.Integer"/>

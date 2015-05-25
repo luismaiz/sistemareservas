@@ -249,14 +249,14 @@
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <input ng-model="tipotarifa.idTipoTarifa" type="hidden" class="input-sm" name="idTipoTarifa" id="idTipoTarifa">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Nombre Tarifa</label>
-                                <input ng-model="tipotarifa.NombreTarifa"  type="text" class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="nombretarifa" id="NombreTarifa" required >
+                                <input  ng-disabled="tipotarifa.FechaBaja!==null"ng-model="tipotarifa.NombreTarifa"  type="text" class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="nombretarifa" id="NombreTarifa" required >
                                 <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.nombretarifa.$dirty && formulario.nombretarifa.$invalid">
                                 <span ng-show="formulario.nombretarifa.$error.required">* Nombre de tarifa obligatorio.</span>
                                  </span>
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Descripción Tarifa</label>
-                                <input ng-model="tipotarifa.DescripcionTarifa" ng-required="true" type="text" class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12"  name="descripciontarifa" id="DescripcionTarifa">
+                                <input  ng-disabled="tipotarifa.FechaBaja!==null" ng-model="tipotarifa.DescripcionTarifa" ng-required="true" type="text" class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12"  name="descripciontarifa" id="DescripcionTarifa">
                                 <span class="col-lg-2 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.descripciontarifa.$dirty && formulario.descripciontarifa.$invalid">
                                 <span ng-show="formulario.descripciontarifa.$error.required">* Descripción de tarifa obligatoria.</span>
                                  </span>

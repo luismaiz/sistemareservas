@@ -26,6 +26,18 @@
                 $scope.abonomensual = JSON.parse(Ajax.responseText).abonomensual;
                 $scope.datossolicitud = JSON.parse(Ajax.responseText).datossolicitud;
                 
+                if ($scope.abonomensual.Anulado === '1')
+                {
+                    document.getElementById('divBaja').style.display = 'block';
+                    document.getElementById('activar').style.display = 'inline';
+                }
+                else
+                {
+                    document.getElementById('anular').style.display = 'inline';
+                    document.getElementById('aceptar').style.display = 'inline';
+                    document.getElementById('activar').style.display = 'none';
+                }
+                
                 //alert(Ajax.responseText);
         
             };
@@ -41,9 +53,21 @@
             $scope.actualizarSolicitud = function(){
                                    
              
-                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=actualizarSolicitud');
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala";
-                var Params = '';
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=actualizarSolicitudAbonoMensual');
+                
+                var Params = 'idSolicitud='+$location.search().idSolicitud+
+                             '&Nombre=' + document.getElementById("Nombre").value +    
+                             '&Apellidos='+ document.getElementById("Apellidos").value +
+                             '&DNI=' + document.getElementById("Dni").value +
+                             '&Mail=' + document.getElementById("Mail").value +
+                             '&Direccion=' + document.getElementById("Direccion").value +
+                             '&Localidad=' + document.getElementById("Localidad").value +
+                             '&Provincia=' + document.getElementById("Provincia").value +
+                             '&Cpostal=' + document.getElementById("CodigoPostal").value +
+                             '&Telefono1=' + document.getElementById("Telefono1").value +
+                             '&Telefono2=' + document.getElementById("Telefono2").value +
+                             '&TipoAbono=' + document.getElementById("filtroTipoAbono").value +
+                             '&TipoTarifa=' + document.getElementById("filtroTipoTarifa").value;
 
                
                 Ajax.open("POST", Url, false);
@@ -56,6 +80,7 @@
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
+                    $scope.obtenerSolicitudAbonoMensual($location.search().idSolicitud);
                 }
                 else
                 {
@@ -67,7 +92,7 @@
                                    
              
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=validarSolicitud');
-                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/SalasBO.php?url=actualizarSala";
+                
                 var Params = 'idSolicitud='+ $location.search().idSolicitud;
                
                 Ajax.open("POST", Url, false);
@@ -137,7 +162,12 @@
                 
                 if ($scope.estado === 'correcto')
                 {
-                    document.getElementById('divCorrecto').style.display = 'block';
+                     document.getElementById('divCorrecto').style.display = 'block';
+                    document.getElementById('divBaja').style.display = 'none';
+                    $scope.obtenerSolicitudAbonoMensual($location.search().idSolicitud);
+                    document.getElementById('anular').style.display = 'inline';
+                    document.getElementById('aceptar').style.display = 'inline';
+                    document.getElementById('activar').style.display = 'none';
                 }
                 else
                 {
@@ -160,7 +190,11 @@
                 
                 if ($scope.estado === 'correcto')
                 {
+                     document.getElementById('divBaja').style.display = 'inline';
                     document.getElementById('divCorrecto').style.display = 'block';
+                    $scope.obtenerSolicitudAbonoMensual($location.search().idSolicitud);
+                    document.getElementById('anular').style.display = 'none';
+                    document.getElementById('aceptar').style.display = 'none';
                 }
                 else
                 {
@@ -227,6 +261,10 @@
                                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                                     <strong>Correcto.</strong>  Operación realizada con éxito.
                             </div>
+                                <div class="alert alert-danger" id="divBaja" style='display:none;'>
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <strong>Esta solicitud se encuentra dada de baja.</strong>
+                            </div>
                             </div>
                         <div class="box-content">
                             <form role="form"  name="formulario">
@@ -256,14 +294,14 @@
                         </div>
                         <div class="form-group col-md-12">
                         <label class="control-label col-md-2" >Tipo Tarifa</label>
-                                <select ng_disabled="true"  id="filtroTipoTarifa" class="input-sm col-md-2" >	
+                                <select ng-disabled="abonomensual.Anulado==='1'"  id="filtroTipoTarifa" class="input-sm col-md-2" >	
                                     <option ng_repeat="tipotarifa in tiposTarifas" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>
                                 </select>
                         </div>
                         <div class="form-group col-md-12" ng-repeat="dato in datossolicitud">
                         <div class="form-group col-md-12" >
                                 <label class="control-label col-md-2" >Fecha Inicio</label>
-                                <input ng_disabled="true" n ng-model="dato.FechaInicio" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="FechaInicio" id="FechaInicio" >
+                                <input ng-disabled="abonomensual.Anulado==='1'" n ng-model="dato.FechaInicio" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="FechaInicio" id="FechaInicio" >
                                 <span class="col-md-6 col-sm-5 col-XS-12" style="color:red" ng-show="formulario.FechaInicio.$dirty && formulario.FechaInicio.$invalid">
                                      <span ng-show="formulario.FechaInicio.$error.pattern">* Formato de fecha no valido.</span>
                                     <span ng-show="formulario.FechaInicio.$error.required">* Fecha obligatoria.</span>
@@ -272,7 +310,7 @@
                                 </div>
                         <div class="form-group col-md-12" >
                                 <label class="control-label col-md-2" >Fecha Fin</label>
-                                <input  ng_disabled="true" n ng-model="dato.FechaFin" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="FechaFin" id="FechaFin" >
+                                <input  ng-disabled="abonomensual.Anulado==='1'" n ng-model="dato.FechaFin" type="text" class="input-sm col-md-2 col-sm-4 col-xs-4" name="FechaFin" id="FechaFin" >
                                 <span class="col-md-6 col-sm-5 col-XS-12" style="color:red" ng-show="formulario.FechaFin.$dirty && formulario.FechaFin.$invalid">
                                      <span ng-show="formulario.FechaFin.$error.pattern">* Formato de fecha no valido.</span>
                                     <span ng-show="formulario.FechaFin.$error.required">* Fecha obligatoria.</span>
@@ -281,7 +319,7 @@
                                 </div>
                         <div class="form-group col-md-12" >
                                 <label class="control-label col-md-2" >Cantidad pagada</label>
-                                <input ng_disabled="true" ng-model="dato.PrecioPagado"  type="text" class="input-sm col-md-4" name="cantidad" id="cantidad" required >
+                                <input ng-disabled="abonomensual.Anulado==='1'" ng-model="dato.PrecioPagado"  type="text" class="input-sm col-md-4" name="cantidad" id="cantidad" required >
                                 <span style="color:red" ng-show="formulario.cantidad.$dirty && formulario.cantidad.$invalid">
                                 <span ng-show="formulario.cantidad.$error.required">Nombre obligatorio.</span>
                                  </span>
@@ -292,32 +330,32 @@
                         <h3></h3>
                         <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Localizador</label>
-                                <input ng_disabled="true" ng-model="abonomensual.Localizador"  type="text" class="input-sm col-md-4" name="localizador" id="Localizador" required >
+                                <input ng-disabled="true" ng-model="abonomensual.Localizador"  type="text" class="input-sm col-md-4" name="localizador" id="Localizador" required >
                                 <span style="color:red" ng-show="formulario.localizador.$dirty && formulario.localizador.$invalid">
-                                <span ng-show="formulario.localizador.$error.required">Localizador obligatorio.</span>
+                                <span ng-show="formulario.localizador.$error.required">* Localizador obligatorio.</span>
                                  </span>
                                 </div>
                                 
                                 <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Nombre</label>
-                                <input ng_disabled="true" ng-model="abonomensual.Nombre"  type="text" class="input-sm col-md-4" name="nombre" id="Nombre" required >
+                                <input ng-disabled="abonomensual.Anulado==='1'" ng-model="abonomensual.Nombre"  type="text" class="input-sm col-md-4" name="nombre" id="Nombre" required >
                                 <span style="color:red" ng-show="formulario.nombre.$dirty && formulario.nombre.$invalid">
-                                <span ng-show="formulario.nombre.$error.required">Nombre obligatorio.</span>
+                                <span ng-show="formulario.nombre.$error.required">* Nombre obligatorio.</span>
                                  </span>
                                 </div>
                                 <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Apellidos</label>
-                                <input ng_disabled="true" ng-model="abonomensual.Apellidos" type="text" class="input-sm col-md-6"  name="apellidos" id="Apellidos" required>
+                                <input ng-disabled="abonomensual.Anulado==='1'" ng-model="abonomensual.Apellidos" type="text" class="input-sm col-md-6"  name="apellidos" id="Apellidos" required>
                                 <span style="color:red" ng-show="formulario.apellidos.$dirty && formulario.apellidos.$invalid">
-                                <span ng-show="formulario.apellidos.$error.required">Apellidos obligatorio.</span>
+                                <span ng-show="formulario.apellidos.$error.required">* Apellidos obligatorio.</span>
                                 </span>
                                 </div>
                                 
                                 <div class="form-group col-md-12">                                
                                 <label class="control-label col-md-2" >Dni</label>
-                                <input ng_disabled="true" ng-model="abonomensual.DNI" type="text" class="input-sm" name="dni" id="Dni" required ng-pattern='/^\d{7,8}(-?[a-z])?$/i'>
+                                <input ng-disabled="abonomensual.Anulado==='1'" ng-model="abonomensual.DNI" type="text" class="input-sm" name="dni" id="Dni" required ng-pattern='/^\d{7,8}(-?[a-z])?$/i'>
                                 <span style="color:red" ng-show="formulario.dni.$dirty && formulario.dni.$invalid">
-                                <span ng-show="formulario.dni.$error.pattern">Formato de DNI no válido 12345678-A</span>
+                                <span ng-show="formulario.dni.$error.pattern">* Formato de DNI no válido 12345678-A</span>
                                 </span>
                                 </div>
                     </div>
@@ -325,58 +363,59 @@
                         <h3></h3>
                                 <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Direccion</label>
-                                <input ng_disabled="true" ng-model="abonomensual.Direccion"  type="text" class="input-sm col-md-8" name="direccion" id="Direccion" required >
+                                <input ng-disabled="abonomensual.Anulado==='1'" ng-model="abonomensual.Direccion"  type="text" class="input-sm col-md-8" name="direccion" id="Direccion" required >
                                 <span style="color:red" ng-show="formulario.direccion.$dirty && formulario.direccion.$invalid">
-                                <span ng-show="formulario.direccion.$error.required">Direccion obligatorio.</span>
+                                <span ng-show="formulario.direccion.$error.required">* Direccion obligatoria.</span>
                                  </span>
                                 </div>
                         <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Localidad</label>
-                                <input ng_disabled="true" ng-model="abonomensual.Localidad"  type="text" class="input-sm col-md-4" name="localidad" id="Localidad" required >
+                                <input ng-disabled="abonomensual.Anulado==='1'" ng-model="abonomensual.Localidad"  type="text" class="input-sm col-md-4" name="localidad" id="Localidad" required >
                                 <span style="color:red" ng-show="formulario.localidad.$dirty && formulario.localidad.$invalid">
-                                <span ng-show="formulario.localidad.$error.required">Localidad obligatorio.</span>
+                                <span ng-show="formulario.localidad.$error.required">* Localidad obligatoria.</span>
                                  </span>
                                 </div>
                         <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Provincia</label>
-                                <input ng_disabled="true" ng-model="abonomensual.Provincia"  type="text" class="input-sm col-md-4" name="provincia" id="Provincia" required >
+                                <input ng-disabled="abonomensual.Anulado==='1'" ng-model="abonomensual.Provincia"  type="text" class="input-sm col-md-4" name="provincia" id="Provincia" required >
                                 <span style="color:red" ng-show="formulario.provincia.$dirty && formulario.provincia.$invalid">
-                                <span ng-show="formulario.provincia.$error.required">Provincia obligatorio.</span>
+                                <span ng-show="formulario.provincia.$error.required">* Provincia obligatoria.</span>
                                  </span>
                                 </div>
                         <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Código Postal</label>
-                                <input ng_disabled="true" ng-model="abonomensual.CodigoPostal"  type="text" class="input-sm col-md-4" name="codigopostal" id="CodigoPostal" required >
+                                <input ng-disabled="abonomensual.Anulado==='1'" ng-model="abonomensual.CodigoPostal"  type="text" class="input-sm col-md-4" name="codigopostal" id="CodigoPostal" required >
                                 <span style="color:red" ng-show="formulario.codigopostal.$dirty && formulario.codigopostal.$invalid">
-                                <span ng-show="formulario.codigopostal.$error.required">Codigo Postal obligatorio.</span>
+                                <span ng-show="formulario.codigopostal.$error.required">* Codigo Postal obligatorio.</span>
                                  </span>
                                 </div>
                         <div class="form-group col-md-12">                                
                                 <label class="control-label col-md-2" >Email</label>
-                                <input ng_disabled="true" ng-model="abonomensual.Email" type="email" class="input-sm" name="mail" id="Mail" required >
+                                <input ng-disabled="abonomensual.Anulado==='1'" ng-model="abonomensual.Email" type="email" class="input-sm" name="mail" id="Mail" required >
                                 <span style="color:red" ng-show="formulario.mail.$dirty && formulario.mail.$invalid">
-                                <span ng-show="formulario.mail.$error.required">Email obligatorio.</span>
-                                <span ng-show="formulario.mail.$error.email">Formato de email no válido.</span>
+                                <span ng-show="formulario.mail.$error.required">* Email obligatorio.</span>
+                                <span ng-show="formulario.mail.$error.email">* Formato de email no válido.</span>
                                 </span>
                                 </div>
                         <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Telefono 1</label>
-                                <input ng_disabled="true" ng-model="abonomensual.Telefono1"  type="text" class="input-sm col-md-4" name="telefono1" id="Telefono1" required >
+                                <input ng-disabled="abonomensual.Anulado==='1'" ng-model="abonomensual.Telefono1"  type="text" class="input-sm col-md-4" name="telefono1" id="Telefono1" required >
                                 <span style="color:red" ng-show="formulario.telefono1.$dirty && formulario.telefono1.$invalid">
-                                <span ng-show="formulario.telefono1.$error.required">Codigo Postal obligatorio.</span>
+                                <span ng-show="formulario.telefono1.$error.required">* Teléfono 1 obligatorio.</span>
                                  </span>
                                 </div>
                         <div class="form-group col-md-12">
                                 <label class="control-label col-md-2" >Telefono 2</label>
-                                <input ng_disabled="true" ng-model="abonomensual.Telefono1"  type="text" class="input-sm col-md-4" name="telefono2" id="Telefono2" required >
+                                <input ng-disabled="abonomensual.Anulado==='1'" ng-model="abonomensual.Telefono1"  type="text" class="input-sm col-md-4" name="telefono2" id="Telefono2" required >
                                 <span style="color:red" ng-show="formulario.telefono2.$dirty && formulario.telefono2.$invalid">
-                                <span ng-show="formulario.telefono2.$error.required">Codigo Postal obligatorio.</span>
+                                <span ng-show="formulario.telefono2.$error.required">* Telefono 2 obligatorio.</span>
                                  </span>
                                 </div>
                     </div>
                     </div>
-                                <input style='display:none;' id="anulacion" class="btn btn-sm btn-danger" type="submit" value="Anular Solicitud" ng-click="anularSolicitud();"  />
-                                <input style='display:none;' id="validacion" class="btn btn-sm btn-success" type="submit" value="Validar Solicitud" ng-click="validarSolicitud();" ng-disabled="formulario.$invalid" />
+                                <input style='display:none;' id="anular" class="btn btn-sm btn-danger" type="submit" value="Anular Solicitud" ng-click="anularSolicitud();"  />
+                                <input style='display:none;' id="aceptar" class="btn btn-sm btn-success" type="submit" value="Modificar Solicitud" ng-click="actualizarSolicitud();" ng-disabled="formulario.$invalid"  />
+                                <input style='display:none;' id="activar" class="btn btn-sm btn-success" type="submit" value="Activar Solicitud" ng-click="activarSolicitud();"  />
                                 <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='Reservas.php' " />
                                 
                              </form>

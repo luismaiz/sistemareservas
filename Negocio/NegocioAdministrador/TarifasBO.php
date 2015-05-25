@@ -72,8 +72,8 @@ class TarifasBO extends Rest{
         $this->con = ConexionBD::getInstance();
         $tipotarifa = new TipotarifaModel();
 
-        $tipotarifa->setNombreTarifa($NombreTarifa);
-        $tipotarifa->setDescripcionTarifa($DescripcionTarifa);
+        $tipotarifa->setNombreTarifa(html_entity_decode($NombreTarifa));
+        $tipotarifa->setDescripcionTarifa(html_entity_decode($DescripcionTarifa));
         $tipotarifa->setFechaAlta($FechaAlta);
         $tipotarifa->setFechaBaja($FechaBaja);
 
@@ -131,8 +131,8 @@ class TarifasBO extends Rest{
             if (!empty($idTipoTarifa)) {
 
                 $tipotarifa->setIdTipoTarifa($idTipoTarifa);
-                $tipotarifa->setNombreTarifa($NombreTarifa);
-                $tipotarifa->setDescripcionTarifa($DescripcionTarifa);
+                $tipotarifa->setNombreTarifa(html_entity_decode($NombreTarifa));
+                $tipotarifa->setDescripcionTarifa(html_entity_decode($DescripcionTarifa));
                 $tipotarifa->setFechaAlta($fila->getFechaAlta());
                 $tipotarifa->setFechaBaja($fila->getFechaBaja());
 

@@ -103,8 +103,8 @@ class PreciosBO extends Rest{
                     $precio->setIdTipoSolicitud($idTipoSolicitud);
                     $precio->setIdTipoAbono($idTipoAbono);
                     $precio->setIdTipoTarifa($idTipoTarifa);
-                    $precio->setNombrePrecio($NombrePrecio);
-                    $precio->setDescripcionPrecio($DescripcionPrecio);
+                    $precio->setNombrePrecio(html_entity_decode($NombrePrecio));
+                    $precio->setDescripcionPrecio(html_entity_decode($DescripcionPrecio));
                     $precio->setPrecio($Precio);
                     $precio->setFechaAlta($FechaAlta);
                     $precio->setFechaBaja(NULL);
@@ -128,8 +128,8 @@ class PreciosBO extends Rest{
                     $precio->setIdTipoSolicitud($idTipoSolicitud);
                     $precio->setIdTipoAbono($idTipoAbono);
                     $precio->setIdTipoTarifa($idTipoTarifa);
-                    $precio->setNombrePrecio($NombrePrecio);
-                    $precio->setDescripcionPrecio($DescripcionPrecio);
+                    $precio->setNombrePrecio(html_entity_decode($NombrePrecio));
+                    $precio->setDescripcionPrecio(html_entity_decode($DescripcionPrecio));
                     $precio->setPrecio($Precio);
                     $precio->setFechaAlta($FechaAlta);
                     $precio->setFechaBaja(null);
@@ -199,8 +199,8 @@ class PreciosBO extends Rest{
                 $precio->setIdTipoSolicitud($idTipoSolicitud);
                 $precio->setIdTipoAbono($idTipoAbono);
                 $precio->setIdTipoTarifa($idTipoTarifa);
-                $precio->setNombrePrecio($NombrePrecio);
-                $precio->setDescripcionPrecio($DescripcionPrecio);
+                $precio->setNombrePrecio(html_entity_decode($NombrePrecio));
+                $precio->setDescripcionPrecio(html_entity_decode($DescripcionPrecio));
                 $precio->setPrecio($Precio);
                 $precio->setFechaAlta($fila->getFechaAlta());
                 $precio->setFechaBaja($fila->getFechaBaja());

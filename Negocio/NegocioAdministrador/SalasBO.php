@@ -68,12 +68,14 @@ class SalasBO  extends Rest {
             $DescripcionSala = $this->datosPeticion['DescripcionSala'];
             $FechaAlta =date("Y-m-d");
             $FechaBaja =null;
+            
+            echo(html_entity_decode($this->datosPeticion['NombreSala']));
    
             $this->con = ConexionBD::getInstance();
             $sala = new SalaModel();
-            $sala->setNombreSala($NombreSala);
+            $sala->setNombreSala(html_entity_decode($NombreSala));
             $sala->setCapacidadSala($CapacidadSala);
-            $sala->setDescripcionSala($DescripcionSala);
+            $sala->setDescripcionSala(html_entity_decode($DescripcionSala));
             $sala->setFechaAlta($FechaAlta);
             $sala->setFechaBaja($FechaBaja);
                 
@@ -96,7 +98,7 @@ class SalasBO  extends Rest {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
         }
         if (isset($this->datosPeticion['idSala'])) {
-
+            
             $this->con = ConexionBD::getInstance();
             $sala = new SalaModel();
 
@@ -110,9 +112,9 @@ class SalasBO  extends Rest {
             if (!empty($idSala)) {
                 
                 $sala->setIdSala($idSala);
-                $sala->setNombreSala($NombreSala);
+                $sala->setNombreSala(html_entity_decode($NombreSala));
                 $sala->setCapacidadSala($CapacidadSala);
-                $sala->setDescripcionSala($DescripcionSala);
+                $sala->setDescripcionSala(html_entity_decode($DescripcionSala));
                 $sala->setFechaAlta($fila->getFechaAlta());
                 $sala->setFechaBaja($fila->getFechaBaja());
                 

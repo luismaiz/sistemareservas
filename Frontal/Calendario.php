@@ -184,6 +184,7 @@
                         //$('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
                         $('#calendar').fullCalendar('removeEvents' );
                         $('#calendar').fullCalendar( 'refetchEvents' );
+                        setTimeout(function() { $('#calendar').fullCalendar('refetchEvents');},0);
                     },
                     error: function( jqXHR, textStatus, errorThrown ) {
                 }}); 

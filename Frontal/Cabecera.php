@@ -4,12 +4,14 @@ if (!isset($_SESSION['User'])) {
     echo($_SESSION['User']);
     header("location: ../index.php");
 }
+header("Content-Type: text/html;charset=utf-8");
 include 'config.php'
+
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     <head>
-        <meta charset="utf-8">
+        <meta meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>Sistema de Reservas</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">
