@@ -307,7 +307,7 @@
             return edad;
         };
         $scope.esMenor = function () {
-            var edad = $scope.calcularFecha($scope.s.fechanacimiento);
+            var edad = $scope.calcularFecha($scope.s.FechaNacimiento);
             if (edad < 18) {
                 $scope.menor = true;
             } else {
@@ -422,13 +422,13 @@
                                         </div>
                                         <div id="actividades">
                                             <label ng_repeat="actividad in actividades"   class="control-label col-md-4 col-sm-4 col-xs-4">
-                                                <input type="checkbox" name="actividades" ng-model="s.Actividades" ng-value="{{ actividad.idActividad}}" ng-checked="selection.indexOf(actividad.idActividad) > -1" ng-click="toggleSelection(actividad.idActividad)" checklist-model="actividad" checklist-value="actividad">&nbsp; {{ actividad.NombreActividad}}</label>
+                                                <input type="checkbox" name="actividades" ng-value="{{ actividad.idActividad}}" ng-checked="selection.indexOf(actividad.idActividad) > -1" ng-click="toggleSelection(actividad.idActividad)" checklist-model="actividad" checklist-value="actividad">&nbsp; {{ actividad.NombreActividad}}</label>
                                         </div>
                                     </div>
                                 </div>
                             </fieldset>
                             <ul class="pager">
-                                <li class="btn next"><a ng-click="avanzar(1);" >Siguiente &rarr;</a></li>
+                                <li class="next"><a ng-click="avanzar(1);" >Siguiente &rarr;</a></li>
                             </ul>
                         </div>
                         <div class="tab-pane active" id="tab2" ng-show="tab2">
@@ -479,7 +479,7 @@
                                             <label class="control-label" ><input type="radio" ng-model="s.Sexo" name="Sexo" value="H" id="Sexo"/>&nbsp;Hombre&nbsp;</label>
                                         </div>
                                         <div class="col-md-5 col-sm-5 input-group-lg">
-                                            <label class="control-label" >Fecha nacimiento</label><input type="text" name="FechaNacimiento" ng-model="s.FechaNacimiento" datepicker class="form-control" id="FechaNacimiento" ng-change="esMenor(s.FechaNacimiento);" ng-pattern="/^(199\d|[2-9]\d{3})\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/" required placeholder="yyyy-mm-dd">
+                                            <label class="control-label" >Fecha nacimiento</label><input type="text" name="FechaNacimiento" ng-model="s.FechaNacimiento" datepicker class="form-control" id="FechaNacimiento" ng-change="esMenor();" ng-pattern="/^(199\d|[2-9]\d{3})\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/" required placeholder="yyyy-mm-dd">
                                             <span style="color:red" ng-show="formulario.FechaNacimiento.$dirty && formulario.FechaNacimiento.$invalid">
                                                 <span ng-show="formulario.FechaNacimiento.$error.pattern">* Formato de fecha no valido.</span>
                                                 <span ng-show="formulario.FechaNacimiento.$error.required">* Fecha obligatoria.</span>
@@ -497,7 +497,8 @@
                             </fieldset>
                             <ul class="pager">
                                 <li class="previous"><a href="" ng-click="avanzar(0);">&larr; Anterior</a></li>
-                                <li class="next"><a href="" ng-click="avanzar(2);">Siguiente &rarr;</a></li>
+                                <li class="next"><a class="btn" ng-disabled="formulario.Nombre.$error.required || formulario.Apellidos.$error.required || formulario.DNI.$error.required
+                                    || formulario.EMail.$error.required || formulario.FechaNacimiento.$error.required || formulario.aceptado.$error.required" ng-click="avanzar(2);">Siguiente &rarr;</a></li>
                             </ul>
                         </div>
                         <div class="tab-pane active" id="tab3" ng-show="tab3">
@@ -519,7 +520,7 @@
                                 <div class="col-md-2 col-sm-2 input-group-lg">
                                     <label class="control-label" >Codigo Postal&nbsp;</label><input type="number" class="form-control" name="CP" ng-model="s.CP" min="01000" max="54999" id="CP" placeholder="28040" ng-pattern="/^[0-9]{4,5}/" ng-change="obtenerProvincia(s.CP);" maxlength="5" />
                                     <span style="color:red" ng-show="formulario.CP.$dirty && formulario.CP.$invalid">
-                                        <span ng-show="formulario.CP.$error.pattern">* Formato de CP no valido.</span>
+                                        <span ng-show="formulario.CP.$error.pattern">* CP no valido.</span>
                                         <span ng-show="formulario.CP.$error.required">* CP obligatorio.</span>
                                         <span ng-show="formulario.CP.$error.number">* CP no valido </span>
                                     </span>
@@ -544,7 +545,8 @@
                             </fieldset>
                             <ul class="pager">
                                 <li class="previous"><a href="" ng-click="avanzar(1);">&larr; Anterior</a></li>
-                                <li class="next"><a href="" ng-click="avanzar(3);">Siguiente &rarr;</a></li>
+                                <li class="next"><a class="btn" ng-disabled="formulario.Direccion.$error.required || formulario.Localidad.$error.required || formulario.CP.$error.required
+                                    || formulario.Telefono1.$error.required" ng-click="avanzar(3);">Siguiente &rarr;</a></li>
                             </ul>
                         </div>
                         <div class="tab-pane active" id="tab4" ng-show="tab4">
@@ -607,8 +609,8 @@
                                 </div>
                             </fieldset>
                             <ul class="pager">
-                                <li class="previous"><a href="" ng-click="avanzar(2);">&larr; Anterior</a></li>
-                                <li class="btn next"><a ng-disabled="formulario.$invalid" ng-click="enviar(s);">&nbsp;Enviar&nbsp;&nbsp;</a></li>
+                                <li class="previous"><a ng-click="avanzar(2);">&larr; Anterior</a></li>
+                                <li class="next"><a class="btn" ng-disabled="formulario.$invalid" ng-click="enviar(s);">&nbsp;Enviar&nbsp;&nbsp;</a></li>
                             </ul>
                         </div>
                     </div>
