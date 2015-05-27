@@ -327,7 +327,7 @@
             return edad;
         };
         $scope.esMenor = function () {
-            var edad = $scope.calcularFecha($scope.s.fechanacimiento);
+            var edad = $scope.calcularFecha($scope.s.FechaNacimiento);
             if (edad < 18) {
                 $scope.menor = true;
             } else {

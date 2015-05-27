@@ -496,7 +496,7 @@
                 if (!ngModel)
                     return;
                 var optionsObj = {};
-                optionsObj.dateFormat = 'yy-mm-dd';
+                optionsObj.dateFormat = 'dd-mm-yy';
                 var updateModel = function (dateTxt) {
                     scope.$apply(function () {
                         // Call the internal AngularJS helper to
@@ -617,12 +617,14 @@
                                                 <input type="radio" id="tipoabono" name="tipoabono" ng-model="s.tipoabono" ng-value="{{ tipoabono.idTipoAbono}}" required  ng-checked="selection.indexOf(tipoabono.idTipoAbono) > 0" ng-required="value==''">&nbsp; {{ tipoabono.NombreAbono}}</label><br/></p>
                                     </div>-->
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 input-group-lg">
-                                        <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Tipo Abono</label>
-                                        <select  id="filtroTipoAbono" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" ng-model="s.idTipoAbono" ng-init="s.idTipoAbono = tiposAbonos[0].idTipoAbono"> >	
+                                        <label class="control-label" >Tipo Abono</label>
+                                        <select id="filtroTipoAbono" class="input-group-lg col-md-4 col-sm-4" ng-model="s.idTipoAbono" ng-init="s.idTipoAbono = tiposAbonos[0].idTipoAbono"> >	
                                             <option ng_repeat="tipoabono in tiposAbonos" value="{{tipoabono.idTipoAbono}}">{{tipoabono.NombreAbono}}</option>
                                         </select>
-                                        <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Tipo Tarifa</label>
-                                        <select  id="filtroTipoTarifa" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" ng-model="s.idTipoTarifa">	
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 input-group-lg">
+                                        <label class="control-label">Tipo Tarifa</label>
+                                        <select  id="filtroTipoTarifa" class="input-group-lg col-md-4 col-sm-4" ng-model="s.idTipoTarifa">	
                                             <option ng_repeat="tipotarifa in tiposTarifas" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>
                                         </select>
                                         <br>

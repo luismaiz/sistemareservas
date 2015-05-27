@@ -51,10 +51,10 @@
             dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
             dayNamesMin: ['Do', 'Lun', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
             weekHeader: 'Sm',
-            dateFormat: 'yy-mm-dd',
+            dateFormat: 'dd-mm-yy',
             changeMonth: true,
             changeYear: true,
-            yearRange: "1900:2012",
+            yearRange: "2015:2020",
             firstDay: 1,
             isRTL: false,
             showMonthAfterYear: false,
@@ -72,7 +72,7 @@
                 if (!ngModel)
                     return;
                 var optionsObj = {};
-                optionsObj.dateFormat = 'yy-mm-dd';
+                optionsObj.dateFormat = 'dd-mm-yy';
                 var updateModel = function (dateTxt) {
                     scope.$apply(function () {
                         // Call the internal AngularJS helper to
@@ -82,14 +82,14 @@
                 };
                 var comprobarCaducidad = function (fecha) {
                     var values = fecha.split("-");
-                    var dia = parseInt(values[2]);
+                    var dia = parseInt(values[0]);
                     var mes = parseInt(values[1]);
-                    var ano = parseInt(values[0]);
+                    var ano = parseInt(values[2]);
                     // cogemos los valores actuales
                     var fecha_hoy = new Date();
                     var ahora_ano = (fecha_hoy.getYear()) + 1900;
                     var ahora_mes = parseInt((((fecha_hoy.getMonth()) + 1) < 10) ? '0' + ((fecha_hoy.getMonth()) + 1) : (fecha_hoy.getMonth()) + 1);
-                    var ahora_dia = parseInt((((fecha_hoy.getDay()) + 10) < 10) ? '0' + ((fecha_hoy.getDay()) + 10) : ((fecha_hoy.getDay()) + 10));
+                    var ahora_dia = parseInt(fecha_hoy.getDate());
                     var valido = false;
                     if (ano === ahora_ano) {
                         if (mes === ahora_mes) {
@@ -148,7 +148,7 @@
                                 <strong>Correcto.</strong>  Operación realizada con éxito.
                             </div>
                             <div class="col-md-5 col-sm-5 input-group-lg">
-                                <label class="control-label" > Nombre</label><input type="text" name="Nombre" ng-model="s.Nombre" class="form-control" required ng-pattern="/[a-zA-Z]$/" placeholder="Blanca" ng-maxlength="40"/>
+                                <label class="control-label" > Nombre</label><input type="text" name="Nombre" ng-model="s.Nombre" class="form-control" required ng-pattern="/[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ]/" placeholder="Blanca" ng-maxlength="40"/>
                                 <span style="color:red" ng-show="formulario.Nombre.$dirty && formulario.Nombre.$invalid">
                                     <span ng-show="formulario.Nombre.$error.required">Nombre obligatorio.</span>
                                     <span ng-show="formulario.Nombre.$error.pattern">* Formato de Nombre no valido.</span>
@@ -200,7 +200,7 @@
                             </div>-->
                             <div class="col-md-5 col-sm-5 input-group-lg">
                                 <label class="control-label" >Día de acceso</label>
-                                <input type="text" ng-model="s.FechaAbonoDiario" type="text" datepicker class="form-control" name="FechaAbonoDiario" id="FechaAbonoDiario" readonly ng-pattern="/^(199\d|[2-9]\d{3})\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/" required placeholder="yyyy-mm-dd">
+                                <input type="text" ng-model="s.FechaAbonoDiario" type="text" datepicker class="form-control" name="FechaAbonoDiario" id="FechaAbonoDiario" readonly ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required placeholder="dd-mm-yyyy">
                                 <span style="color:red" ng-show="formulario.FechaAbonoDiario.$dirty && formulario.FechaAbonoDiario.$invalid">
                                     <span ng-show="formulario.FechaAbonoDiario.$error.pattern">* Formato de fecha no valido.</span>
                                     <span ng-show="formulario.FechaAbonoDiario.$error.required">* Fecha obligatoria.</span>
