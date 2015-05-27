@@ -47,6 +47,7 @@
             else
             {
                 document.getElementById('aceptar').style.display = 'inline';
+				$scope.tiposolicitud.FechaBaja = null;
             }
             
             $scope.guardarTipoSolicitud = function() {
@@ -70,17 +71,18 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
              
-                alert(Ajax.responseText);
+                
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
-                    //$scope.obtenerTiposSolicitud($location.search().idTipoSolicitud);
+                    document.getElementById('divError').style.display = 'none';
                 }
                 else
                 {
                     document.getElementById('divError').style.display = 'block';
+					document.getElementById('divCorrecto').style.display = 'none';
                 }
             };
             $scope.actualizarTipoSolicitud = function(){
@@ -128,8 +130,8 @@
                 
                 if ($scope.estado === 'correcto')
                 {
-                    document.getElementById('divBaja').style.display = 'none';
-                    document.getElementById('divCorrecto').style.display = 'block';
+                    document.getElementById('divBaja').style.display = 'inline';
+                    document.getElementById('divCorrecto').style.display = 'none';
                     $scope.obtenerTiposSolicitud($location.search().idTipoSolicitud);
                     document.getElementById('anular').style.display = 'none';
                     document.getElementById('aceptar').style.display = 'none';
@@ -246,14 +248,14 @@
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <input ng-model="tiposolicitud.idTipoSolicitud" type="hidden" class="input-sm" name="idTipoSolicitud" id="idTipoSolicitud">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Nombre Solicitud</label>
-                                <input  ng-disabled="tiposolicitud.FechaBaja!==null"ng-model="tiposolicitud.NombreSolicitud"  type="text" class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="nombresolicitud" id="NombreSolicitud" required >
+                                <input  ng-disabled="tiposolicitud.FechaBaja!==null || tiposolicitud.idSala===null" ng-model="tiposolicitud.NombreSolicitud"  type="text" class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="nombresolicitud" id="NombreSolicitud" required >
                                 <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.nombresolicitud.$dirty && formulario.nombresolicitud.$invalid">
                                 <span ng-show="formulario.nombresolicitud.$error.required">* Nombre de solicitud obligatorio.</span>
                                  </span>
                     </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Descripción Solicitud</label>
-                                <input ng-disabled="tiposolicitud.FechaBaja!==null" ng-model="tiposolicitud.DescripcionSolicitud" ng-required="true" type="text" class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12"  name="descripcionsolicitud" id="DescripcionSolicitud">
+                                <input ng-disabled="tiposolicitud.FechaBaja!==null || tiposolicitud.idSala===null" ng-model="tiposolicitud.DescripcionSolicitud" ng-required="true" type="text" class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12"  name="descripcionsolicitud" id="DescripcionSolicitud">
                                 <span class="col-lg-2 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.descripcionsolicitud.$dirty && formulario.descripcionsolicitud.$invalid">
                                 <span ng-show="formulario.descripcionsolicitud.$error.required">* Descripción de solicitud obligatoria.</span>
                                  </span>
@@ -266,8 +268,8 @@
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Fecha Baja</label>
                                 <input ng_disabled="true" ng-model="tiposolicitud.FechaBaja" type="text" class="input-sm col-md-2 col-sm-4 col-xs-8" name="FechaBaja" id="FechaBaja" >                                     
                                 </div>
-                                <input style='display:none;' id="aceptar" class="btn btn-sm btn-success" type="submit" value="Aceptar" ng-click="guardarTipoSolicitud();" ng-disabled="formulario.$invalid" />
-                                <input style='display:none;' id="anular" class="btn btn-sm btn-danger" type="submit" value="Anular" ng-click="anularTipoSolicitud();"/>
+								<input style='display:none;' id="anular" class="btn btn-sm btn-danger" type="submit" value="Anular" ng-click="anularTipoSolicitud();"/>
+								<input style='display:none;' id="aceptar" class="btn btn-sm btn-success" type="submit" value="Aceptar" ng-click="guardarTipoSolicitud();" ng-disabled="formulario.$invalid" />
                                 <input style='display:none;' id="activar" class="btn btn-sm btn-action" type="submit" value="Activar" ng-click="activarTipoSolicitud();"/>
                                 <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='TipoSolicitud.php' " />
 

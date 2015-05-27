@@ -119,6 +119,7 @@ class AdministradorBO extends Rest {
         $FechaFin = $this->datosPeticion['FechaFin'];
         $PrecioPagado = $this->datosPeticion['PrecioPagado'];
         $tipoabono = $this->datosPeticion['idTipoAbono'];
+        $Renovacion = $this->datosPeticion['Renovacion'];
 
         //Modelo Solicitud
         $solicitud->setIdTipoSolicitud($idTipoSolicitud);
@@ -149,6 +150,7 @@ class AdministradorBO extends Rest {
         $solAbonoMensual->setPrecioPagado($PrecioPagado);
         $solAbonoMensual->setFechaInicio($FechaInicio);
         $solAbonoMensual->setFechaFin($FechaFin);
+        $solAbonoMensual->setRenovacion($Renovacion);
 
         //var_dump( $solAbonoMensual);
         //Inicio Transaccion
@@ -175,18 +177,16 @@ class AdministradorBO extends Rest {
     }
 
     private function crearSolicitudClaseDirigida() {
-        /*  if ($_SERVER['REQUEST_METHOD'] != "POST") {
-          $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-          } */
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
         $this->con = ConexionBD::getInstance();
         $solicitud = new SolicitudModel();
         $solClase = new DatosolicitudclasedirigidaModel();
-        $act = new ActividadsolicitudclasedirigidaModel();
 
         $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
-        $idTipoTarifa = $this->datosPeticion['idTipoTarifa'];
-        date_default_timezone_set("Europe/Madrid");
-        $FechaSolicitud = date("y/m/d H:i:s");
+        //$idTipoTarifa = $this->datosPeticion['idTipoTarifa'];
+        $FechaSolicitud = date("Y-m-d");
         $Nombre = $this->datosPeticion['Nombre'];
         $Apellidos = $this->datosPeticion['Apellidos'];
         $DNI = $this->datosPeticion['DNI'];
@@ -195,13 +195,13 @@ class AdministradorBO extends Rest {
         $CP = $this->datosPeticion['CP'];
         $Sexo = $this->datosPeticion['Sexo'];
         $FechaNacimiento = $this->datosPeticion['FechaNacimiento'];
-        $TutorLegal = $this->datosPeticion['TutorLegal'];
-        $Localidad = $this->datosPeticion['Localidad'];
+        $TutorLegal = $this->datosPeticion['tutor'];
+        $Localidad = $this->datosPeticion['localidad'];
         $Telefono1 = $this->datosPeticion['Telefono1'];
         $Telefono2 = $this->datosPeticion['Telefono2'];
         $Provincia = $this->datosPeticion['Provincia'];
-        $DescripcionSolicitud = $this->datosPeticion['DescripcionSolicitud'];
-        $Otros = $this->datosPeticion['Otros'];
+        //$DescripcionSolicitud = $this->datosPeticion['DescripcionSolicitud'];
+        //$Otros = $this->datosPeticion['Otros'];
         $Localizador1 = md5($this->generarLocalizador($Nombre, $Apellidos, $FechaSolicitud, $DNI));
         $Localizador = substr($Localizador1, 0, 6);
         $anulado = 0;
@@ -213,11 +213,11 @@ class AdministradorBO extends Rest {
         $Oficina = $this->datosPeticion['Oficina'];
         $DigitoControl = $this->datosPeticion['DigitoControl'];
         $Cuenta = $this->datosPeticion['Cuenta'];
-        $actividad = $this->datosPeticion['IdActividad'];
+        $actividad = $this->datosPeticion['Actividad'];
 
         //Modelo Solicitud
         $solicitud->setIdTipoSolicitud($idTipoSolicitud);
-        $solicitud->setIdTipoTarifa($idTipoTarifa);
+        //$solicitud->setIdTipoTarifa($idTipoTarifa);
         $solicitud->setFechaSolicitud($FechaSolicitud);
         $solicitud->setNombre($Nombre);
         $solicitud->setApellidos($Apellidos);
@@ -232,34 +232,41 @@ class AdministradorBO extends Rest {
         $solicitud->setTelefono1($Telefono1);
         $solicitud->setTelefono2($Telefono2);
         $solicitud->setProvincia($Provincia);
-        $solicitud->setDescripcionSolicitud($DescripcionSolicitud);
-        $solicitud->setOtros($Otros);
+        //$solicitud->setDescripcionSolicitud($DescripcionSolicitud);
+        //$solicitud->setOtros($Otros);
         $solicitud->setLocalizador($Localizador);
         $solicitud->setAnulado($anulado);
         $solicitud->setGestionado($gestionado);
 
         //var_dump($solicitud);
-       
         //Modelo Datos Solicitud Clase Dirigida
-        $solClase->setTitular(base64_encode($Titular));
-        $solClase->setIban(base64_encode($IBAN));
-        $solClase->setEntidad(base64_encode($Entidad));
-        $solClase->setOficina(base64_encode($Oficina));
-        $solClase->setDigitoControl(base64_encode($DigitoControl));
-        $solClase->setCuenta(base64_encode($Cuenta));
+        $solClase->setTitular($Titular);
+        $solClase->setIban($IBAN);
+        $solClase->setEntidad($Entidad);
+        $solClase->setOficina($Oficina);
+        $solClase->setDigitoControl($DigitoControl);
+        $solClase->setCuenta($Cuenta);
         //var_dump($solClase);
-        
         //Modelo Datos Actividadsolicitudclasedirigida
-        $act->setIdActividad($actividad);
-        
+        $a = '';
+        foreach ($a as $actividad) {
+            $act = new ActividadsolicitudclasedirigidaModel();
+            $act->setIdActividad($a);
+        }
+
+
         //Inicio Transaccion
         try {
             $this->con->beginTransaction();
             $result1 = $solicitud->insertIntoDatabase($this->con);
             $solClase->setIdSolicitud($solicitud->getIdSolicitud());
             $result2 = $solClase->insertIntoDatabase($this->con);
-            $act->setIdSolicitud($solClase->getIdSolicitud());
-            $result3 = $act->insertIntoDatabase($this->con);
+            foreach ($a as $actividad) {
+                $act = new ActividadsolicitudclasedirigidaModel();
+                $act->setIdActividad($a);
+                $act->setIdSolicitud($solClase->getIdSolicitud());
+                $result3 = $act->insertIntoDatabase($this->con);
+            }
             $this->con->commit();
         } catch (Exception $e) {
             $this->con->rollBack();
@@ -286,89 +293,32 @@ class AdministradorBO extends Rest {
 
         $this->con = ConexionBD::getInstance();
         $solicitud = new SolicitudModel();
-
-        //echo $solicitud->getIdSolicitud();
+		
+        
         $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
-        $idTipoTarifa = $this->datosPeticion['idTipoTarifa'];
-        date_default_timezone_set("Europe/Madrid");
-        $FechaSolicitud = date("y/m/d H:i:s");
+        $FechaSolicitud = date("Y-m-d");
         $Nombre = $this->datosPeticion['Nombre'];
         $Apellidos = $this->datosPeticion['Apellidos'];
         $DNI = $this->datosPeticion['DNI'];
         $EMail = $this->datosPeticion['EMail'];
-        $Direccion = $this->datosPeticion['Direccion'];
-        $CP = $this->datosPeticion['CP'];
-        $Sexo = $this->datosPeticion['Sexo'];
-        $FechaNacimiento = $this->datosPeticion['FechaNacimiento'];
-        $TutorLegal = $this->datosPeticion['TutorLegal'];
-        $Localidad = $this->datosPeticion['Localidad'];
-        $Telefono1 = $this->datosPeticion['Telefono1'];
-        $Telefono2 = $this->datosPeticion['Telefono2'];
-        $Provincia = $this->datosPeticion['Provincia'];
-        $DescripcionSolicitud = $this->datosPeticion['DescripcionSolicitud'];
-        $Otros = $this->datosPeticion['Otros'];
         $Localizador1 = md5($this->generarLocalizador($Nombre, $Apellidos, $FechaSolicitud, $DNI));
         $Localizador = substr($Localizador1, 0, 6);
-        $FechaAbonoDiario = $this->datosPeticion['FechaAbonoDiario'];
+        $FechaAbonoDiario = date("Y-m-d",strtotime($this->datosPeticion['FechaAbonoDiario']));
         $anulado = 0;
         $gestionado = 0;
-
-
-        //if (!$this->existeUsuario($email)) {  
-        /* $query = $this->_conn->prepare("INSERT into solicitud(idSolicitud,Fecha,Nombre,Apellido1,Apellido2,DNI,EMail,Calle,Piso,CP,Sexo,FechaNacimiento,TutorLegal,Localidad,Telefono1,Telefono2,Provincia,TipoSolicitud,TipoPrecio,Descripcion,Otros,Localizador) 
-          VALUES (:idSolicitud,:Fecha,:Nombre,:Apellido1,:Apellido2,:DNI,:EMail,:Calle,:Piso,:CP,:Sexo,:FechaNacimiento,:TutorLegal,:Localidad,:Telefono1,:Telefono2,:Provincia,:TipoSolicitud,:TipoPrecio,:Descripcion,:Otros,:Localizador)");
-          $query->bindValue(":idSolicitud", $idSolicitud);
-          $query->bindValue(":Fecha", $Fecha);
-          $query->bindValue(":Nombre", $Nombre);
-          $query->bindValue(":Apellido1", $Apellido1);
-          $query->bindValue(":Apellido2", $Apellido2);
-          $query->bindValue(":DNI", $DNI);
-          $query->bindValue(":Email", $Email);
-          $query->bindValue(":Calle", $Calle);
-          $query->bindValue(":Piso", $Piso);
-          $query->bindValue(":CP", $CP);
-          $query->bindValue(":Sexo", $Sexo);
-          $query->bindValue(":FechaNacimiento", $FechaNacimiento);
-          $query->bindValue(":TutorLegal", $TutorLegal);
-          $query->bindValue(":Localidad", $Localidad);
-          $query->bindValue(":Telefono1", $Telefono1);
-          $query->bindValue(":Telefono2", $Telefono2);
-          $query->bindValue(":Provincia", $Provincia);
-          $query->bindValue(":TipoSolicitud", $TipoSolicitud);
-          $query->bindValue(":TipoPrecio", $TipoPrecio);
-          $query->bindValue(":Descripcion", $Descripcion);
-          $query->bindValue(":Otros", $Otros);
-          $query->bindValue(":Localizador", $Localizador);
-          $query->execute(); */
-
-
-
-        //var_dump($solicitud);
-        //$solicitud->setIdTipoSolicitud($idSolicitud);
+ 
+        
         $solicitud->setIdTipoSolicitud($idTipoSolicitud);
-        $solicitud->setIdTipoTarifa($idTipoTarifa);
         $solicitud->setFechaSolicitud($FechaSolicitud);
         $solicitud->setNombre($Nombre);
         $solicitud->setApellidos($Apellidos);
         $solicitud->setDni($DNI);
         $solicitud->setEMail($EMail);
-        $solicitud->setDireccion($Direccion);
-        $solicitud->setCp($CP);
-        $solicitud->setSexo($Sexo);
-        $solicitud->setFechaNacimiento($FechaNacimiento);
-        $solicitud->setTutorLegal($TutorLegal);
-        $solicitud->setLocalidad($Localidad);
-        $solicitud->setTelefono1($Telefono1);
-        $solicitud->setTelefono2($Telefono2);
-        $solicitud->setProvincia($Provincia);
-        $solicitud->setDescripcionSolicitud($DescripcionSolicitud);
-        $solicitud->setOtros($Otros);
         $solicitud->setLocalizador($Localizador);
         $solicitud->setFechaAbonoDiario($FechaAbonoDiario);
         $solicitud->setAnulado($anulado);
         $solicitud->setGestionado($gestionado);
 
-        //var_dump($solicitud);
 
         $result = $solicitud->insertIntoDatabase($this->con);
 
@@ -383,13 +333,7 @@ class AdministradorBO extends Rest {
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         } else
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
-        //}  
-        //else  
-        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(8)), 400);  
-        //} else {  
-        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);  
-        //}  
-    }
+   }
 
     private function obtenerSolicitudes() {
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
@@ -646,140 +590,6 @@ class AdministradorBO extends Rest {
         //}  
     }
 
-    //Metodos CRUD Usuario
-    private function obtenerUsuarios() {
-        if ($_SERVER['REQUEST_METHOD'] != "GET") {
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-        }
-        //$query = $this->_conn->query("SELECT idSala,Nombre,Capacidad,Descripcion FROM sala");  
-        //$filas = $query->fetchAll(PDO::FETCH_ASSOC);  
-
-        $this->con = ConexionBD::getInstance();
-        $usuario = new UsuarioModel();
-
-        $filas = $usuario->findBySql($this->con, UsuarioModel::SQL_SELECT);
-
-        $num = count($filas);
-        if ($num > 0) {
-            $respuesta['estado'] = 'correcto';
-
-            for ($i = 0; $i < $num; $i++) {
-                $array[] = $filas[$i]->toHash();
-            }
-
-            $respuesta['usuarios'] = $array;
-            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
-        }
-        $this->mostrarRespuesta($this->devolverError(2), 204);
-    }
-
-    private function crearUsuario() {
-        if ($_SERVER['REQUEST_METHOD'] != "POST") {
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-        }
-        //if (isset($this->datosPeticion['nombre'], $this->datosPeticion['email'], $this->datosPeticion['pwd'])) {
-
-        $NombreUsuario = $this->datosPeticion['NombreUsuario'];
-        $Password = md5($this->datosPeticion['Password']);
-        $TipoUsuario = $this->datosPeticion['TipoUsuario'];
-        date_default_timezone_set("Europe/Madrid");
-        $FechaAlta = date("y/m/d H:i:s");
-
-        $this->con = ConexionBD::getInstance();
-        $usuario = new UsuarioModel();
-
-        $usuario->setNombreUsuario($NombreUsuario);
-        $usuario->setPassword($Password);
-        $usuario->setTipoUsuario($TipoUsuario);
-        $usuario->setFechaAlta($FechaAlta);
-
-        $result = $usuario->insertIntoDatabase($this->con);
-
-        if ($result) {
-            //$id = $this->_conn->lastInsertId();  
-            $respuesta['estado'] = 'correcto';
-            $respuesta['msg'] = 'usuario creado correctamente';
-            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
-        } else
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
-    }
-
-    private function actualizarUsuario() {
-        if ($_SERVER['REQUEST_METHOD'] != "PUT") {
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-        }
-        //echo $idUsuario . "<br/>";  
-        if (isset($this->datosPeticion['idUsuario'])) {
-            $idUsuario = $this->datosPeticion['idUsuario'];
-            $NombreUsuario = $this->datosPeticion['NombreUsuario'];
-            $Password = $this->datosPeticion['Password'];
-            $TipoUsuario = $this->datosPeticion['TipoUsuario'];
-
-            date_default_timezone_set("Europe/Madrid");
-            $Fecha = date("y/m/d H:i:s");
-
-            if (!empty($idUsuario)) {
-                $this->con = ConexionBD::getInstance();
-                $usuario = new UsuarioModel();
-
-                $usuario->setIdUsuario($idUsuario);
-                $usuario->setFechaBaja($Fecha);
-
-                $resultUpdate = $usuario->updateToDatabase($this->con);
-
-                $usuario->setIdUsuario($idUsuario);
-                $usuario->setNombreUsuario($NombreUsuario);
-                $usuario->setPassword($Password);
-                $usuario->setTipoUsuario($TipoUsuario);
-                $usuario->setFechaAlta($Fecha);
-
-                $resultInsert = $usuario->insertIntoDatabase($this->con);
-
-                if (count($resultUpdate) == 1 && count($resultInsert) == 1) {
-                    $resp = array('estado' => "correcto", "msg" => "precio actualizado");
-                    $this->mostrarRespuesta($this->convertirJson($resp), 200);
-                } else {
-                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
-                }
-            }
-        }
-        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
-    }
-
-    private function obtenerUsuario() {
-        if ($_SERVER['REQUEST_METHOD'] != "POST") {
-            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
-        }
-
-        //el constructor del padre ya se encarga de sanear los datos de entrada  
-        $idUsuario = $this->datosPeticion['idUsuario'];
-
-        //consulta preparada ya hace mysqli_real_escape()  
-        /* $query = $this->_conn->prepare("SELECT idSala, Nombre, Capacidad, Descripcion FROM sala WHERE idSala=:idSala");
-          $query->bindValue(":idSala", $idSala);
-          $fila = $query->execute();
-
-          $query->execute(); */
-
-        $this->con = ConexionBD::getInstance();
-        $usuario = new UsuarioModel();
-
-        $fila = $usuario->findById($this->con, $idUsuario);
-
-
-        if ($fila) {
-            $respuesta['estado'] = 'correcto';
-            $respuesta['usuario']['idUsuario'] = $fila->getIdUsuario();
-            $respuesta['usuario']['NombreUsuario'] = $fila->getNombreUsuario();
-            $respuesta['usuario']['Password'] = $fila->getPassword();
-            $respuesta['usuario']['TipoUsuario'] = $fila->getTipoUsuario();
-            $respuesta['usuario']['FechaAlta'] = $fila->getFechaAlta();
-            $respuesta['usuario']['FechaBaja'] = $fila->getFechaBaja();
-            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
-        }
-        $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
-    }
-
     private function codigoQR() {
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
@@ -844,7 +654,7 @@ class AdministradorBO extends Rest {
         //$mail->AddCC("mariosgsg@gmail.com");
         //$mail->AddBCC("mariosgsg@gmail.com");
 
-        $body = "Hola <strong>amigo</strong><br>";
+        $body = "Hola <strong>amigo</strong><br> La compra se ha realizado con éxito.<br> Muestra este localizador a la entrada: " . $loc;
         //$body .= "probando <i>PHPMailer<i>.<br><br>";
         //$body .= "<font color='red'>Saludos</font>";
         $mail->Body = $body;

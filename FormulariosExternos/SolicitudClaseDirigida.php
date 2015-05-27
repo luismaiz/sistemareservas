@@ -67,7 +67,7 @@
 
                 switch (cp) {
                     case 1:
-                        provincia = 'Álava';
+                        provincia = 'Ã�lava';
                         break;
 
                     case 2:
@@ -79,11 +79,11 @@
                         break;
 
                     case 4:
-                        provincia = 'Almería';
+                        provincia = 'AlmerÃ­a';
                         break;
 
                     case 5:
-                        provincia = 'Ávila';
+                        provincia = 'Ã�vila';
                         break;
 
                     case 6:
@@ -103,15 +103,15 @@
                         break;
 
                     case 10:
-                        provincia = 'Cáceres';
+                        provincia = 'CÃ¡ceres';
                         break;
 
                     case 11:
-                        provincia = 'Cádiz';
+                        provincia = 'CÃ¡diz';
                         break;
 
                     case 12:
-                        provincia = 'Castellón';
+                        provincia = 'CastellÃ³n';
                         break;
 
                     case 13:
@@ -119,11 +119,11 @@
                         break;
 
                     case 14:
-                        provincia = 'Córdoba';
+                        provincia = 'CÃ³rdoba';
                         break;
 
                     case 15:
-                        provincia = 'La Coruña';
+                        provincia = 'La CoruÃ±a';
                         break;
 
                     case 16:
@@ -143,7 +143,7 @@
                         break;
 
                     case 20:
-                        provincia = 'Guipúzcua';
+                        provincia = 'GuipÃºzcua';
                         break;
 
                     case 21:
@@ -155,15 +155,15 @@
                         break;
 
                     case 23:
-                        provincia = 'Jaén';
+                        provincia = 'JaÃ©n';
                         break;
 
                     case 24:
-                        provincia = 'León';
+                        provincia = 'LeÃ³n';
                         break;
 
                     case 25:
-                        provincia = 'Lérida';
+                        provincia = 'LÃ©rida';
                         break;
 
                     case 26:
@@ -179,7 +179,7 @@
                         break;
 
                     case 29:
-                        provincia = 'Málaga';
+                        provincia = 'MÃ¡laga';
                         break;
 
                     case 30:
@@ -280,9 +280,9 @@
         };
         $scope.calcularFecha = function (fecha) {
             var values = fecha.split("-");
-            var dia = parseInt(values[2]);
+            var dia = parseInt(values[0]);
             var mes = parseInt(values[1]);
-            var ano = parseInt(values[0]);
+            var ano = parseInt(values[2]);
 
             // cogemos los valores actuales
             var fecha_hoy = new Date();
@@ -307,7 +307,7 @@
             return edad;
         };
         $scope.esMenor = function () {
-            var edad = $scope.calcularFecha($scope.s.fechanacimiento);
+            var edad = $scope.calcularFecha($scope.s.FechaNacimiento);
             if (edad < 18) {
                 $scope.menor = true;
             } else {
@@ -326,11 +326,12 @@
         $scope.enviar = function (s) {
             var URL = BASE_URL.concat('Sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSolicitudClaseDirigida');
 
-            var Params = '&idTipoSolicitud=2&';
+            var Params = '&idTipoSolicitud=1&';
             Params += jQuery.param(s);
             Ajax.open("POST", URL, false);
             Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             Ajax.send(Params); // Enviamos los datos
+            alert(Ajax.responseText);
             var response = Ajax.responseText;
             console.log(response);
             $scope.estado = JSON.parse(response).estado;
@@ -356,11 +357,11 @@
             currentText: 'Hoy',
             monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
             monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
-            dayNamesMin: ['Do', 'Lun', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'MiÃ©rcoles', 'Jueves', 'Viernes', 'SÃ¡bado'],
+            dayNamesShort: ['Dom', 'Lun', 'Mar', 'MiÃ©', 'Juv', 'Vie', 'SÃ¡b'],
+            dayNamesMin: ['Do', 'Lun', 'Ma', 'Mi', 'Ju', 'Vi', 'SÃ¡'],
             weekHeader: 'Sm',
-            dateFormat: 'yy-mm-dd',
+            dateFormat: 'dd-mm-yy',
             firstDay: 1,
             isRTL: false,
             showMonthAfterYear: false,
@@ -377,7 +378,7 @@
                 if (!ngModel)
                     return;
                 var optionsObj = {};
-                optionsObj.dateFormat = 'yy-mm-dd';
+                optionsObj.dateFormat = 'dd-mm-yy';
                 var updateModel = function (dateTxt) {
                     scope.$apply(function () {
                         // Call the internal AngularJS helper to
@@ -422,13 +423,13 @@
                                         </div>
                                         <div id="actividades">
                                             <label ng_repeat="actividad in actividades"   class="control-label col-md-4 col-sm-4 col-xs-4">
-                                                <input type="checkbox" name="actividades" ng-model="s.Actividades" ng-value="{{ actividad.idActividad}}" ng-checked="selection.indexOf(actividad.idActividad) > -1" ng-click="toggleSelection(actividad.idActividad)" checklist-model="actividad" checklist-value="actividad">&nbsp; {{ actividad.NombreActividad}}</label>
+                                                <input type="checkbox" name="actividades" ng-value="{{ actividad.idActividad}}" ng-checked="selection.indexOf(actividad.idActividad) > 0" ng-click="toggleSelection(actividad.idActividad)" checklist-model="actividad" checklist-value="Actividad">&nbsp; {{ actividad.NombreActividad}}</label>
                                         </div>
                                     </div>
                                 </div>
                             </fieldset>
                             <ul class="pager">
-                                <li class="btn next"><a ng-click="avanzar(1);" >Siguiente &rarr;</a></li>
+                                <li class="next"><a ng-click="avanzar(1);" >Siguiente &rarr;</a></li>
                             </ul>
                         </div>
                         <div class="tab-pane active" id="tab2" ng-show="tab2">
@@ -469,7 +470,7 @@
                                             <label class="control-label" >E-mail</label><input type="email" name="EMail" ng-model="s.EMail" class="form-control" required placeholder="info@developerji.com"/>
                                             <span style="color:red" ng-show="formulario.EMail.$dirty && formulario.EMail.$invalid">
                                                 <span ng-show="formulario.EMail.$error.required">Email obligatorio.</span>
-                                                <span ng-show="formulario.EMail.$error.email">Formato de email no válido.</span>
+                                                <span ng-show="formulario.EMail.$error.email">Formato de email no vÃ¡lido.</span>
                                             </span>
                                             <br />
                                         </div>                                
@@ -479,7 +480,7 @@
                                             <label class="control-label" ><input type="radio" ng-model="s.Sexo" name="Sexo" value="H" id="Sexo"/>&nbsp;Hombre&nbsp;</label>
                                         </div>
                                         <div class="col-md-5 col-sm-5 input-group-lg">
-                                            <label class="control-label" >Fecha nacimiento</label><input type="text" name="FechaNacimiento" ng-model="s.FechaNacimiento" datepicker class="form-control" id="FechaNacimiento" ng-change="esMenor(s.FechaNacimiento);" ng-pattern="/^(199\d|[2-9]\d{3})\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/" required placeholder="yyyy-mm-dd">
+                                            <label class="control-label" >Fecha nacimiento</label><input type="text" name="FechaNacimiento" ng-model="s.FechaNacimiento" datepicker class="form-control" id="FechaNacimiento" ng-change="esMenor();" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required placeholder="yyyy-mm-dd">
                                             <span style="color:red" ng-show="formulario.FechaNacimiento.$dirty && formulario.FechaNacimiento.$invalid">
                                                 <span ng-show="formulario.FechaNacimiento.$error.pattern">* Formato de fecha no valido.</span>
                                                 <span ng-show="formulario.FechaNacimiento.$error.required">* Fecha obligatoria.</span>
@@ -491,26 +492,27 @@
                                     </div>
                                     <div class="col-md-12 col-sm-12 input-group-lg">
                                         <label class="control-label">
-                                            <input type="checkbox" name="aceptado" ng-model="aceptado" required />&nbsp;Acepto los términos y condiciones</label>
+                                            <input type="checkbox" name="aceptado" ng-model="aceptado" required />&nbsp;Acepto los tÃ©rminos y condiciones</label>
                                     </div>
                                 </div>
                             </fieldset>
                             <ul class="pager">
                                 <li class="previous"><a href="" ng-click="avanzar(0);">&larr; Anterior</a></li>
-                                <li class="next"><a href="" ng-click="avanzar(2);">Siguiente &rarr;</a></li>
+                                <li class="next"><a class="btn" ng-disabled="formulario.Nombre.$error.required || formulario.Apellidos.$error.required || formulario.DNI.$error.required
+                                    || formulario.EMail.$error.required || formulario.FechaNacimiento.$error.required || formulario.aceptado.$error.required" ng-click="avanzar(2);">Siguiente &rarr;</a></li>
                             </ul>
                         </div>
                         <div class="tab-pane active" id="tab3" ng-show="tab3">
                             <ol class="breadcrumb">
                                 <li class="active">Clases Dirigidas</li>
                                 <li class="active">Datos Personales</li>
-                                <li class="active">Datos Dirección</li>
+                                <li class="active">Datos DirecciÃ³n</li>
                             </ol>
                             <fieldset>
                                 <div class="col-md-10 col-sm-10 input-group-lg">
                                     <label class="control-label" >Direcci&oacute;n&nbsp;</label><input type="text" class="form-control" name="Direccion" ng-model="s.Direccion" required  placeholder="Calle los Emigrantes  16" id="Direccion"  />  
                                     <span style="color:red" ng-show="formulario.Direccion.$dirty && formulario.Direccion.$invalid">
-                                        <span ng-show="formulario.Direccion.$error.required">* Dirección obligatoria.</span>
+                                        <span ng-show="formulario.Direccion.$error.required">* DirecciÃ³n obligatoria.</span>
                                     </span>
                                 </div>
                                 <div class="col-md-5 col-sm-5 input-group-lg">
@@ -519,7 +521,7 @@
                                 <div class="col-md-2 col-sm-2 input-group-lg">
                                     <label class="control-label" >Codigo Postal&nbsp;</label><input type="number" class="form-control" name="CP" ng-model="s.CP" min="01000" max="54999" id="CP" placeholder="28040" ng-pattern="/^[0-9]{4,5}/" ng-change="obtenerProvincia(s.CP);" maxlength="5" />
                                     <span style="color:red" ng-show="formulario.CP.$dirty && formulario.CP.$invalid">
-                                        <span ng-show="formulario.CP.$error.pattern">* Formato de CP no valido.</span>
+                                        <span ng-show="formulario.CP.$error.pattern">* CP no valido.</span>
                                         <span ng-show="formulario.CP.$error.required">* CP obligatorio.</span>
                                         <span ng-show="formulario.CP.$error.number">* CP no valido </span>
                                     </span>
@@ -544,14 +546,15 @@
                             </fieldset>
                             <ul class="pager">
                                 <li class="previous"><a href="" ng-click="avanzar(1);">&larr; Anterior</a></li>
-                                <li class="next"><a href="" ng-click="avanzar(3);">Siguiente &rarr;</a></li>
+                                <li class="next"><a class="btn" ng-disabled="formulario.Direccion.$error.required || formulario.Localidad.$error.required || formulario.CP.$error.required
+                                    || formulario.Telefono1.$error.required" ng-click="avanzar(3);">Siguiente &rarr;</a></li>
                             </ul>
                         </div>
                         <div class="tab-pane active" id="tab4" ng-show="tab4">
                             <ol class="breadcrumb">
                                 <li class="active">Clases Dirigidas</li>
                                 <li class="active">Datos Personales</li>
-                                <li class="active">Datos Dirección</li>
+                                <li class="active">Datos DirecciÃ³n</li>
                                 <li class="active">Datos Bancarios</li>
                             </ol>
                             <fieldset>
@@ -607,8 +610,8 @@
                                 </div>
                             </fieldset>
                             <ul class="pager">
-                                <li class="previous"><a href="" ng-click="avanzar(2);">&larr; Anterior</a></li>
-                                <li class="btn next"><a ng-disabled="formulario.$invalid" ng-click="enviar(s);">&nbsp;Enviar&nbsp;&nbsp;</a></li>
+                                <li class="previous"><a ng-click="avanzar(2);">&larr; Anterior</a></li>
+                                <li class="next"><a class="btn" ng-disabled="formulario.$invalid" ng-click="enviar(s);">&nbsp;Enviar&nbsp;&nbsp;</a></li>
                             </ul>
                         </div>
                     </div>

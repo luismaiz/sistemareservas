@@ -163,7 +163,8 @@
                 copiedEventObject.start =  inicio;
                 copiedEventObject.end =  fin;
                 copiedEventObject.allDay = false;
-                var json = {idActividad:$idActividad,idSala:3,FechaInicio:inicio, FechaFin:fin, Ocupacion:'', Dia:0, Publicada:1};
+                var json = {idActividad:$idActividad,idSala:156,FechaInicio:inicio, FechaFin:fin, Ocupacion:'', Dia:0, Publicada:1};
+                
                 $.ajax({
                     type: "POST",
                     url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=crearClaseGMT'),
@@ -173,7 +174,7 @@
                     async: true,
 
                     success: function(data, textStatus) {
-                        
+                        alert();
                         copiedEventObject.idClase = data.idClase;
                         copiedEventObject.id = data.idClase;
                         //copiedEventObject.idSala = 3;
@@ -184,9 +185,12 @@
                         //$('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
                         $('#calendar').fullCalendar('removeEvents' );
                         $('#calendar').fullCalendar( 'refetchEvents' );
-                        setTimeout(function() { $('#calendar').fullCalendar('refetchEvents');},0);
+                        //setTimeout(function() { $('#calendar').fullCalendar('refetchEvents');},0);
                     },
                     error: function( jqXHR, textStatus, errorThrown ) {
+                        alert(jqXHR.error);
+                        alert(jqXHR.textStatus);
+                        alert(jqXHR.errorThrown);
                 }}); 
 				
             },

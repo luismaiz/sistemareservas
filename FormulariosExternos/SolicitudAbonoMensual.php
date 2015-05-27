@@ -11,7 +11,7 @@
 
                 switch (cp) {
                     case 1:
-                        provincia = 'Álava';
+                        provincia = 'Ã�lava';
                         break;
 
                     case 2:
@@ -23,11 +23,11 @@
                         break;
 
                     case 4:
-                        provincia = 'Almería';
+                        provincia = 'AlmerÃ­a';
                         break;
 
                     case 5:
-                        provincia = 'Ávila';
+                        provincia = 'Ã�vila';
                         break;
 
                     case 6:
@@ -47,15 +47,15 @@
                         break;
 
                     case 10:
-                        provincia = 'Cáceres';
+                        provincia = 'CÃ¡ceres';
                         break;
 
                     case 11:
-                        provincia = 'Cádiz';
+                        provincia = 'CÃ¡diz';
                         break;
 
                     case 12:
-                        provincia = 'Castellón';
+                        provincia = 'CastellÃ³n';
                         break;
 
                     case 13:
@@ -63,11 +63,11 @@
                         break;
 
                     case 14:
-                        provincia = 'Córdoba';
+                        provincia = 'CÃ³rdoba';
                         break;
 
                     case 15:
-                        provincia = 'La Coruña';
+                        provincia = 'La CoruÃ±a';
                         break;
 
                     case 16:
@@ -87,7 +87,7 @@
                         break;
 
                     case 20:
-                        provincia = 'Guipúzcua';
+                        provincia = 'GuipÃºzcua';
                         break;
 
                     case 21:
@@ -99,15 +99,15 @@
                         break;
 
                     case 23:
-                        provincia = 'Jaén';
+                        provincia = 'JaÃ©n';
                         break;
 
                     case 24:
-                        provincia = 'León';
+                        provincia = 'LeÃ³n';
                         break;
 
                     case 25:
-                        provincia = 'Lérida';
+                        provincia = 'LÃ©rida';
                         break;
 
                     case 26:
@@ -123,7 +123,7 @@
                         break;
 
                     case 29:
-                        provincia = 'Málaga';
+                        provincia = 'MÃ¡laga';
                         break;
 
                     case 30:
@@ -441,9 +441,9 @@
             currentText: 'Hoy',
             monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
             monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
-            dayNamesMin: ['Do', 'Lun', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'MiÃ©rcoles', 'Jueves', 'Viernes', 'SÃ¡bado'],
+            dayNamesShort: ['Dom', 'Lun', 'Mar', 'MiÃ©', 'Juv', 'Vie', 'SÃ¡b'],
+            dayNamesMin: ['Do', 'Lun', 'Ma', 'Mi', 'Ju', 'Vi', 'SÃ¡'],
             weekHeader: 'Sm',
             dateFormat: 'yy-mm-dd',
             firstDay: 1,
@@ -532,7 +532,7 @@
                         return valido;
                     }
                     else {
-                        console.log('No se permite comprar abonos de días pasados');
+                        console.log('No se permite comprar abonos de dÃ­as pasados');
                         return valido;
                     }
                 };
@@ -563,11 +563,11 @@
             <form class="submission box style" name="formulario" novalidate>
                 <div class="alert alert-danger" id="divError" style='display:none;'>
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <strong>Error</strong> Se ha producido un error al realizar la operación.
+                    <strong>Error</strong> Se ha producido un error al realizar la operaciÃ³n.
                 </div>
                 <div class="alert alert-success" id="divCorrecto" style='display:none;'>
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <strong>Correcto.</strong>  Operación realizada con éxito.
+                    <strong>Correcto.</strong>  OperaciÃ³n realizada con Ã©xito.
                 </div>
                 <div class="tab-content" ng-init="tab1 = true">
                     <div class="tab-pane active" id="tab1" ng-show="tab1">
@@ -585,39 +585,41 @@
                                     </div>-->
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 input-group-lg">
                                         <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Tipo Abono</label>
-                                        <select  id="filtroTipoAbono" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" ng-model="s.idTipoAbono" ng-init="s.idTipoAbono = tiposAbonos[0].idTipoAbono"> >	
+                                        <select id="filtroTipoAbono" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" ng-model="s.idTipoAbono" name="idTipoAbono" required>	
                                             <option ng_repeat="tipoabono in tiposAbonos" value="{{tipoabono.idTipoAbono}}">{{tipoabono.NombreAbono}}</option>
                                         </select>
                                         <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Tipo Tarifa</label>
-                                        <select  id="filtroTipoTarifa" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" ng-model="s.idTipoTarifa">	
+                                        <select id="filtroTipoTarifa" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" ng-model="s.idTipoTarifa" name="idTipoTarifa" required>	
                                             <option ng_repeat="tipotarifa in tiposTarifas" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>
                                         </select>
                                         <br>
                                     </div>
-                                    <div class="col-md-6 col-sm-6 input-group-lg">
-                                        <label class="control-label" >Fecha de Inicio</label><input type="text" datepickerAbono name="FechaInicio" id="FechaInicio" ng-model="s.FechaInicio" class="form-control" id="FechaInicio" ng-pattern="/^(199\d|[2-9]\d{3})\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/" required placeholder="yyyy-mm-dd" ng-change="calcularFechaFin(s.FechaInicio);"/>
-                                        <span style="color:red" ng-show="formulario.FechaInicio.$dirty && formulario.FechaInicio.$invalid">
-                                            <span ng-show="formulario.FechaInicio.$error.pattern">* Formato de fecha no valido.</span>
-                                            <span ng-show="formulario.FechaInicio.$error.required">* Fecha obligatoria.</span>
-                                            <span ng-show="formulario.FechaInicio.$error.caducado">* No se pueden comprar abonos caducados</span>
-                                        </span>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 input-group-lg">
-                                        <label class="control-label" >Fecha Fin</label><input type="text" name="FechaFin" ng-model="s.FechaFin" class="form-control" id="FechaFin" placeholder="yyyy-mm-dd" readonly />                                      
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 input-group-lg">
-                                        <label class="control-label" >Precio a Pagar</label><input type="text" name="PrecioPagado" ng-model="s.PrecioPagado" class="form-control" id="FPrecioPagado" ng-value="{{s.PrecioPagado}}" readonly />                                        
+                                    <div ng-hide="formulario.idTipoAbono.$error.required || formulario.idTipoTarifa.$error.required">
+                                        <div class="col-md-6 col-sm-6 input-group-lg">
+                                            <label class="control-label" >Fecha de Inicio</label><input type="text" datepickerAbono name="FechaInicio" id="FechaInicio" ng-model="s.FechaInicio" class="form-control" id="FechaInicio" ng-pattern="/^(199\d|[2-9]\d{3})\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/" required placeholder="yyyy-mm-dd" ng-change="calcularFechaFin(s.FechaInicio);"/>
+                                            <span style="color:red" ng-show="formulario.FechaInicio.$dirty && formulario.FechaInicio.$invalid">
+                                                <span ng-show="formulario.FechaInicio.$error.pattern">* Formato de fecha no valido.</span>
+                                                <span ng-show="formulario.FechaInicio.$error.required">* Fecha obligatoria.</span>
+                                                <span ng-show="formulario.FechaInicio.$error.caducado">* No se pueden comprar abonos caducados</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 input-group-lg">
+                                            <label class="control-label" >Fecha Fin</label><input type="text" name="FechaFin" ng-model="s.FechaFin" class="form-control" id="FechaFin" placeholder="yyyy-mm-dd" readonly />                                      
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 input-group-lg">
+                                            <label class="control-label" >Precio a Pagar</label><input type="text" name="PrecioPagado" ng-model="s.PrecioPagado" class="form-control" id="FPrecioPagado" ng-value="{{s.PrecioPagado}}" readonly />                                        
+                                        </div>
                                     </div>
                                     <div class="col-md-12 col-sm-12 input-group-lg">
                                         <label class="control-label">
-                                            <input type="checkbox" name="Renovacion" ng-model="s.Renovacion" required />&nbsp;Es una renovación<br></label>
+                                            <input type="checkbox" name="Renovacion" ng-model="s.Renovacion" />&nbsp;Es una renovaciÃ³n<br></label>
                                         <br>
                                     </div>
                                 </div>
                             </div>
                         </fieldset>
                         <ul class="pager">
-                            <li><a class="btn" ng-click="avanzar(1);">Siguiente &rarr;</a></li>
+                            <li><a class="btn" ng-click="avanzar(1);" ng-disabled="formulario.FechaInicio.$invalid">Siguiente &rarr;</a></li>
                         </ul>
                     </div>
                     <div class="tab-pane active" ng-show="tab2" id="2">
@@ -657,17 +659,17 @@
                                     <label class="control-label" >E-mail</label><input type="email" name="EMail" ng-model="s.EMail" class="form-control" required placeholder="info@developerji.com"/>
                                     <span style="color:red" ng-show="formulario.EMail.$dirty && formulario.EMail.$invalid">
                                         <span ng-show="formulario.EMail.$error.required">Email obligatorio.</span>
-                                        <span ng-show="formulario.EMail.$error.email">Formato de email no válido.</span>
+                                        <span ng-show="formulario.EMail.$error.email">Formato de email no vÃ¡lido.</span>
                                     </span>
                                     <br />
                                 </div>                                
-                                <div class="col-md-5 col-sm-5 input-group-lg" ng-init="s.Sexo='M'">
+                                <div class="col-md-5 col-sm-5 input-group-lg" ng-init="s.Sexo = 'M'">
                                     <label class="control-label" >Sexo</label><br>
                                     <label class="control-label" ><input type="radio" ng-model="s.Sexo" name="Sexo" value="M" checked id="Sexo" required />&nbsp;Mujer&nbsp;</label>
                                     <label class="control-label" ><input type="radio" ng-model="s.Sexo" name="Sexo" value="H" d id="Sexo"/>&nbsp;Hombre&nbsp;</label>
                                 </div>
                                 <div class="col-md-5 col-sm-5 input-group-lg">
-                                    <label class="control-label" >Fecha nacimiento</label><input type="text" datepicker name="FechaNacimiento" ng-model="s.FechaNacimiento" class="form-control" id="FechaNacimiento" ng-change="esMenor();" ng-pattern="/^(199\d|[2-9]\d{3})\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/" required placeholder="yyyy-mm-dd">
+                                    <label class="control-label" >Fecha nacimiento</label><input type="text" datepicker name="FechaNacimiento" ng-model="s.FechaNacimiento" class="form-control" id="FechaNacimiento" ng-change="esMenor();" ng-pattern="/^(199\d|[2-9]\d{3})\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/" required placeholder="yyyy-mm-dd"/>
                                     <span style="color:red" ng-show="formulario.FechaNacimiento.$dirty && formulario.FechaNacimiento.$invalid">
                                         <span ng-show="formulario.FechaNacimiento.$error.pattern">* Formato de fecha no valido.</span>
                                         <span ng-show="formulario.FechaNacimiento.$error.required">* Fecha obligatoria.</span>
@@ -679,25 +681,26 @@
                             </div>
                             <div class="col-md-12 col-sm-12 input-group-lg">
                                 <label class="control-label">
-                                    <input type="checkbox" name="aceptado" ng-model="aceptado" required />&nbsp;Acepto los términos y condiciones</label>
+                                    <input type="checkbox" name="aceptado" ng-model="aceptado" required />&nbsp;Acepto los tÃ©rminos y condiciones</label>
                             </div>
                         </fieldset>
                         <ul class="pager">
                             <li class="previous"><a ng-click="avanzar(0);">&larr; Anterior</a></li>
-                            <li class="btn next"><a ng-click="avanzar(2);" ng-disabled="formulario.$invalid">Siguiente &rarr;</a></li>
+                            <li class="next"><a class="btn" ng-click="avanzar(2);" ng-disabled="formulario.Nombre.$error.required || formulario.Apellidos.$error.required || formulario.DNI.$error.required
+                                    || formulario.EMail.$error.required || formulario.FechaNacimiento.$error.required || formulario.aceptado.$error.required">Siguiente &rarr;</a></li>
                         </ul>
                     </div>
                     <div class="tab-pane active" ng-show="tab3" id="tab3">
                         <ol class="breadcrumb">
                             <li class="active">Abono Mensual</li>
                             <li class="active">Datos Personales</li>
-                            <li class="active">Datos Dirección</li>
+                            <li class="active">Datos DirecciÃ³n</li>
                         </ol>
                         <fieldset>
                             <div class="col-md-10 col-sm-10 input-group-lg">
                                 <label class="control-label" >Direcci&oacute;n&nbsp;</label><input type="text" class="form-control" name="Direccion" ng-model="s.Direccion" required  placeholder="Calle los Emigrantes  16" id="Direccion"  />  
                                 <span style="color:red" ng-show="formulario.Direccion.$dirty && formulario.Direccion.$invalid">
-                                    <span ng-show="formulario.Direccion.$error.required">* Dirección obligatoria.</span>
+                                    <span ng-show="formulario.Direccion.$error.required">* DirecciÃ³n obligatoria.</span>
                                 </span>
                             </div>
                             <div class="col-md-5 col-sm-5 input-group-lg">
@@ -710,7 +713,7 @@
                             <div class="col-md-2 col-sm-2 input-group-lg">
                                 <label class="control-label" >Codigo Postal&nbsp;</label><input type="number" class="form-control" name="CP" ng-model="s.CP" min="01000" max="54999" id="CP" placeholder="28040" ng-pattern="/^[0-9]{4,5}/" ng-change="obtenerProvincia(s.CP);" />
                                 <span style="color:red" ng-show="formulario.CP.$dirty && formulario.CP.$invalid">
-                                    <span ng-show="formulario.CP.$error.pattern">* Formato de CP no valido.</span>
+                                    <span ng-show="formulario.CP.$error.pattern">* CP no valido.</span>
                                     <span ng-show="formulario.CP.$error.required">* CP obligatorio.</span>
                                     <span ng-show="formulario.CP.$error.number">* CP no valido </span>
                                 </span>
@@ -735,7 +738,7 @@
                         </fieldset>
                         <ul class="pager">
                             <li class="previous"><a ng-click="avanzar(1);">&larr; Anterior</a></li>
-                            <li class="btn next"><a ng-click="enviar(s);" ng-disabled="formulario.$invalid">&nbsp;Enviar&nbsp;&nbsp;</a></li>
+                            <li class="next"><a class="btn" ng-click="enviar(s);" ng-disabled="formulario.$invalid">&nbsp;Enviar&nbsp;&nbsp;</a></li>
                         </ul>
                     </div>
                 </div>

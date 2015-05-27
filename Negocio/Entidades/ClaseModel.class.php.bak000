@@ -1,23 +1,32 @@
 <?php
+
 require_once("helpers/Db2PhpEntityBase.class.php");
 require_once("helpers/Db2PhpEntityModificationTracking.class.php");
 require_once 'helpers/DFCAggregate.class.php';
 
+/**
+ * 
+ *
+ * @version 1.105
+ * @package entity
+ */
 class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTracking {
 	private static $CLASS_NAME='ClaseModel';
 	const SQL_IDENTIFIER_QUOTE='`';
 	const SQL_TABLE_NAME='clase';
-	const SQL_INSERT='INSERT INTO `clase` (`idClase`,`idActividad`,`idSala`,`FechaInicio`,`FechaFin`,`Ocupacion`,`Dia`,`Publicada`) VALUES (?,?,?,?,?,?,?,?)';
-	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `clase` (`idActividad`,`idSala`,`FechaInicio`,`FechaFin`,`Ocupacion`,`Dia`,`Publicada`) VALUES (?,?,?,?,?,?,?)';
-	const SQL_UPDATE='UPDATE `clase` SET `idClase`=?,`idActividad`=?,`idSala`=?,`FechaInicio`=?,`FechaFin`=?,`Ocupacion`=?,`Dia`=?,`Publicada`=? WHERE `idClase`=?';
+	const SQL_INSERT='INSERT INTO `clase` (`idClase`,`idActividad`,`idSala`,`FechaInicio`,`HoraInicio`,`FechaFin`,`HoraFin`,`Ocupacion`,`Dia`,`Publicada`) VALUES (?,?,?,?,?,?,?,?,?,?)';
+	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `clase` (`idActividad`,`idSala`,`FechaInicio`,`HoraInicio`,`FechaFin`,`HoraFin`,`Ocupacion`,`Dia`,`Publicada`) VALUES (?,?,?,?,?,?,?,?,?)';
+	const SQL_UPDATE='UPDATE `clase` SET `idClase`=?,`idActividad`=?,`idSala`=?,`FechaInicio`=?,`HoraInicio`=?,`FechaFin`=?,`HoraFin`=?,`Ocupacion`=?,`Dia`=?,`Publicada`=? WHERE `idClase`=?';
 	const SQL_SELECT_PK='SELECT * FROM `clase` WHERE `idClase`=?';
-	const SQL_DELETE_PK='DELETE FROM `clase` WHERE `idClase`=?';
         const SQL_SELECT='SELECT * FROM `clase`';
+	const SQL_DELETE_PK='DELETE FROM `clase` WHERE `idClase`=?';
 	const FIELD_IDCLASE=766399627;
 	const FIELD_IDACTIVIDAD=1539203806;
 	const FIELD_IDSALA=717925634;
 	const FIELD_FECHAINICIO=-1994536546;
+	const FIELD_HORAINICIO=1991559839;
 	const FIELD_FECHAFIN=-1080335502;
+	const FIELD_HORAFIN=1901521425;
 	const FIELD_OCUPACION=1616557811;
 	const FIELD_DIA=-23799336;
 	const FIELD_PUBLICADA=1325081073;
@@ -28,7 +37,9 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 		self::FIELD_IDACTIVIDAD=>'idActividad',
 		self::FIELD_IDSALA=>'idSala',
 		self::FIELD_FECHAINICIO=>'FechaInicio',
+		self::FIELD_HORAINICIO=>'HoraInicio',
 		self::FIELD_FECHAFIN=>'FechaFin',
+		self::FIELD_HORAFIN=>'HoraFin',
 		self::FIELD_OCUPACION=>'Ocupacion',
 		self::FIELD_DIA=>'Dia',
 		self::FIELD_PUBLICADA=>'Publicada');
@@ -37,7 +48,9 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 		self::FIELD_IDACTIVIDAD=>'idActividad',
 		self::FIELD_IDSALA=>'idSala',
 		self::FIELD_FECHAINICIO=>'FechaInicio',
+		self::FIELD_HORAINICIO=>'HoraInicio',
 		self::FIELD_FECHAFIN=>'FechaFin',
+		self::FIELD_HORAFIN=>'HoraFin',
 		self::FIELD_OCUPACION=>'Ocupacion',
 		self::FIELD_DIA=>'Dia',
 		self::FIELD_PUBLICADA=>'Publicada');
@@ -46,25 +59,31 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 		self::FIELD_IDACTIVIDAD=>Db2PhpEntity::PHP_TYPE_INT,
 		self::FIELD_IDSALA=>Db2PhpEntity::PHP_TYPE_INT,
 		self::FIELD_FECHAINICIO=>Db2PhpEntity::PHP_TYPE_STRING,
+		self::FIELD_HORAINICIO=>Db2PhpEntity::PHP_TYPE_STRING,
 		self::FIELD_FECHAFIN=>Db2PhpEntity::PHP_TYPE_STRING,
-		self::FIELD_OCUPACION=>Db2PhpEntity::PHP_TYPE_STRING,
+		self::FIELD_HORAFIN=>Db2PhpEntity::PHP_TYPE_STRING,
+		self::FIELD_OCUPACION=>Db2PhpEntity::PHP_TYPE_INT,
 		self::FIELD_DIA=>Db2PhpEntity::PHP_TYPE_BOOL,
 		self::FIELD_PUBLICADA=>Db2PhpEntity::PHP_TYPE_BOOL);
 	private static $FIELD_TYPES=array(
 		self::FIELD_IDCLASE=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
 		self::FIELD_IDACTIVIDAD=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
 		self::FIELD_IDSALA=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
-		self::FIELD_FECHAINICIO=>array(Db2PhpEntity::JDBC_TYPE_TIMESTAMP,19,0,true),
-		self::FIELD_FECHAFIN=>array(Db2PhpEntity::JDBC_TYPE_TIMESTAMP,19,0,true),
-		self::FIELD_OCUPACION=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,6,0,true),
+		self::FIELD_FECHAINICIO=>array(Db2PhpEntity::JDBC_TYPE_DATE,10,0,false),
+		self::FIELD_HORAINICIO=>array(Db2PhpEntity::JDBC_TYPE_TIME,8,0,true),
+		self::FIELD_FECHAFIN=>array(Db2PhpEntity::JDBC_TYPE_DATE,10,0,false),
+		self::FIELD_HORAFIN=>array(Db2PhpEntity::JDBC_TYPE_TIME,8,0,true),
+		self::FIELD_OCUPACION=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,true),
 		self::FIELD_DIA=>array(Db2PhpEntity::JDBC_TYPE_BIT,0,0,true),
 		self::FIELD_PUBLICADA=>array(Db2PhpEntity::JDBC_TYPE_BIT,0,0,true));
 	private static $DEFAULT_VALUES=array(
 		self::FIELD_IDCLASE=>null,
 		self::FIELD_IDACTIVIDAD=>0,
 		self::FIELD_IDSALA=>0,
-		self::FIELD_FECHAINICIO=>null,
-		self::FIELD_FECHAFIN=>null,
+		self::FIELD_FECHAINICIO=>'',
+		self::FIELD_HORAINICIO=>null,
+		self::FIELD_FECHAFIN=>'',
+		self::FIELD_HORAFIN=>null,
 		self::FIELD_OCUPACION=>null,
 		self::FIELD_DIA=>null,
 		self::FIELD_PUBLICADA=>null);
@@ -72,7 +91,9 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 	private $idActividad;
 	private $idSala;
 	private $FechaInicio;
+	private $HoraInicio;
 	private $FechaFin;
+	private $HoraFin;
 	private $Ocupacion;
 	private $Dia;
 	private $Publicada;
@@ -155,7 +176,7 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 	/**
 	 * set value for FechaInicio 
 	 *
-	 * type:DATETIME,size:19,default:null,nullable
+	 * type:DATE,size:10,default:null
 	 *
 	 * @param mixed $FechaInicio
 	 * @return ClaseModel
@@ -169,7 +190,7 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 	/**
 	 * get value for FechaInicio 
 	 *
-	 * type:DATETIME,size:19,default:null,nullable
+	 * type:DATE,size:10,default:null
 	 *
 	 * @return mixed
 	 */
@@ -178,9 +199,34 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 	}
 
 	/**
+	 * set value for HoraInicio 
+	 *
+	 * type:TIME,size:8,default:null,nullable
+	 *
+	 * @param mixed $HoraInicio
+	 * @return ClaseModel
+	 */
+	public function &setHoraInicio($HoraInicio) {
+		$this->notifyChanged(self::FIELD_HORAINICIO,$this->HoraInicio,$HoraInicio);
+		$this->HoraInicio=$HoraInicio;
+		return $this;
+	}
+
+	/**
+	 * get value for HoraInicio 
+	 *
+	 * type:TIME,size:8,default:null,nullable
+	 *
+	 * @return mixed
+	 */
+	public function getHoraInicio() {
+		return $this->HoraInicio;
+	}
+
+	/**
 	 * set value for FechaFin 
 	 *
-	 * type:DATETIME,size:19,default:null,nullable
+	 * type:DATE,size:10,default:null
 	 *
 	 * @param mixed $FechaFin
 	 * @return ClaseModel
@@ -194,7 +240,7 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 	/**
 	 * get value for FechaFin 
 	 *
-	 * type:DATETIME,size:19,default:null,nullable
+	 * type:DATE,size:10,default:null
 	 *
 	 * @return mixed
 	 */
@@ -203,9 +249,34 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 	}
 
 	/**
+	 * set value for HoraFin 
+	 *
+	 * type:TIME,size:8,default:null,nullable
+	 *
+	 * @param mixed $HoraFin
+	 * @return ClaseModel
+	 */
+	public function &setHoraFin($HoraFin) {
+		$this->notifyChanged(self::FIELD_HORAFIN,$this->HoraFin,$HoraFin);
+		$this->HoraFin=$HoraFin;
+		return $this;
+	}
+
+	/**
+	 * get value for HoraFin 
+	 *
+	 * type:TIME,size:8,default:null,nullable
+	 *
+	 * @return mixed
+	 */
+	public function getHoraFin() {
+		return $this->HoraFin;
+	}
+
+	/**
 	 * set value for Ocupacion 
 	 *
-	 * type:VARCHAR,size:6,default:null,nullable
+	 * type:INT,size:10,default:null,nullable
 	 *
 	 * @param mixed $Ocupacion
 	 * @return ClaseModel
@@ -219,7 +290,7 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 	/**
 	 * get value for Ocupacion 
 	 *
-	 * type:VARCHAR,size:6,default:null,nullable
+	 * type:INT,size:10,default:null,nullable
 	 *
 	 * @return mixed
 	 */
@@ -392,7 +463,9 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 			self::FIELD_IDACTIVIDAD=>$this->getIdActividad(),
 			self::FIELD_IDSALA=>$this->getIdSala(),
 			self::FIELD_FECHAINICIO=>$this->getFechaInicio(),
+			self::FIELD_HORAINICIO=>$this->getHoraInicio(),
 			self::FIELD_FECHAFIN=>$this->getFechaFin(),
+			self::FIELD_HORAFIN=>$this->getHoraFin(),
 			self::FIELD_OCUPACION=>$this->getOcupacion(),
 			self::FIELD_DIA=>$this->getDia(),
 			self::FIELD_PUBLICADA=>$this->getPublicada());
@@ -432,6 +505,7 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 //					self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
 //				}
 //				return self::$stmts[$statement][$dbInstanceId];
+                                
                                 self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
 			}
 		}
@@ -642,7 +716,9 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 		$this->setIdActividad($result['idActividad']);
 		$this->setIdSala($result['idSala']);
 		$this->setFechaInicio($result['FechaInicio']);
+		$this->setHoraInicio($result['HoraInicio']);
 		$this->setFechaFin($result['FechaFin']);
+		$this->setHoraFin($result['HoraFin']);
 		$this->setOcupacion($result['Ocupacion']);
 		$this->setDia($result['Dia']);
 		$this->setPublicada($result['Publicada']);
@@ -684,10 +760,12 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 		$stmt->bindValue(2,$this->getIdActividad());
 		$stmt->bindValue(3,$this->getIdSala());
 		$stmt->bindValue(4,$this->getFechaInicio());
-		$stmt->bindValue(5,$this->getFechaFin());
-		$stmt->bindValue(6,$this->getOcupacion());
-		$stmt->bindValue(7,$this->getDia());
-		$stmt->bindValue(8,$this->getPublicada());
+		$stmt->bindValue(5,$this->getHoraInicio());
+		$stmt->bindValue(6,$this->getFechaFin());
+		$stmt->bindValue(7,$this->getHoraFin());
+		$stmt->bindValue(8,$this->getOcupacion());
+		$stmt->bindValue(9,$this->getDia());
+		$stmt->bindValue(10,$this->getPublicada());
 	}
 
 
@@ -703,10 +781,12 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 			$stmt->bindValue(1,$this->getIdActividad());
 			$stmt->bindValue(2,$this->getIdSala());
 			$stmt->bindValue(3,$this->getFechaInicio());
-			$stmt->bindValue(4,$this->getFechaFin());
-			$stmt->bindValue(5,$this->getOcupacion());
-			$stmt->bindValue(6,$this->getDia());
-			$stmt->bindValue(7,$this->getPublicada());
+			$stmt->bindValue(4,$this->getHoraInicio());
+			$stmt->bindValue(5,$this->getFechaFin());
+			$stmt->bindValue(6,$this->getHoraFin());
+			$stmt->bindValue(7,$this->getOcupacion());
+			$stmt->bindValue(8,$this->getDia());
+			$stmt->bindValue(9,$this->getPublicada());
 		} else {
 			$stmt=self::prepareStatement($db,self::SQL_INSERT);
 			$this->bindValues($stmt);
@@ -722,7 +802,8 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 		}
 		$stmt->closeCursor();
 		$this->notifyPristine();
-		return $this->getidClase();
+		//return $affected;
+                return $this->getidClase();
 	}
 
 
@@ -735,7 +816,7 @@ class ClaseModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTra
 	public function updateToDatabase(PDO $db) {
 		$stmt=self::prepareStatement($db,self::SQL_UPDATE);
 		$this->bindValues($stmt);
-		$stmt->bindValue(9,$this->getIdClase());
+		$stmt->bindValue(11,$this->getIdClase());
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();

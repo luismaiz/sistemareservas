@@ -25,7 +25,7 @@
         
         $scope.solicitudes = [];
         $scope.abonos = [];
-	localStorage.removeItem('filtros');
+	//localStorage.removeItem('filtros');
 		       
 	$scope.obtenerTipoSolicitud = function(){
 
@@ -39,7 +39,15 @@
                
         $scope.tiposSolicitudes = JSON.parse(Ajax.responseText).tiposSolicitudes;
         
-	$scope.tiposSolicitudes.unshift({idTipoSolicitud:'0',NombreSolicitud:"--Tipo Solicitud--"});	
+	$scope.tiposSolicitudes.unshift({idTipoSolicitud:'0',NombreSolicitud:"--Tipo Solicitud--"});
+	
+		for(var i = $scope.tiposSolicitudes.length - 1; i >= 1; i--) {
+			if($scope.tiposSolicitudes[i].FechaBaja !== null) {
+			$scope.tiposSolicitudes.splice(i, 1);
+                }
+                }	
+	
+				
 		if (localStorage.getItem('filtros')!== null)
 		{
 		    $scope.selected = $scope.tiposSolicitudes[JSON.parse(localStorage.getItem('filtros'))[0].TipoSolicitud];
@@ -66,12 +74,12 @@
 					document.getElementById("filtroDni").value = JSON.parse($scope.filtros)[0].Dni;
 					document.getElementById("filtroEmail").value = JSON.parse($scope.filtros)[0].Email;      
 					document.getElementById("filtroFechaSolicitudDesde").value = JSON.parse($scope.filtros)[0].FechaSolicitudDesde;
-                                        document.getElementById("filtroFechaSolicitudHasta").value = JSON.parse($scope.filtros)[0].FechaSolicitudHasta;
+                    document.getElementById("filtroFechaSolicitudHasta").value = JSON.parse($scope.filtros)[0].FechaSolicitudHasta;
 					$scope.selected = $scope.tiposSolicitudes[JSON.parse($scope.filtros)[0].TipoSolicitud];
 					document.getElementById("filtroGestionado").value = JSON.parse($scope.filtros)[0].Gestionado;
 				}
                              
-                             alert($scope.selected.idTipoSolicitud);
+                             
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=obtenerReservasFiltro');
                 var Params =  'Localizador=' + document.getElementById("filtroLocalizador").value + 
                 '&Nombre=' + document.getElementById("filtroNombre").value +    
@@ -124,7 +132,8 @@
                   
                                         
                 $scope.solicitudes = JSON.parse(Ajax.responseText).solicitudes;
-                
+                $scope.selected = $scope.tiposSolicitudes[1];
+				document.getElementById("filtroGestionado").value='0';
                 
             };
             if (typeof($location.search().solicitudes) !== "undefined")
@@ -146,7 +155,8 @@
                 
   //              alert(Ajax.responseText);
                 $scope.solicitudes = JSON.parse(Ajax.responseText).abonos;
-                
+                $scope.selected = $scope.tiposSolicitudes[3];
+				document.getElementById("filtroGestionado").value='0';
         
             };
             if (typeof($location.search().abonos) !== "undefined")

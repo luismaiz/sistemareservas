@@ -15,12 +15,13 @@
 
         $scope.enviar = function (s) {
             var URL = BASE_URL.concat('Sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSolicitud');
-
+			
             var Params = '&idTipoSolicitud=3&';
             Params += jQuery.param(s);
             Ajax.open("POST", URL, false);
             Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             Ajax.send(Params); // Enviamos los datos
+			alert(Ajax.responseText);
             var response = Ajax.responseText;
             console.log(response);
             $scope.estado = JSON.parse(response).estado;
@@ -51,13 +52,23 @@
             dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
             dayNamesMin: ['Do', 'Lun', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
             weekHeader: 'Sm',
-            dateFormat: 'yy-mm-dd',
+            dateFormat: 'dd-mm-yy',
             firstDay: 1,
             isRTL: false,
             showMonthAfterYear: false,
             yearSuffix: ''
         };
+		$(function() {
+                $( "#FechaSolicitud" ).datepicker({
+                    dateFormat:'dd-mm-yy'
+                });
+		$( "#FechaAbonoDiario" ).datepicker({
+                    dateFormat:'dd-mm-yy'
+                });
+            });
         $.datepicker.setDefaults($.datepicker.regional['es']);
+		
+		
     });
 
     app.directive('datepicker', function () {
@@ -69,7 +80,7 @@
                 if (!ngModel)
                     return;
                 var optionsObj = {};
-                optionsObj.dateFormat = 'yy-mm-dd';
+                optionsObj.dateFormat = 'dd-mm-yy';
                 var updateModel = function (dateTxt) {
                     scope.$apply(function () {
                         // Call the internal AngularJS helper to
@@ -79,9 +90,9 @@
                 };
                 var comprobarCaducidad = function (fecha) {
                     var values = fecha.split("-");
-                    var dia = parseInt(values[2]);
+                    var dia = parseInt(values[0]);
                     var mes = parseInt(values[1]);
-                    var ano = parseInt(values[0]);
+                    var ano = parseInt(values[2]);
                     // cogemos los valores actuales
                     var fecha_hoy = new Date();
                     var ahora_ano = (fecha_hoy.getYear()) + 1900;
@@ -126,6 +137,7 @@
         };
 
     });
+
 </script>
 <div class="row" ng-app="solicitudAbonoDiario" ng-controller="RegistrarSolicitudAbonoDiarioController">
     <div id="maininner" class="col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2 col-xs-12 col-sm-10 col-sm-offset-1">
@@ -197,7 +209,7 @@
                             </div>-->
                             <div class="col-md-5 col-sm-5 input-group-lg">
                                 <label class="control-label" >Día de acceso</label>
-                                <input type="text" ng-model="s.FechaAbonoDiario" type="text" datepicker class="form-control" name="FechaAbonoDiario" id="FechaAbonoDiario" ng-pattern="/^(199\d|[2-9]\d{3})\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/" required placeholder="yyyy-mm-dd">
+                                <input type="text" ng-model="s.FechaAbonoDiario" type="text" datepicker class="form-control" name="FechaAbonoDiario" id="FechaAbonoDiario"  required placeholder="dd-mm-yy" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/">
                                 <span style="color:red" ng-show="formulario.FechaAbonoDiario.$dirty && formulario.FechaAbonoDiario.$invalid">
                                     <span ng-show="formulario.FechaAbonoDiario.$error.pattern">* Formato de fecha no valido.</span>
                                     <span ng-show="formulario.FechaAbonoDiario.$error.required">* Fecha obligatoria.</span>
@@ -211,7 +223,7 @@
                         </div>  
                     </fieldset>
                     <ul class="pager">
-                        <li><a class="btn" ng-click="enviar(s);" ng-disabled="formulario.$invalid">&nbsp;Enviar&nbsp;&nbsp;</a></li>
+                        <li><a class="btn" ng-click="enviar(s);"ng-disabled="formulario.$invalid" >&nbsp;Enviar&nbsp;&nbsp;</a></li>
                     </ul>
                 </form>
             </div>

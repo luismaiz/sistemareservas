@@ -47,7 +47,7 @@
             else
             {
                 document.getElementById('aceptar').style.display = 'inline';
-                document.getElementById('activar').style.display = 'none';
+                $scope.tipoabono.FechaBaja = null;
             }
             
             $scope.guardarTipoAbono = function() {
@@ -77,11 +77,13 @@
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
+					document.getElementById('divError').style.display = 'none';
                     //$scope.obtenerTiposAbono($location.search().idTipoAbono);
                 }
                 else
                 {
                     document.getElementById('divError').style.display = 'block';
+					 document.getElementById('divCorrecto').style.display = 'none';
                 }
             };
             $scope.actualizarTipoAbono = function(){
@@ -129,8 +131,8 @@
                 
                 if ($scope.estado === 'correcto')
                 {
-                    document.getElementById('divBaja').style.display = 'none';
-                    document.getElementById('divCorrecto').style.display = 'block';
+                    document.getElementById('divBaja').style.display = 'inline';
+                    document.getElementById('divCorrecto').style.display = 'none';
                     $scope.obtenerTiposAbono($location.search().idTipoAbono);
                     document.getElementById('anular').style.display = 'none';
                     document.getElementById('aceptar').style.display = 'none';
@@ -245,14 +247,14 @@
                     <input ng-model="tipoabono.idTipoAbono" type="hidden" class="input-sm" name="idTipoAbono" id="idTipoAbono">
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Nombre Abono</label>
-                                <input ng-disabled="tipoabono.FechaBaja!==null" ng-model="tipoabono.NombreAbono"  type="text" class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="nombreabono" id="NombreAbono" required>
+                                <input ng-disabled="tipoabono.idTipoAbono ===null || tipoabono.FechaBaja!==null" ng-model="tipoabono.NombreAbono"  type="text" class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="nombreabono" id="NombreAbono" required>
                                 <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.nombreabono.$dirty && formulario.nombreabono.$invalid">
                                 <span ng-show="formulario.nombreabono.$error.required">* Nombre de abono obligatorio.</span>
                                  </span>
                       </div>          
                       <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Descripción Abono</label>
-                                <input ng-disabled="tipoabono.FechaBaja!==null" ng-model="tipoabono.DescripcionAbono" ng-required="true" type="textarea" class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12"  name="descripcionabono" id="DescripcionAbono">
+                                <input ng-disabled="tipoabono.idTipoAbono ===null || tipoabono.FechaBaja!==null" ng-model="tipoabono.DescripcionAbono"  type="text" class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12"  name="descripcionabono" id="DescripcionAbono" required>
                                 <span class="col-lg-2 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.descripcionabono.$dirty && formulario.descripcionabono.$invalid">
                                 <span ng-show="formulario.descripcionabono.$error.required">* Descripción de abono obligatorio.</span>
                                 </span>

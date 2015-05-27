@@ -345,6 +345,7 @@ class ReservasBO extends Rest{
 
         if (isset($this->datosPeticion['idSolicitud'])) {
             $idSolicitud = isset($this->datosPeticion['idSolicitud']);
+            
             $this->con = ConexionBD::getInstance();
             
             $solicitud = new SolicitudModel();
@@ -357,6 +358,7 @@ class ReservasBO extends Rest{
             );
 //            
             $fila = $solicitud->findById($this->con,$this->datosPeticion['idSolicitud']);
+            
 //            $filterdatos=array(
 //                new DFC(DatosolicitudabonomensualModel::FIELD_IDSOLICITUD, $this->datosPeticion['idSolicitud'], DFC::EXACT)
 //            );
@@ -364,15 +366,15 @@ class ReservasBO extends Rest{
             
             
             $filadatos =  DatosolicitudabonomensualModel::findByExample($this->con,$datosolicitud,$sortdatos);
-            
-            $num = count($filadatos);
-            if ($num > 0) {
-
-                for ($i = 0; $i < $num; $i++) 
-                {
-                    $arraydatos[] = $filadatos[$i]->toHash();
-                }
-            }
+                        
+//            $num = count($filadatos);
+//            if ($num > 0) {
+//
+//                for ($i = 0; $i < $num; $i++) 
+//                {
+//                    $arraydatos[] = $filadatos[$i]->toHash();
+//                }
+//            }
           
             $respuesta = "";
             if ($fila) {
@@ -388,14 +390,21 @@ class ReservasBO extends Rest{
                 $respuesta['abonomensual']['FechaNacimiento'] = $fila->getFechaNacimiento();
                 $respuesta['abonomensual']['Sexo'] = $fila->getSexo();
                 $respuesta['abonomensual']['TutorLegal'] = $fila->getTutorLegal();
-                $respuesta['abonomensual']['TipoTarifa'] = $fila->getIdTipoTarifa();
+                $respuesta['abonomensual']['idTipoTarifa'] = $fila->getIdTipoTarifa();
                 $respuesta['abonomensual']['CodigoPostal'] = $fila->getCp();
                 $respuesta['abonomensual']['Localidad'] = $fila->getLocalidad();
                 $respuesta['abonomensual']['Provincia'] = $fila->getProvincia();
                 $respuesta['abonomensual']['Telefono1'] = $fila->getTelefono1();
                 $respuesta['abonomensual']['Telefono2'] = $fila->getTelefono2();
                 $respuesta['abonomensual']['Anulado'] = $fila->getAnulado();
-                $respuesta['datossolicitud'] = $arraydatos;
+                
+                $respuesta['datossolicitud']['FechaInicio'] = date("d-m-Y",strtotime($filadatos[0]->getFechaInicio()));
+                $respuesta['datossolicitud']['FechaFin']  = date("d-m-Y",strtotime($filadatos[0]->getFechaFin()));
+                $respuesta['datossolicitud']['PrecioPagado']  = $filadatos[0]->getPrecioPagado();
+                $respuesta['datossolicitud']['idDatosSolicitudAbonoMensual']  = $filadatos[0]->getIdDatosSolicitudAbonoMensual();
+				$respuesta['datossolicitud']['idTipoAbono'] = $filadatos[0]->getIdTipoAbono();
+                
+                
                 
                 
 
@@ -472,7 +481,7 @@ class ReservasBO extends Rest{
                 $respuesta['clasesdirigidas']['FechaSolicitud'] = date("d-m-Y",strtotime($fila->getFechaSolicitud()));
                 $respuesta['clasesdirigidas']['Localizador'] = $fila->getLocalizador();
                 $respuesta['clasesdirigidas']['Direccion'] = $fila->getDireccion();
-                $respuesta['clasesdirigidas']['FechaNacimiento'] = $fila->getFechaNacimiento();
+                $respuesta['clasesdirigidas']['FechaNacimiento'] = date("d-m-Y",strtotime($fila->getFechaNacimiento()));
                 $respuesta['clasesdirigidas']['Sexo'] = $fila->getSexo();
                 $respuesta['clasesdirigidas']['TutorLegal'] = $fila->getTutorLegal();
                 $respuesta['clasesdirigidas']['TipoTarifa'] = $fila->getIdTipoTarifa();
@@ -483,7 +492,16 @@ class ReservasBO extends Rest{
                 $respuesta['clasesdirigidas']['Provincia'] = $fila->getProvincia();
                 $respuesta['clasesdirigidas']['Sexo'] = $fila->getSexo();
                 $respuesta['clasesdirigidas']['Anulado'] = $fila->getAnulado();
-                $respuesta['datosbancarios'] = $arraybanco;
+                $respuesta['datosbancarios']['idDatos'] = $filadatosbancarios[0]->getIdDatosSolicitudClaseDirigida();
+                $respuesta['datosbancarios']['Titular'] = $filadatosbancarios[0]->getTitular();
+                $respuesta['datosbancarios']['IBAN'] = $filadatosbancarios[0]->getIban();
+                $respuesta['datosbancarios']['Entidad'] = $filadatosbancarios[0]->getEntidad();
+                $respuesta['datosbancarios']['Oficina'] = $filadatosbancarios[0]->getOficina();
+                $respuesta['datosbancarios']['DigitoControl'] = $filadatosbancarios[0]->getDigitoControl();
+                $respuesta['datosbancarios']['Cuenta'] = $filadatosbancarios[0]->getCuenta();
+                
+                
+                //$respuesta['datosbancarios'][] = $arraybanco;
                 
                 $respuesta['actividades'] = $array;
                 //$respuesta['datosbancarios'] = $arraybanco;
@@ -724,6 +742,9 @@ class ReservasBO extends Rest{
             $ape = $this->datosPeticion['Apellidos'];
             $dni = $this->datosPeticion['DNI'];
             $mail = $this->datosPeticion['Mail'];
+			$fechaabonodiario =date("Y-m-d",strtotime($this->datosPeticion['FechaAbonoDiario']));
+			
+			
 
             $this->con = ConexionBD::getInstance();
             $solicitud = new SolicitudModel();
@@ -737,7 +758,7 @@ class ReservasBO extends Rest{
                 $idTipoSolicitud= $fila ->getIdTipoSolicitud();
                 $idTipoTarifa = $fila->getIdTipoTarifa();
                 $FechaSolicitud = $fila->getFechaSolicitud();
-                $FechaAbonoDiario = $fila->getFechaAbonoDiario();
+                $FechaAbonoDiario = $fechaabonodiario;
                 $Nombre = html_entity_decode($nom);
                 $Apellidos =html_entity_decode($ape);
                 $DNI= $dni;
@@ -756,7 +777,7 @@ class ReservasBO extends Rest{
                 $Localizador= $fila->getLocalizador();
                 $Gestionado = $fila->getGestionado();
                 $Anulado = $fila->getAnulado();
-                $FechaDiario = $fila->getFechaAbonoDiario();
+                
                                 
                 $solicitud->setIdSolicitud($idSolicitud);
                 $solicitud->setIdTipoSolicitud($idTipoSolicitud);
@@ -781,7 +802,7 @@ class ReservasBO extends Rest{
                 $solicitud->setLocalizador($Localizador);
                 $solicitud->setGestionado(1);
                 $solicitud->setAnulado($Anulado);
-                $solicitud->setFechaAbonoDiario($FechaDiario);
+                $solicitud->setFechaAbonoDiario($FechaAbonoDiario);
                 
                 $filasActualizadas = $solicitud->updateToDatabase($this->con);
                 
@@ -816,8 +837,16 @@ class ReservasBO extends Rest{
             $idTipoAbono=$this->datosPeticion['TipoAbono'];
             $idTipoTarifa =$this->datosPeticion['TipoTarifa'];
 
+	    $fechainicio =date("Y-m-d",strtotime($this->datosPeticion['FechaInicio']));
+            $fechafin=date("Y-m-d",strtotime($this->datosPeticion['FechaFin']));
+            $cantidad =$this->datosPeticion['Cantidad'];
+	    $idDatos =$this->datosPeticion['idDatos'];
+			
+			
+
             $this->con = ConexionBD::getInstance();
             $solicitud = new SolicitudModel();
+			$datossolicitud = new DatosolicitudabonomensualModel();
 
             $idSolicitud = $this->datosPeticion['idSolicitud'];
                         
@@ -873,8 +902,19 @@ class ReservasBO extends Rest{
                 $solicitud->setGestionado(1);
                 $solicitud->setAnulado($Anulado);
                 $solicitud->setFechaAbonoDiario($FechaDiario);
-                
+				
+				
+				
+		$datossolicitud->setIdDatosSolicitudAbonoMensual($idDatos);
+		$datossolicitud->setIdTipoAbono($idTipoAbono);
+		$datossolicitud->setIdSolicitud($idSolicitud);
+                $datossolicitud->setFechaInicio($fechainicio);
+                $datossolicitud->setFechaFin($fechafin);
+                $datossolicitud->setPrecioPagado($cantidad);
+                $datossolicitud->setRenovacion(0);
+				
                 $filasActualizadas = $solicitud->updateToDatabase($this->con);
+				$filasActualizadas2 = $datossolicitud->updateToDatabase($this->con);
                 
                 if (count($filasActualizadas) == 1) {
                     $resp = array('estado' => "correcto", "msg" => "Solictud validada");
@@ -902,13 +942,23 @@ class ReservasBO extends Rest{
             $localidad=$this->datosPeticion['Localidad'];
             $provincia=$this->datosPeticion['Provincia'];
             $cpostal=$this->datosPeticion['Cpostal'];
+			$sexo=$this->datosPeticion['Sexo'];
             $telefono1=$this->datosPeticion['Telefono1'];
             $telefono2 =$this->datosPeticion['Telefono2'];
-            $idTipoAbono=$this->datosPeticion['TipoAbono'];
-            $idTipoTarifa =$this->datosPeticion['TipoTarifa'];
-
+            
+            $Titular =$this->datosPeticion['Titular'];
+            $IBAN =$this->datosPeticion['IBAN'];
+            $Entidad =$this->datosPeticion['Entidad'];
+            $Oficina =$this->datosPeticion['Oficina'];
+            $Digito =$this->datosPeticion['Digito'];
+            $Cuenta =$this->datosPeticion['Cuenta'];
+            $idDatos =$this->datosPeticion['idDatos'];
+			$fechanacimiento =date("Y-m-d",strtotime($this->datosPeticion['FechaNacimiento']));
+            $actividad = $this->datosPeticion['Actividades'];
+                        
             $this->con = ConexionBD::getInstance();
             $solicitud = new SolicitudModel();
+            $datossolicitud = new DatosolicitudclasedirigidaModel();
 
             $idSolicitud = $this->datosPeticion['idSolicitud'];
                         
@@ -917,7 +967,7 @@ class ReservasBO extends Rest{
                 $fila = $solicitud->findById($this->con,$this->datosPeticion['idSolicitud']);
                 
                 $idTipoSolicitud= $fila ->getIdTipoSolicitud();
-                $idTipoTarifa = $idTipoTarifa;
+				$idTipoTarifa = $fila->getIdTipoTarifa();
                 $FechaSolicitud = $fila->getFechaSolicitud();
                 $FechaAbonoDiario = $fila->getFechaAbonoDiario();
                 $Nombre = html_entity_decode($nom);
@@ -926,8 +976,8 @@ class ReservasBO extends Rest{
                 $EMail  = html_entity_decode($mail);
                 $Direccion  = html_entity_decode($direccion);
                 $CP = $cpostal;
-                $Sexo = $fila->getSexo();
-                $FechaNacimiento = $fila->getFechaNacimiento();
+                $Sexo = $sexo;
+                $FechaNacimiento = $fechanacimiento;
                 $TutorLegal = $fila->getTutorLegal();
                 $Localidad= html_entity_decode($localidad);
                 $Telefono1 = $telefono1;
@@ -938,11 +988,11 @@ class ReservasBO extends Rest{
                 $Localizador= $fila->getLocalizador();
                 $Gestionado = $fila->getGestionado();
                 $Anulado = $fila->getAnulado();
-                $FechaDiario = $fila->getFechaAbonoDiario();
+               
                                 
                 $solicitud->setIdSolicitud($idSolicitud);
                 $solicitud->setIdTipoSolicitud($idTipoSolicitud);
-                $solicitud->setIdTipoTarifa($idTipoTarifa);
+				$solicitud->setIdTipoTarifa($idTipoTarifa);
                 $solicitud->setFechaSolicitud($FechaSolicitud);
                 $solicitud->setFechaAbonoDiario($FechaAbonoDiario);
                 $solicitud->setNombre($Nombre);
@@ -963,9 +1013,19 @@ class ReservasBO extends Rest{
                 $solicitud->setLocalizador($Localizador);
                 $solicitud->setGestionado(1);
                 $solicitud->setAnulado($Anulado);
-                $solicitud->setFechaAbonoDiario($FechaDiario);
+                
+                $datossolicitud->setIdDatosSolicitudClaseDirigida($idDatos);
+                $datossolicitud->setIdSolicitud($idSolicitud);
+                $datossolicitud->setTitular($Titular);
+                $datossolicitud->setIban($IBAN);
+                $datossolicitud->setEntidad($Entidad);
+                $datossolicitud->setOficina($Oficina);
+                $datossolicitud->setDigitoControl($Digito);
+                $datossolicitud->setCuenta($Cuenta);
+                
                 
                 $filasActualizadas = $solicitud->updateToDatabase($this->con);
+                $filasActualizadas2 = $datossolicitud->updateToDatabase($this->con);
                 
                 if (count($filasActualizadas) == 1) {
                     $resp = array('estado' => "correcto", "msg" => "Solictud validada");
@@ -977,8 +1037,7 @@ class ReservasBO extends Rest{
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
     }
-    
-    
+        
     private function obtenerSolicitudesMesEstadistica() {
         
         if ($_SERVER['REQUEST_METHOD'] != "POST") {

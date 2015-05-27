@@ -376,14 +376,15 @@ class PreciosBO extends Rest{
             if (!empty($idPrecio)) {
 			
 				         
-                $precio->setIdPrecio($idPrecio);
-				$precio->setIdTipoSolicitud($fila->getIdTipoSolicitud());
-                $precio->setIdTipoAbono($fila->getIdTipoAbono());
-                $precio->setIdTipoTarifa($fila->getIdTipoTarifa());
-                $precio->setNombrePrecio($fila->getNombrePrecio());
-                $precio->setDescripcionPrecio($fila->getDescripcionPrecio());
-                $precio->setPrecio($fila->getPrecio());
-                $precio->setFechaAlta($fila->getFechaAlta());
+                //$precio->setIdPrecio($idPrecio);
+				//$precio->setIdPrecio($filas->getIdPrecio());
+				//$precio->setIdTipoSolicitud($fila->getIdTipoSolicitud());
+                //$precio->setIdTipoAbono($fila->getIdTipoAbono());
+                //$precio->setIdTipoTarifa($fila->getIdTipoTarifa());
+                //$precio->setNombrePrecio($fila->getNombrePrecio());
+                //$precio->setDescripcionPrecio($fila->getDescripcionPrecio());
+                //$precio->setPrecio($fila->getPrecio());
+                //$precio->setFechaAlta($fila->getFechaAlta());
                 $precio->setFechaBaja($FechaBaja);
 				
                 
@@ -419,14 +420,14 @@ class PreciosBO extends Rest{
             if (!empty($idPrecio)) {
 			
 				         
-                $precio->setIdPrecio($idPrecio);
+                //$precio->setIdPrecio($idPrecio);
 				$precio->setIdTipoSolicitud($fila->getIdTipoSolicitud());
                 $precio->setIdTipoAbono($fila->getIdTipoAbono());
-                $precio->setIdTipoTarifa($fila->getIdTipoTarifa());
+                $precio->setIdTipoTarifa($fila->IdTipoTarifa());
                 $precio->setNombrePrecio($fila->getNombrePrecio());
                 $precio->setDescripcionPrecio($fila->getDescripcionPrecio());
                 $precio->setPrecio($fila->getPrecio());
-                $precio->setFechaAlta($FechaAlta);
+                $precio->setFechaAlta($fila->getFechaAlta());
                 $precio->setFechaBaja($FechaBaja);
                 
                 $filasActualizadas = $precio->updateToDatabase($this->con);

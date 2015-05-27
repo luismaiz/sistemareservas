@@ -1,6 +1,6 @@
 <?php
-//$server="vw15115.dinaserver.com:3306";
-$server="hostingmysql321.nominalia.com:3306";
+$server="vw15115.dinaserver.com:3306";
+//$server="hostingmysql321.nominalia.com:3306";
 $db="sistemareservas";
 $user="pfgreservas";
 $pass="pfgreservas";

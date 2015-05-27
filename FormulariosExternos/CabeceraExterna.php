@@ -7,6 +7,8 @@
         <link rel="shortcut icon" href="../Frontal/Utilidades/img/favicon.ico">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <script src="../Frontal/Utilidades/bower_components/jquery/jquery.min.js"></script>
+        <link href='../Frontal/Utilidades/bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>
+        <link href='../Frontal/Utilidades/bower_components/fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print'>
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <script src="media/jui/js/jquery.min.js" type="text/javascript"></script>
@@ -24,6 +26,13 @@
         <script src="templates/yoo_subway/warp/js/warp.js"></script>
         <link href="../Frontal/Utilidades/css/Angular.css" rel="stylesheet" type="text/css"/>
         <script src="../Frontal/Utilidades/js/angular-1.2.9/angular-1.2.9/angular.js" type="text/javascript"></script>
+         <!-- Calendario -->
+       <link rel="stylesheet" href="Utilidades/calendario/css/font-awesome.min.css" />
+	    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+		 <!-- ace styles -->
+        <!--<link rel="stylesheet" href="Utilidades/calendario/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />-->
+        <link rel="stylesheet" type="text/css" href="Utilidades/calendario/css/jquery.datetimepicker.css"/>
+        <script src="Utilidades/calendario/js/jquery.datetimepicker.js" type="text/javascript"></script>
     </head>
     <body id="page" class="page  noblog  transparency-25 system-transparent">
         <div id="page-body">
@@ -35,7 +44,8 @@
                     </div>
                 </header>
                 <script>
-                    var BASE_URL = 'http://localhost/';
+                    //var BASE_URL = 'http://vw15115.dinaserver.com/hosting/reservascentro.es-web/';
+                    var BASE_URL = 'http://localhost:8080/';
                     function AjaxObj()
                     {
                         var xmlhttp = null;

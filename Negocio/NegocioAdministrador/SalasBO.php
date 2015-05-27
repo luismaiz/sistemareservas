@@ -69,8 +69,7 @@ class SalasBO  extends Rest {
             $FechaAlta =date("Y-m-d");
             $FechaBaja =null;
             
-            echo(html_entity_decode($this->datosPeticion['NombreSala']));
-   
+             
             $this->con = ConexionBD::getInstance();
             $sala = new SalaModel();
             $sala->setNombreSala(html_entity_decode($NombreSala));

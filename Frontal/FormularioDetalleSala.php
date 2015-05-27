@@ -22,7 +22,7 @@ require('Cabecera.php'); ?>
                 Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-                    alert(Ajax.responseText);
+                    
                 $scope.sala = JSON.parse(Ajax.responseText).sala;
                 $scope.sala.CapacidadSala = parseInt($scope.sala.CapacidadSala);
                 
@@ -38,7 +38,7 @@ require('Cabecera.php'); ?>
                     $scope.sala.FechaBaja = null;
                     document.getElementById('anular').style.display = 'inline';
                     document.getElementById('aceptar').style.display = 'inline';
-                     document.getElementById('activar').style.display = 'none';
+                    document.getElementById('activar').style.display = 'none';
                 }
             };
             
@@ -49,6 +49,7 @@ require('Cabecera.php'); ?>
             else
             {
                 document.getElementById('aceptar').style.display = 'inline';
+				  $scope.sala.FechaBaja = null;
             }
             
                 
@@ -65,8 +66,7 @@ require('Cabecera.php'); ?>
                                 
                 
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=crearSala');		
-                	
-//                   //alert(accentEncode(document.getElementById('NombreSala').value));     
+               //                       
                 var Params ='NombreSala='+ document.getElementById('NombreSala').value +
                     '&CapacidadSala='+ document.getElementById('CapacidadSala').value +
                     '&DescripcionSala='+ document.getElementById('DescripcionSala').value;
@@ -76,19 +76,21 @@ require('Cabecera.php'); ?>
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                
                 Ajax.send(Params); // Enviamos los datos
-                alert(Ajax.responseText);
+                 alert(Ajax.responseText);
                 
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
-                
+                //alert(Ajax.responseText);
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
+		    document.getElementById('divError').style.display = 'none';
                     
                     //$scope.obtenerSalas($location.search().idSala);
                 }
                 else
                 {
                     document.getElementById('divError').style.display = 'block';
+					document.getElementById('divCorrecto').style.display = 'none';
                 }
         
         
@@ -141,7 +143,7 @@ require('Cabecera.php'); ?>
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divBaja').style.display = 'inline';
-                    document.getElementById('divCorrecto').style.display = 'block';
+                    document.getElementById('divCorrecto').style.display = 'none';
                     $scope.obtenerSalas($location.search().idSala);
                     document.getElementById('anular').style.display = 'none';
                     document.getElementById('aceptar').style.display = 'none';
@@ -254,21 +256,21 @@ require('Cabecera.php'); ?>
                                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                  <input ng-model="sala.idSala" type="hidden" class="input-sm" name="idSala" id="idSala">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Nombre Sala</label>
-                                <input ng-disabled="sala.FechaBaja!==null"  type="text" ng-model="sala.NombreSala"   class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="nombresala" id="NombreSala" required >
+                                <input ng-disabled="sala.idSala ===null || sala.FechaBaja!==null"01-01-1970""  type="text" ng-model="sala.NombreSala"   class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="nombresala" id="NombreSala" required >
                                 <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.nombresala.$dirty && formulario.nombresala.$invalid">
                                 <span ng-show="formulario.nombresala.$error.required">* Nombre de sala obligatorio.</span>
                                  </span>
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Descripción</label>
-                                <input ng-disabled="sala.FechaBaja!==null" type="text" ng-model="sala.DescripcionSala"  class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12"  name="descripcionsala" id="DescripcionSala" required>
+                                <input ng-disabled="sala.idSala ===null || sala.FechaBaja!==null" type="text" ng-model="sala.DescripcionSala"  class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12"  name="descripcionsala" id="DescripcionSala" required>
                                 <span class="col-lg-2 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.descripcionsala.$dirty && formulario.descripcionsala.$invalid">
                                 <span ng-show="formulario.descripcionsala.$error.required">* Descripción de sala obligatorio.</span>
                                 </span>
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">                                
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Capacidad</label>
-                                <input ng-disabled="sala.FechaBaja!==null" type="text" ng-model="sala.CapacidadSala"  class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" name="capacidadsala" id="CapacidadSala" required ng-pattern="/^\d+$/"  >
+                                <input ng-disabled="sala.idSala ===null || sala.FechaBaja!==null" type="text" ng-model="sala.CapacidadSala"  class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" name="capacidadsala" id="CapacidadSala" ng-pattern="/^\d+$/"  >
                                 <span  class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.capacidadsala.$dirty && formulario.capacidadsala.$invalid">
                                     <span ng-show="formulario.capacidadsala.$error.required">* Capacidad de sala obligatoria.</span>
                                     <span ng-show="formulario.capacidadsala.$error.pattern">* Capacidad de sala numérica.</span>
