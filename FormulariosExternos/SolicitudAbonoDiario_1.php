@@ -1,174 +1,53 @@
-<?php require "CabeceraExterna.php";?>
-<script>
-var Ajax = new AjaxObj();
-var app = angular.module('SolicitudAbonoDiario', ['ngStorage'])            
-                     .config(function($locationProvider) {
-                          $locationProvider.html5Mode(true);
-                      });
-                      
-                      function AbonoDiario($scope, $http,$location,$localStorage) {
-                          
-                          $scope.crearSolicitud = function(s) {
-                              alert('venga');
-                        
-                        alert('venga');    
-                        var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSolicitud');
+<?php require "CabeceraExterna.php";
+require "../ComunicacionesREST/Rest.php";
 
-                        var Params = '&idTipoSolicitud=3&';
-                        Params += jQuery.param(s);
+class SolicitudAbonoDiario extends Rest {
 
-                        var Ajax = new AjaxObj();
-                        Ajax.open("POST", URL, false);
-                        Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                        Ajax.send(Params); // Enviamos los datos
-                        alert('llega');
-                        var response = Ajax.responseText;
-                        if (JSON.parse(response).estado === 'correcto')
-                        {
-                            Params += '&Localizador=' + JSON.parse(response).solicitud.Localizador;
-                            var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=codigoQR');
+    private $con = NULL;
+    private $_metodo;
+    private $_argumentos;
 
-                            //var Ajax = new AjaxObj();
-                            Ajax.open("POST", URL, false);
-                            Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                            Ajax.send(Params); // Enviamos los datos
-                            alert('llega2');    
-                            //volvemos a actulizar la variable de sesión para que tenga el localizador y el codigo qr
-                            var URL2 = BASE_URL.concat('sistemareservas/FormulariosExternos/SolicitudAbonoDiario.php?url=pasarVariable/' + JSON.stringify(JSON.parse('{"' + decodeURI(Params.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')));
+    public function __construct() {
+        parent::__construct();
+    }
 
-                            Ajax.open("POST", URL2, false);
-                            Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                            Ajax.send(Params); // Enviamos los datos
-                            alert('llega3');
-                        }
-                          };
-                          
-                          $scope.avanzar = function (idTab) {
-                            if (idTab === 0) {
-                                $scope.tab1 = true;
-                                $scope.tab2 = false;                
-                                $scope.tab3 = false;                                
-                            }
-                        };
-                        
-                        <script>
-                
-                    alert('entramos');
-                    $scope.avanzar = function (idTab) {
-                        if (idTab === 0) {
-                            $scope.tab1 = true;
-                            $scope.tab2 = false;                                            
-                        } else if (idTab === 1) {
-                            $scope.tab1 = false;
-                            $scope.tab2 = true;                            
-                                        
-                            var URL2 = BASE_URL.concat('sistemareservas/FormulariosExternos/SolicitudAbonoDiario.php?url=pasarVariable/' + JSON.stringify($scope.s));
-                            var Params = '';//&solicitud=' + jQuery.param($scope.s);
+    private function devolverError($id) {
+        $errores = array(
+            array('estado' => "error", "msg" => "petición no encontrada"),
+            array('estado' => "error", "msg" => "petición no aceptada"),
+            array('estado' => "error", "msg" => "petición sin contenido"),
+            array('estado' => "error", "msg" => "email o password incorrectos"),
+            array('estado' => "error", "msg" => "error borrando usuario"),
+            array('estado' => "error", "msg" => "error actualizando nombre de usuario"),
+            array('estado' => "error", "msg" => "error buscando usuario por email"),
+            array('estado' => "error", "msg" => "error creando usuario"),
+            array('estado' => "error", "msg" => "usuario ya existe")
+        );
+        return $errores[$id];
+    }
 
-                            Ajax.open("POST", URL2, false);
-                            Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                            Ajax.send(Params); // Enviamos los datos  
-                            alert(Ajax.responseText);
-                        } else if (idTab === 2) {
-                            $scope.tab1 = false;
-                            $scope.tab2 = false;
-                        }
-                    };
-                    $.datepicker.regional['es'] = {
-                        closeText: 'Cerrar',
-                        prevText: '<Ant',
-                        nextText: 'Sig>',
-                        currentText: 'Hoy',
-                        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
-                        dayNamesMin: ['Do', 'Lun', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
-                        weekHeader: 'Sm',
-                        dateFormat: 'dd-mm-yy',
-                        changeMonth: true,
-                        changeYear: true,
-                        yearRange: "2015:2020",
-                        firstDay: 1,
-                        isRTL: false,
-                        showMonthAfterYear: false,
-                        yearSuffix: ''
-                    };
-                    $.datepicker.setDefaults($.datepicker.regional['es']);
-                
+    public function procesarLLamada() {
+        if (isset($_REQUEST['url'])) {
+            $url = explode('/', trim($_REQUEST['url']));
+            $url = array_filter($url);
+            $this->_metodo = strtolower(array_shift($url));
+            $this->_argumentos = $url;
+            $func = $this->_metodo;
+            if ((int) method_exists($this, $func) > 0) {
+                if (count($this->_argumentos) > 0) {
+                    call_user_func_array(array($this, $this->_metodo), $this->_argumentos);
+                } else {//si no lo llamamos sin argumentos, al metodo del controlador  
+                    call_user_func(array($this, $this->_metodo));
+                }
+            } else
+                $this->mostrarRespuesta($this->convertirJson($this->devolverError(0)), 404);
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(0)), 404);
+    }
 
-                app.directive('datepicker', function () {
-                    return  {
-                        restrict: 'A',
-                        require: '?ngModel',
-                        link: function (scope, element, attrs, ngModel) {
-                            element = $("#FechaAbonoDiario");
-                            if (!ngModel)
-                                return;
-                            var optionsObj = {};
-                            optionsObj.dateFormat = 'dd-mm-yy';
-                            var updateModel = function (dateTxt) {
-                                scope.$apply(function () {
-                                    // Call the internal AngularJS helper to
-                                    // update the two-way binding
-                                    ngModel.$setViewValue(dateTxt);
-                                });
-                            };
-                            var comprobarCaducidad = function (fecha) {
-                                var values = fecha.split("-");
-                                var dia = parseInt(values[0]);
-                                var mes = parseInt(values[1]);
-                                var ano = parseInt(values[2]);
-                                // cogemos los valores actuales
-                                var fecha_hoy = new Date();
-                                var ahora_ano = (fecha_hoy.getYear()) + 1900;
-                                var ahora_mes = parseInt((((fecha_hoy.getMonth()) + 1) < 10) ? '0' + ((fecha_hoy.getMonth()) + 1) : (fecha_hoy.getMonth()) + 1);
-                                var ahora_dia = parseInt(fecha_hoy.getDate());
-                                var valido = false;
-                                if (ano === ahora_ano) {
-                                    if (mes === ahora_mes) {
-                                        if (dia >= ahora_dia) {
-                                            valido = true;
-                                        }
-                                    }else if (mes > ahora_mes){
-                                        valido= true;
-                                    }
-                                }else if(ano > ahora_ano){
-                                    valido = true;
-                                }
-                                var hoy = ahora_ano+'-'+ahora_mes+'-'+ahora_dia;
-                                if (valido) {
-                                    console.log('Permitir Compra');
-                                    return valido;
-                                }
-                                else {
-                                    console.log('No se permite comprar abonos de días pasados');
-                                    return valido;
-                                }
-                            };
-                            optionsObj.onSelect = function (dateTxt) {
-                                ngModel.$setValidity('caducado', comprobarCaducidad(dateTxt));
-                                updateModel(dateTxt);
-                                if (scope.select) {
-                                    scope.$apply(function () {
-                                        scope.select({date: dateTxt});
-                                    });
-                                }
-                            };
-                            ngModel.$render = function(dateText) {
-                                element.datepicker('setDate', ngModel.$viewValue || '');
-                            };
-                            element.datepicker(optionsObj);
-                        }
-                    };
-
-                });
-            
-                        
-                          
-                      }
-
-</script>
+    private function convertirJson($data) {
+        return json_encode($data);
+    }
 
     private function pasarVariable($solicitud) {
         $_SESSION['solicitud'] = $solicitud;
@@ -201,7 +80,38 @@ var app = angular.module('SolicitudAbonoDiario', ['ngStorage'])
                     //var_dump(json_decode($_SESSION['solicitud'])->{'Nombre'});
                     ?>
                     <script>
-                        
+                        alert('venga');
+                        var s =<?php echo $_SESSION['solicitud']; ?>
+                        alert('venga');    
+                        var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSolicitud');
+
+                        var Params = '&idTipoSolicitud=3&';
+                        Params += jQuery.param(s);
+
+                        var Ajax = new AjaxObj();
+                        Ajax.open("POST", URL, false);
+                        Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                        Ajax.send(Params); // Enviamos los datos
+                        alert('llega');
+                        var response = Ajax.responseText;
+                        if (JSON.parse(response).estado === 'correcto')
+                        {
+                            Params += '&Localizador=' + JSON.parse(response).solicitud.Localizador;
+                            var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=codigoQR');
+
+                            //var Ajax = new AjaxObj();
+                            Ajax.open("POST", URL, false);
+                            Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                            Ajax.send(Params); // Enviamos los datos
+                            alert('llega2');    
+                            //volvemos a actulizar la variable de sesión para que tenga el localizador y el codigo qr
+                            var URL2 = BASE_URL.concat('sistemareservas/FormulariosExternos/SolicitudAbonoDiario.php?url=pasarVariable/' + JSON.stringify(JSON.parse('{"' + decodeURI(Params.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')));
+
+                            Ajax.open("POST", URL2, false);
+                            Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                            Ajax.send(Params); // Enviamos los datos
+                            alert('llega3');
+                        }
                     </script>
                     <div class="row" ng-app="solicitudAbonoDiario" ng-controller="RegistrarSolicitudAbonoDiarioController">
                         <div id="maininner" class="col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2 col-xs-12 col-sm-10 col-sm-offset-1">
@@ -295,6 +205,23 @@ var app = angular.module('SolicitudAbonoDiario', ['ngStorage'])
                                     </section>
                             </div>
                     </div>      
+                    <?php
+                }
+            } else {    // Si no hay datos $_POST
+                // Podemos guardar la incidencia en un log, redirigir a una URL...
+                ?>
+                <script>
+                    var app = angular.module('solicitudAbonoDiario', []);
+                    app.controller('RegistrarSolicitudAbonoDiarioController', function RegistrarSolicitudAbonoDiarioController($scope) {
+                        $scope.avanzar = function (idTab) {
+                            if (idTab === 0) {
+                                $scope.tab1 = true;
+                                $scope.tab2 = false;                
+                                $scope.tab3 = false;                                
+                            }
+                        };
+                    });
+                </script>
                 <div class="row" ng-app="solicitudAbonoDiario" ng-controller="RegistrarSolicitudAbonoDiarioController">
                     <div id="maininner" class="col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2 col-xs-12 col-sm-10 col-sm-offset-1">
                         <section id="content"><div id="system-message-container">
@@ -319,6 +246,127 @@ var app = angular.module('SolicitudAbonoDiario', ['ngStorage'])
                         </section>
                     </div>
                 </div>      
+<?php
+            }
+        }
+
+        private function inicio() {
+            ?>
+            <script>
+                var Ajax = new AjaxObj();
+                var app = angular.module('solicitudAbonoDiario', []);
+                app.controller('RegistrarSolicitudAbonoDiarioController', function RegistrarSolicitudAbonoDiarioController($scope) {
+                    alert('entramos');
+                    $scope.avanzar = function (idTab) {
+                        if (idTab === 0) {
+                            $scope.tab1 = true;
+                            $scope.tab2 = false;                                            
+                        } else if (idTab === 1) {
+                            $scope.tab1 = false;
+                            $scope.tab2 = true;                            
+                                        
+                            var URL2 = BASE_URL.concat('sistemareservas/FormulariosExternos/SolicitudAbonoDiario.php?url=pasarVariable/' + JSON.stringify($scope.s));
+                            var Params = '';//&solicitud=' + jQuery.param($scope.s);
+
+                            Ajax.open("POST", URL2, false);
+                            Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                            Ajax.send(Params); // Enviamos los datos  
+                            alert(Ajax.responseText);
+                        } else if (idTab === 2) {
+                            $scope.tab1 = false;
+                            $scope.tab2 = false;
+                        }
+                    };
+                    $.datepicker.regional['es'] = {
+                        closeText: 'Cerrar',
+                        prevText: '<Ant',
+                        nextText: 'Sig>',
+                        currentText: 'Hoy',
+                        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+                        dayNamesMin: ['Do', 'Lun', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+                        weekHeader: 'Sm',
+                        dateFormat: 'dd-mm-yy',
+                        changeMonth: true,
+                        changeYear: true,
+                        yearRange: "2015:2020",
+                        firstDay: 1,
+                        isRTL: false,
+                        showMonthAfterYear: false,
+                        yearSuffix: ''
+                    };
+                    $.datepicker.setDefaults($.datepicker.regional['es']);
+                });
+
+                app.directive('datepicker', function () {
+                    return  {
+                        restrict: 'A',
+                        require: '?ngModel',
+                        link: function (scope, element, attrs, ngModel) {
+                            element = $("#FechaAbonoDiario");
+                            if (!ngModel)
+                                return;
+                            var optionsObj = {};
+                            optionsObj.dateFormat = 'dd-mm-yy';
+                            var updateModel = function (dateTxt) {
+                                scope.$apply(function () {
+                                    // Call the internal AngularJS helper to
+                                    // update the two-way binding
+                                    ngModel.$setViewValue(dateTxt);
+                                });
+                            };
+                            var comprobarCaducidad = function (fecha) {
+                                var values = fecha.split("-");
+                                var dia = parseInt(values[0]);
+                                var mes = parseInt(values[1]);
+                                var ano = parseInt(values[2]);
+                                // cogemos los valores actuales
+                                var fecha_hoy = new Date();
+                                var ahora_ano = (fecha_hoy.getYear()) + 1900;
+                                var ahora_mes = parseInt((((fecha_hoy.getMonth()) + 1) < 10) ? '0' + ((fecha_hoy.getMonth()) + 1) : (fecha_hoy.getMonth()) + 1);
+                                var ahora_dia = parseInt(fecha_hoy.getDate());
+                                var valido = false;
+                                if (ano === ahora_ano) {
+                                    if (mes === ahora_mes) {
+                                        if (dia >= ahora_dia) {
+                                            valido = true;
+                                        }
+                                    }else if (mes > ahora_mes){
+                                        valido= true;
+                                    }
+                                }else if(ano > ahora_ano){
+                                    valido = true;
+                                }
+                                var hoy = ahora_ano+'-'+ahora_mes+'-'+ahora_dia;
+                                if (valido) {
+                                    console.log('Permitir Compra');
+                                    return valido;
+                                }
+                                else {
+                                    console.log('No se permite comprar abonos de días pasados');
+                                    return valido;
+                                }
+                            };
+                            optionsObj.onSelect = function (dateTxt) {
+                                ngModel.$setValidity('caducado', comprobarCaducidad(dateTxt));
+                                updateModel(dateTxt);
+                                if (scope.select) {
+                                    scope.$apply(function () {
+                                        scope.select({date: dateTxt});
+                                    });
+                                }
+                            };
+                            ngModel.$render = function(dateText) {
+                                element.datepicker('setDate', ngModel.$viewValue || '');
+                            };
+                            element.datepicker(optionsObj);
+                        }
+                    };
+
+                });
+            </script>
             <div class="row" ng-app="solicitudAbonoDiario" ng-controller="RegistrarSolicitudAbonoDiarioController">
                 <div id="maininner" class="col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2 col-xs-12 col-sm-10 col-sm-offset-1">
                     <section id="content"><div id="system-message-container">
@@ -423,4 +471,13 @@ var app = angular.module('SolicitudAbonoDiario', ['ngStorage'])
                     </section>
                 </div>
             </div>
-<?php require_once('PieExterno.php'); ?>
+<?php
+        }
+
+    }
+
+    $solicitudAbonoDiario = new SolicitudAbonoDiario();
+    $solicitudAbonoDiario->procesarLLamada();
+
+    require_once('PieExterno.php');
+    ?>

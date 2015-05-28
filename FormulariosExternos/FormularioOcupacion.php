@@ -1,109 +1,116 @@
-<?php
-require_once("CabeceraExterna.php");
-require_once("../ComunicacionesREST/Rest.php");
-require_once("../Negocio/AccesoDatos/ConexionBD.php");
-require_once("../Negocio/Entidades/ActividadModel.class.php");
-
-class OcupacionActividad extends Rest {
-
-    private $con = NULL;
-    private $_metodo;
-    private $_argumentos;
-
-    public function __construct() {
-        parent::__construct();
-    }
-
-    private function devolverError($id) {
-        $errores = array(
-            array('estado' => "error", "msg" => "petición no encontrada"),
-            array('estado' => "error", "msg" => "petición no aceptada"),
-            array('estado' => "error", "msg" => "petición sin contenido"),
-            array('estado' => "error", "msg" => "email o password incorrectos"),
-            array('estado' => "error", "msg" => "error borrando usuario"),
-            array('estado' => "error", "msg" => "error actualizando nombre de usuario"),
-            array('estado' => "error", "msg" => "error buscando usuario por email"),
-            array('estado' => "error", "msg" => "error creando usuario"),
-            array('estado' => "error", "msg" => "usuario ya existe")
-        );
-        return $errores[$id];
-    }
-
-    public function procesarLLamada() {
-        if (isset($_REQUEST['url'])) {
-            $url = explode('/', trim($_REQUEST['url']));
-            $url = array_filter($url);
-            $this->_metodo = strtolower(array_shift($url));
-            $this->_argumentos = $url;
-            $func = $this->_metodo;
-            if ((int) method_exists($this, $func) > 0) {
-                if (count($this->_argumentos) > 0) {
-                    call_user_func_array(array($this, $this->_metodo), $this->_argumentos);
-                } else {//si no lo llamamos sin argumentos, al metodo del controlador  
-                    call_user_func(array($this, $this->_metodo));
+<?php require('CabeceraExterna.php'); ?>
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+    var Ajax = new AjaxObj();
+    
+    var app = angular.module('formularioOcupacion',  [])            
+                     .config(function($locationProvider) {
+                          $locationProvider.html5Mode(true);
+                      });
+                      
+    function FormularioOcupacionController($scope, $http,$location) {
+                $scope.obtenerActividades = function() {
+                
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividadesFiltro');
+                var Params = 'NombreActividad=' + '' + '&IntensidadActividad=' + '' + '&Grupo=' + '';    
+                
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    $scope.actividades = JSON.parse(Ajax.responseText).actividades;
                 }
-            } else
-                $this->mostrarRespuesta($this->convertirJson($this->devolverError(0)), 404);
-        }
-        $this->mostrarRespuesta($this->convertirJson($this->devolverError(0)), 404);
-    }
+                else
+                {
+                    $scope.actividades = [];
+                }
+            };
+                $scope.obtenerActividades();
+			
+		$scope.obtenerSalas = function() {
+		var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/SalasBO.php?url=obtenerSalasFiltro');
+                var Params = 'NombreSala=' + '' + '&CapacidadSala=' + '';    
+                
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                Ajax.send(Params); 
+				
+				if ($scope.estado === 'correcto')
+    				{
+                                
+				$scope.salas = JSON.parse(Ajax.responseText).salas;
+				}
+            };
+                $scope.obtenerSalas();
+                
+                $scope.obtenerClase = function(idClase) {
+                
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=obtenerClase');
 
-    private function convertirJson($data) {
-        return json_encode($data);
-    }
+                //var Url = "localhost/sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividadesFiltro";
+                var Params = '&idClase=' + idClase;
 
-//Metodos CRUD Actividad
-    private function ocupacion($idActividad) {
-        ?>
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                $scope.clase  = JSON.parse(Ajax.responseText).clase;
 
-        <script>
-            var idActividad = <?php echo $idActividad; ?>;
-            var app = angular.module('formularioOcupacion', []);
-            app.controller('FormularioOcupacionController', function FormularioOcupacionController($scope, $http) {
-                var URL = BASE_URL.concat("Sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividadOcupacion" + "&idActividad=" + idActividad);
-                $http.get(URL)
-                        .success(function (response) {
-                            $scope.estado = response.estado;
-                            if ($scope.estado === 'correcto')
-                                $scope.actividad = response.actividad;
-                            var ia = $scope.actividad.IntensidadActividad;
-                            ia = '#' + ia.toString();
-                            $("#IntensidadActividad").css("background-color") = ia;
-                        });
-            });
-        </script>
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('Ocupacion').style.color = '#'+$scope.clase;
+                    $('#Ocupacion').css('color', '#'+$scope.clase);
+                    $scope.clase = JSON.parse(Ajax.responseText).clase;    
+                }
+            };
+                $scope.obtenerClase($location.search().idClase);
+     }
+    
+ </script>
 
         <div class="row" ng-app="formularioOcupacion" ng-controller="FormularioOcupacionController">
             <div id="maininner" class="col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2 col-xs-12 col-sm-10 col-sm-offset-1">
                 <section id="content"><div id="system-message-container">
                     </div>
                     <div id="system">
-                        <h2>Información Actividad: {{actividad.NombreActividad}}</h2>
+                        <h2>Información Clase</h2>
                         <form class="submission box style" name="ocupacion" novalidate>
                             <fieldset>
                                 <div class="form-group has-success has-feedback">
-                                    <div class="col-md-5 col-sm-5 input-group-lg">
-                                        <label class="control-label" > NombreActividad</label>
-                                        <input type="text" class="form-control" id="NombreActividad" ng-model="actividad.NombreActividad" readonly/>
+                                    <div class="width-100 col-md-12 col-sm-12 input-group-lg">
+                                        <label class="control-label" >Ocupacion</label>                                        
+                                        <input class="form-control color" id="Ocupacion" name="Ocupacion" ng-model="clase.Ocupacion" readonly ng-disabled="true"/>
+                                        
                                     </div>
-                                    <div class="col-md-4 col-sm-4 input-group-lg">
-                                        <label class="control-label" >Descripcion</label>
-                                        <input type="text" class="form-control" id="Descripcion" ng-model="actividad.Descripcion" readonly/>
+                                    <div class="col-md-12 col-sm-12 input-group-lg">
+                                    <div class="col-md-6 col-sm-6 input-group-lg">
+                                        <label class="control-label" >Actividad</label>
+                                         <select ng-disabled="true" name="idActividad" id="idActividad" class="col-md-6 col-sm-6 input-group-lg form-control" >	
+                                            <option ng_repeat="actividad in actividades" ng_selected="{{clase.idActividad}} === null ? {{actividad.idActividad}} === {{clase.idActividad}} : {{actividad.idActividad}} === {{clase.idActividad}}" value="{{actividad.idActividad}}">{{actividad.NombreActividad}}</option>-
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 input-group-lg">
+                                        <label class="control-label" >Sala</label>
+                                        <select ng-disabled="true" name="idSala" id="idSala" class="col-md-6 col-sm-6 input-group-lg form-control" >	
+                                            <option ng_repeat="sala in salas" ng_selected="{{clase.idSala}} === null ? {{sala.idSala}} === {{clase.idSala}} : {{sala.idSala}} === {{clase.idSala}}" value="{{sala.idSala}}">{{sala.NombreSala}}</option>-
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-sm-6 input-group-lg">
+                                        <label class="control-label" > Fecha Inicio </label>                                        
+                                        <input  ng-disabled="true" ng-model="clase.FechaInicio"  type="text" class="col-lg-4 col-md-4 col-sm-4 form-control" id="FechaInicio" ng-model="clase.FechaInicio" readonly/>
                                         <br>
                                     </div>
-                                    <div class="col-md-5 col-sm-5 input-group-lg">
-                                        <label class="control-label" > Intensidad </label>
-                                        <input type="text" class="form-control" id="IntensidadActividad" ng-model="actividad.IntensidadActividad" readonly/>
-                                        <br>
+                                    <div class="col-md-6 col-sm-6 input-group-lg">
+                                        <label class="control-label" >Fecha Fin</label>
+                                        <input ng-disabled="true" ng-model="clase.FechaFin" type="text" class="col-lg-4 col-md-4 col-sm-4 form-control" ng-model="clase.FechaFin" readonly/>
                                     </div>
-                                    <div class="col-md-2 col-sm-2 input-group-lg">
-                                        <label class="control-label" >Edad Minima</label>
-                                        <input type="text" class="form-control" id="EdadMinima" ng-model="actividad.EdadMinima" readonly/>
                                     </div>
-                                    <div class="col-md-2 col-sm-2 input-group-lg">
-                                        <label class="control-label" >Edad Maxima</label>
-                                        <input type="text" class="form-control" id="EdadMaxima" ng-model="actividad.EdadMaxima" readonly/>
-                                    </div>
+                                  
                                 </div>
                             </fieldset>      
                         </form>
@@ -112,12 +119,5 @@ class OcupacionActividad extends Rest {
             </div>  
         </div>
         <?php
-    }
-
-}
-
-$ocupacionActividad = new OcupacionActividad();
-$ocupacionActividad->procesarLLamada();
-
 require_once('PieExterno.php');
 ?>

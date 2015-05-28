@@ -264,7 +264,7 @@
                     </div>
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Intensidad Actividad</label>
-                    <input ng-disabled="actividad.idActividad ===null || actividad.FechaBaja!==null" class="input-sm color" ng-model="actividad.IntensidadActividad"   id="IntensidadActividad" name="IntensidadActividad" required>
+                    <input ng-disabled="actividad.idActividad ===null || actividad.FechaBaja!==null" class="input-sm color" ng-model="actividad.IntensidadActividad"   id="IntensidadActividad" name="IntensidadActividad">
                     <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12"  style="color:red" ng-show="formulario.IntensidadActividad.$dirty && formulario.IntensidadActividad.$invalid">
                                 <span ng-show="formulario.IntensidadActividad.$error.required">* Intensidad de actividad obligatorio.</span>
                     </span>

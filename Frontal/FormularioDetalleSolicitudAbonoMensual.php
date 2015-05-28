@@ -24,7 +24,6 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-                alert(Ajax.responseText);
                 $scope.abonomensual = JSON.parse(Ajax.responseText).abonomensual;
                 $scope.datossolicitud = JSON.parse(Ajax.responseText).datossolicitud;
                 
@@ -84,7 +83,7 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
              
-            alert(Ajax.responseText);
+            
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')
@@ -348,7 +347,7 @@
                                 <input ng-disabled="abonomensual.Anulado==='1'" ng-model="datossolicitud.PrecioPagado"  type="text" class="input-sm col-md-4" name="cantidad" id="cantidad" required ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/">
                                 <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.cantidad.$dirty && formulario.cantidad.$invalid">
                                 <span ng-show="formulario.cantidad.$error.required">* Cantidad obligatoria.</span>
-				<span ng-show="formulario.cantidad.$error.pattern">* Cantidad debe ser un número</span>
+								<span ng-show="formulario.cantidad.$error.pattern">* Cantidad debe ser un número</span>
                                  </span>
                                 </div>
                     
@@ -427,7 +426,7 @@
                                 </div>
                         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-md-2" >Telefono 2</label>
-                                <input ng-disabled="abonomensual.Anulado==='1'" ng-model="abonomensual.Telefono2"  type="text" class="input-sm col-md-4" name="telefono2" id="Telefono2" required >
+                                <input ng-disabled="abonomensual.Anulado==='1'" ng-model="abonomensual.Telefono2"  type="text" class="input-sm col-md-4" name="telefono2" id="Telefono2" >
                                 <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.telefono2.$dirty && formulario.telefono2.$invalid">
                                 <span ng-show="formulario.telefono2.$error.required">* Telefono 2 obligatorio.</span>
                                  </span>

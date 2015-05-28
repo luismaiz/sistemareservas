@@ -1,4 +1,4 @@
-<?php ?>
+<?php session_start();?>
 <html lang="es-es"><head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -27,12 +27,50 @@
         <link href="../Frontal/Utilidades/css/Angular.css" rel="stylesheet" type="text/css"/>
         <script src="../Frontal/Utilidades/js/angular-1.2.9/angular-1.2.9/angular.js" type="text/javascript"></script>
          <!-- Calendario -->
+         <script src="Utilidades/jscolor/jscolor.js" type="text/javascript"></script>
        <link rel="stylesheet" href="Utilidades/calendario/css/font-awesome.min.css" />
 	    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
 		 <!-- ace styles -->
         <!--<link rel="stylesheet" href="Utilidades/calendario/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />-->
         <link rel="stylesheet" type="text/css" href="Utilidades/calendario/css/jquery.datetimepicker.css"/>
         <script src="Utilidades/calendario/js/jquery.datetimepicker.js" type="text/javascript"></script>
+		<style>            
+            #ck-button {
+                margin:4px;
+                background-color:#EFEFEF;
+                color: black;
+                border-radius:4px;
+                border:1px solid #D0D0D0;
+                overflow:auto;
+                float:left;
+            }
+
+            #ck-button:hover {
+                background:red;
+            }
+
+            #ck-button label {
+                float:left;
+                width:100%;
+                height:4em;
+            }
+
+            #ck-button label span {
+                text-align:center;
+                padding:3px 0px;
+                display:block;
+            }
+
+            #ck-button label input {
+                position:absolute;
+                top:-20px;
+            }
+
+            #ck-button input:checked + span {
+                background-color:#911;
+                color:#fff;
+            }
+        </style>        
     </head>
     <body id="page" class="page  noblog  transparency-25 system-transparent">
         <div id="page-body">

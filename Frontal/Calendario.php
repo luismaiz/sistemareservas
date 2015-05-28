@@ -24,7 +24,14 @@
                 
                 if ($scope.estado === 'correcto')
                 {
+                    for(var i = JSON.parse(Ajax.responseText).actividades.length - 1; i >= 1; i--) {
+			if(JSON.parse(Ajax.responseText).actividades[i].FechaBaja !== null) {
+			JSON.parse(Ajax.responseText).actividades.splice(i, 1);
+                }
+                }
                     $scope.actividades = JSON.parse(Ajax.responseText).actividades;
+                    
+            
                     Actividades = $scope.actividades;
                     
                     
@@ -51,9 +58,17 @@
 				
 				if ($scope.estado === 'correcto')
     				{
-                                
+                                for(var i = JSON.parse(Ajax.responseText).salas.length - 1; i >= 1; i--) {
+                                    
+                                if(JSON.parse(Ajax.responseText).salas[i].FechaBaja !== null) {
+                                    alert();
+                                JSON.parse(Ajax.responseText).salas.splice(i, 1);
+                                }
+                                }
 				$scope.salas = JSON.parse(Ajax.responseText).salas;
-				Salas = $scope.salas;
+				
+                                Salas = $scope.salas;
+                                
 				}
             };
             $scope.obtenerSalas();

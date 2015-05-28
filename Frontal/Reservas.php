@@ -44,8 +44,8 @@
 		for(var i = $scope.tiposSolicitudes.length - 1; i >= 1; i--) {
 			if($scope.tiposSolicitudes[i].FechaBaja !== null) {
 			$scope.tiposSolicitudes.splice(i, 1);
-                }
-                }	
+    }
+}	
 	
 				
 		if (localStorage.getItem('filtros')!== null)
@@ -106,6 +106,7 @@
                 else
                 {
                     $scope.solicitudes = [];
+					localStorage.removeItem('filtros');
                     document.getElementById('divSinResultados').style.display = 'block';
                 }
             };	
@@ -239,9 +240,8 @@
                     localStorage.setItem('filtros', JSON.stringify($scope.filtros));
 		    location.href = "FormularioDetalleSolicitudAbonoMensual.php?idSolicitud="+idSolicitud;
 		};
-				
 		
-         
+		        
     }
     
      $.datepicker.regional['es'] = {
@@ -320,7 +320,7 @@
                                 <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >DNI</label>
                                 <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" id="filtroDni" name="filtroDni"/>
                                 <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >eMail</label>
-                                <input type="email" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" required id="filtroEmail" name="filtroEmail"/>
+                                <input type="email" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" id="filtroEmail" name="filtroEmail"/>
                             </div>
                             <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Fecha Solicitud Desde</label>
