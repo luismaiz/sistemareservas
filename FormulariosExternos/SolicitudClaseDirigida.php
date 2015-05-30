@@ -407,6 +407,7 @@
                     return;
                 var optionsObj = {};
                 optionsObj.dateFormat = 'dd-mm-yy';
+				optionsObj.maxDate = 0;
                 var updateModel = function (dateTxt) {
                     scope.$apply(function () {
                         // Call the internal AngularJS helper to

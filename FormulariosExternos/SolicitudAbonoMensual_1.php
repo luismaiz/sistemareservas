@@ -1,0 +1,994 @@
+<?php
+require "CabeceraExterna.php";
+require "../ComunicacionesREST/Rest.php";
+
+class SolicitudAbonoMensual extends Rest {
+
+    private $con = NULL;
+    private $_metodo;
+    private $_argumentos;
+
+    public function __construct() {
+        parent::__construct();
+    }
+
+    private function devolverError($id) {
+        $errores = array(
+            array('estado' => "error", "msg" => "petición no encontrada"),
+            array('estado' => "error", "msg" => "petición no aceptada"),
+            array('estado' => "error", "msg" => "petición sin contenido"),
+            array('estado' => "error", "msg" => "email o password incorrectos"),
+            array('estado' => "error", "msg" => "error borrando usuario"),
+            array('estado' => "error", "msg" => "error actualizando nombre de usuario"),
+            array('estado' => "error", "msg" => "error buscando usuario por email"),
+            array('estado' => "error", "msg" => "error creando usuario"),
+            array('estado' => "error", "msg" => "usuario ya existe")
+        );
+        return $errores[$id];
+    }
+
+    public function procesarLLamada() {
+        if (isset($_REQUEST['url'])) {
+            $url = explode('/', trim($_REQUEST['url']));
+            $url = array_filter($url);
+            $this->_metodo = strtolower(array_shift($url));
+            $this->_argumentos = $url;
+            $func = $this->_metodo;
+            if ((int) method_exists($this, $func) > 0) {
+                if (count($this->_argumentos) > 0) {
+                    call_user_func_array(array($this, $this->_metodo), $this->_argumentos);
+                } else {//si no lo llamamos sin argumentos, al metodo del controlador  
+                    call_user_func(array($this, $this->_metodo));
+                }
+            } else
+                $this->mostrarRespuesta($this->convertirJson($this->devolverError(0)), 404);
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(0)), 404);
+    }
+
+    private function convertirJson($data) {
+        return json_encode($data);
+    }
+
+    private function pasarVariable($solicitud) {
+        $_SESSION['solicitudMensual'] = $solicitud;
+    }
+
+    private function pagoRealizado() {
+        // Primera comprobación. Cerraremos este if más adelante
+        if ($_POST) {
+            // Obtenemos los datos en formato variable1=valor1&variable2=valor2&...
+            $raw_post_data = file_get_contents('php://input');
+
+            // Los separamos en un array
+            $raw_post_array = explode('&', $raw_post_data);
+
+            // Separamos cada uno en un array de variable y valor
+            $myPost = array();
+            foreach ($raw_post_array as $keyval) {
+                $keyval = explode("=", $keyval);
+                //var_dump($keyval);
+                if (count($keyval) == 2)
+                    $myPost[$keyval[0]] = urldecode($keyval[1]);
+            }
+
+            if ($myPost["payer_status"] == 'verified') {
+                //obtenemos los datos de sesion  
+                //var_dump($_SESSION['solicitudMensual']);                
+                if (isset($_SESSION['solicitudMensual'])) {
+                    //var_dump(json_decode($_SESSION['solicitud'])->{'Nombre'});
+                    ?>
+                    <script>
+                        var s =<?php echo $_SESSION['solicitudMensual']; ?>
+                                                                                    
+                        var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSolicitudAbonoMensual');
+
+                        var Params = '&idTipoSolicitud=2&';
+                        Params += jQuery.param(s);
+
+                        var Ajax = new AjaxObj();
+                        Ajax.open("POST", URL, false);
+                        Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                        Ajax.send(Params); // Enviamos los datos
+                        var response = Ajax.responseText;
+                        if (JSON.parse(response).estado === 'correcto')
+                        {
+                            Params += '&Localizador=' + JSON.parse(response).solicitud.Localizador;
+                            var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=codigoQR');
+
+                            //var Ajax = new AjaxObj();
+                            Ajax.open("POST", URL, false);
+                            Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                            Ajax.send(Params); // Enviamos los datos
+
+                            //volvemos a actulizar la variable de sesión para que tenga el localizador y el codigo qr
+                            var URL2 = BASE_URL.concat('sistemareservas/FormulariosExternos/SolicitudAbonoMensual.php?url=pasarVariable/' + JSON.stringify(JSON.parse('{"' + decodeURI(Params.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')));
+
+                            Ajax.open("POST", URL2, false);
+                            Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                            Ajax.send(Params); // Enviamos los datos
+                        }
+                    </script>                    
+                        <div id="maininner" class="col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2 col-xs-12 col-sm-10 col-sm-offset-1">
+                            <section id="content"><div id="system-message-container">
+                                </div>
+                                <div id="system">
+                                    <h2>Solicitud Abono Mensual</h2>
+                                    <div class="tab-content" ng-init="tab1 = true">
+                                        <div class="tab-pane active" id="tab1" ng-show="tab1">
+                                            <fieldset>
+                                                <div class="form-group has-success has-feedback">
+                                                    <div class="alert alert-success" id="divCorrecto">
+                                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                                        <strong>Correcto.</strong>  Operación realizada con éxito.
+                                                    </div>
+
+                                                    <div class="col-md-5 col-sm-5 input-group-lg">
+                                                        <label class="control-label" > Nombre</label><input type="text" name="Nombre" class="form-control" ng-maxlength="40" value="<?php echo json_decode($_SESSION['solicitudMensual'])->{'Nombre'} ?>" readonly/>
+                                                    </div>
+                                                    <div class="col-md-5 col-sm-5 input-group-lg">
+                                                        <label class="control-label" > Apellidos </label><input type="text" name="Apellidos" class="form-control" ng-maxlength="40" value="<?php echo json_decode($_SESSION['solicitudMensual'])->{'Apellidos'} ?>" readonly/>
+                                                        <br>
+                                                    </div>
+                                                    <br />
+                                                    <div class="col-md-5 col-sm-5 input-group-lg">
+                                                        <label class="control-label" >Dni</label><input type="text" name="DNI" class="form-control" ng-maxlength="9" ng-minlength="9" value="<?php echo json_decode($_SESSION['solicitudMensual'])->{'DNI'} ?>" readonly/>
+                                                    </div>
+                                                    <div class="col-md-5 col-sm-5 input-group-lg">
+                                                        <label class="control-label" >E-mail</label><input type="email" name="EMail" class="form-control" value="<?php echo json_decode($_SESSION['solicitudMensual'])->{'EMail'} ?>" readonly/>
+                                                        <br>
+                                                    </div>
+                                                    <br />
+                                                    <div class="col-md-5 col-sm-5 input-group-lg">
+                                                        <label class="control-label" >Día de acceso</label>
+                                                        <input type="text" type="text" datepicker class="form-control" name="FechaAbonoMensual" id="FechaAbonoMensual" value="<?php echo json_decode($_SESSION['solicitudMensual'])->{'FechaAbonoMensual'} ?>" readonly/>
+
+                                                    </div>
+
+                                                    <div class="col-md-5 col-sm-5 input-group-lg">
+                                                        <label class="control-label" > Pago Realizado</label><input type="text" name="Nombre" class="form-control" ng-maxlength="40" value="<?php echo $myPost["mc_gross"] ?>" readonly/>
+
+                                                    </div>
+
+                                                    <div class="col-md-5 col-sm-5 input-group-lg">
+                                                        <label class="control-label" > Cuenta Asociada</label><input type="text" name="Nombre" class="form-control" ng-maxlength="40" value="<?php echo $myPost["payer_email"] ?>" readonly/>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-5 col-sm-5 input-group-lg">
+                                                        <label class="control-label" > Codigo Localizador</label><input type="text" name="Localizador" class="form-control" ng-maxlength="40" value="<?php echo json_decode($_SESSION['solicitudMensual'])->{'Localizador'} ?>" readonly/>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-6 col-sm-5 input-group-lg">
+                                                        <label class="control-label" > Código QR</label><img style="width:10em; height:10em" name="codigoQR" class="form-control" src="<?php echo '../Negocio/NegocioAdministrador/temp/'.json_decode($_SESSION['solicitudMensual'])->{'Localizador'}.'.png' ?>" />
+                                                    </div>
+
+                                                </div>
+                                            </fieldset>                                           
+                                        </div>
+                                    </div>
+                            </section>
+                        </div>                       
+                    <?php
+                }
+            } else {
+                echo "pago no realizado";
+                //borramos la solicitud en la bbdd
+                ?>                
+                    <div id="maininner" class="col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2 col-xs-12 col-sm-10 col-sm-offset-1">
+                        <section id="content"><div id="system-message-container">
+                            </div>
+                            <div id="system">
+                                <h2>Solicitud Abono Mensual</h2>                                
+                                    <div class="tab-content" ng-init="tab1 = true">
+                                        <div class="tab-pane active" id="tab1" ng-show="tab1">
+                                            <fieldset>
+                                                <div class="form-group has-success has-feedback">
+                                                    <div class="alert alert-danger" id="divError">
+                                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                                        <strong>Error</strong> Se ha producido un error al realizar la operación.
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                    </section>
+                            </div>                    
+                    <?php
+                }
+            } else {    // Si no hay datos $_POST
+                // Podemos guardar la incidencia en un log, redirigir a una URL...
+                ?>
+                    <div id="maininner" class="col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2 col-xs-12 col-sm-10 col-sm-offset-1">
+                        <section id="content"><div id="system-message-container">
+                            </div>
+                            <div id="system">
+                                <h2>Solicitud Abono Mensual</h2>                        
+                                <div class="tab-content" ng-init="tab1 = true">
+                                    <div class="tab-pane active" id="tab1" ng-show="tab1">
+                                        <fieldset>
+                                            <div class="form-group has-success has-feedback">
+                                                <div class="alert alert-warning" id="divWarning">
+                                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                                    <strong>Correcto.</strong>  Operación cancelada.
+                                                </div>
+                                            </div>
+                                        </fieldset>                          
+                                    </div>
+                                </div>
+                        </section>
+                    </div>
+<?php
+            }
+        }
+
+        private function inicio() {
+            ?>
+<script>
+    var Ajax = new AjaxObj();
+    var app = angular.module('solicitudAbonoMensual', []);
+    app.controller('RegistrarSolicitudAbonoMensualController', function RegistrarSolicitudAbonoMensualController($scope, $http) {
+        $scope.s = {};
+        $scope.obtenerProvincia = function (codigoPostal) {
+            if (codigoPostal < 52999 && codigoPostal > 01000) {
+                var provincia = '';
+                var cp = parseInt(codigoPostal / 1000);
+
+                switch (cp) {
+                    case 1:
+                        provincia = 'Álava';
+                        break;
+
+                    case 2:
+                        provincia = 'Albacete';
+                        break;
+
+                    case 3:
+                        provincia = 'Alicante';
+                        break;
+
+                    case 4:
+                        provincia = 'Almería';
+                        break;
+
+                    case 5:
+                        provincia = 'Ávila';
+                        break;
+
+                    case 6:
+                        provincia = 'Badajoz';
+                        break;
+
+                    case 7:
+                        provincia = 'Islas Baleares';
+                        break;
+
+                    case 8:
+                        provincia = 'Barcelona';
+                        break;
+
+                    case 9:
+                        provincia = 'Burgos';
+                        break;
+
+                    case 10:
+                        provincia = 'Cáceres';
+                        break;
+
+                    case 11:
+                        provincia = 'Cádiz';
+                        break;
+
+                    case 12:
+                        provincia = 'Castellón';
+                        break;
+
+                    case 13:
+                        provincia = 'Ciudad Real';
+                        break;
+
+                    case 14:
+                        provincia = 'Córdoba';
+                        break;
+
+                    case 15:
+                        provincia = 'La Coruña';
+                        break;
+
+                    case 16:
+                        provincia = 'Cuenca';
+                        break;
+
+                    case 17:
+                        provincia = 'Gerona';
+                        break;
+
+                    case 18:
+                        provincia = 'Granada';
+                        break;
+
+                    case 19:
+                        provincia = 'Guadalajara';
+                        break;
+
+                    case 20:
+                        provincia = 'Guipúzcua';
+                        break;
+
+                    case 21:
+                        provincia = 'Huelva';
+                        break;
+
+                    case 22:
+                        provincia = 'Huesca';
+                        break;
+
+                    case 23:
+                        provincia = 'Jaén';
+                        break;
+
+                    case 24:
+                        provincia = 'León';
+                        break;
+
+                    case 25:
+                        provincia = 'Lérida';
+                        break;
+
+                    case 26:
+                        provincia = 'La Rioja';
+                        break;
+
+                    case 27:
+                        provincia = 'Lugo';
+                        break;
+
+                    case 28:
+                        provincia = 'Madrid';
+                        break;
+
+                    case 29:
+                        provincia = 'Málaga';
+                        break;
+
+                    case 30:
+                        provincia = 'Murcia';
+                        break;
+
+                    case 31:
+                        provincia = 'Navarra';
+                        break;
+
+                    case 32:
+                        provincia = 'Orense';
+                        break;
+
+                    case 33:
+                        provincia = 'Asturias';
+                        break;
+
+                    case 34:
+                        provincia = 'Palencia';
+                        break;
+
+                    case 35:
+                        provincia = 'Las Palmas';
+                        break;
+
+                    case 36:
+                        provincia = 'Pontevedra';
+                        break;
+
+                    case 37:
+                        provincia = 'Salamanca';
+                        break;
+
+                    case 38:
+                        provincia = 'S.C. Tenerife';
+                        break;
+
+                    case 39:
+                        provincia = 'Cantabria';
+                        break;
+
+                    case 40:
+                        provincia = 'Segovia';
+                        break;
+
+                    case 41:
+                        provincia = 'Navarra';
+                        break;
+
+                    case 42:
+                        provincia = 'Soria';
+                        break;
+
+                    case 43:
+                        provincia = 'Tarragona';
+                        break;
+
+                    case 44:
+                        provincia = 'Teruel';
+                        break;
+
+                    case 45:
+                        provincia = 'Toledo';
+                        break;
+
+                    case 46:
+                        provincia = 'Valencia';
+                        break;
+
+                    case 47:
+                        provincia = 'Valladolid';
+                        break;
+
+                    case 48:
+                        provincia = 'Vizcaya';
+                        break;
+
+                    case 49:
+                        provincia = 'Zamora';
+                        break;
+
+                    case 50:
+                        provincia = 'Zaragoza';
+                        break;
+
+                    case 51:
+                        provincia = 'Ceuta';
+                        break;
+
+                    case 52:
+                        provincia = 'Melilla';
+                        break;
+                }
+            }
+
+            $scope.s.Provincia = provincia;
+        };
+        $scope.calcularDiasMes = function (mes, ano) {
+            var dias = 0;
+            switch (mes) {
+                case 1:
+                    dias = 31;
+                    break;
+                case 2:
+                    if (ano % 4 === 0) {
+                        dias = 29;
+                    } else {
+                        dias = 28;
+                    }
+                    break;
+                case 3:
+                    dias = 31;
+                    break;
+                case 4:
+                    dias = 30;
+                    break;
+                case 5:
+                    dias = 31;
+                    break;
+                case 6:
+                    dias = 30;
+                    break;
+                case 7:
+                    dias = 31;
+                    break;
+                case 8:
+                    dias = 31;
+                    break;
+                case 9:
+                    dias = 30;
+                    break;
+                case 10:
+                    dias = 31;
+                    break;
+                case 11:
+                    dias = 30;
+                    break;
+                case 12:
+                    dias = 31;
+                    break;
+            }
+            return dias;
+        };
+        $scope.calcularFechaFin = function (fechaInicio) {
+            var values = fechaInicio.split("-");
+            var dia = parseInt(values[0]);
+            var mes = parseInt(values[1]);
+            var ano = parseInt(values[2]);
+
+            var diasMes = $scope.calcularDiasMes(mes, ano);
+            var fecha = diasMes + '-' + mes + '-' + ano ;
+            $scope.s.FechaFin = fecha;
+            $scope.calcularPrecio($scope.s.FechaInicio, $scope.s.idTipoAbono, $scope.s.idTipoTarifa);
+        };
+        $scope.calcularPrecio = function (fechaInicio, abono, tarifa) {
+            var URL2 = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerPreciosFiltro');
+            var Params = '&TipoSolicitud=2' +
+                    '&TipoAbono=' + abono +
+                    '&TipoTarifa=' + tarifa;
+
+            Ajax.open("POST", URL2, false);
+            Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            Ajax.send(Params); // Enviamos los datos
+
+            if ($scope.estado === 'correcto')
+            {
+                $scope.precios = JSON.parse(Ajax.responseText).precios;
+                localStorage.setItem('precios', JSON.stringify($scope.precios));
+                document.getElementById('divSinResultados').style.display = 'none';
+            }
+            else
+            {
+                $scope.precios = [];
+                document.getElementById('divSinResultados').style.display = 'block';
+            }
+            var total = $scope.precios[0].Precio;
+            var values = fechaInicio.split("-");
+            var dia = parseInt(values[0]);
+            var mes = parseInt(values[1]);
+            var ano = parseInt(values[2]);
+
+            var fin = $scope.calcularDiasMes(mes, ano);
+            var precioPago = (total / fin * (fin - dia)).toFixed(2);
+            $scope.s.PrecioPagado = precioPago;
+            document.getElementById("amount_1").value = precioPago;
+        };
+        //Obtener Tipo Abonos
+        var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbono');
+        $http.get(URL)
+                .success(function (response) {
+
+                    $scope.estado = response.estado;
+
+                    if ($scope.estado === 'correcto')
+                    {
+                        $scope.tiposAbonos = response.tiposAbonos;
+                        document.getElementById('divSinResultados').style.display = 'none';
+                    }
+                    else
+                    {
+                        $scope.tiposAbonos = [];
+                        document.getElementById('divSinResultados').style.display = 'block';
+                    }
+                });
+        //Obtener Tipo Tarifa
+        var Url1 = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifa');
+        //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifa";		
+
+        $http.get(Url1)
+                .success(function (response) {
+                    $scope.estado = response.estado;
+                    if ($scope.estado === 'correcto')
+                    {
+                        $scope.tiposTarifas = response.tiposTarifas;
+                        document.getElementById('divSinResultados').style.display = 'none';
+                    }
+                    else
+                    {
+                        $scope.tiposTarifas = [];
+                        document.getElementById('divSinResultados').style.display = 'block';
+                    }
+                });
+        $scope.avanzar = function (idTab) {
+            if (idTab === 0) {
+                $scope.tab1 = true;
+                $scope.tab2 = false;
+                $scope.tab3 = false;
+                $scope.tab4 = false;
+            } else if (idTab === 1) {
+                $scope.tab1 = false;
+                $scope.tab2 = true;
+                $scope.tab3 = false;
+                $scope.tab4 = false;
+            } else if (idTab === 2) {
+                $scope.tab1 = false;
+                $scope.tab2 = false;
+                $scope.tab3 = true;
+                $scope.tab4 = false;
+            } else if (idTab === 3) {
+                $scope.tab1 = false;
+                $scope.tab2 = false;
+                $scope.tab3 = false;
+                $scope.tab4 = true;
+				
+				var URL2 = BASE_URL.concat('sistemareservas/FormulariosExternos/SolicitudAbonoMensual.php?url=pasarVariable/' + JSON.stringify($scope.s));
+                var Params = '';//&solicitud=' + jQuery.param($scope.s);
+
+                Ajax.open("POST", URL2, false);
+                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos                    
+            }
+        };
+        $scope.calcularFecha = function (fecha) {
+            var values = fecha.split("-");
+            var dia = parseInt(values[0]);
+            var mes = parseInt(values[1]);
+            var ano = parseInt(values[2]);
+
+            // cogemos los valores actuales
+            var fecha_hoy = new Date();
+            var ahora_ano = fecha_hoy.getYear();
+            var ahora_mes = fecha_hoy.getMonth() + 1;
+            var ahora_dia = fecha_hoy.getDate();
+
+            // realizamos el calculo
+            var edad = (ahora_ano + 1900) - ano;
+            if (ahora_mes < mes)
+            {
+                edad--;
+            }
+            if ((mes === ahora_mes) && (ahora_dia < dia))
+            {
+                edad--;
+            }
+            if (edad > 1900)
+            {
+                edad -= 1900;
+            }
+            return edad;
+        };
+        $scope.esMenor = function () {
+            var edad = $scope.calcularFecha($scope.s.FechaNacimiento);
+            if (edad < 18) {
+                $scope.menor = true;
+            } else {
+                $scope.menor = false;
+            }
+        };        
+        $.datepicker.regional['es'] = {
+            closeText: 'Cerrar',
+            prevText: '<Ant',
+            nextText: 'Sig>',
+            currentText: 'Hoy',
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+            dayNamesMin: ['Do', 'Lun', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+            weekHeader: 'Sm',
+            dateFormat: 'yy-mm-dd',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "1900:2016",
+            yearSuffix: ''
+        };
+        $.datepicker.setDefaults($.datepicker.regional['es']);
+
+    });
+    app.directive('datepicker', function () {
+        return  {
+            restrict: 'A',
+            require: '?ngModel',
+            link: function (scope, element, attrs, ngModel) {
+                element = $("#FechaNacimiento");
+                if (!ngModel)
+                    return;
+                var optionsObj = {};
+                optionsObj.dateFormat = 'dd-mm-yy';
+				optionsObj.maxDate = 0;
+                var updateModel = function (dateTxt) {
+                    scope.$apply(function () {
+                        // Call the internal AngularJS helper to
+                        // update the two-way binding
+                        ngModel.$setViewValue(dateTxt);
+                    });
+                };
+                optionsObj.onSelect = function (dateTxt) {
+                    updateModel(dateTxt);
+                    if (scope.select) {
+                        scope.$apply(function () {
+                            scope.select({date: dateTxt});
+                        });
+                    }
+                };
+                ngModel.$render = function () {
+                    // Use the AngularJS internal 'binding-specific' variable
+                    element.datepicker('setDate', ngModel.$viewValue || '');
+                };
+                element.datepicker(optionsObj);
+            }
+        };
+    });
+    app.directive('datepickerabono', function () {
+        return  {
+            restrict: 'A',
+            require: '?ngModel',
+            link: function (scope, element, attrs, ngModel) {
+                element = $("#FechaInicio");
+                if (!ngModel)
+                    return;
+                var optionsObj = {};
+                optionsObj.dateFormat = 'dd-mm-yy';
+                var updateModel = function (dateTxt) {
+                    scope.$apply(function () {
+                        // Call the internal AngularJS helper to
+                        // update the two-way binding
+                        ngModel.$setViewValue(dateTxt);
+                    });
+                };
+                var comprobarCaducidad = function (fecha) {
+                    var values = fecha.split("-");
+                    var dia = parseInt(values[0]);
+                    var mes = parseInt(values[1]);
+                    var ano = parseInt(values[2]);
+                    // cogemos los valores actuales
+                    var fecha_hoy = new Date();
+                    var ahora_ano = (fecha_hoy.getYear()) + 1900;
+                    var ahora_mes = parseInt((((fecha_hoy.getMonth()) + 1) < 10) ? '0' + ((fecha_hoy.getMonth()) + 1) : (fecha_hoy.getMonth()) + 1);
+                    var ahora_dia =parseInt(fecha_hoy.getDate());
+                    var valido = false;
+                    if (ano === ahora_ano) {
+                        if (mes === ahora_mes) {
+                            if (dia >= ahora_dia) {
+                                valido = true;
+                            }
+                        } else if (mes > ahora_mes) {
+                            valido = true;
+                        }
+                    } else if (ano > ahora_ano) {
+                        valido = true;
+                    }
+                    var hoy = ahora_ano + '-' + ahora_mes + '-' + ahora_dia;
+                    if (valido) {
+                        console.log('Permitir Compra');
+                        return valido;
+                    }
+                    else {
+                        console.log('No se permite comprar abonos de días pasados');
+                        return valido;
+                    }
+                };
+                optionsObj.onSelect = function (dateTxt) {
+                    ngModel.$setValidity('caducado', comprobarCaducidad(dateTxt));
+                    updateModel(dateTxt);
+                    if (scope.select) {
+                        scope.$apply(function () {
+                            scope.select({date: dateTxt});
+                        });
+                    }
+                };
+                ngModel.$render = function () {
+                    // Use the AngularJS internal 'binding-specific' variable
+                    element.datepicker('setDate', ngModel.$viewValue || '');
+                };
+                element.datepicker(optionsObj);
+            }
+        };
+    });
+
+
+</script>   
+<div class="row" ng-app="solicitudAbonoMensual" ng-controller="RegistrarSolicitudAbonoMensualController">
+    <div id="maininner" class="col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2 col-xs-12 col-sm-10 col-sm-offset-1" >
+        <section id="content">
+            <h2>Solicitud Abono Mensual</h2>
+            <form class="submission box style" name="formulario" action="https://www.paypal.com/cgibin/webscr" class="standard">
+                <div class="alert alert-danger" id="divError" style='display:none;'>
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>Error</strong> Se ha producido un error al realizar la operación.
+                </div>
+                <div class="alert alert-success" id="divCorrecto" style='display:none;'>
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>Correcto.</strong>  Operación realizada con éxito.
+                </div>
+                <div class="tab-content" ng-init="tab1 = true">
+                    <div class="tab-pane active" id="tab1" ng-show="tab1">
+                        <ol class="breadcrumb">
+                            <li class="active">Abono Mensual</li>
+                        </ol>
+                        <fieldset>
+                            <div id="divSinResultados"></div>
+                            <div class="form-group has-success has-feedback">
+                                <div class="col-md-12 col-sm-12 input-group-lg">
+                                    <h3>Elegir un abono y una tarifa a aplicar</h3>
+                                    <!--<div ng-init="s.tipoabono = 1"
+                                         <p ng-repeat="tipoabono in tiposabonos"><label class="control-label">
+                                                <input type="radio" id="tipoabono" name="tipoabono" ng-model="s.tipoabono" ng-value="{{ tipoabono.idTipoAbono}}" required  ng-checked="selection.indexOf(tipoabono.idTipoAbono) > 0" ng-required="value==''">&nbsp; {{ tipoabono.NombreAbono}}</label><br/></p>
+                                    </div>-->
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 input-group-lg">
+                                        <label class="control-label">Tipo Abono</label>
+                                        <select id="filtroTipoAbono" class="form-control" ng-model="s.idTipoAbono" name="idTipoAbono" required> 	
+                                            <option ng_repeat="tipoabono in tiposAbonos" value="{{tipoabono.idTipoAbono}}">{{tipoabono.NombreAbono}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 input-group-lg">
+                                        <label class="control-label">Tipo Tarifa</label>
+                                        <select  id="filtroTipoTarifa" class="form-control" ng-model="s.idTipoTarifa" name="idTipoTarifa"  required>	
+                                            <option ng_repeat="tipotarifa in tiposTarifas" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>
+                                        </select>
+                                        <br>
+                                    </div>
+                                    <div ng-hide="formulario.idTipoAbono.$error.required || formulario.idTipoTarifa.$error.required">
+                                        <div class="col-md-6 col-sm-6 input-group-lg">
+                                            <label class="control-label" >Fecha de Inicio</label><input type="text" datepickerAbono name="FechaInicio" id="FechaInicio" ng-model="s.FechaInicio" class="form-control" id="FechaInicio" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required placeholder="dd-mm-yyyy" readonly ng-change="calcularFechaFin(s.FechaInicio);"/>
+                                            <span style="color:red" ng-show="formulario.FechaInicio.$dirty && formulario.FechaInicio.$invalid">
+                                                <span ng-show="formulario.FechaInicio.$error.pattern">* Formato de fecha no valido.</span>
+                                                <span ng-show="formulario.FechaInicio.$error.required">* Fecha obligatoria.</span>
+                                                <span ng-show="formulario.FechaInicio.$error.caducado">* No se pueden comprar abonos caducados</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 input-group-lg">
+                                            <label class="control-label" >Fecha Fin</label><input type="text" name="FechaFin" ng-model="s.FechaFin" class="form-control" id="FechaFin" placeholder="dd-mm-yyyy" readonly />                                      
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 input-group-lg">
+                                            <label class="control-label" >Precio a Pagar</label><input type="text" name="PrecioPagado" ng-model="s.PrecioPagado" class="form-control" id="FPrecioPagado" ng-value="{{s.PrecioPagado}}" readonly />                                        
+                                        <br>
+                                        </div>
+                                        <div class="col-md-12 col-sm-12 input-group-lg">
+                                            <label class="control-label">
+                                                <input type="checkbox" name="Renovacion" ng-model="s.Renovacion" ng-value="1"/>&nbsp;Es una renovación<br></label>
+                                            <br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <ul class="pager">
+                            <li><a class="btn" ng-click="avanzar(1);" ng-disabled="formulario.FechaInicio.$invalid">Siguiente &rarr;</a></li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane active" ng-show="tab2" id="2">
+                        <ol class="breadcrumb">
+                            <li class="active">Abono Mensual</li>
+                            <li class="active">Datos Personales</li>
+                        </ol>
+                        <fieldset>
+                            <div class="form-group has-success has-feedback">
+                                <div class="col-md-5 col-sm-5 input-group-lg">
+                                    <label class="control-label" > Nombre</label><input type="text" name="Nombre" ng-model="s.Nombre" class="form-control" required ng-pattern="/[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ]$/" placeholder="Blanca" ng-maxlength="40"/>
+                                    <span style="color:red" ng-show="formulario.Nombre.$dirty && formulario.Nombre.$invalid">
+                                        <span ng-show="formulario.Nombre.$error.required">Nombre obligatorio.</span>
+                                        <span ng-show="formulario.Nombre.$error.pattern">* Formato de Nombre no valido.</span>
+                                        <span ng-show="formulario.Nombre.$error.maxlength">* Nombre demasiado largo</span>
+                                    </span>
+                                </div>
+                                <div class="col-md-5 col-sm-5 input-group-lg">
+                                    <label class="control-label" > Apellidos </label><input type="text" name="Apellidos" ng-model="s.Apellidos" class="form-control" required ng-pattern="/[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ]$/" placeholder="Garcia" ng-maxlength="40"/>
+                                    <span style="color:red" ng-show="formulario.Apellidos.$dirty && formulario.Apellidos.$invalid">
+                                        <span ng-show="formulario.Apellidos.$error.required">Apellidos obligatorio.</span>
+                                        <span ng-show="formulario.Apellidos.$error.pattern">* Formato de Apellidos no valido.</span>
+                                        <span ng-show="formulario.Apellidos.$error.maxlength">* Apellidos demasiado largo</span>
+                                    </span>
+                                    <br/>
+                                </div>     
+                                <div class="col-md-5 col-sm-5 input-group-lg">
+                                    <label class="control-label" >Dni</label><input type="text" name="DNI" ng-model="s.DNI" class="form-control" required ng-pattern="/^\d{8}[a-zA-Z]$/" placeholder="05330762y" ng-maxlength="9" ng-minlength="9"/>
+                                    <span style="color:red" ng-show="formulario.DNI.$dirty && formulario.DNI.$invalid">
+                                        <span ng-show="formulario.DNI.$error.required">DNI es obligatorio.</span>
+                                        <span ng-show="formulario.DNI.$error.pattern">* Formato de DNI no valido.</span>
+                                        <span ng-show="formulario.DNI.$error.maxlength">* DNI demasiado largo</span>
+                                        <span ng-show="formulario.DNI.$error.minlength">* DNI demasiado corto</span>
+                                    </span>
+                                </div>
+                                <div class="col-md-5 col-sm-5 input-group-lg">
+                                    <label class="control-label" >E-mail</label><input type="email" name="EMail" ng-model="s.EMail" class="form-control" required placeholder="info@developerji.com"/>
+                                    <span style="color:red" ng-show="formulario.EMail.$dirty && formulario.EMail.$invalid">
+                                        <span ng-show="formulario.EMail.$error.required">Email obligatorio.</span>
+                                        <span ng-show="formulario.EMail.$error.email">Formato de email no válido.</span>
+                                    </span>
+                                    <br />
+                                </div>                                
+                                <div class="col-md-5 col-sm-5 input-group-lg" ng-init="s.Sexo = 'M'">
+                                    <label class="control-label" >Sexo</label><br>
+                                    <label class="control-label" ><input type="radio" ng-model="s.Sexo" name="Sexo" value="M" checked id="Sexo" required />&nbsp;Mujer&nbsp;</label>
+                                    <label class="control-label" ><input type="radio" ng-model="s.Sexo" name="Sexo" value="H" d id="Sexo"/>&nbsp;Hombre&nbsp;</label>
+                                </div>
+                                <div class="col-md-5 col-sm-5 input-group-lg">
+                                    <label class="control-label" >Fecha nacimiento</label><input type="text" datepicker name="FechaNacimiento" ng-model="s.FechaNacimiento" class="form-control" id="FechaNacimiento" ng-change="esMenor();" ng-pattern="/^\d{2}-\d{2}-\d{4}$/" required placeholder="dd-mm-yyyy">
+                                    <span style="color:red" ng-show="formulario.FechaNacimiento.$dirty && formulario.FechaNacimiento.$invalid">
+                                        <span ng-show="formulario.FechaNacimiento.$error.pattern">* Formato de fecha no valido.</span>
+                                        <span ng-show="formulario.FechaNacimiento.$error.required">* Fecha obligatoria.</span>
+                                    </span>
+                                </div>
+                                <div class="col-md-5 col-sm-5 input-group-lg" ng-init="tutor = false">
+                                    <label class="control-label" ng-show="menor">Tutor legal</label><input type="text" ng-model="s.TutorLegal" class="form-control" name="TutorLegal" placeholder="Alberto Fernandez" id="TutorLegal" ng-show="menor" ng-pattern="/[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ]$/"/>
+                                </div> 
+                            </div>
+                            <div class="col-md-12 col-sm-12 input-group-lg">
+                                <label class="control-label">
+                                    <input type="checkbox" name="aceptado" ng-model="aceptado" required />&nbsp;Acepto los términos y condiciones</label>
+                            </div>
+                        </fieldset>
+                        <ul class="pager">
+                            <li class="previous"><a ng-click="avanzar(0);">&larr; Anterior</a></li>
+                            <li class="next"><a class="btn" ng-click="avanzar(2);" ng-disabled="formulario.Nombre.$error.required || formulario.Apellidos.$error.required || formulario.DNI.$error.required
+                                    || formulario.EMail.$error.required || formulario.FechaNacimiento.$error.required || formulario.aceptado.$error.required">Siguiente &rarr;</a></li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane active" ng-show="tab3" id="tab3">
+                        <ol class="breadcrumb">
+                            <li class="active">Abono Mensual</li>
+                            <li class="active">Datos Personales</li>
+                            <li class="active">Datos Dirección</li>
+                        </ol>
+                        <fieldset>
+                            <div class="col-md-10 col-sm-10 input-group-lg">
+                                <label class="control-label" >Direcci&oacute;n&nbsp;</label><input type="text" class="form-control" name="Direccion" ng-model="s.Direccion" required  placeholder="Calle los Emigrantes  16" id="Direccion"  />  
+                                <span style="color:red" ng-show="formulario.Direccion.$dirty && formulario.Direccion.$invalid">
+                                    <span ng-show="formulario.Direccion.$error.required">* Dirección obligatoria.</span>
+                                </span>
+                            </div>
+                            <div class="col-md-5 col-sm-5 input-group-lg">
+                                <label class="control-label" >Localidad&nbsp;</label><input type="text" class="form-control" name="Localidad" ng-model="s.Localidad" required  placeholder="Madrid" id="Localidad" ng-pattern="/[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ]$/"/>
+                                <span style="color:red" ng-show="formulario.Localidad.$dirty && formulario.Localidad.$invalid">
+                                    <span ng-show="formulario.Localidad.$error.pattern">* Formato de Localidad no valido.</span>
+                                    <span ng-show="formulario.Localidad.$error.required">* Localidad obligatoria.</span>
+                                </span>
+                            </div>
+                            <div class="col-md-2 col-sm-2 input-group-lg">
+                                <label class="control-label" >Codigo Postal&nbsp;</label><input type="number" class="form-control" name="CP" ng-model="s.CP" min="01000" max="54999" id="CP" placeholder="28040" ng-pattern="/^[0-9]{4,5}/" ng-change="obtenerProvincia(s.CP);" />
+                                <span style="color:red" ng-show="formulario.CP.$dirty && formulario.CP.$invalid">
+                                    <span ng-show="formulario.CP.$error.pattern">* CP no valido.</span>
+                                    <span ng-show="formulario.CP.$error.required">* CP obligatorio.</span>
+                                    <span ng-show="formulario.CP.$error.number">* CP no valido </span>
+                                </span>
+                            </div>
+                            <div class="col-md-3 col-sm-3 input-group-lg">
+                                <label class="control-label" >Provincia&nbsp;</label><input type="text" class="form-control" name="Provincia" ng-model="s.Provincia" placeholder="Madrid" ng-value="{{s.Provincia}}" readonly/>
+                                <br>
+                            </div>
+                            <div class="col-md-5 col-sm-5 input-group-lg">
+                                <label class="control-label" >&nbsp;Telefono 1 &nbsp;</label> <input type="tel" class="form-control" name="Telefono1" ng-model="s.Telefono1" required ng-pattern="/[0-9]{9}/" placeholder="912344567" maxlength="9" />
+                                <span style="color:red" ng-show="formulario.Telefono1.$dirty && formulario.Telefono1.$invalid">
+                                    <span ng-show="formulario.Telefono1.$error.pattern">* Formato de Telefono1 no valido.</span>
+                                    <span ng-show="formulario.Telefono1.$error.required">* Telefono1 obligatorio.</span>
+                                </span>
+                            </div>
+                            <div class="col-md-5 col-sm-5 input-group-lg">
+                                <label class="control-label" >&nbsp; Telefono 2 &nbsp;</label> <input type="tel" class="form-control" name="Telefono2" ng-model="s.Telefono2" ng-pattern="/[0-9]{9}/" Placeholder="600072897" maxlength="9" />   
+                                <span style="color:red" ng-show="formulario.Telefono2.$dirty && formulario.Telefono2.$invalid">
+                                    <span ng-show="formulario.Telefono2.$error.pattern">* Formato de Telefono2 no valido.</span>
+                                    <span ng-show="formulario.Telefono2.$error.required">* Telefono2 obligatorio.</span>
+                                </span>
+                            </div>
+                        </fieldset>
+                        <ul class="pager">
+                            <li class="previous"><a ng-click="avanzar(2);">&larr; Anterior</a></li>
+                            <li class="next"><a class="btn" ng-click="avanzar(3);" ng-disabled="formulario.Direccion.$error.required || formulario.Localidad.$error.required || formulario.Provincia.$error.required || formulario.CP.$error.required
+                                    || formulario.Telefono1.$error.required || formulario.Telefono2.$error.required">Siguiente&nbsp;&nbsp;</a></li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane active" ng-show="tab4" id="4">
+                        <fieldset>
+                            <div class="form-group has-success has-feedback">						
+                                <input name="cmd" type="hidden" value="_cart" /> <!-- comprar varios productos -->
+                                <input name="upload" type="hidden" value="1" /> <!--  -->
+                                <input name="business" type="hidden" value="alicia.barco.oviedo@gmail.com" /> <!-- cuenta vendedor -->
+                                <input name="shopping_url" type="hidden" value="http://vw15115.dinaserver.com/hosting/reservascentro.es-web/sistemareservas/Frontal/Inicio.php" /> <!-- dirección tienda -->
+                                <input name="currency_code" type="hidden" value="EUR" /> <!-- tipo moneda -->
+                                <input name="return" type="hidden" value="http://vw15115.dinaserver.com/hosting/reservascentro.es-web/sistemareservas/FormulariosExternos//SolicitudAbonoMensual.php?url=pagoRealizado"> <!-- pago realizado -->
+                                <input name="cancel_return" type="hidden" value="http://vw15115.dinaserver.com/hosting/reservascentro.es-web/sistemareservas/FormulariosExternos//SolicitudAbonoMensual.php?url=pagoRealizado"> <!-- pago no realizado -->
+                                <input name="notify_url" type="hidden" value="">  <!-- control de pago -->
+                                <input type="hidden" name="no_shipping" value="1"> <!-- no pedir direccion de entrega -->
+                                <input name="rm" type="hidden" value="2"> <!-- numero de productos  -->                                
+                                <input name="item_number_1" type="hidden"> <!-- identificador del producto -->
+                                <input name="item_name_1" type="hidden" value="AbonoMensual">  <!-- nombre del producto -->
+                                <input name="amount_1" id="amount_1" type="hidden">  <!-- precio del producto -->
+                                <input name="quantity_1" type="hidden" value="1">  <!-- cantidad del producto -->
+                            </div>
+                            <input type="image" id="submitBtn" value="Pay with PayPal" src="https://www.paypalobjects.com/en_US/i/btn/btn_paynowCC_LG.gif">
+                        </fieldset>              
+                        <ul class="pager">
+                            <li><a class="btn" ng-click="avanzar(2);">&nbsp;Anterior&nbsp;&nbsp;</a></li>
+                        </ul>
+                    </div>                                      
+                </div>
+            </form>
+        </section>
+    </div>     
+</div>
+<?php
+        }
+
+    }
+
+    $solicitudAbonoMensual = new SolicitudAbonoMensual();
+    $solicitudAbonoMensual->procesarLLamada();
+
+    require_once('PieExterno.php');
+    ?>

@@ -58,6 +58,20 @@
         };   
         $scope.obtenerTipoTarifa();
         
+        $scope.obtenerActividad = function(){
+        
+            var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividades');		
+            var Params = '';
+
+            Ajax.open("GET", Url, false);
+            Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
+            Ajax.send(Params); // Enviamos los datos
+
+            $scope.actividades = JSON.parse(Ajax.responseText).actividades;
+
+            };   
+        $scope.obtenerActividad();
+        
         
         $scope.precio = [];
         
@@ -97,22 +111,7 @@
             else
             {
                 document.getElementById('aceptar').style.display = 'inline';
-                $scope.precio.FechaBaja = null;
-                for(var i = $scope.tiposSolicitudes.length - 1; i >= 1; i--) {
-			if($scope.tiposSolicitudes[i].FechaBaja !== null) {
-			$scope.tiposSolicitudes.splice(i, 1);
-                }
-                }
-                for(var i = $scope.tiposAbonos.length - 1; i >= 1; i--) {
-			if($scope.tiposAbonos[i].FechaBaja !== null) {
-			$scope.tiposAbonos.splice(i, 1);
-                }
-                }
-                for(var i = $scope.tiposTarifas.length - 1; i >= 1; i--) {
-			if($scope.tiposTarifas[i].FechaBaja !== null) {
-			$scope.tiposTarifas.splice(i, 1);
-                }
-                }
+				 $scope.precio.FechaBaja = null;
             }
             
             $scope.obtenerHistoricoPrecios = function(idPrecio) {
@@ -137,7 +136,7 @@
             }
             
             $scope.guardarPrecio = function() {
-                alert();
+                //alert();
                 if (typeof($location.search().idPrecio) !== "undefined")
                     $scope.actualizarPrecio();    
                 else
@@ -152,6 +151,7 @@
                 var Params ='idTipoSolicitud='+ document.getElementById('idTipoSolicitud').value +
                             '&idTipoAbono='+ document.getElementById('idTipoAbono').value +
                             '&idTipoTarifa='+ document.getElementById('idTipoTarifa').value +
+                            '&idActividad='+ document.getElementById('idActividad').value +
                             '&NombrePrecio='+ document.getElementById('NombrePrecio').value + 		     
                             '&DescripcionPrecio='+ document.getElementById('DescripcionPrecio').value +
                             '&Precio='+ document.getElementById('Precio').value;
@@ -186,6 +186,7 @@
                             '&idTipoSolicitud='+ document.getElementById('idTipoSolicitud').value +
                             '&idTipoAbono='+ document.getElementById('idTipoAbono').value +
                             '&idTipoTarifa='+ document.getElementById('idTipoTarifa').value +
+                            '&idActividad='+ document.getElementById('idActividad').value +
                             '&NombrePrecio='+ document.getElementById('NombrePrecio').value + 		     
                             '&DescripcionPrecio='+ document.getElementById('DescripcionPrecio').value +
                             '&Precio='+ document.getElementById('Precio').value;
@@ -211,7 +212,7 @@
 			
 		$scope.anularPrecio = function(){
                 
-                alert($location.search().idPrecio);
+                //alert($location.search().idPrecio);
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=anularPrecio');
                 var Params = 'idPrecio='+ $location.search().idPrecio;
                 
@@ -219,7 +220,7 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-                alert(Ajax.responseText);    
+                //alert(Ajax.responseText);    
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')
@@ -243,7 +244,7 @@
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-                alert(Ajax.responseText);
+                //alert(Ajax.responseText);
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
                 
                 if ($scope.estado === 'correcto')
@@ -353,7 +354,7 @@
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Tipo Abono</label>
                                 <select ng-disabled="precio.idPrecio ===null || precio.FechaBaja!==null" name="idTipoAbono" id="idTipoAbono" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
-                                    <option ng_repeat="tipoabono in tiposAbonos" ng_selected="{{precio.idTipoAbono}} === null ? {{tipoabono.idTipoAbono}} === {{precio.idTipoAbono}} : {{tipoabono.idTipoAbono}} === {{precio.idTipoAbono}}" value="{{tipoabono.idTipoAbono}}">{{tipoabono.NombreAbono}}</option>-
+                                    <option ng_repeat="tipoabono in tiposAbonos" ng_selected="{{precio.idTipoAbono}} === null ? {{tipoabono.idTipoAbono}} === {{precio.idTipoAbono}} : {{tipoabono.idTipoAbono}} === {{precio.idTipoAbono}}" value="{{tipoabono.idTipoAbono}}">{{tipoabono.NombreAbono}}</option>
                                     <!--<option  ng_repeat="tipoabono in tiposAbonos" value="{{tipoabono.idTipoAbono}}">{{tipoabono.NombreAbono}}</option>-->
                                 </select>
                     </div>
@@ -361,6 +362,13 @@
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Tipo Tarifa</label>
                                 <select  ng-disabled="precio.idPrecio ===null || precio.FechaBaja!==null" name="idTipoTarifa" id="idTipoTarifa" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
                                     <option ng_repeat="tipotarifa in tiposTarifas" ng_selected="{{precio.idTipoTarifa}} === null ? {{tipotarifa.idTipoTarifa}} === {{precio.idTipoTarifa}} : {{tipotarifa.idTipoTarifa}}==={{precio.idTipoTarifa}}" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>
+                                    <!--<option  ng_repeat="tipotarifa in tiposTarifas" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>-->
+                                </select>
+                    </div>
+                    <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Actividad</label>
+                                <select  ng-disabled="precio.idPrecio ===null || precio.FechaBaja!==null" name="idActividad" id="idActividad" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
+                                    <option ng_repeat="actividad in actividades" ng_selected="{{precio.idActividad}} === null ? {{actividad.idActividad}} === {{precio.idActividad}} : {{actividad.idActividad}}==={{precio.idActividad}}" value="{{actividad.idActividad}}">{{actividad.NombreActividad}}</option>
                                     <!--<option  ng_repeat="tipotarifa in tiposTarifas" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>-->
                                 </select>
                     </div>
@@ -421,7 +429,7 @@
                         </div>
                     </div>
                     <input style='display:none;' id="anular" class="btn btn-sm btn-danger" type="submit" value="Anular" ng-click="anularPrecio();"/>
-                     <input style='display:none;' id="aceptar" class="btn btn-sm btn-success" type="submit" value="Aceptar" ng-click="crearPrecio();" ng-disabled="formulario.$invalid" />
+                     <input style='display:none;' id="aceptar" class="btn btn-sm btn-success" type="submit" value="Modificar Precio" ng-click="crearPrecio();" ng-disabled="formulario.$invalid" />
                      <input style='display:none;' id="activar" class="btn btn-sm btn-action" type="submit" value="Activar" ng-click="activarPrecio();"/>
                      <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='Precios.php' " />
             </div>

@@ -1,10 +1,179 @@
-<?php require_once 'CabeceraExterna.php'; ?>
+<?php require "CabeceraExterna.php";?>
 <script>
-    var Ajax = new AjaxObj();
-    var app = angular.module('solicitudAbonoMensual', []);
-    app.controller('RegistrarSolicitudAbonoMensualController', function RegistrarSolicitudAbonoMensualController($scope, $http) {
-        $scope.s = {};
-        $scope.obtenerProvincia = function (codigoPostal) {
+var Ajax = new AjaxObj();
+            var app = angular.module('solicitudAbonoMensual',  ['ngStorage'])            
+                     .config(function($locationProvider) {
+                          $locationProvider.html5Mode(true);
+                      });
+                      
+            function RegistrarSolicitudAbonoMensualController($scope, $http,$location,$localStorage) {
+		$scope.disabled = false;
+                
+                $scope.crearSolicitudAbonoMensual = function(s) {
+                var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSolicitudAbonoMensual');
+
+                        var Params = 'idTipoSolicitud=2';
+			Params += '&Nombre=' + s.Nombre + 
+                                '&Sexo=' + s.Sexo + 
+                             '&Apellidos='+ s.Apellidos +
+                             '&DNI=' + s.DNI +
+                             '&EMail=' + s.EMail+
+			     '&Direccion=' + s.Direccion +
+                             '&Localidad=' + s.Localidad +
+                             '&Provincia=' + s.Provincia +
+                             '&CP=' + s.CodigoPostal +
+                             '&Telefono1=' + s.Telefono1 +
+                             '&Telefono2=' + s.Telefono2 +
+                             '&TutorLegal=' + s.TutorLegal +
+                             '&idTipoAbono=' + s.idTipoAbono +
+                             '&idTipoTarifa=' + s.idTipoTarifa+
+                             '&FechaInicio=' + s.FechaInicio +
+                             '&FechaFin=' + s.FechaFin +
+                             '&FechaNacimiento=' + s.FechaNacimiento +
+                             '&DescripcionSolicitud=' + s.DescripcionSolicitud+
+                             '&Otros=' + s.Otros+
+                             '&Renovacion=' + s.Renovacion+
+                             '&PrecioPagado=' + s.PrecioPagado;
+						
+                        var Ajax = new AjaxObj();
+                        Ajax.open("POST", URL, false);
+                        Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                        Ajax.send(Params); // Enviamos los datos
+                        alert(Ajax.responseText);
+                        var response = Ajax.responseText;
+						
+                        if (JSON.parse(response).estado === 'correcto')
+                        {
+			
+                            Params += '&Localizador=' + JSON.parse(response).solicitud.Localizador;
+                            var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=codigoQR');
+                            Ajax.open("POST", URL, false);
+                            Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                            Ajax.send(Params); // Enviamos los datos
+			   
+			    $scope.s.Localizador = JSON.parse(response).solicitud.Localizador;
+                            $scope.s.IdSolicitud = JSON.parse(response).solicitud.IdSolicitud;
+                        }
+			};
+                        
+                $scope.confirmarPago = function(s) {
+                var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=confirmarPago');
+
+                        var Params = 'idSolicitud=' + s;
+			
+                        var Ajax = new AjaxObj();
+                        Ajax.open("POST", URL, false);
+                        Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                        Ajax.send(Params); // Enviamos los datos
+                        alert(Ajax.responseText);
+			};        
+                        
+		if($location.search().url==='pagoRealizado')
+		{
+                    $scope.s = JSON.parse(localStorage.getItem('solicitudMensual'));
+                    $scope.confirmarPago($scope.s.IdSolicitud);
+                    $scope.disabled = true;
+                    $scope.tab1 = false;
+                    $scope.tab2 = false;
+                    $scope.tab3 = false;
+                    $scope.tab4 = false;
+                    $scope.tab5 = true;
+                };
+                
+                
+                
+                $scope.obtenerTipoTarifa = function(){
+        
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifa');		
+                    var Params = '';
+                    $scope.selectedtarifa = 1;    
+                    Ajax.open("GET", Url, false);
+                    Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
+                    Ajax.send(Params); // Enviamos los datos
+        
+                    $scope.tiposTarifas = JSON.parse(Ajax.responseText).tiposTarifas;
+                };   
+                
+                $scope.obtenerTipoAbono = function(idTipoAbono) {
+                alert('1');
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTipoAbono');
+                
+                var Params = 'idTipoAbono='+ idTipoAbono;
+
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                
+                $scope.tipoabono = JSON.parse(Ajax.responseText).tipoabono;
+                };
+                
+                
+                $scope.obtenerTarifasAbono = function(idTipoAbono) {
+                alert('2');
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerPreciosFiltro');
+                
+                var Params = 'TipoAbono='+ idTipoAbono +                
+                '&TipoSolicitud=0'  +
+                '&Actividad=0' +
+                '&TipoTarifa=0';
+
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                alert(Ajax.responseText);
+                $scope.tarifasabono = JSON.parse(Ajax.responseText).precios;
+                };
+                
+                
+                
+                $scope.obtenerTipoActividad = function(idActividad) {
+                alert('3');
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerTipoActividad');
+                
+                var Params = 'idActividad='+ idActividad;
+
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                
+                $scope.tipoactividad = JSON.parse(Ajax.responseText).tipoactividad;
+                };
+                
+                
+                $scope.obtenerTarifasActividad = function(idActividad) {
+                alert('4');
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerPreciosFiltro');
+                
+                var Params = 'Actividad='+ idActividad+
+               '&TipoSolicitud=0'  +
+                '&TipoAbono=0' +
+                '&TipoTarifa=0';
+
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                
+                alert(Ajax.responseText);
+                $scope.tarifasactividad = JSON.parse(Ajax.responseText).precios;
+                };
+                
+                
+                if (typeof($location.search().idTipoAbono) !== "undefined")
+                {
+                    $scope.tipobusqueda= $location.search().idTipoAbono;
+                    $scope.obtenerTipoAbono($location.search().idTipoAbono);
+                    $scope.obtenerTarifasAbono($location.search().idTipoAbono);
+                }
+                
+                if (typeof($location.search().idTipoActividad) !== "undefined")
+                {
+                    $scope.tipobusqueda= $location.search().idTipoActividad;
+                    $scope.obtenerTipoActividad($location.search().idTipoActividad);
+                    $scope.obtenerTarifasActividad($location.search().idTipoActividad);
+                }
+                        
+                        
+            $scope.obtenerProvincia = function (codigoPostal) {
             if (codigoPostal < 52999 && codigoPostal > 01000) {
                 var provincia = '';
                 var cp = parseInt(codigoPostal / 1000);
@@ -222,7 +391,7 @@
 
             $scope.s.Provincia = provincia;
         };
-        $scope.calcularDiasMes = function (mes, ano) {
+            $scope.calcularDiasMes = function (mes, ano) {
             var dias = 0;
             switch (mes) {
                 case 1:
@@ -268,7 +437,7 @@
             }
             return dias;
         };
-        $scope.calcularFechaFin = function (fechaInicio) {
+            $scope.calcularFechaFin = function (fechaInicio) {
             var values = fechaInicio.split("-");
             var dia = parseInt(values[0]);
             var mes = parseInt(values[1]);
@@ -277,76 +446,51 @@
             var diasMes = $scope.calcularDiasMes(mes, ano);
             var fecha = diasMes + '-' + mes + '-' + ano ;
             $scope.s.FechaFin = fecha;
-            $scope.calcularPrecio($scope.s.FechaInicio, $scope.s.idTipoAbono, $scope.s.idTipoTarifa);
+            
+            
+            $scope.calcularPrecio($scope.s.FechaInicio, $scope.tipobusqueda, document.getElementById("filtroTipoTarifa").value);
         };
-        $scope.calcularPrecio = function (fechaInicio, abono, tarifa) {
-            var URL2 = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerPreciosFiltro');
-            var Params = '&TipoSolicitud=2' +
+            $scope.calcularPrecio = function (fechaInicio, abono,actividad, tarifa) 
+            {
+                if (typeof($location.search().idTipoAbono) !== "undefined")
+                {
+                     var Params = '&TipoSolicitud=2' +
                     '&TipoAbono=' + abono +
-                    '&TipoTarifa=' + tarifa;
+                    '&TipoTarifa=0' + 
+                    '&Actividad=0';
+                }
+                else
+                {
+                     var Params = '&TipoSolicitud=2' +
+                    '&TipoAbono=0' + 
+                    '&TipoTarifa=0' +
+                    '&Actividad=' + actividad;                   
+                }
+                
+                
+                var URL2 = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerPreciosFiltro');
+               
+                    
 
-            Ajax.open("POST", URL2, false);
-            Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            Ajax.send(Params); // Enviamos los datos
+                Ajax.open("POST", URL2, false);
+                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
 
-            if ($scope.estado === 'correcto')
-            {
                 $scope.precios = JSON.parse(Ajax.responseText).precios;
-                localStorage.setItem('precios', JSON.stringify($scope.precios));
-                document.getElementById('divSinResultados').style.display = 'none';
-            }
-            else
-            {
-                $scope.precios = [];
-                document.getElementById('divSinResultados').style.display = 'block';
-            }
-            var total = $scope.precios[0].Precio;
-            var values = fechaInicio.split("-");
-            var dia = parseInt(values[0]);
-            var mes = parseInt(values[1]);
-            var ano = parseInt(values[2]);
 
-            var fin = $scope.calcularDiasMes(mes, ano);
-            var precioPago = (total / fin * (fin - dia)).toFixed(2);
-            $scope.s.PrecioPagado = precioPago;
+                var total = $scope.precios[0].Precio;
+                var values = fechaInicio.split("-");
+                var dia = parseInt(values[0]);
+                var mes = parseInt(values[1]);
+                var ano = parseInt(values[2]);
+
+                var fin = $scope.calcularDiasMes(mes, ano);
+                var precioPago = (total / fin * (fin - dia)).toFixed(2);
+                $scope.s.PrecioPagado = precioPago;
+                document.getElementById("amount_1").value = precioPago;
         };
-        //Obtener Tipo Abonos
-        var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTiposAbono');
-        $http.get(URL)
-                .success(function (response) {
-
-                    $scope.estado = response.estado;
-
-                    if ($scope.estado === 'correcto')
-                    {
-                        $scope.tiposAbonos = response.tiposAbonos;
-                        document.getElementById('divSinResultados').style.display = 'none';
-                    }
-                    else
-                    {
-                        $scope.tiposAbonos = [];
-                        document.getElementById('divSinResultados').style.display = 'block';
-                    }
-                });
-        //Obtener Tipo Tarifa
-        var Url1 = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifa');
-        //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/TarifasBO.php?url=obtenerTiposTarifa";		
-
-        $http.get(Url1)
-                .success(function (response) {
-                    $scope.estado = response.estado;
-                    if ($scope.estado === 'correcto')
-                    {
-                        $scope.tiposTarifas = response.tiposTarifas;
-                        document.getElementById('divSinResultados').style.display = 'none';
-                    }
-                    else
-                    {
-                        $scope.tiposTarifas = [];
-                        document.getElementById('divSinResultados').style.display = 'block';
-                    }
-                });
-        $scope.avanzar = function (idTab) {
+           
+            $scope.avanzar = function (idTab) {
             if (idTab === 0) {
                 $scope.tab1 = true;
                 $scope.tab2 = false;
@@ -357,6 +501,7 @@
                 $scope.tab2 = true;
                 $scope.tab3 = false;
                 $scope.tab4 = false;
+               
             } else if (idTab === 2) {
                 $scope.tab1 = false;
                 $scope.tab2 = false;
@@ -367,9 +512,14 @@
                 $scope.tab2 = false;
                 $scope.tab3 = false;
                 $scope.tab4 = true;
-            }
+                $scope.s.idTipoAbono=$scope.tipobusqueda;
+                $scope.s.idTipoTarifa =document.getElementById("filtroTipoTarifa").value; 
+                $scope.crearSolicitudAbonoMensual($scope.s);
+                
+                localStorage.setItem('solicitudMensual', JSON.stringify($scope.s));
+               }
         };
-        $scope.calcularFecha = function (fecha) {
+            $scope.calcularFecha = function (fecha) {
             var values = fecha.split("-");
             var dia = parseInt(values[0]);
             var mes = parseInt(values[1]);
@@ -397,76 +547,16 @@
             }
             return edad;
         };
-        $scope.esMenor = function () {
+            $scope.esMenor = function () {
             var edad = $scope.calcularFecha($scope.s.FechaNacimiento);
             if (edad < 18) {
                 $scope.menor = true;
             } else {
                 $scope.menor = false;
             }
-        };
-        $scope.codigoQR = function (Params) {
-            var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=codigoQR');
-
-            Ajax.open("POST", URL, false);
-            Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            Ajax.send(Params); // Enviamos los datos
-            var response = Ajax.responseText;
-            console.log(response);
-        };
-/*
-        $scope.pagar = function (s) {
-            var Params = '&cmd=_cart' +
-                    '&upload=1' +
-                    '&business=mariosgsg@gmail.com' +
-                    'shopping_url=http://pfgreservas.rigthwatch.es' +
-                    'currency_code=EUR' +
-                    'return=http://pfgreservas.rigthwatch.es' +
-                    'notify_url=http://pfgreservas.rigthwatch.es' +
-                    'rm=1' +
-                    'item_number_1=AbonoDiario' +
-                    'item_name_1=AbonoDiario' +
-                    'amount_1=10.05' +
-                    'quantity_1=1';
-
-
-        };*/
-
-        $scope.enviar = function (s) {
-		
-            var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSolicitudAbonoMensual');
-
-            var Params = '&idTipoSolicitud=2&';
-            Params += jQuery.param(s);
-            console.log(Params);
-			
-			
-            //$scope.pagar(Params);
-             Ajax.open("POST", URL, false);
-             Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-             Ajax.send(Params); // Enviamos los datos
-			 var response = Ajax.responseText;
-			 console.log(response);
-             $scope.estado = JSON.parse(response).estado;
-             console.log($scope.estado);
-             if ($scope.estado === 'correcto')
-             {
-			 alert('correcto');
-             document.getElementById('divCorrecto').style.display = 'block';
-             }
-             else
-             {
-			 alert('error');
-             document.getElementById('divError').style.display = 'block';
-             }
-             $scope.solicitud = JSON.parse(response).solicitud;
-             console.log($scope.solicitud);
-             Params += '&Localizador=' + $scope.solicitud.Localizador;
-             console.log(Params);
-             $scope.codigoQR(Params);
-        };
-
-        $.datepicker.regional['es'] = {
+        };        
+            
+            $.datepicker.regional['es'] = {
             closeText: 'Cerrar',
             prevText: '<Ant',
             nextText: 'Sig>',
@@ -486,44 +576,10 @@
             yearRange: "1900:2016",
             yearSuffix: ''
         };
-        $.datepicker.setDefaults($.datepicker.regional['es']);
-
-    });
-    app.directive('datepicker', function () {
-        return  {
-            restrict: 'A',
-            require: '?ngModel',
-            link: function (scope, element, attrs, ngModel) {
-                element = $("#FechaNacimiento");
-                if (!ngModel)
-                    return;
-                var optionsObj = {};
-                optionsObj.dateFormat = 'dd-mm-yy';
-                var updateModel = function (dateTxt) {
-                    scope.$apply(function () {
-                        // Call the internal AngularJS helper to
-                        // update the two-way binding
-                        ngModel.$setViewValue(dateTxt);
-                    });
-                };
-                optionsObj.onSelect = function (dateTxt) {
-                    updateModel(dateTxt);
-                    if (scope.select) {
-                        scope.$apply(function () {
-                            scope.select({date: dateTxt});
-                        });
+            $.datepicker.setDefaults($.datepicker.regional['es']);
                     }
-                };
-                ngModel.$render = function () {
-                    // Use the AngularJS internal 'binding-specific' variable
-                    element.datepicker('setDate', ngModel.$viewValue || '');
-                };
-                element.datepicker(optionsObj);
-            }
-        };
-    });
-    app.directive('datepickerabono', function () {
-        return  {
+            app.directive('datepickerabono', function () {
+                    return  {
             restrict: 'A',
             require: '?ngModel',
             link: function (scope, element, attrs, ngModel) {
@@ -586,33 +642,68 @@
                 };
                 element.datepicker(optionsObj);
             }
+            };
+            });
+    
+            app.directive('datepicker', function () {
+        return  {
+            restrict: 'A',
+            require: '?ngModel',
+            link: function (scope, element, attrs, ngModel) {
+                element = $("#FechaNacimiento");
+                if (!ngModel)
+                    return;
+                var optionsObj = {};
+                optionsObj.dateFormat = 'dd-mm-yy';
+				optionsObj.maxDate = 0;
+                var updateModel = function (dateTxt) {
+                    scope.$apply(function () {
+                        // Call the internal AngularJS helper to
+                        // update the two-way binding
+                        ngModel.$setViewValue(dateTxt);
+                    });
+                };
+                optionsObj.onSelect = function (dateTxt) {
+                    updateModel(dateTxt);
+                    if (scope.select) {
+                        scope.$apply(function () {
+                            scope.select({date: dateTxt});
+                        });
+                    }
+                };
+                ngModel.$render = function () {
+                    // Use the AngularJS internal 'binding-specific' variable
+                    element.datepicker('setDate', ngModel.$viewValue || '');
+                };
+                element.datepicker(optionsObj);
+            }
         };
     });
-
-
-</script>   
-<div class="row" ng-app="solicitudAbonoMensual" ng-controller="RegistrarSolicitudAbonoMensualController">
-    <div id="maininner" class="col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2 col-xs-12 col-sm-10 col-sm-offset-1" >
-        <section id="content">
-            <h2>Solicitud Abono Mensual</h2>
-            <form class="submission box style" name="formulario" novalidate action="https://www.paypal.com/webapps/adaptivepayment/flow/pay" target="PPDGFrame" class="standard">
-                <div class="alert alert-danger" id="divError" style='display:none;'>
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <strong>Error</strong> Se ha producido un error al realizar la operación.
-                </div>
-                <div class="alert alert-success" id="divCorrecto" style='display:none;'>
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <strong>Correcto.</strong>  Operación realizada con éxito.
-                </div>
-                <div class="tab-content" ng-init="tab1 = true">
-                    <div class="tab-pane active" id="tab1" ng-show="tab1">
-                        <ol class="breadcrumb">
+                      
+ </script>      
+<div class=" row" ng-app="solicitudAbonoMensual">
+    <div ng_controller="RegistrarSolicitudAbonoMensualController">      
+        <div id="maininner" class="col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2 col-xs-12 col-sm-10 col-sm-offset-1">
+            <section id="content"><div id="system-message-container"></div>
+                <div id="system">
+                    <div class="tab-content" ng-init="tab1 = true">
+                    <h2>Solicitud Abono Mensual</h2>
+                        <form class="submission box style" name="formulario" action="https://www.sandbox.paypal.com/cgibin/webscr" class="standard">
+                            <div class="tab-pane active" ng-show="tab1" id="1">
+                                <ol class="breadcrumb">
                             <li class="active">Abono Mensual</li>
                         </ol>
-                        <fieldset>
-                            <div id="divSinResultados"></div>
-                            <div class="form-group has-success has-feedback">
-                                <div class="col-md-12 col-sm-12 input-group-lg">
+                                <fieldset>
+                                    <div class="form-group has-success has-feedback">
+                                           <div class="alert alert-danger" id="divError" style='display:none;'>
+                                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                                    <strong>Error</strong> Se ha producido un error al realizar la operación.
+                                            </div>
+                                            <div class="alert alert-success" id="divCorrecto" style='display:none;'>
+                                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                                    <strong>Correcto.</strong>  Operación realizada con éxito.
+                                            </div>
+                                            <div class="col-md-12 col-sm-12 input-group-lg">
                                     <h3>Elegir un abono y una tarifa a aplicar</h3>
                                     <!--<div ng-init="s.tipoabono = 1"
                                          <p ng-repeat="tipoabono in tiposabonos"><label class="control-label">
@@ -620,14 +711,17 @@
                                     </div>-->
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 input-group-lg">
                                         <label class="control-label">Tipo Abono</label>
-                                        <select id="filtroTipoAbono" class="form-control" ng-model="s.idTipoAbono" name="idTipoAbono" required> 	
+                                        <input type="text" name="TipoAbono" id="filtroTipoAbono" ng-model="tipoabono.NombreAbono" class="form-control" readonly />
+<!--                                        <select ng_disabled="false"  id="filtroTipoAbono" class="form-control" name="idTipoAbono" required> 	
+                                            <option ng_repeat="tipoabono in tiposAbonos" ng_selected="{{datossolicitud.idTipoAbono}} === null ? {{tipoabono.idTipoAbono}} === {{datossolicitud.idTipoAbono}} : {{tipoabono.idTipoAbono}} === {{datossolicitud.idTipoAbono}}" value="{{tipoabono.idTipoAbono}}">{{tipoabono.NombreAbono}}</option>
                                             <option ng_repeat="tipoabono in tiposAbonos" value="{{tipoabono.idTipoAbono}}">{{tipoabono.NombreAbono}}</option>
-                                        </select>
+                                        </select>-->
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 input-group-lg">
                                         <label class="control-label">Tipo Tarifa</label>
-                                        <select  id="filtroTipoTarifa" class="form-control" ng-model="s.idTipoTarifa" name="idTipoTarifa"  required>	
-                                            <option ng_repeat="tipotarifa in tiposTarifas" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>
+                                        <select  id="filtroTipoTarifa" class="form-control" name="idTipoTarifa" required>	
+                                            <option ng_repeat="tarifaabono in tarifasabono" value="{{tarifaabono.idTipoTarifa}}">{{tarifaabono.NombrePrecio}}</option>
+                                            <!--<option ng_repeat="tarifaactividad in tarifasactividad" value="tarifaactividad.idTipoTarifa">{{tarifaactividad.NombreTarifa}}</option>-->
                                         </select>
                                         <br>
                                     </div>
@@ -644,7 +738,7 @@
                                             <label class="control-label" >Fecha Fin</label><input type="text" name="FechaFin" ng-model="s.FechaFin" class="form-control" id="FechaFin" placeholder="dd-mm-yyyy" readonly />                                      
                                         </div>
                                         <div class="col-md-6 col-sm-6 input-group-lg">
-                                            <label class="control-label" >Precio a Pagar</label><input type="text" name="PrecioPagado" ng-model="s.PrecioPagado" class="form-control" id="FPrecioPagado" ng-value="{{s.PrecioPagado}}" readonly />                                        
+                                            <label class="control-label" >Precio a Pagar</label><input type="text" name="PrecioPagado" ng-model="s.PrecioPagado" class="form-control" id="PrecioPagado" ng-value="{{s.PrecioPagado}}" readonly />                                        
                                         <br>
                                         </div>
                                         <div class="col-md-12 col-sm-12 input-group-lg">
@@ -654,13 +748,13 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                                    </div>
                         </fieldset>
                         <ul class="pager">
                             <li><a class="btn" ng-click="avanzar(1);" ng-disabled="formulario.FechaInicio.$invalid">Siguiente &rarr;</a></li>
                         </ul>
                     </div>
-                    <div class="tab-pane active" ng-show="tab2" id="2">
+                            <div class="tab-pane active" ng-show="tab2" id="2">
                         <ol class="breadcrumb">
                             <li class="active">Abono Mensual</li>
                             <li class="active">Datos Personales</li>
@@ -716,10 +810,10 @@
                                 <div class="col-md-5 col-sm-5 input-group-lg" ng-init="tutor = false">
                                     <label class="control-label" ng-show="menor">Tutor legal</label><input type="text" ng-model="s.TutorLegal" class="form-control" name="TutorLegal" placeholder="Alberto Fernandez" id="TutorLegal" ng-show="menor" ng-pattern="/[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ]$/"/>
                                 </div> 
-                            </div>
-                            <div class="col-md-12 col-sm-12 input-group-lg">
+                                <div class="col-md-12 col-sm-12 input-group-lg">
                                 <label class="control-label">
                                     <input type="checkbox" name="aceptado" ng-model="aceptado" required />&nbsp;Acepto los términos y condiciones</label>
+                                </div>
                             </div>
                         </fieldset>
                         <ul class="pager">
@@ -735,6 +829,7 @@
                             <li class="active">Datos Dirección</li>
                         </ol>
                         <fieldset>
+                            <div class="form-group has-success has-feedback">
                             <div class="col-md-10 col-sm-10 input-group-lg">
                                 <label class="control-label" >Direcci&oacute;n&nbsp;</label><input type="text" class="form-control" name="Direccion" ng-model="s.Direccion" required  placeholder="Calle los Emigrantes  16" id="Direccion"  />  
                                 <span style="color:red" ng-show="formulario.Direccion.$dirty && formulario.Direccion.$invalid">
@@ -771,18 +866,106 @@
                                 <label class="control-label" >&nbsp; Telefono 2 &nbsp;</label> <input type="tel" class="form-control" name="Telefono2" ng-model="s.Telefono2" ng-pattern="/[0-9]{9}/" Placeholder="600072897" maxlength="9" />   
                                 <span style="color:red" ng-show="formulario.Telefono2.$dirty && formulario.Telefono2.$invalid">
                                     <span ng-show="formulario.Telefono2.$error.pattern">* Formato de Telefono2 no valido.</span>
+                                    <span ng-show="formulario.Telefono2.$error.required">* Telefono2 obligatorio.</span>
                                 </span>
+                            </div>
                             </div>
                         </fieldset>
                         <ul class="pager">
-                            <li class="previous"><a ng-click="avanzar(1);">&larr; Anterior</a></li>
-                            <li class="next"><a class="btn" ng-click="enviar(s);" ng-disabled="formulario.$invalid">&nbsp;Enviar&nbsp;&nbsp;</a></li>
+                            <li class="previous"><a ng-click="avanzar(2);">&larr; Anterior</a></li>
+                            <li class="next"><a class="btn" ng-click="avanzar(3);" ng-disabled="formulario.Direccion.$error.required || formulario.Localidad.$error.required || formulario.Provincia.$error.required || formulario.CP.$error.required
+                                    || formulario.Telefono1.$error.required || formulario.Telefono2.$error.required">Siguiente&nbsp;&nbsp;</a></li>
                         </ul>
-                    </div>                    
-                                      
+                    </div>
+                    <div class="tab-pane active" ng-show="tab4" id="4">
+                        <fieldset>
+                            <div class="form-group has-success has-feedback">						
+                                <input name="cmd" type="hidden" value="_cart" /> <!-- comprar varios productos -->
+                                <input name="upload" type="hidden" value="1" /> <!--  -->
+                                <input name="business" type="hidden" value="alicia.barco.oviedo@gmail.com" /> <!-- cuenta vendedor -->
+                                <input name="shopping_url" type="hidden" value="http://localhost:8080/sistemareservas/Frontal/Inicio.php" /> <!-- dirección tienda -->
+                                <input name="currency_code" type="hidden" value="EUR" /> <!-- tipo moneda -->
+                                <input name="return" type="hidden" value="http://localhost:8080/sistemareservas/FormulariosExternos//SolicitudAbonoMensual.php?url=pagoRealizado"> <!-- pago realizado -->
+                                <input name="cancel_return" type="hidden" value="http://localhost:8080/sistemareservas/FormulariosExternos//SolicitudAbonoMensual.php?url=pagoRealizado"> <!-- pago no realizado -->
+                                <input name="notify_url" type="hidden" value="">  <!-- control de pago -->
+                                <input type="hidden" name="no_shipping" value="1"> <!-- no pedir direccion de entrega -->
+                                <input name="rm" type="hidden" value="2"> <!-- numero de productos  -->                                
+                                <input name="item_number_1" type="hidden"> <!-- identificador del producto -->
+                                <input name="item_name_1" type="hidden" value="AbonoMensual">  <!-- nombre del producto -->
+                                <input name="amount_1" id="amount_1" type="hidden">  <!-- precio del producto -->
+                                <input name="quantity_1" type="hidden" value="1">  <!-- cantidad del producto -->
+                            </div>
+                            <input type="image" id="submitBtn" value="Pay with PayPal" src="https://www.paypalobjects.com/en_US/i/btn/btn_paynowCC_LG.gif">
+                        </fieldset>              
+                        <ul class="pager">
+                            <li><a class="btn" ng-click="avanzar(2);">&nbsp;Anterior&nbsp;&nbsp;</a></li>
+                        </ul>
+                    </div>   
+               </form>   
+               <div class="tab-pane active" id="tab5" ng-show="tab5">
+                    <fieldset>
+                        <div class="form-group has-success has-feedback">
+                           <div class="alert alert-success" id="divCorrecto">
+                                   <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                   <strong>Correcto.</strong>  Operación realizada con éxito.
+                           </div>
+                           <div class="col-md-5 col-sm-5 input-group-lg">
+                                <label class="control-label" > Nombre</label>
+                                <input type="text" name="Nombre" class="form-control" ng-maxlength="40" ng-model="s.Nombre" readonly/>
+                           </div>
+                           <div class="col-md-5 col-sm-5 input-group-lg">
+                               <label class="control-label" > Apellidos </label>
+                               <input type="text" name="Apellidos" class="form-control" ng-maxlength="40" ng-model="s.Apellidos" readonly/>
+                            </div>
+                            <div class="col-md-5 col-sm-5 input-group-lg">
+                                <label class="control-label" >Dni</label>
+                                <input type="text" name="DNI" class="form-control" ng-maxlength="9" ng-minlength="9" ng-model="s.DNI" readonly/>
+                            </div>
+                            <div class="col-md-5 col-sm-5 input-group-lg">
+                                <label class="control-label" >E-mail</label>
+                                <input type="email" name="EMail" class="form-control" ng-model="s.EMail" readonly/>
+                            </div>
+                            <div class="col-md-5 col-sm-5 input-group-lg">
+                                <label class="control-label" >Día de acceso</label>
+                                <input type="text" type="text" datepicker class="form-control" name="FechaAbonoMensual" id="FechaAbonoMensual" ng-model="s.FechaAbonoMensual" readonly/>
+                            </div>
+                            <div class="col-md-5 col-sm-5 input-group-lg">
+                                <label class="control-label" > Codigo Localizador</label>
+                                <input type="text" name="Localizador" class="form-control" ng-maxlength="40" ng-model="s.Localizador" readonly/>
+                            </div>
+                            <div class="col-md-6 col-sm-5 input-group-lg">
+                                <label class="control-label" > Código QR</label><img style="width:10em; height:10em" name="codigoQR" class="form-control" src="../../Negocio/NegocioAdministrador/temp/{{s.Localizador}}.png" />
+                            </div>
+                         </div>
+                     </fieldset>                                           
                 </div>
-            </form>
-        </section>
-    </div>     
+                                        <div class="tab-pane active" id="tab6" ng-show="tab6">
+                                            <fieldset>
+                                                <div class="form-group has-success has-feedback">
+                                                    <div class="alert alert-danger" id="divError">
+                                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                                        <strong>Error</strong> Se ha producido un error al realizar la operación.
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                       <div class="tab-pane active" id="tab7" ng-show="tab7">
+                                        <fieldset>
+                                            <div class="form-group has-success has-feedback">
+                                                <div class="alert alert-warning" id="divWarning">
+                                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                                    <strong>Correcto.</strong>  Operación cancelada.
+                                                </div>
+                                            </div>
+                                        </fieldset>                          
+                                        </div>
+                                                
+                </div>
+                </div>
+                 </section>
+    
 </div>
-<?php require_once 'PieExterno.php'; ?>
+                    </div>
+                    </div>
+                                
+<?php require_once('PieExterno.php');?>

@@ -335,6 +335,84 @@ class ReservasBO extends Rest{
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
     }
+	
+	private function cancelarAnulacion() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+
+        if (isset($this->datosPeticion['idSolicitud'])) {
+
+            $this->con = ConexionBD::getInstance();
+            $solicitud = new SolicitudModel();
+
+            $idSolicitud = $this->datosPeticion['idSolicitud'];
+                        
+            if (!empty($idSolicitud)) {
+                                 
+                $fila = $solicitud->findById($this->con,$this->datosPeticion['idSolicitud']);
+                
+                $idTipoSolicitud= $fila ->getIdTipoSolicitud();
+                $idTipoTarifa = $fila->getIdTipoTarifa();
+                $FechaSolicitud = $fila->getFechaSolicitud();
+                $FechaAbonoDiario = $fila->getFechaAbonoDiario();
+                $Nombre = $fila->getNombre();
+                $Apellidos =$fila->getApellidos();
+                $DNI= $fila->getDni();
+                $EMail  = $fila->getEMail();
+                $Direccion  = $fila->getDireccion();
+                $CP = $fila->getCp();
+                $Sexo = $fila->getSexo();
+                $FechaNacimiento = $fila->getFechaNacimiento();
+                $TutorLegal = $fila->getTutorLegal();
+                $Localidad= $fila->getLocalidad();
+                $Telefono1 = $fila->getTelefono1();
+                $Telefono2= $fila->getTelefono2();
+                $Provincia= $fila->getProvincia();
+                $DescripcionSolicitud= $fila->getDescripcionSolicitud();
+                $Otros= $fila->getOtros();
+                $Localizador= $fila->getLocalizador();
+                $Gestionado = $fila->getGestionado();
+                $Anulado = $fila->getAnulado();
+                $FechaDiario = $fila->getFechaAbonoDiario();
+                                
+                $solicitud->setIdSolicitud($idSolicitud);
+                $solicitud->setIdTipoSolicitud($idTipoSolicitud);
+                $solicitud->setIdTipoTarifa($idTipoTarifa);
+                $solicitud->setFechaSolicitud($FechaSolicitud);
+                $solicitud->setFechaAbonoDiario($FechaAbonoDiario);
+                $solicitud->setNombre($Nombre);
+                $solicitud->setApellidos($Apellidos);
+                $solicitud->setDni($DNI);
+                $solicitud->setEMail($EMail);
+                $solicitud->setDireccion($Direccion);
+                $solicitud->setCp($CP);
+                $solicitud->setSexo($Sexo);
+                $solicitud->setFechaNacimiento($FechaNacimiento);
+                $solicitud->setTutorLegal($TutorLegal);
+                $solicitud->setLocalidad($Localidad);
+                $solicitud->setTelefono1($Telefono1);
+                $solicitud->setTelefono2($Telefono2);
+                $solicitud->setProvincia($Provincia);
+                $solicitud->setDescripcionSolicitud($DescripcionSolicitud);
+                $solicitud->setOtros($Otros);
+                $solicitud->setLocalizador($Localizador);
+                $solicitud->setGestionado(0);
+                $solicitud->setAnulado($Anulado);
+                $solicitud->setFechaAbonoDiario($FechaDiario);
+                
+                $filasActualizadas = $solicitud->updateToDatabase($this->con);
+                
+                if (count($filasActualizadas) == 1) {
+                    $resp = array('estado' => "correcto", "msg" => "Anulacion cancelada");
+                    $this->mostrarRespuesta($this->convertirJson($resp), 200);
+                } else {
+                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+                }
+            }
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+    }
     
     private function obtenerSolicitudAbonoMensual() {
        // var_dump($SERVER);
@@ -1201,6 +1279,83 @@ class ReservasBO extends Rest{
             $respuesta['diariosemana'] = 0;
         $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         //$this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+    }
+private function confirmarPago() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+
+        if (isset($this->datosPeticion['idSolicitud'])) {
+
+            $this->con = ConexionBD::getInstance();
+            $solicitud = new SolicitudModel();
+
+            $idSolicitud = $this->datosPeticion['idSolicitud'];
+                        
+            if (!empty($idSolicitud)) {
+                                 
+                $fila = $solicitud->findById($this->con,$this->datosPeticion['idSolicitud']);
+                
+                $idTipoSolicitud= $fila ->getIdTipoSolicitud();
+                $idTipoTarifa = $fila->getIdTipoTarifa();
+                $FechaSolicitud = $fila->getFechaSolicitud();
+                $Nombre = $fila->getNombre();
+                $Apellidos =$fila->getApellidos();
+                $DNI= $fila->getDni();
+                $EMail  = $fila->getEMail();
+                $Direccion  = $fila->getDireccion();
+                $CP = $fila->getCp();
+                $Sexo = $fila->getSexo();
+                $FechaNacimiento = $fila->getFechaNacimiento();
+                $TutorLegal = $fila->getTutorLegal();
+                $Localidad= $fila->getLocalidad();
+                $Telefono1 = $fila->getTelefono1();
+                $Telefono2= $fila->getTelefono2();
+                $Provincia= $fila->getProvincia();
+                $DescripcionSolicitud= $fila->getDescripcionSolicitud();
+                $Otros= $fila->getOtros();
+                $Localizador= $fila->getLocalizador();
+                $Gestionado = $fila->getGestionado();
+                $Anulado = $fila->getAnulado();
+                $FechaDiario = $fila->getFechaAbonoDiario();
+                $Confirmado = 1;
+                                
+                $solicitud->setIdSolicitud($idSolicitud);
+                $solicitud->setIdTipoSolicitud($idTipoSolicitud);
+                $solicitud->setIdTipoTarifa($idTipoTarifa);
+                $solicitud->setFechaSolicitud($FechaSolicitud);
+                $solicitud->setNombre($Nombre);
+                $solicitud->setApellidos($Apellidos);
+                $solicitud->setDni($DNI);
+                $solicitud->setEMail($EMail);
+                $solicitud->setDireccion($Direccion);
+                $solicitud->setCp($CP);
+                $solicitud->setSexo($Sexo);
+                $solicitud->setFechaNacimiento($FechaNacimiento);
+                $solicitud->setTutorLegal($TutorLegal);
+                $solicitud->setLocalidad($Localidad);
+                $solicitud->setTelefono1($Telefono1);
+                $solicitud->setTelefono2($Telefono2);
+                $solicitud->setProvincia($Provincia);
+                $solicitud->setDescripcionSolicitud($DescripcionSolicitud);
+                $solicitud->setOtros($Otros);
+                $solicitud->setLocalizador($Localizador);
+                $solicitud->setGestionado($Gestionado);
+                $solicitud->setAnulado(0);
+                $solicitud->setFechaAbonoDiario($FechaDiario);
+                $solicitud->setConfirmado($Confirmado);
+                
+                $filasActualizadas = $solicitud->updateToDatabase($this->con);
+                
+                if (count($filasActualizadas) == 1) {
+                    $resp = array('estado' => "correcto", "msg" => "Solictud validada");
+                    $this->mostrarRespuesta($this->convertirJson($resp), 200);
+                } else {
+                    $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+                }
+            }
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
     }
 }
 

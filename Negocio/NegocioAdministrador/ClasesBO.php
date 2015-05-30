@@ -163,8 +163,20 @@ class ClasesBO extends Rest{
 
         $this->con = ConexionBD::getInstance();
         $clase = new ClaseModel();
-
-        $filas = $clase->findBySql($this->con, ClaseModel::SQL_SELECT);
+        
+        $idSala = $this->datosPeticion['idSala'];
+        
+        if(empty($idSala))
+        {    
+            $filas = $clase->findBySql($this->con, ClaseModel::SQL_SELECT);
+        }
+        else
+        {
+            $filter=array(
+            new DFC(ClaseModel::FIELD_IDSALA, $idSala, DFC::EXACT)
+            );
+            $filas=ClaseModel::findByFilter($this->con, $filter, true);
+        }
 
         $num = count($filas);
         if ($num > 0) {

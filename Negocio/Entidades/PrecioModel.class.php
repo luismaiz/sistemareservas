@@ -7,9 +7,9 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 	private static $CLASS_NAME='PrecioModel';
 	const SQL_IDENTIFIER_QUOTE='`';
 	const SQL_TABLE_NAME='precio';
-	const SQL_INSERT='INSERT INTO `precio` (`idPrecio`,`idTipoTarifa`,`idTipoSolicitud`,`idTipoAbono`,`NombrePrecio`,`DescripcionPrecio`,`Precio`,`FechaAlta`,`FechaBaja`) VALUES (?,?,?,?,?,?,?,?,?)';
-	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `precio` (`idTipoTarifa`,`idTipoSolicitud`,`idTipoAbono`,`NombrePrecio`,`DescripcionPrecio`,`Precio`,`FechaAlta`,`FechaBaja`) VALUES (?,?,?,?,?,?,?,?)';
-	const SQL_UPDATE='UPDATE `precio` SET `idPrecio`=?,`idTipoTarifa`=?,`idTipoSolicitud`=?,`idTipoAbono`=?,`NombrePrecio`=?,`DescripcionPrecio`=?,`Precio`=?,`FechaAlta`=?,`FechaBaja`=? WHERE `idPrecio`=?';
+	const SQL_INSERT='INSERT INTO `precio` (`idPrecio`,`idTipoTarifa`,`idTipoSolicitud`,`idTipoAbono`,`idActividad`,`NombrePrecio`,`DescripcionPrecio`,`Precio`,`FechaAlta`,`FechaBaja`) VALUES (?,?,?,?,?,?,?,?,?,?)';
+	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `precio` (`idTipoTarifa`,`idTipoSolicitud`,`idTipoAbono`,`idActividad`,`NombrePrecio`,`DescripcionPrecio`,`Precio`,`FechaAlta`,`FechaBaja`) VALUES (?,?,?,?,?,?,?,?,?)';
+	const SQL_UPDATE='UPDATE `precio` SET `idPrecio`=?,`idTipoTarifa`=?,`idTipoSolicitud`=?,`idTipoAbono`=?,`idActividad`=?,`NombrePrecio`=?,`DescripcionPrecio`=?,`Precio`=?,`FechaAlta`=?,`FechaBaja`=? WHERE `idPrecio`=?';
 	const SQL_SELECT_PK='SELECT * FROM `precio` WHERE `idPrecio`=?';
         const SQL_SELECT='SELECT * FROM `precio`';
 	const SQL_DELETE_PK='DELETE FROM `precio` WHERE `idPrecio`=?';
@@ -17,6 +17,7 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 	const FIELD_IDTIPOTARIFA=2017135254;
 	const FIELD_IDTIPOSOLICITUD=993437133;
 	const FIELD_IDTIPOABONO=-1060829608;
+	const FIELD_IDACTIVIDAD=481523386;
 	const FIELD_NOMBREPRECIO=-1803976137;
 	const FIELD_DESCRIPCIONPRECIO=-26400117;
 	const FIELD_PRECIO=-400820466;
@@ -29,6 +30,7 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 		self::FIELD_IDTIPOTARIFA=>'idTipoTarifa',
 		self::FIELD_IDTIPOSOLICITUD=>'idTipoSolicitud',
 		self::FIELD_IDTIPOABONO=>'idTipoAbono',
+		self::FIELD_IDACTIVIDAD=>'idActividad',
 		self::FIELD_NOMBREPRECIO=>'NombrePrecio',
 		self::FIELD_DESCRIPCIONPRECIO=>'DescripcionPrecio',
 		self::FIELD_PRECIO=>'Precio',
@@ -39,6 +41,7 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 		self::FIELD_IDTIPOTARIFA=>'idTipoTarifa',
 		self::FIELD_IDTIPOSOLICITUD=>'idTipoSolicitud',
 		self::FIELD_IDTIPOABONO=>'idTipoAbono',
+		self::FIELD_IDACTIVIDAD=>'idActividad',
 		self::FIELD_NOMBREPRECIO=>'NombrePrecio',
 		self::FIELD_DESCRIPCIONPRECIO=>'DescripcionPrecio',
 		self::FIELD_PRECIO=>'Precio',
@@ -49,6 +52,7 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 		self::FIELD_IDTIPOTARIFA=>Db2PhpEntity::PHP_TYPE_INT,
 		self::FIELD_IDTIPOSOLICITUD=>Db2PhpEntity::PHP_TYPE_INT,
 		self::FIELD_IDTIPOABONO=>Db2PhpEntity::PHP_TYPE_INT,
+		self::FIELD_IDACTIVIDAD=>Db2PhpEntity::PHP_TYPE_INT,
 		self::FIELD_NOMBREPRECIO=>Db2PhpEntity::PHP_TYPE_STRING,
 		self::FIELD_DESCRIPCIONPRECIO=>Db2PhpEntity::PHP_TYPE_STRING,
 		self::FIELD_PRECIO=>Db2PhpEntity::PHP_TYPE_FLOAT,
@@ -59,6 +63,7 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 		self::FIELD_IDTIPOTARIFA=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
 		self::FIELD_IDTIPOSOLICITUD=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
 		self::FIELD_IDTIPOABONO=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
+		self::FIELD_IDACTIVIDAD=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
 		self::FIELD_NOMBREPRECIO=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,45,0,true),
 		self::FIELD_DESCRIPCIONPRECIO=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,45,0,true),
 		self::FIELD_PRECIO=>array(Db2PhpEntity::JDBC_TYPE_REAL,12,0,true),
@@ -69,6 +74,7 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 		self::FIELD_IDTIPOTARIFA=>0,
 		self::FIELD_IDTIPOSOLICITUD=>0,
 		self::FIELD_IDTIPOABONO=>0,
+		self::FIELD_IDACTIVIDAD=>0,
 		self::FIELD_NOMBREPRECIO=>null,
 		self::FIELD_DESCRIPCIONPRECIO=>null,
 		self::FIELD_PRECIO=>null,
@@ -78,6 +84,7 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 	private $idTipoTarifa;
 	private $idTipoSolicitud;
 	private $idTipoAbono;
+	private $idActividad;
 	private $NombrePrecio;
 	private $DescripcionPrecio;
 	private $Precio;
@@ -182,6 +189,31 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 	 */
 	public function getIdTipoAbono() {
 		return $this->idTipoAbono;
+	}
+
+	/**
+	 * set value for idActividad 
+	 *
+	 * type:INT,size:10,default:null
+	 *
+	 * @param mixed $idActividad
+	 * @return PrecioModel
+	 */
+	public function &setIdActividad($idActividad) {
+		$this->notifyChanged(self::FIELD_IDACTIVIDAD,$this->idActividad,$idActividad);
+		$this->idActividad=$idActividad;
+		return $this;
+	}
+
+	/**
+	 * get value for idActividad 
+	 *
+	 * type:INT,size:10,default:null
+	 *
+	 * @return mixed
+	 */
+	public function getIdActividad() {
+		return $this->idActividad;
 	}
 
 	/**
@@ -424,6 +456,7 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 			self::FIELD_IDTIPOTARIFA=>$this->getIdTipoTarifa(),
 			self::FIELD_IDTIPOSOLICITUD=>$this->getIdTipoSolicitud(),
 			self::FIELD_IDTIPOABONO=>$this->getIdTipoAbono(),
+			self::FIELD_IDACTIVIDAD=>$this->getIdActividad(),
 			self::FIELD_NOMBREPRECIO=>$this->getNombrePrecio(),
 			self::FIELD_DESCRIPCIONPRECIO=>$this->getDescripcionPrecio(),
 			self::FIELD_PRECIO=>$this->getPrecio(),
@@ -461,11 +494,10 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 		if(self::isCacheStatements()) {
 			if (in_array($statement, array(self::SQL_INSERT, self::SQL_INSERT_AUTOINCREMENT, self::SQL_UPDATE, self::SQL_SELECT_PK, self::SQL_DELETE_PK))) {
 				$dbInstanceId=spl_object_hash($db);
-//				if (null===self::$stmts[$statement][$dbInstanceId]) {
-//					self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
-//				}
-//				return self::$stmts[$statement][$dbInstanceId];
-                                self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
+				/*if (null===self::$stmts[$statement][$dbInstanceId]) {
+					self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
+				}
+				return self::$stmts[$statement][$dbInstanceId];*/
 			}
 		}
 		return $db->prepare($statement);
@@ -675,6 +707,7 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 		$this->setIdTipoTarifa($result['idTipoTarifa']);
 		$this->setIdTipoSolicitud($result['idTipoSolicitud']);
 		$this->setIdTipoAbono($result['idTipoAbono']);
+		$this->setIdActividad($result['idActividad']);
 		$this->setNombrePrecio($result['NombrePrecio']);
 		$this->setDescripcionPrecio($result['DescripcionPrecio']);
 		$this->setPrecio($result['Precio']);
@@ -718,11 +751,12 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 		$stmt->bindValue(2,$this->getIdTipoTarifa());
 		$stmt->bindValue(3,$this->getIdTipoSolicitud());
 		$stmt->bindValue(4,$this->getIdTipoAbono());
-		$stmt->bindValue(5,$this->getNombrePrecio());
-		$stmt->bindValue(6,$this->getDescripcionPrecio());
-		$stmt->bindValue(7,$this->getPrecio());
-		$stmt->bindValue(8,$this->getFechaAlta());
-		$stmt->bindValue(9,$this->getFechaBaja());
+		$stmt->bindValue(5,$this->getIdActividad());
+		$stmt->bindValue(6,$this->getNombrePrecio());
+		$stmt->bindValue(7,$this->getDescripcionPrecio());
+		$stmt->bindValue(8,$this->getPrecio());
+		$stmt->bindValue(9,$this->getFechaAlta());
+		$stmt->bindValue(10,$this->getFechaBaja());
 	}
 
 
@@ -738,11 +772,12 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 			$stmt->bindValue(1,$this->getIdTipoTarifa());
 			$stmt->bindValue(2,$this->getIdTipoSolicitud());
 			$stmt->bindValue(3,$this->getIdTipoAbono());
-			$stmt->bindValue(4,$this->getNombrePrecio());
-			$stmt->bindValue(5,$this->getDescripcionPrecio());
-			$stmt->bindValue(6,$this->getPrecio());
-			$stmt->bindValue(7,$this->getFechaAlta());
-			$stmt->bindValue(8,$this->getFechaBaja());
+			$stmt->bindValue(4,$this->getIdActividad());
+			$stmt->bindValue(5,$this->getNombrePrecio());
+			$stmt->bindValue(6,$this->getDescripcionPrecio());
+			$stmt->bindValue(7,$this->getPrecio());
+			$stmt->bindValue(8,$this->getFechaAlta());
+			$stmt->bindValue(9,$this->getFechaBaja());
 		} else {
 			$stmt=self::prepareStatement($db,self::SQL_INSERT);
 			$this->bindValues($stmt);
@@ -771,7 +806,7 @@ class PrecioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationTr
 	public function updateToDatabase(PDO $db) {
 		$stmt=self::prepareStatement($db,self::SQL_UPDATE);
 		$this->bindValues($stmt);
-		$stmt->bindValue(10,$this->getIdPrecio());
+		$stmt->bindValue(11,$this->getIdPrecio());
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();

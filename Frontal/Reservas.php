@@ -192,6 +192,28 @@
                     document.getElementById('divError').style.display = 'block';
                 }
             };
+			
+			$scope.cancelarAnulacion = function(idSolicitud){
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=cancelarAnulacion');
+                
+                var Params = 'idSolicitud='+ idSolicitud;
+               
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+            
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divAnulacion').style.display = 'block';
+                    $scope.obtenerReservas();
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
+            };
             
             $(function () {
                 $('.footable').footable();
@@ -299,6 +321,10 @@
                                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                                     <strong>Correcto.</strong>  Se ha validado la solicitud.
             </div>
+			<div class="alert alert-warning" id="divAnulacion" style='display:none;'>
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <strong>Correcto.</strong>  Se ha anulado la validación de la solicitud.
+            </div>
             <div class="box-content">
                 <div class="row">
                     <div class="form-group">
@@ -367,6 +393,7 @@
                                                         <a target="_self"  ng_show="solicitud.idTipoSolicitud==3" href="" class="btn btn-info" ng_click="redirigirdiario(solicitud.idSolicitud);"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
                                                         <a target="_self"  ng_show="solicitud.idTipoSolicitud==3 && solicitud.Gestionado==0" href="" class="btn btn-success" ng_click="validarSolicitud(solicitud.idSolicitud);">Validar</a>
                                                         <a target="_self"  ng_show="solicitud.idTipoSolicitud==1 && solicitud.Gestionado==0" href="" class="btn btn-success" ng_click="validarSolicitud(solicitud.idSolicitud);">Validar</a>
+														<a target="_self" ng_show="solicitud.Gestionado=='1'" ng_click="cancelarAnulacion(solicitud.idSolicitud)" class="btn btn-danger">Cancelar</a>
                                                         <a target="_self" ng_show="solicitud.Anulado!=='0'"  class="btn btn-danger">Anulada</a>
                                                         <i class="glyphicon glyphicon-bell blue" ng_show="solicitud.idTipoTarifa!=1"></i></td>
                                                         

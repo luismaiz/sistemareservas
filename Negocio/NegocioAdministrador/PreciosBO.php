@@ -66,6 +66,7 @@ class PreciosBO extends Rest{
         $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
         $idTipoAbono = $this->datosPeticion['idTipoAbono'];
         $idTipoTarifa = $this->datosPeticion['idTipoTarifa'];
+        $idActividad = $this->datosPeticion['idActividad'];
         $NombrePrecio = $this->datosPeticion['NombrePrecio'];
         $DescripcionPrecio = $this->datosPeticion['DescripcionPrecio'];
         $Precio = $this->datosPeticion['Precio'];
@@ -80,7 +81,8 @@ class PreciosBO extends Rest{
         new DFC(PrecioModel::FIELD_FECHABAJA, 's', DFC::IS_NULL),
         new DFC(PrecioModel::FIELD_IDTIPOSOLICITUD, $idTipoSolicitud, DFC::EXACT),
         new DFC(PrecioModel::FIELD_IDTIPOABONO, $idTipoAbono, DFC::EXACT),
-        new DFC(PrecioModel::FIELD_IDTIPOTARIFA, $idTipoTarifa, DFC::EXACT)
+        new DFC(PrecioModel::FIELD_IDTIPOTARIFA, $idTipoTarifa, DFC::EXACT),
+        new DFC(PrecioModel::FIELD_IDACTIVIDAD, $idActividad, DFC::EXACT)
         );
         
         $filas = $precio->findByFilter($this->con,$filter);
@@ -91,6 +93,7 @@ class PreciosBO extends Rest{
                  $precio->setIdTipoSolicitud($filas[0]->getIdTipoSolicitud());
                     $precio->setIdTipoAbono($filas[0]->getIdTipoAbono());
                     $precio->setIdTipoTarifa($filas[0]->getIdTipoTarifa());
+                    $precio->setIdActividad($filas[0]->getIdActividad());
                     $precio->setNombrePrecio($filas[0]->getNombrePrecio());
                     $precio->setDescripcionPrecio($filas[0]->getDescripcionPrecio());
                     $precio->setPrecio($filas[0]->getPrecio());
@@ -103,6 +106,7 @@ class PreciosBO extends Rest{
                     $precio->setIdTipoSolicitud($idTipoSolicitud);
                     $precio->setIdTipoAbono($idTipoAbono);
                     $precio->setIdTipoTarifa($idTipoTarifa);
+                    $precio->setIdActividad($idActividad);
                     $precio->setNombrePrecio(html_entity_decode($NombrePrecio));
                     $precio->setDescripcionPrecio(html_entity_decode($DescripcionPrecio));
                     $precio->setPrecio($Precio);
@@ -128,6 +132,7 @@ class PreciosBO extends Rest{
                     $precio->setIdTipoSolicitud($idTipoSolicitud);
                     $precio->setIdTipoAbono($idTipoAbono);
                     $precio->setIdTipoTarifa($idTipoTarifa);
+                    $precio->setIdActividad($idActividad);
                     $precio->setNombrePrecio(html_entity_decode($NombrePrecio));
                     $precio->setDescripcionPrecio(html_entity_decode($DescripcionPrecio));
                     $precio->setPrecio($Precio);
@@ -188,6 +193,7 @@ class PreciosBO extends Rest{
             $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
             $idTipoAbono = $this->datosPeticion['idTipoAbono'];
             $idTipoTarifa = $this->datosPeticion['idTipoTarifa'];
+            $idActividad = $this->datosPeticion['idActividad'];
             $NombrePrecio = $this->datosPeticion['NombrePrecio'];
             $DescripcionPrecio = $this->datosPeticion['DescripcionPrecio'];
             $Precio = $this->datosPeticion['Precio'];
@@ -199,6 +205,7 @@ class PreciosBO extends Rest{
                 $precio->setIdTipoSolicitud($idTipoSolicitud);
                 $precio->setIdTipoAbono($idTipoAbono);
                 $precio->setIdTipoTarifa($idTipoTarifa);
+                $precio->setIdActividad($idActividad);
                 $precio->setNombrePrecio(html_entity_decode($NombrePrecio));
                 $precio->setDescripcionPrecio(html_entity_decode($DescripcionPrecio));
                 $precio->setPrecio($Precio);
@@ -238,6 +245,7 @@ class PreciosBO extends Rest{
             $respuesta['precio']['idTipoSolicitud'] = $fila->getIdTipoSolicitud();
             $respuesta['precio']['idTipoAbono'] = $fila->getIdTipoAbono();
             $respuesta['precio']['idTipoTarifa'] = $fila->getIdTipoTarifa();
+            $respuesta['precio']['idActividad'] = $fila->getIdActividad();
             $respuesta['precio']['NombrePrecio'] = $fila->getNombrePrecio();
             $respuesta['precio']['DescripcionPrecio'] = $fila->getDescripcionPrecio();
             $respuesta['precio']['Precio'] = $fila->getPrecio();
@@ -257,6 +265,7 @@ class PreciosBO extends Rest{
         $tsolicitud = $this->datosPeticion['TipoSolicitud'];
         $tabono = $this->datosPeticion['TipoAbono'];
         $ttarifa = $this->datosPeticion['TipoTarifa'];
+        $actividad = $this->datosPeticion['Actividad'];
         
                 
         $this->con = ConexionBD::getInstance();
@@ -273,6 +282,8 @@ class PreciosBO extends Rest{
             $precio->setIdTipoAbono($tabono);
         if($ttarifa != 0)
             $precio->setIdTipoTarifa($ttarifa);
+        if($actividad != 0)
+            $precio->setIdActividad($actividad);
         //$precio->setFechaBaja($fechabaja);
         
         //$filas = PrecioModel::findByExample($this->con,$precio,$sort);
@@ -286,6 +297,8 @@ class PreciosBO extends Rest{
             array_push($filter, new DFC(PrecioModel::FIELD_IDTIPOABONO, $tabono, DFC::EXACT));
         if($ttarifa != 0)
             array_push($filter, new DFC(PrecioModel::FIELD_IDTIPOTARIFA, $ttarifa, DFC::EXACT));
+        if($actividad != 0)
+            array_push($filter, new DFC(PrecioModel::FIELD_IDACTIVIDAD, $actividad, DFC::EXACT));
         
         $filas = PrecioModel::findByFilter($this->con,$filter);
                                 
@@ -325,6 +338,7 @@ class PreciosBO extends Rest{
         $tsolicitud = $fila->getIdTipoSolicitud();
         $tabono = $fila->getIdTipoAbono();
         $ttarifa = $fila->getIdTipoTarifa();
+        $actividad = $fila->getIdActividad();
         
         $sort = array(
             new DSC(PrecioModel::FIELD_FECHABAJA, DSC::DESC)
@@ -334,7 +348,8 @@ class PreciosBO extends Rest{
         new DFC(PrecioModel::FIELD_FECHABAJA, DFC::IS_NULL, DFC::NOT),
         new DFC(PrecioModel::FIELD_IDTIPOSOLICITUD, $tsolicitud, DFC::EXACT),
         new DFC(PrecioModel::FIELD_IDTIPOABONO, $tabono, DFC::EXACT),
-        new DFC(PrecioModel::FIELD_IDTIPOTARIFA, $ttarifa, DFC::EXACT)
+        new DFC(PrecioModel::FIELD_IDTIPOTARIFA, $ttarifa, DFC::EXACT),
+        new DFC(PrecioModel::FIELD_IDACTIVIDAD, $actividad, DFC::EXACT)
         );
         
         $filas = PrecioModel::findByFilter($this->con,$filter);
@@ -380,6 +395,7 @@ class PreciosBO extends Rest{
 				$precio->setIdTipoSolicitud($fila->getIdTipoSolicitud());
                 $precio->setIdTipoAbono($fila->getIdTipoAbono());
                 $precio->setIdTipoTarifa($fila->getIdTipoTarifa());
+                $precio->setIdActividad($fila->getIdActividad());
                 $precio->setNombrePrecio($fila->getNombrePrecio());
                 $precio->setDescripcionPrecio($fila->getDescripcionPrecio());
                 $precio->setPrecio($fila->getPrecio());
@@ -423,6 +439,7 @@ class PreciosBO extends Rest{
 				$precio->setIdTipoSolicitud($fila->getIdTipoSolicitud());
                 $precio->setIdTipoAbono($fila->getIdTipoAbono());
                 $precio->setIdTipoTarifa($fila->getIdTipoTarifa());
+                $precio->setIdActividad($fila->getIdActividad);
                 $precio->setNombrePrecio($fila->getNombrePrecio());
                 $precio->setDescripcionPrecio($fila->getDescripcionPrecio());
                 $precio->setPrecio($fila->getPrecio());
@@ -441,6 +458,9 @@ class PreciosBO extends Rest{
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
     }
+    
+    
+    
 	
 }
 $preciosBO = new PreciosBO();

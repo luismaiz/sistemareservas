@@ -98,6 +98,32 @@
         };   
         $scope.obtenerTipoTarifa();
         
+        $scope.obtenerActividad = function(){
+        
+        var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividades');		
+        var Params = '';
+        $scope.selectedactividad = 1;    
+        Ajax.open("GET", Url, false);
+        Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
+        Ajax.send(Params); // Enviamos los datos
+        
+        $scope.actividades = JSON.parse(Ajax.responseText).actividades;
+        $scope.actividades.unshift({idActividad:'0',NombreActividad:"--Actividad--"});	
+        if (localStorage.getItem('filtrosprecios')!== null)
+		{
+		    $scope.selectedactividad = $scope.actividades[JSON.parse(localStorage.getItem('filtrosprecios'))[0].actividad];
+		}
+                else
+                {
+                    $scope.selectedactividad = $scope.actividades[0];
+                }        
+
+               
+        //$scope.tiposTarifas = JSON.parse(Ajax.responseText).tiposTarifas;
+        
+        };   
+        $scope.obtenerActividad();
+        
         
         $scope.obtenerPrecios = function() {
             
@@ -115,7 +141,8 @@
                 
                 var Params =  'TipoSolicitud=' + document.getElementById("filtroTipoSolicitud").value +
                         '&TipoAbono=' + document.getElementById("filtroTipoAbono").value +
-                        '&TipoTarifa=' + document.getElementById("filtroTipoTarifa").value;
+                        '&TipoTarifa=' + document.getElementById("filtroTipoTarifa").value +
+                        '&Actividad=' + document.getElementById("filtroActividad").value;
                 
 	        Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -150,7 +177,8 @@
                             [{                                    
                             TipoSolicitud:document.getElementById("filtroTipoSolicitud").value,
                             TipoAbono:document.getElementById("filtroTipoAbono").value,
-                            TipoTarifa:document.getElementById("filtroTipoTarifa").value}
+                            TipoTarifa:document.getElementById("filtroTipoTarifa").value,
+                            Actividad:document.getElementById("filtroActividad").value}
                             ];
                             localStorage.setItem('filtrosprecios', JSON.stringify($scope.filtrosprecios));
                             location.href = "FormularioDetallePrecio.php?idPrecio="+idPrecio;
@@ -205,6 +233,11 @@
 <!--                                <select  id="filtroTipoTarifa" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
                                     <option ng_repeat="tipotarifa in tiposTarifas" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>
                                 </select>-->
+                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Actividad</label>
+                                <select ng-model="selectedactividad" ng-options="actividad.NombreActividad for actividad in actividades track by actividad.idActividad"  id="filtroActividad" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	</select>
+<!--                                <select  id="filtroTipoTarifa" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
+                                    <option ng_repeat="tipotarifa in tiposTarifas" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>
+                                </select>-->
                                 
                             </div>	
                           
@@ -216,6 +249,7 @@
                                                     <th>Tipo Solicitud</h6></th>
                                                     <th>Tipo Abono</th>
                                                     <th>Tipo Tarifa</th>
+                                                    <th>Actividad</th>
                                                     <th data-type="numeric">Precio</th>
                                                     <th data-sort-ignore="true"></th>
                                               </thead>      
@@ -238,6 +272,10 @@
                                                     
                                                     <select  ng_disabled="true">	
                                                             <option ng_repeat="tipotarifa in tiposTarifas" ng_selected="{{precio.idTipoTarifa}} == {{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>
+                                                    </select>
+                                                        
+                                                    <select  ng_disabled="true">	
+                                                            <option ng_repeat="actividad in actividades" ng_selected="{{precio.idActividad}} == {{actividad.idActividad}}">{{actividad.NombreActividad}}</option>
                                                     </select>
                                                     </td>
                                                     <td>{{precio.Precio}}€</td>

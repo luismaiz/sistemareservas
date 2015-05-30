@@ -207,6 +207,7 @@
                 $( "#FechaBaja" ).datepicker({
                     dateFormat:'dd-mm-yy'    
                 });
+                $('#colorselector').colorselector();
             });
     
 </script>
@@ -263,12 +264,18 @@
                     </span>
                     </div>
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <select ng-model="actividad.IntensidadActividad" class="input-sm col-lg-2 col-md-6 col-sm-6 col-xs-6" id="colorselector">
+                        <option value="15" data-color="#DC143C"></option>
+                        <option value="24" data-color="#FF8C00"></option>
+                        <option value="78" data-color="#C71585"></option>
+                    </select>
+                    </div>
+                    <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Intensidad Actividad</label>
                     <input ng-disabled="actividad.idActividad ===null || actividad.FechaBaja!==null" class="input-sm color" ng-model="actividad.IntensidadActividad"   id="IntensidadActividad" name="IntensidadActividad">
                     <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12"  style="color:red" ng-show="formulario.IntensidadActividad.$dirty && formulario.IntensidadActividad.$invalid">
                                 <span ng-show="formulario.IntensidadActividad.$error.required">* Intensidad de actividad obligatorio.</span>
                     </span>
-                   
                     </div>    
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Edad Mínima</label>

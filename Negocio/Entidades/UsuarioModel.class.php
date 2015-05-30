@@ -361,10 +361,10 @@ class UsuarioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationT
 		if(self::isCacheStatements()) {
 			if (in_array($statement, array(self::SQL_INSERT, self::SQL_INSERT_AUTOINCREMENT, self::SQL_UPDATE, self::SQL_SELECT_PK, self::SQL_DELETE_PK))) {
 				$dbInstanceId=spl_object_hash($db);
-				if (null===self::$stmts[$statement][$dbInstanceId]) {
+				//if (null===self::$stmts[$statement][$dbInstanceId]) {
 					self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
-				}
-				return self::$stmts[$statement][$dbInstanceId];
+				//}
+				//return self::$stmts[$statement][$dbInstanceId];
 			}
 		}
 		return $db->prepare($statement);

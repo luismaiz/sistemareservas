@@ -310,6 +310,7 @@ div.center, p.center, img.center {
     margin-bottom: 0;
     padding-bottom: 0;
     max-height: none;
+    background-color: #d9edf7;
 }
 
 .sidebar-nav > ul > li:not(.nav-header) {
@@ -680,6 +681,7 @@ ul.github-buttons li {
     .sidebar-nav {
         padding: 0;
         margin-bottom: 0;
+        background-color:  #d9edf7;
     }
 }
 

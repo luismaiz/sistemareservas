@@ -17,6 +17,8 @@ require_once("../../Negocio/Entidades/UsuarioModel.class.php");
 require_once("../../Negocio/Entidades/DatosolicitudabonomensualModel.class.php");
 require_once("../../Negocio/Entidades/DatosolicitudclasedirigidaModel.class.php");
 require_once("../../Negocio/Entidades/ActividadsolicitudclasedirigidaModel.class.php");
+require_once "../../Negocio/UtilidadesNegocio/phpqrcode/qrlib.php";
+require("../../Negocio/UtilidadesNegocio/class.phpmailer.php");
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -42,7 +44,7 @@ class AdministradorBO extends Rest {
 
     private function devolverError($id) {
         $errores = array(
-            array('estado' => "error", "msg" => "petición no encontrada"),
+            array('estado' => "error", "msg" => "petición no bueno encontrada"),
             array('estado' => "error", "msg" => "petición no aceptada"),
             array('estado' => "error", "msg" => "petición sin contenido"),
             array('estado' => "error", "msg" => "email o password incorrectos"),
@@ -94,13 +96,13 @@ class AdministradorBO extends Rest {
         $solAbonoMensual = new DatosolicitudabonomensualModel();
 
         $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
-		$Sexo = $this->datosPeticion['Sexo'];
-		$tipoabono = $this->datosPeticion['idTipoAbono'];
-		$idTipoTarifa = $this->datosPeticion['idTipoTarifa'];
-		$FechaInicio = date("Y-m-d",strtotime($this->datosPeticion['FechaInicio']));
+        $Sexo = $this->datosPeticion['Sexo'];
+	$tipoabono = $this->datosPeticion['idTipoAbono'];
+	$idTipoTarifa = $this->datosPeticion['idTipoTarifa'];
+	$FechaInicio = date("Y-m-d",strtotime($this->datosPeticion['FechaInicio']));
         $FechaFin = date("Y-m-d",strtotime($this->datosPeticion['FechaFin']));
-		$PrecioPagado = $this->datosPeticion['PrecioPagado'];
-		$FechaSolicitud = date("Y-m-d");
+	$PrecioPagado = $this->datosPeticion['PrecioPagado'];
+	$FechaSolicitud = date("Y-m-d");
         $Nombre =  html_entity_decode($this->datosPeticion['Nombre']);
         $Apellidos =  html_entity_decode($this->datosPeticion['Apellidos']);
         $DNI = $this->datosPeticion['DNI'];
@@ -119,7 +121,7 @@ class AdministradorBO extends Rest {
         $Otros = $this->datosPeticion['Otros'];
         
 		
-		$Localizador1 = md5($this->generarLocalizador($Nombre, $Apellidos, $FechaSolicitud, $DNI));
+	$Localizador1 = md5($this->generarLocalizador($Nombre, $Apellidos, date("y/m/d H:i:s"), $DNI));
         $Localizador = substr($Localizador1, 0, 6);
         $anulado = 0;
         $gestionado = 0;
@@ -220,7 +222,7 @@ class AdministradorBO extends Rest {
         $Provincia =  html_entity_decode($this->datosPeticion['Provincia']);
         $DescripcionSolicitud = $this->datosPeticion['DescripcionSolicitud'];
         $Otros = $this->datosPeticion['Otros'];
-        $Localizador1 = md5($this->generarLocalizador($Nombre, $Apellidos, $FechaSolicitud, $DNI));
+        $Localizador1 = md5($this->generarLocalizador($Nombre, $Apellidos, date("y/m/d H:i:s"), $DNI));
         $Localizador = substr($Localizador1, 0, 6);
         $anulado = 0;
         $gestionado = 0;
@@ -314,8 +316,8 @@ class AdministradorBO extends Rest {
 		
         //echo $solicitud->getIdSolicitud();
         $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
-        $idTipoTarifa = $this->datosPeticion['idTipoTarifa'];
-		$FechaSolicitud = date("Y-m-d");
+        //$idTipoTarifa = $this->datosPeticion['idTipoTarifa'];
+        $FechaSolicitud = date("Y-m-d");
         $Nombre =  html_entity_decode($this->datosPeticion['Nombre']);
         $Apellidos =  html_entity_decode($this->datosPeticion['Apellidos']);
         $DNI = $this->datosPeticion['DNI'];
@@ -331,7 +333,7 @@ class AdministradorBO extends Rest {
         //$Provincia = $this->datosPeticion['Provincia'];
         //$DescripcionSolicitud = $this->datosPeticion['DescripcionSolicitud'];
         //$Otros = $this->datosPeticion['Otros'];
-        $Localizador1 = md5($this->generarLocalizador($Nombre, $Apellidos, $FechaSolicitud, $DNI));
+        $Localizador1 = md5($this->generarLocalizador($Nombre, $Apellidos, date("y/m/d H:i:s"), $DNI));
         $Localizador = substr($Localizador1, 0, 6);
         $FechaAbonoDiario = date("Y-m-d",strtotime($this->datosPeticion['FechaAbonoDiario']));
         $anulado = 0;
@@ -343,7 +345,7 @@ class AdministradorBO extends Rest {
         //var_dump($solicitud);
         //$solicitud->setIdTipoSolicitud($idSolicitud);
         $solicitud->setIdTipoSolicitud($idTipoSolicitud);
-        $solicitud->setIdTipoTarifa($idTipoTarifa);
+        //$solicitud->setIdTipoTarifa($idTipoTarifa);
         $solicitud->setFechaSolicitud($FechaSolicitud);
         $solicitud->setNombre($Nombre);
         $solicitud->setApellidos($Apellidos);
@@ -787,14 +789,13 @@ class AdministradorBO extends Rest {
         $Apellidos = html_entity_decode($this->datosPeticion['Apellidos']);
         $EMail = $this->datosPeticion['EMail'];
 
-
+		
         //set it to writable location, a place for temp generated PNG files
         $PNG_TEMP_DIR = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'temp' . DIRECTORY_SEPARATOR;
 
         //html PNG location prefix
-        $PNG_WEB_DIR = 'temp/';
+        $PNG_WEB_DIR = '../../Negocio/NegocioAdministrador/temp/';
 
-        require_once "../UtilidadesNegocio/phpqrcode/qrlib.php";
 
         //ofcourse we need rights to create temp dir
         if (!file_exists($PNG_TEMP_DIR))
@@ -803,7 +804,6 @@ class AdministradorBO extends Rest {
 
         $filename = $PNG_TEMP_DIR . '' . $Localizador . '.png';
         $nom = $Localizador . '.png';
-
 
         //echo $filename;
 
@@ -823,12 +823,17 @@ class AdministradorBO extends Rest {
         //$filename = $PNG_TEMP_DIR.'test'.md5($data.'|'.$errorCorrectionLevel.'|'.$matrixPointSize).'.png';
         QRcode::png($data, $filename, $errorCorrectionLevel, $matrixPointSize, 2);
         //echo $PNG_WEB_DIR.$nombre;
-        if ($this->enviarMail($PNG_WEB_DIR . '' . $nom, $Nombre, $Apellidos, $EMail, $Localizador))
-            delete($filename);
+        
+        //if ($this->enviarMail($PNG_WEB_DIR . '' . $nom, $Nombre, $Apellidos, $EMail, $Localizador))
+        //    delete($filename);
+        if ($this->enviarMail($PNG_WEB_DIR . '' . $nom, $Nombre, $Apellidos, $EMail, $Localizador));
+        {$respuesta['estado'] = 'correcto';
+         $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
     }
 
     private function enviarMail($file, $nom, $ape, $Email, $loc) {
-        require("../UtilidadesNegocio/class.phpmailer.php");
+        
 
         $mail = new PHPMailer();
         $mail->Host = "mail.reservascentro.es";
@@ -838,8 +843,9 @@ class AdministradorBO extends Rest {
         $mail->From = "reservascentro@reservascentro.es"; //"mariosgsg@gmail.com";
         $mail->FromName = "Reservas Centro"; //"Nombre del Remitente";
         $mail->Subject = "Reserva " . $loc;
-		$remitente = $nom.' '.$ape;
-        $mail->AddAddress($Email, $remitente); //"mariosgsg@gmail.com", "Nombre 01");
+	$remitente = $nom.' '.$ape;
+        
+        $mail->AddAddress($Email,$remitente); //"mariosgsg@gmail.com", "Nombre 01");
         //$mail->AddAddress("mariosgsg@gmail.com", "Nombre 02");
         //$mail->AddCC("mariosgsg@gmail.com");
         //$mail->AddBCC("mariosgsg@gmail.com");
@@ -855,9 +861,14 @@ class AdministradorBO extends Rest {
         if(!$mail->Send()) {
 			echo "Mailer Error: " . $mail->ErrorInfo;
 		} else {
+                    $respuesta['estado'] = 'correcto';
+                        $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
 			echo "Message sent!";
 		}
-        return $result;
+                
+                
+        
+        
     }
 
     private function generarLocalizador($nom, $ape, $fecha, $dni) {

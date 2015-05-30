@@ -3,6 +3,7 @@
 <script type="text/javascript">
     var Ajax = new AjaxObj();
     var Actividades;
+    var Sala;
     var arrayactividades=[];
     var Salas;
     var app = angular.module('Clases',  [])            
@@ -61,7 +62,6 @@
                                 for(var i = JSON.parse(Ajax.responseText).salas.length - 1; i >= 1; i--) {
                                     
                                 if(JSON.parse(Ajax.responseText).salas[i].FechaBaja !== null) {
-                                    alert();
                                 JSON.parse(Ajax.responseText).salas.splice(i, 1);
                                 }
                                 }
@@ -72,6 +72,13 @@
 				}
             };
             $scope.obtenerSalas();
+            
+            $scope.calendariosala = function(idSala){
+              
+              Sala=idSala;
+              $('#calendar').fullCalendar( 'removeEvents');
+              $('#calendar').fullCalendar( 'refetchEvents');
+            };
      }
     
     jQuery(function($) {
@@ -104,23 +111,22 @@
         var CalLoading = true;
         var lastView;;
         $('#calendar').fullCalendar({
+            
             minTime: "09:00",
             maxTime: "22:00",
             allDaySlot:false,
             timeFormat: 'H:mm' ,
             lazyFetching: true,
-            hiddenDays: [ 0 ],
-                        
-            buttonHtml: {
-                prev: '<i class="ace-icon fa fa-chevron-left"></i>',
-                next: '<i class="ace-icon fa fa-chevron-right"></i>'
-            },
-	
-            header: {
-                left: 'prev,next hoy',
-                center: 'title',
-                right: ''
-            },
+            header:false,
+            eventbordercolor:'red',
+//            header: {
+//				left: 'prev,next today',
+//				center: 'title',
+//				right: 'month,agendaWeek,agendaDay'
+//			},
+            columnFormat:'dddd',
+                            
+           
             eventLimit: true, // allow "more" link when too many events
             defaultView: 'agendaWeek',            
             editable: true,
@@ -129,14 +135,27 @@
             selectHelper: true,
             
             events: function(start, end, timezone, callback) {
-                            
+              var json ="";
+              
+              if (typeof(Sala !== "undefined"))
+              {
+                json = {idSala:Sala};
+                datos = jQuery.param( json );
+              }
+              else
+                datos=json;  
+                
                 $.ajax({
                     url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=obtenerClases'),
                     dataType: "json",
-                    data: "",
+                    data: datos,
                     async: false,
                     success: function(doc) {
                         
+                        
+                     if(typeof(doc)==="undefined")
+                         return;
+                     
                         var events = [];
                         for(i=0; i<doc.clases.length; i++){
                             
@@ -162,12 +181,44 @@
                                 backgroundColor: "#"+doc.clases[i].Ocupacion,
                                 borderColor: "#"+doc.clases[i].Ocupacion
                             });
+                            
+                            for (var loop = 1;
+                                 loop <= 10;
+                                 loop = loop + 1) {
+                                     
+                                 var cuenta = Cfechainicio.getTime()+(24 * 60 * 60 * 1000)*loop*7;    
+                                 var cuentafin = Cfechafin.getTime()+(24 * 60 * 60 * 1000)*loop*7;    
+                                                                          
+                                var date = new Date(cuenta);
+                                var date2 = new Date(cuentafin);
+                                //alert(date2);
+                                
+                    events.push({
+                        id:doc.clases[i].idClase,
+                                title: Actividades[arrayactividades.indexOf(doc.clases[i].idActividad)].NombreActividad,
+                                idActividad: doc.clases[i].idActividad,
+                                idSala: doc.clases[i].idSala,
+                                OcupacionClase: doc.clases[i].Ocupacion,
+                                idClase: doc.clases[i].idClase,
+                                allDay: false,
+                                start: date,
+                                end:  date2,
+                                backgroundColor: "#"+doc.clases[i].Ocupacion,
+                                borderColor: "#"+doc.clases[i].Ocupacion
+                    });
+            } // for loop
+                            
+                            
+                            
                         }
 						
                         callback(events);
                     }
                 });
             },
+            
+            
+            
             drop: function(event,allDay) { // this function is called when something is dropped 
                 
                 var inicio = new Date((event._d).getFullYear(), (event._d).getMonth(), (event._d).getDate(), (event._d).getHours(), (event._d).getMinutes(), (event._d).getSeconds()).toUTCString();
@@ -178,7 +229,7 @@
                 copiedEventObject.start =  inicio;
                 copiedEventObject.end =  fin;
                 copiedEventObject.allDay = false;
-                var json = {idActividad:$idActividad,idSala:156,FechaInicio:inicio, FechaFin:fin, Ocupacion:'', Dia:0, Publicada:1};
+                var json = {idActividad:$idActividad,idSala:161,FechaInicio:inicio, FechaFin:fin, Ocupacion:'', Dia:0, Publicada:1};
                 
                 $.ajax({
                     type: "POST",
@@ -187,9 +238,8 @@
                     contentType: "application/x-www-form-urlencoded; charset=utf-8",
                     dataType: "json",
                     async: true,
-
+                        
                     success: function(data, textStatus) {
-                        alert();
                         copiedEventObject.idClase = data.idClase;
                         copiedEventObject.id = data.idClase;
                         //copiedEventObject.idSala = 3;
@@ -203,9 +253,7 @@
                         //setTimeout(function() { $('#calendar').fullCalendar('refetchEvents');},0);
                     },
                     error: function( jqXHR, textStatus, errorThrown ) {
-                        alert(jqXHR.error);
-                        alert(jqXHR.textStatus);
-                        alert(jqXHR.errorThrown);
+
                 }}); 
 				
             },
@@ -456,11 +504,15 @@
     <div class="col-xs-12">
         <!-- PAGE CONTENT BEGINS -->
         <div class="row">
+            <div id="botonera" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <a  ng-repeat="sala in salas" target="_self"  href="" class="border-5 col-lg-2 btn btn-info" ng_click="calendariosala(sala.idSala);" id="sala.idSala">{{sala.NombreSala}}</a>
+            </div>
+            
             <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
                 <div class="space"></div>
-
                 <div id="calendar"></div>
             </div>
+            
             <div class="col-lg-3  hidden-md hidden-sm hidden-xs">
                 <div class="widget-box transparent">
                     <div class="widget-header">

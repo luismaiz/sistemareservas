@@ -13,9 +13,9 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	private static $CLASS_NAME='SolicitudModel';
 	const SQL_IDENTIFIER_QUOTE='`';
 	const SQL_TABLE_NAME='solicitud';
-	const SQL_INSERT='INSERT INTO `solicitud` (`idSolicitud`,`idTipoSolicitud`,`idTipoTarifa`,`FechaSolicitud`,`Nombre`,`Apellidos`,`DNI`,`EMail`,`Direccion`,`CP`,`Sexo`,`FechaNacimiento`,`TutorLegal`,`Localidad`,`Telefono1`,`Telefono2`,`Provincia`,`DescripcionSolicitud`,`Otros`,`Localizador`,`FechaAbonoDiario`,`Gestionado`,`Anulado`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
-	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `solicitud` (`idTipoSolicitud`,`idTipoTarifa`,`FechaSolicitud`,`Nombre`,`Apellidos`,`DNI`,`EMail`,`Direccion`,`CP`,`Sexo`,`FechaNacimiento`,`TutorLegal`,`Localidad`,`Telefono1`,`Telefono2`,`Provincia`,`DescripcionSolicitud`,`Otros`,`Localizador`,`FechaAbonoDiario`,`Gestionado`,`Anulado`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
-	const SQL_UPDATE='UPDATE `solicitud` SET `idSolicitud`=?,`idTipoSolicitud`=?,`idTipoTarifa`=?,`FechaSolicitud`=?,`Nombre`=?,`Apellidos`=?,`DNI`=?,`EMail`=?,`Direccion`=?,`CP`=?,`Sexo`=?,`FechaNacimiento`=?,`TutorLegal`=?,`Localidad`=?,`Telefono1`=?,`Telefono2`=?,`Provincia`=?,`DescripcionSolicitud`=?,`Otros`=?,`Localizador`=?,`FechaAbonoDiario`=?,`Gestionado`=?,`Anulado`=? WHERE `idSolicitud`=?';
+	const SQL_INSERT='INSERT INTO `solicitud` (`idSolicitud`,`idTipoSolicitud`,`idTipoTarifa`,`FechaSolicitud`,`Nombre`,`Apellidos`,`DNI`,`EMail`,`Direccion`,`CP`,`Sexo`,`FechaNacimiento`,`TutorLegal`,`Localidad`,`Telefono1`,`Telefono2`,`Provincia`,`DescripcionSolicitud`,`Otros`,`Localizador`,`FechaAbonoDiario`,`Gestionado`,`Anulado`,`Confirmado`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `solicitud` (`idTipoSolicitud`,`idTipoTarifa`,`FechaSolicitud`,`Nombre`,`Apellidos`,`DNI`,`EMail`,`Direccion`,`CP`,`Sexo`,`FechaNacimiento`,`TutorLegal`,`Localidad`,`Telefono1`,`Telefono2`,`Provincia`,`DescripcionSolicitud`,`Otros`,`Localizador`,`FechaAbonoDiario`,`Gestionado`,`Anulado`,`Confirmado`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+	const SQL_UPDATE='UPDATE `solicitud` SET `idSolicitud`=?,`idTipoSolicitud`=?,`idTipoTarifa`=?,`FechaSolicitud`=?,`Nombre`=?,`Apellidos`=?,`DNI`=?,`EMail`=?,`Direccion`=?,`CP`=?,`Sexo`=?,`FechaNacimiento`=?,`TutorLegal`=?,`Localidad`=?,`Telefono1`=?,`Telefono2`=?,`Provincia`=?,`DescripcionSolicitud`=?,`Otros`=?,`Localizador`=?,`FechaAbonoDiario`=?,`Gestionado`=?,`Anulado`=?,`Confirmado`=? WHERE `idSolicitud`=?';
 	const SQL_SELECT_PK='SELECT * FROM `solicitud` WHERE `idSolicitud`=?';
 	const SQL_DELETE_PK='DELETE FROM `solicitud` WHERE `idSolicitud`=?';
 	const FIELD_IDSOLICITUD=1447296895;
@@ -41,6 +41,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	const FIELD_FECHAABONODIARIO=1122855192;
 	const FIELD_GESTIONADO=207962573;
 	const FIELD_ANULADO=-556836546;
+	const FIELD_CONFIRMADO=437815190;
 	private static $PRIMARY_KEYS=array(self::FIELD_IDSOLICITUD);
 	private static $AUTOINCREMENT_FIELDS=array(self::FIELD_IDSOLICITUD);
 	private static $FIELD_NAMES=array(
@@ -66,7 +67,8 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		self::FIELD_LOCALIZADOR=>'Localizador',
 		self::FIELD_FECHAABONODIARIO=>'FechaAbonoDiario',
 		self::FIELD_GESTIONADO=>'Gestionado',
-		self::FIELD_ANULADO=>'Anulado');
+		self::FIELD_ANULADO=>'Anulado',
+		self::FIELD_CONFIRMADO=>'Confirmado');
 	private static $PROPERTY_NAMES=array(
 		self::FIELD_IDSOLICITUD=>'idSolicitud',
 		self::FIELD_IDTIPOSOLICITUD=>'idTipoSolicitud',
@@ -90,7 +92,8 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		self::FIELD_LOCALIZADOR=>'Localizador',
 		self::FIELD_FECHAABONODIARIO=>'FechaAbonoDiario',
 		self::FIELD_GESTIONADO=>'Gestionado',
-		self::FIELD_ANULADO=>'Anulado');
+		self::FIELD_ANULADO=>'Anulado',
+		self::FIELD_CONFIRMADO=>'Confirmado');
 	private static $PROPERTY_TYPES=array(
 		self::FIELD_IDSOLICITUD=>Db2PhpEntity::PHP_TYPE_INT,
 		self::FIELD_IDTIPOSOLICITUD=>Db2PhpEntity::PHP_TYPE_INT,
@@ -114,7 +117,8 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		self::FIELD_LOCALIZADOR=>Db2PhpEntity::PHP_TYPE_STRING,
 		self::FIELD_FECHAABONODIARIO=>Db2PhpEntity::PHP_TYPE_STRING,
 		self::FIELD_GESTIONADO=>Db2PhpEntity::PHP_TYPE_BOOL,
-		self::FIELD_ANULADO=>Db2PhpEntity::PHP_TYPE_BOOL);
+		self::FIELD_ANULADO=>Db2PhpEntity::PHP_TYPE_BOOL,
+		self::FIELD_CONFIRMADO=>Db2PhpEntity::PHP_TYPE_BOOL);
 	private static $FIELD_TYPES=array(
 		self::FIELD_IDSOLICITUD=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
 		self::FIELD_IDTIPOSOLICITUD=>array(Db2PhpEntity::JDBC_TYPE_INTEGER,10,0,false),
@@ -137,8 +141,9 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		self::FIELD_OTROS=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,3000,0,true),
 		self::FIELD_LOCALIZADOR=>array(Db2PhpEntity::JDBC_TYPE_VARCHAR,45,0,true),
 		self::FIELD_FECHAABONODIARIO=>array(Db2PhpEntity::JDBC_TYPE_DATE,10,0,true),
-		self::FIELD_GESTIONADO=>array(Db2PhpEntity::JDBC_TYPE_BIT,1,0,true),
-		self::FIELD_ANULADO=>array(Db2PhpEntity::JDBC_TYPE_BIT,1,0,true));
+		self::FIELD_GESTIONADO=>array(Db2PhpEntity::JDBC_TYPE_BIT,0,0,true),
+		self::FIELD_ANULADO=>array(Db2PhpEntity::JDBC_TYPE_BIT,0,0,true),
+		self::FIELD_CONFIRMADO=>array(Db2PhpEntity::JDBC_TYPE_BIT,0,0,true));
 	private static $DEFAULT_VALUES=array(
 		self::FIELD_IDSOLICITUD=>null,
 		self::FIELD_IDTIPOSOLICITUD=>0,
@@ -162,7 +167,8 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		self::FIELD_LOCALIZADOR=>null,
 		self::FIELD_FECHAABONODIARIO=>null,
 		self::FIELD_GESTIONADO=>null,
-		self::FIELD_ANULADO=>null);
+		self::FIELD_ANULADO=>null,
+		self::FIELD_CONFIRMADO=>null);
 	private $idSolicitud;
 	private $idTipoSolicitud;
 	private $idTipoTarifa;
@@ -186,6 +192,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	private $FechaAbonoDiario;
 	private $Gestionado;
 	private $Anulado;
+	private $Confirmado;
 
 	/**
 	 * set value for idSolicitud 
@@ -240,7 +247,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	/**
 	 * set value for idTipoTarifa 
 	 *
-	 * type:INT,size:10,default:null,index
+	 * type:INT,size:10,default:null,index,nullable
 	 *
 	 * @param mixed $idTipoTarifa
 	 * @return SolicitudModel
@@ -254,7 +261,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	/**
 	 * get value for idTipoTarifa 
 	 *
-	 * type:INT,size:10,default:null,index
+	 * type:INT,size:10,default:null,index,nullable
 	 *
 	 * @return mixed
 	 */
@@ -715,7 +722,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	/**
 	 * set value for Gestionado 
 	 *
-	 * type:BIT,size:1,default:null,nullable
+	 * type:BIT,size:0,default:null,nullable
 	 *
 	 * @param mixed $Gestionado
 	 * @return SolicitudModel
@@ -729,7 +736,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	/**
 	 * get value for Gestionado 
 	 *
-	 * type:BIT,size:1,default:null,nullable
+	 * type:BIT,size:0,default:null,nullable
 	 *
 	 * @return mixed
 	 */
@@ -740,7 +747,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	/**
 	 * set value for Anulado 
 	 *
-	 * type:BIT,size:1,default:null,nullable
+	 * type:BIT,size:0,default:null,nullable
 	 *
 	 * @param mixed $Anulado
 	 * @return SolicitudModel
@@ -754,12 +761,37 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	/**
 	 * get value for Anulado 
 	 *
-	 * type:BIT,size:1,default:null,nullable
+	 * type:BIT,size:0,default:null,nullable
 	 *
 	 * @return mixed
 	 */
 	public function getAnulado() {
 		return $this->Anulado;
+	}
+
+	/**
+	 * set value for Confirmado 
+	 *
+	 * type:BIT,size:0,default:null,nullable
+	 *
+	 * @param mixed $Confirmado
+	 * @return SolicitudModel
+	 */
+	public function &setConfirmado($Confirmado) {
+		$this->notifyChanged(self::FIELD_CONFIRMADO,$this->Confirmado,$Confirmado);
+		$this->Confirmado=$Confirmado;
+		return $this;
+	}
+
+	/**
+	 * get value for Confirmado 
+	 *
+	 * type:BIT,size:0,default:null,nullable
+	 *
+	 * @return mixed
+	 */
+	public function getConfirmado() {
+		return $this->Confirmado;
 	}
 
 	/**
@@ -895,7 +927,8 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 			self::FIELD_LOCALIZADOR=>$this->getLocalizador(),
 			self::FIELD_FECHAABONODIARIO=>$this->getFechaAbonoDiario(),
 			self::FIELD_GESTIONADO=>$this->getGestionado(),
-			self::FIELD_ANULADO=>$this->getAnulado());
+			self::FIELD_ANULADO=>$this->getAnulado(),
+			self::FIELD_CONFIRMADO=>$this->getConfirmado());
 	}
 
 
@@ -932,7 +965,6 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 //					self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
 //				}
 //				return self::$stmts[$statement][$dbInstanceId];
-                                
                                 self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
 			}
 		}
@@ -1162,6 +1194,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		$this->setFechaAbonoDiario($result['FechaAbonoDiario']);
 		$this->setGestionado($result['Gestionado']);
 		$this->setAnulado($result['Anulado']);
+		$this->setConfirmado($result['Confirmado']);
 	}
 
 	/**
@@ -1219,6 +1252,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 		$stmt->bindValue(21,$this->getFechaAbonoDiario());
 		$stmt->bindValue(22,$this->getGestionado());
 		$stmt->bindValue(23,$this->getAnulado());
+		$stmt->bindValue(24,$this->getConfirmado());
 	}
 
 
@@ -1253,6 +1287,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 			$stmt->bindValue(20,$this->getFechaAbonoDiario());
 			$stmt->bindValue(21,$this->getGestionado());
 			$stmt->bindValue(22,$this->getAnulado());
+			$stmt->bindValue(23,$this->getConfirmado());
 		} else {
 			$stmt=self::prepareStatement($db,self::SQL_INSERT);
 			$this->bindValues($stmt);
@@ -1281,7 +1316,7 @@ class SolicitudModel extends Db2PhpEntityBase implements Db2PhpEntityModificatio
 	public function updateToDatabase(PDO $db) {
 		$stmt=self::prepareStatement($db,self::SQL_UPDATE);
 		$this->bindValues($stmt);
-		$stmt->bindValue(24,$this->getIdSolicitud());
+		$stmt->bindValue(25,$this->getIdSolicitud());
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();
