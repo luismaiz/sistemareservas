@@ -22,6 +22,7 @@
         Ajax.send(Params); // Enviamos los datos
              
         $scope.tiposSolicitudes = JSON.parse(Ajax.responseText).tiposSolicitudes;
+        $scope.tiposSolicitudes.unshift({idTipoSolicitud:'0',NombreSolicitud:"--Tipo Solicitud--"});
         
         
         };   
@@ -39,6 +40,7 @@
         
                        
         $scope.tiposAbonos = JSON.parse(Ajax.responseText).tiposAbonos;
+        $scope.tiposAbonos.unshift({idTipoAbono:'0',NombreAbono:"--Tipo Abono--"});
         
         };   
         $scope.obtenerTipoAbono();
@@ -54,6 +56,7 @@
         Ajax.send(Params); // Enviamos los datos
                
         $scope.tiposTarifas = JSON.parse(Ajax.responseText).tiposTarifas;
+        $scope.tiposTarifas.unshift({idTipoTarifa:'0',NombreTarifa:"--Tipo Tarifa--"});
         
         };   
         $scope.obtenerTipoTarifa();
@@ -68,6 +71,7 @@
             Ajax.send(Params); // Enviamos los datos
 
             $scope.actividades = JSON.parse(Ajax.responseText).actividades;
+            $scope.actividades.unshift({idActividad:'0',NombreActividad:"--Actividad--"});
 
             };   
         $scope.obtenerActividad();
@@ -359,19 +363,24 @@
                                 </select>
                     </div>
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Actividad</label>
+                                <select  ng-disabled="precio.idPrecio ===null || precio.FechaBaja!==null" name="idActividad" id="idActividad" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
+                                    <option ng_repeat="actividad in actividades" ng_selected="{{precio.idActividad}} === null ? {{actividad.idActividad}} === {{precio.idActividad}} : {{actividad.idActividad}}==={{precio.idActividad}}" value="{{actividad.idActividad}}">{{actividad.NombreActividad}}</option>
+                                    <!--<option  ng_repeat="tipotarifa in tiposTarifas" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>-->
+                                </select>
+                    </div>    
+                    <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                    <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Id Actividad</label>
+                    <input ng-disabled="true" type="text" ng-model="precio.idActividad"   class="input-sm col-lg-2 col-md-6 col-sm-8 col-xs-12" name="IdActividad" id="IdActividad" required>
+                    </div>    
+                    <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
                                 <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Tipo Tarifa</label>
                                 <select  ng-disabled="precio.idPrecio ===null || precio.FechaBaja!==null" name="idTipoTarifa" id="idTipoTarifa" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
                                     <option ng_repeat="tipotarifa in tiposTarifas" ng_selected="{{precio.idTipoTarifa}} === null ? {{tipotarifa.idTipoTarifa}} === {{precio.idTipoTarifa}} : {{tipotarifa.idTipoTarifa}}==={{precio.idTipoTarifa}}" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>
                                     <!--<option  ng_repeat="tipotarifa in tiposTarifas" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>-->
                                 </select>
                     </div>
-                    <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
-                                <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Actividad</label>
-                                <select  ng-disabled="precio.idPrecio ===null || precio.FechaBaja!==null" name="idActividad" id="idActividad" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >	
-                                    <option ng_repeat="actividad in actividades" ng_selected="{{precio.idActividad}} === null ? {{actividad.idActividad}} === {{precio.idActividad}} : {{actividad.idActividad}}==={{precio.idActividad}}" value="{{actividad.idActividad}}">{{actividad.NombreActividad}}</option>
-                                    <!--<option  ng_repeat="tipotarifa in tiposTarifas" value="{{tipotarifa.idTipoTarifa}}">{{tipotarifa.NombreTarifa}}</option>-->
-                                </select>
-                    </div>
+                    
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
                     <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Nombre Precio</label>
                     <input ng-disabled="precio.idPrecio ===null || precio.FechaBaja!==null" type="text" ng-model="precio.NombrePrecio"   class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12" name="NombrePrecio" id="NombrePrecio" required>

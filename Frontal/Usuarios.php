@@ -1,64 +1,59 @@
 <?php require('Cabecera.php'); ?>
-
 <script>
-    
     var Ajax = new AjaxObj();
+    var app = angular.module('BusquedaUsuarios',  ["ngStorage"])            
+                     .config(function($locationProvider) {
+                          $locationProvider.html5Mode(true);
+                      });
     
-    function obtenerUsuarios() {	
-        var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerUsuarios";
-        //var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerPrecios";
-        var Params = '';
-
-	
-        Ajax.open("GET", Url, false);
-        Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
-        Ajax.send(Params); // Enviamos los datos
-	
-        var RespTxt = Ajax.responseText;
+    function CargaUsuarios($scope, $http,$location,$localStorage) {
+            
+            $scope.usuarios = [];
+                
+            $scope.obtenerUsuarios = function() {
+                
+                $scope.filtrosUsuarios = [{filtrousuario:document.getElementById("filtrousuario").value}];
+                localStorage.setItem('filtrosUsuarios', JSON.stringify($scope.filtrosUsuarios));
+                
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/UsuariosBO.php?url=obtenerUsuariosFiltro');
+                //var Url = "http://pfgreservas.rightwatch.es/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividadesFiltro";
+                var Params = 'NombreUsuario=' + document.getElementById("filtrousuario").value;        
+	        Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                
+                                       
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    $scope.usuarios = JSON.parse(Ajax.responseText).usuarios;
+                    localStorage.setItem('usuarios', JSON.stringify($scope.usuarios));
+                    document.getElementById('divSinResultados').style.display = 'none';
+                }
+                else
+                {
+                    $scope.usuarios = [];
+                    document.getElementById('divSinResultados').style.display = 'block';
+                }
         
-        //alert(RespTxt);
-	
-        var Clase = eval('(' + RespTxt + ')');
-        
-        var contenido = '<table class="table table-striped table-bordered responsive"><thead><tr><th>Nombre Usuario</th><th>Tipo de Usuario</th><th>FechaAlta</th><th>FechaBaja</th><th></th></tr>';
-                                                    
-        var div = document.getElementById("usuarios");                
-	
-        for(i=0; i<Clase.usuarios.length; i++){		
-            //contenido = contenido + '<th>' + Clase.tiposTarifa[i].idTipoTarifa + '</th>';
-            contenido = contenido + '<tr>';
-            //contenido = contenido + '<td>' + Clase.precios[i].idPrecio + '</td>';
-            contenido = contenido + '<td>' + Clase.usuarios[i].NombreUsuario + '</td>';
+            };
             
-            var TipoUsuario = Clase.usuarios[i].TipoUsuario;
-            //alert(TipoUsuario);
+            if (typeof($location.search().detalle) !== "undefined")
+            {
+            $scope.resultado = localStorage.getItem('usuarios');
+            $scope.filtrosUsuarios = localStorage.getItem('filtrosUsuarios');
+            $scope.usuarios = (localStorage.getItem('usuarios')!==null) ? JSON.parse($scope.resultado) : JSON.parse(Ajax.responseText).usuarios;
             
-            switch(TipoUsuario){
-                case '1':                     
-                    TipoUsuario = 'Administrador';
-                    break;
-                case '2':                     
-                    TipoUsuario = 'Monitor';
-                    break;
-                case '3':                     
-                    TipoUsuario = 'Gestor';
-                    break;
-                default:
-                    TipoUsuario = '';
-                    break;
-                    
-            }
-            contenido = contenido + '<td>' + TipoUsuario + '</td>';
+            document.getElementById("filtrousuario").value = JSON.parse($scope.filtrosUsuarios)[0].filtrousuario;
             
-            contenido = contenido + '<td>' + Clase.usuarios[i].FechaAlta + '</td>';
-            contenido = contenido + '<td>' + (Clase.usuarios[i].FechaBaja == null ? '' : Clase.usuarios[i].FechaBaja) + '</td>';
-            contenido = contenido + '<td class="center"><a href="FormularioDetalleUsuario.php?idUsuario=' + Clase.usuarios[i].idUsuario + '" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a></td>';
-            contenido = contenido + '</tr>';
-        }
-        contenido = contenido + '</thead></table>';
-	
-        div.innerHTML = contenido;
-    }
+            $scope.obtenerUsuarios();
+            }    
+$(function () {
+                $('.footable').footable();
+                });
+}
+    
 </script>
 <div>
     <ul class="breadcrumb">
@@ -66,60 +61,71 @@
             <a href="#">Inicio</a>
         </li>
         <li>
-            <a href="Usuarios.php">Usuarios</a>
+            <a href="#">Usuarios</a>
         </li>
     </ul>
 </div>
-<div class=" row">
-    <div class="box col-md-12">
-        <div class="box-inner">
-            <div class="box-header well" data-original-title="">
-                <h2><i class="glyphicon glyphicon-edit"></i> Buscador Usuarios</h2>
-                <div class="box-icon">
-
-                    <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
-
-                </div>
-            </div>
-            <div class="box-content">
-                <div class="row">
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label" >Nombre Usuario</label>
-                                <input type="text" id="filtroNombreUsuario" name="filtroNombreUsuario" class="input-sm" >	
-                                    
-                                <label class="control-label" >Tipo Usuario</label>
-                                <input type="text" id="filtroTipoUsuario" name="filtroTipoUsuario" class="input-sm" >	
-                                
-                                <input class="box btn-primary" type="button" value="Buscar" onClick="obtenerUsuarios()"/>
-                            </div>	
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
+<div class=" row" ng-app="BusquedaUsuarios">
+    <div ng_controller="CargaUsuarios">
         <div class="box col-md-12">
-            <div class="box-inner">
-                <div class="box-header well" data-original-title="">
-                    <h2><i class="glyphicon glyphicon-th"></i> Usuarios </h2>
+                        <div class="box-inner">
+                            <div class="box-header well" data-original-title="">
+                                <h2><i class="glyphicon glyphicon-edit"></i> Buscador Usuarios</h2>
+                            </div>
+                                <div class="alert alert-info" id="divSinResultados" style='display:none;'>
+                                    <strong></strong>No se han encontrado resultados para los filtros introducidos.
+                                </div>
+                            
+                            <div class="box-content">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <label class="control-label col-lg-2 col-md-2 col-sm-12 col-xs-12" >Usuario</label>
+                                                <input type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12"  id="filtrousuario">
+                                            </div>
+                                                <input class="box btn-primary" type="button" value="Buscar" ng_click="obtenerUsuarios();"/>
+                                                 <div class="box-content" id="usuarios">
+                                        <table class="footable table-striped table-bordered responsive" data-page-size="5" data-page-navigation=".pagination" id="tabla">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nombre</th>
+                                                    <th>Password</th>                                                    
+                                                    <th data-type="numeric">Tipo Usuario</th>
+                                                    <th></th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                <tr ng_repeat="usuario in usuarios">
+                                                    <td>{{usuario.NombreUsuario}}</td>
+                                                    <td>{{usuario.Password}}</td>                                                    
+                                                    <td>{{usuario.TipoUsuario}}</td>                                                    
+                                                    <td class="center"><a target="_self" href="FormularioDetalleUsuario.php?idUsuario={{usuario.idUsuario}}" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot class="hide-if-no-paging">
+                                                    <tr>
+                                                        <td colspan="7" class="text-center">
+                                                            <ul class="pagination pagination-centered">
 
-                    <div class="box-icon">
-                        <a href="#" class="btn btn-minimize btn-round btn-default"><i
-                                class="glyphicon glyphicon-chevron-up"></i></a>
-                    </div>
-                </div>
-                <div class="box-content" id="usuarios">
-                    
-                </div>
-            </div>
-            <br>
-            <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleUsuario.php' "/>
-        </div>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
+                                            
+                                        </table>
+                                                 </div>
+                                        <input class="box btn-primary" type="button" value="Añadir" onClick=" window.location.href='FormularioDetalleUsuario.php' "/>
+                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                               </div>
+                            </div>
+                        </div>
 
-    </div>
-</div>
+      
 
 <?php require('Pie.php'); ?>

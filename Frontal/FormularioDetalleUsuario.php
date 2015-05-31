@@ -1,52 +1,150 @@
 <?php require('Cabecera.php'); ?>
-
-
 <script>
            
     var Ajax = new AjaxObj();
     
-    function Usuario(){        
-        if(document.getElementById("idUsuario").value == "")
-            crearUsuario();
-        else
-            actualizarUsuario();        
+    var app = angular.module('DetalleUsuario', [])            
+                     .config(function($locationProvider) {
+                          $locationProvider.html5Mode(true);
+                      });
+    
+    function CargaDetalleUsuario($scope, $http, $location) {
+        
+        $scope.usuario = [];
+        $scope.estado = [];
+        
+        $scope.obtenerUsuario = function(idUsuario) {
+                
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/UsuariosBO.php?url=obtenerUsuario');
+                
+                var Params = 'idUsuario='+ idUsuario;
+
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+                
+                $scope.usuario = JSON.parse(Ajax.responseText).usuario;                                
+                $scope.usuario.TipoUsuario = parseInt($scope.usuario.TipoUsuario);
+                
+                if ($scope.usuario.FechaBaja !== "01-01-1970")
+                {
+                    document.getElementById('divBaja').style.display = 'block';
+                }
+                else
+                {
+                    $scope.usuario.FechaBaja = null;
+                    document.getElementById('aceptar').style.display = 'inline';
+                    
+                }
+                
+                
+                
+            };
+            if (typeof($location.search().idUsuario) !== "undefined")
+            {
+                $scope.obtenerUsuario($location.search().idUsuario);
+            }
+             else
+            {
+                document.getElementById('aceptar').style.display = 'inline';
+                $scope.usuario.FechaBaja = null;
+            }
+            
+            $scope.guardarUsuario = function() {
+                if (typeof($location.search().idUsuario) !== "undefined")
+                    $scope.actualizarUsuario();    
+                else
+                    $scope.crearUsuario();
+            };
+            
+            $scope.crearUsuario = function(){
+                                   
+             
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/UsuariosBO.php?url=crearUsuario');
+                var Params = 'NombreUsuario='+ document.getElementById('NombreUsuario').value +                    
+                    '&Password='+ document.getElementById('Password').value +
+                    '&TipoUsuario='+ document.getElementById('TipoUsuario').value;
+               
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+             
+                
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divCorrecto').style.display = 'block';
+                    document.getElementById('divError').style.display = 'none';
+                    //$scope.obtenerUsuario($location.search().idUsuario);
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                    document.getElementById('divCorrecto').style.display = 'none';
+                }
+            };
+            
+            $scope.actualizarUsuario = function(){
+                                   
+             
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/UsuariosBO.php?url=actualizarUsuario');
+                
+                var Params = 'idUsuario='+ $location.search().idUsuario +
+                    '&NombreUsuario='+ document.getElementById('NombreUsuario').value +
+                    '&Password='+ document.getElementById('Password').value +
+                    '&TipoUsuario='+ document.getElementById('TipoUsuario').value;
+               
+                Ajax.open("POST", Url, false);
+                Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                Ajax.send(Params); // Enviamos los datos
+             
+                
+                $scope.estado = JSON.parse(Ajax.responseText).estado;
+                
+                if ($scope.estado === 'correcto')
+                {
+                    document.getElementById('divCorrecto').style.display = 'block';
+                    $scope.obtenerUsuario($location.search().idUsuario);
+                }
+                else
+                {
+                    document.getElementById('divError').style.display = 'block';
+                }
+            };
     }
     
-    function crearUsuario() {
-        alert("crear");
-        var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=crearUsuario";		
-        //var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearPrecio";
-        
-        var Params = 'NombreUsuario='+ document.getElementById('NombreUsuario').value +
-            '&Password='+ document.getElementById('Password').value +
-            '&TipoUsuario='+ document.getElementById('TipoUsuario').value;
-
-	
-        Ajax.open("POST", Url, false);
-        Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
-        Ajax.send(Params); // Enviamos los datos
-        
-        mostrarRespuesta(Ajax.responseText);
-    }
-
-    function actualizarUsuario() {
-        alert("actualizar");
-        var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=actualizarUsuario";
-        //var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=actualizarPrecio";
-        
-        var Params = 'idUsuario='+ document.getElementById('idUsuario').value +
-            'NombreUsuario='+ document.getElementById('NombreUsuario').value +
-            '&Password='+ document.getElementById('Password').value +
-            '&TipoUsuario='+ document.getElementById('TipoUsuario').value;
-
-        //alert(Params);
-	
-        Ajax.open("PUT", Url, false);
-        Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
-        Ajax.send(Params); // Enviamos los datos
-        
-        mostrarRespuesta(Ajax.responseText);
-    }
+        $.datepicker.regional['es'] = {
+            closeText: 'Cerrar',
+            prevText: '<Ant',
+            nextText: 'Sig>',
+            currentText: 'Hoy',
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+            dayNamesMin: ['Do','Lun','Ma','Mi','Ju','Vi','Sá'],
+            weekHeader: 'Sm',
+            dateFormat:'dd-mm-yy',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: ''
+            };
+            $.datepicker.setDefaults($.datepicker.regional['es']);
+            
+            $(function() {
+                $( "#FechaAlta" ).datepicker({
+                    dateFormat:'dd-mm-yy'
+                });
+            });
+            
+            $(function() {
+                $( "#FechaBaja" ).datepicker({
+                    dateFormat:'dd-mm-yy'    
+                });
+            });
+    
 </script>
 <div>
     <ul class="breadcrumb">
@@ -61,87 +159,63 @@
         </li>
     </ul>
 </div>
-<div class=" row">
+<div class=" row" ng-app="DetalleUsuario">
+    <div ng_controller="CargaDetalleUsuario">
     <div class="box col-md-12">
         <div class="box-inner">
             <div class="box-header well" data-original-title="">
                 <h2><i class="glyphicon glyphicon-edit"></i> Detalle Usuario</h2>
-                <div class="box-icon">
-
-                    <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
-
-                </div>
             </div>
+            <div class="box-content alerts">
+                                <div class="alert alert-danger" id="divError" style='display:none;'>
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <strong>Error</strong> Se ha producido un error al realizar la operación.
+                                </div>
+                            <div class="alert alert-success" id="divCorrecto" style='display:none;'>
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <strong>Correcto.</strong>  Operación realizada con éxito.
+                            </div>
+                            <div class="alert alert-danger" id="divBaja" style='display:none;'>
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <strong>Este Usuario se encuentra dada de baja.</strong>
+                            </div>
+                            </div>
             <div class="box-content">
 
-                <form class="form-group">
-                    <label class="control-label" >NombreUsuario</label>
-                    <input type="hidden" value="" class="input-sm" name="idUsuario" id="idUsuario">
-                    <input type="text" class="input-sm" name="NombreUsuario" id="NombreUsuario"></br></br>
-
-                    <label class="control-label" >Password</label>                    
-                    <input type="password" class="input-sm" name="Password" id="Password"></br></br>
-
-                    <label class="control-label" >TipoUsuario</label>                    
-                    <input type="text" class="input-sm" name="TipoUsuario" id="TipoUsuario">
+                <form role="form"  name="formulario">
+                    <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Nombre Usuario</label>
+                    <input ng-model="usuario.idUsuario" type="hidden" class="input-sm col-md-4" name="idUsuario" id="idUsuario">                    
+                    <input ng-model="usuario.NombreUsuario" type="text" class="input-sm col-lg-6 col-md-6 col-sm-8 col-xs-12"  id="NombreUsuario" name="NombreUsuario" required/>                    
+                    </div>
+                    <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Password</label>
+                    <input ng-model="usuario.Password" type="text" class="input-sm col-lg-8 col-md-8 col-sm-10 col-xs-12" id="Password" name="Password" required/>
+                    <span style="color:red" ng-show="formulario.Password.$dirty && formulario.Password.$invalid">
+                                <span ng-show="formulario.Password.$error.required">Password de usuario obligatoria.</span>
+                    </span>
+                    </div>
+                    <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Tipo Usuario</label>
+                    <input ng-model="usuario.TipoUsuario" type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" name="TipoUsuario" id="TipoUsuario" required ng-pattern="/^\d+$/"/>
+                    <span  class="col-md-4 col-sm-5 col-xs-12" style="color:red" ng-show="formulario.TipoUsuario.$dirty && formulario.TipoUsuario.$invalid">
+                    </span>
+                    </div>    
                     
-                    <label class="control-label" >FechaAlta</label>
-                    <input type="datetime" class="input-sm" name="FechaAlta" id="FechaAlta">
-                    
-                    <label class="control-label" >FechaBaja</label>
-                    <input type="datetime" class="input-sm" name="FechaBaja" id="FechaBaja"></br></br>
-
-                    <input class="box btn-primary " type="button" value="Cancelar" onClick=" window.location.href='Usuarios.php' " />
-                    <input class="box btn-primary " type="button" value="Aceptar" onclick="Usuario()"/>
-
-                </form>
+                    <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12 " >Fecha Alta</label>
+                    <input ng_disabled="true" ng-model="usuario.FechaAlta" type="text" class="input-sm col-md-2 col-sm-4 col-xs-8" name="FechaAlta" id="FechaAlta" />
+                    </div>    
+                    <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Fecha Baja</label>
+                    <input ng_disabled="true" ng-model="usuario.FechaBaja" type="text" class="input-sm col-md-2 col-sm-4 col-xs-8" name="FechaBaja" id="FechaBaja" />
+                    </div>
+                    <input style='display:none;' id="aceptar" class="btn btn-sm btn-success" type="button" value="Aceptar" ng-click="guardarUsuario()" ng-disabled="formulario.$invalid"/>
+                    <input class="btn btn-sm btn-action" type="button" value="Cancelar" onClick=" window.location.href='Usuarios.php?detalle=1' " />
+                </form>                        
             </div>
         </div>
-
-
     </div>
-
-</div>
-
-<script>
-    function obtenerUsuario(idUsuario) {	
-        var Url = "http://www.rightwatch.es/pfgreservas/AdministradorBO.php?url=obtenerUsuario";
-        //var Url = "http://localhost/sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=obtenerPrecio";
-        var Params = 'idUsuario='+ idUsuario;
-
-	
-        Ajax.open("POST", Url, false);
-        Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");	
-        Ajax.send(Params); // Enviamos los datos
-	
-        var RespTxt = Ajax.responseText;	
-	
-        //alert(RespTxt);
-	
-        var Clase = eval('(' + RespTxt + ')');
-        //alert('Estado: '+ Clase.estado);
-        //alert('idSala: '+ Clase.sala.idSala);
-        //alert('Nombre: '+ Clase.sala.Nombre);
-        //alert('Capacidad: '+ Clase.sala.Capacidad);
-        //alert('DescripcionTarifa: '+ Clase.sala.DescripcionTarifa);
-	  
-        document.getElementById('idUsuario').value=Clase.usuario.idUsuario;	  
-        document.getElementById('NombreUsuario').value=Clase.usuario.NombreUsuario;	  
-        document.getElementById('Password').value=Clase.usuario.Password;	  
-        document.getElementById('TipoUsuario').value=Clase.usuario.TipoUsuario;	  
-        document.getElementById('FechaAlta').value=Clase.usuario.FechaAlta;
-        document.getElementById('FechaBaja').value=Clase.usuario.FechaBaja;
-    }    
-</script>
-<?php
-if (isset($_GET['idUsuario'])) {
-    $test = $_GET['idUsuario'];
-    echo '<script>
-           var varjs="' . $test . '";
-           obtenerUsuario(varjs);
-           </script>';
-} else {
-    $test = '';
-}
-?>
+   </div>
+        </div>
 <?php require('Pie.php'); ?>

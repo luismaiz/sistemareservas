@@ -11,6 +11,7 @@ class UsuarioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationT
 	const SQL_INSERT_AUTOINCREMENT='INSERT INTO `usuario` (`NombreUsuario`,`Password`,`TipoUsuario`,`FechaAlta`,`FechaBaja`) VALUES (?,?,?,?,?)';
 	const SQL_UPDATE='UPDATE `usuario` SET `idUsuario`=?,`NombreUsuario`=?,`Password`=?,`TipoUsuario`=?,`FechaAlta`=?,`FechaBaja`=? WHERE `idUsuario`=?';
 	const SQL_SELECT_PK='SELECT * FROM `usuario` WHERE `idUsuario`=?';
+        const SQL_SELECT='SELECT * FROM `usuario`';
 	const SQL_DELETE_PK='DELETE FROM `usuario` WHERE `idUsuario`=?';
 	const FIELD_IDUSUARIO=1784692435;
 	const FIELD_NOMBREUSUARIO=-1891316667;
@@ -362,7 +363,7 @@ class UsuarioModel extends Db2PhpEntityBase implements Db2PhpEntityModificationT
 			if (in_array($statement, array(self::SQL_INSERT, self::SQL_INSERT_AUTOINCREMENT, self::SQL_UPDATE, self::SQL_SELECT_PK, self::SQL_DELETE_PK))) {
 				$dbInstanceId=spl_object_hash($db);
 				//if (null===self::$stmts[$statement][$dbInstanceId]) {
-					self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
+				//	self::$stmts[$statement][$dbInstanceId]=$db->prepare($statement);
 				//}
 				//return self::$stmts[$statement][$dbInstanceId];
 			}

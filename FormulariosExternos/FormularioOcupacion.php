@@ -51,7 +51,7 @@
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=obtenerClase');
 
                 //var Url = "localhost/sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividadesFiltro";
-                var Params = '&idClase=' + idClase;
+                var Params = 'idClase=' + idClase;
 
                 Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -62,13 +62,15 @@
 
                 if ($scope.estado === 'correcto')
                 {
-                    document.getElementById('Ocupacion').style.color = '#'+$scope.clase;
-                    $('#Ocupacion').css('color', '#'+$scope.clase);
+                    //document.getElementById('Ocupacion').style.color = '#'+$scope.clase;
+                    //$('#Ocupacion').css('color', '#'+$scope.clase);
                     $scope.clase = JSON.parse(Ajax.responseText).clase;    
                 }
             };
                 $scope.obtenerClase($location.search().idClase);
      }
+  
+
     
  </script>
 
@@ -83,8 +85,7 @@
                                 <div class="form-group has-success has-feedback">
                                     <div class="width-100 col-md-12 col-sm-12 input-group-lg">
                                         <label class="control-label" >Ocupacion</label>                                        
-                                        <input class="form-control color" id="Ocupacion" name="Ocupacion" ng-model="clase.Ocupacion" readonly ng-disabled="true"/>
-                                        
+                                        <input style="background-color: {{clase.Ocupacion}}" class="form-control" id="Ocupacion" name="Ocupacion" readonly ng-disabled="true"/>
                                     </div>
                                     <div class="col-md-12 col-sm-12 input-group-lg">
                                     <div class="col-md-6 col-sm-6 input-group-lg">
@@ -118,6 +119,4 @@
                 </section>
             </div>  
         </div>
-        <?php
-require_once('PieExterno.php');
-?>
+        <?php require_once('PieExterno.php');?>

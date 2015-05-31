@@ -13,53 +13,53 @@
         $scope.precio = [];
 			
         $scope.crearSolicitud = function(s) {
-            var host = "<?php echo $BASE_URL; ?>";
-            var URL = host.concat('sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSolicitud');
-
+            var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=crearSolicitud');
+            
+            //alert(URL);
             var Params = 'idTipoSolicitud=3';
             Params += '&Nombre=' + s.Nombre +    
                 '&Apellidos='+ s.Apellidos +
                 '&DNI=' + s.DNI +
                 '&EMail=' + s.EMail+
                 '&FechaAbonoDiario=' + s.FechaAbonoDiario ;
-						
-            var Ajax = new AjaxObj();
+            
             Ajax.open("POST", URL, false);
             Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             Ajax.send(Params); // Enviamos los datos
-            var response = Ajax.responseText;
-						
-            if (JSON.parse(response).estado === 'correcto')
+            //alert(JSON.parse(Ajax.responseText).solicitud.Localizador);
+            
+            $scope.estado = JSON.parse(Ajax.responseText).estado;
+            //alert($scope.estado);			
+            
+            if ($scope.estado === 'correcto')
             {
-			
-                Params += '&Localizador=' + JSON.parse(response).solicitud.Localizador;
-                var host = "<?php echo $BASE_URL; ?>";
-                var URL = host.concat('sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=codigoQR');
+                $scope.s.Localizador = JSON.parse(Ajax.responseText).solicitud.Localizador;
+                $scope.s.IdSolicitud = JSON.parse(Ajax.responseText).solicitud.IdSolicitud;
+                Params += '&Localizador=' + JSON.parse(Ajax.responseText).solicitud.Localizador;
+                var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=codigoQR');
 
-                //var Ajax = new AjaxObj();
-                Ajax.open("POST", URL, false);
+                Ajax.open("POST", URL, true);
                 Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-                $scope.s.Localizador = JSON.parse(response).solicitud.Localizador;
-                $scope.s.IdSolicitud = JSON.parse(response).solicitud.IdSolicitud;
-                //$scope.s.CuentaAsociada = $location.keys[0];
-                //$scope.s.Pago = $location.path(];
+                localStorage.setItem('solicitud', JSON.stringify($scope.s));
             }
+           
         };
         $scope.confirmarPago = function(s) {
-                var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=confirmarPago');
+                var host = "<?php echo $BASE_URL; ?>";
+                var URL = host.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=confirmarPago');
 
                         var Params = 'idSolicitud=' + s;
 			
                         var Ajax = new AjaxObj();
                         Ajax.open("POST", URL, false);
                         Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                        Ajax.send(Params); // Enviamos los datos
-                        alert(Ajax.responseText);
+                        Ajax.send(Params); // Enviamos los datos                        
 			}; 
         if($location.search().url==='pagoRealizado')
         {
             $scope.s = JSON.parse(localStorage.getItem('solicitud'));
+            //alert($scope.s);
             $scope.precio = JSON.parse(localStorage.getItem('precio')).precios[0].Precio;
             //$scope.crearSolicitud($scope.s);
             $scope.confirmarPago($scope.s.IdSolicitud);
@@ -78,9 +78,8 @@
                 $scope.tab2 = true;                            
                 $scope.tab4 = false;
                 $scope.tab5 = false;
-                $scope.solicitud = $scope.s;
-                $scope.crearSolicitudAbonoMensual($scope.s);
-                localStorage.setItem('solicitud', JSON.stringify($scope.s));
+                $scope.crearSolicitud($scope.s);
+                
               
             } else if (idTab === 2) {
                 $scope.tab1 = false;
@@ -114,8 +113,8 @@
         
         $scope.obtenerPrecio = function() {
                 
-            var host = "<?php echo $BASE_URL; ?>";
-            var Url = host.concat('sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerPreciosFiltro');
+            
+            var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerPreciosFiltro');
                         
             var Params = 'TipoAbono=0' +                
                 '&TipoSolicitud=3'  +
@@ -126,8 +125,8 @@
             Ajax.open("POST", Url, false);
             Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
             Ajax.send(Params); // Enviamos los datos
+            //alert(Ajax.responseText);
                   
-                  alert(Ajax.responseText);
             $scope.precio = JSON.parse(Ajax.responseText).precios[0].Precio;            
             document.getElementById('amount_1').value = JSON.parse(Ajax.responseText).precios[0].Precio;
             localStorage.setItem('precio', JSON.stringify(JSON.parse(Ajax.responseText)));
@@ -135,7 +134,7 @@
         $scope.obtenerPrecio();
     }
 			
-    app.directive('datepicker', function () {
+        app.directive('datepicker', function () {
         return  {
             restrict: 'A',
             require: '?ngModel',
@@ -178,11 +177,11 @@
                     }
                     var hoy = ahora_ano+'-'+ahora_mes+'-'+ahora_dia;
                     if (valido) {
-                        console.log('Permitir Compra');
+                        //console.log('Permitir Compra');
                         return valido;
                     }
                     else {
-                        console.log('No se permite comprar abonos de días pasados');
+                        //console.log('No se permite comprar abonos de días pasados');
                         return valido;
                     }
                 };
@@ -209,8 +208,7 @@
 <div class=" row" ng-app="solicitudAbonoDiario">
     <div ng_controller="RegistrarSolicitudAbonoDiarioController">      
         <div id="maininner" class="col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2 col-xs-12 col-sm-10 col-sm-offset-1">
-            <section id="content"><div id="system-message-container">
-                </div>
+            <section id="content"><div id="system-message-container"> </div>
                 <div id="system">
                     <div class="tab-content" ng-init="tab1 = true">
                         <h2>Solicitud Abono Diario</h2>
@@ -264,7 +262,7 @@
                                         <br />                            
                                         <div class="col-md-5 col-sm-5 input-group-lg">
                                             <label class="control-label" >Día de acceso</label>
-                                            <input ng-disabled="disabled" type="text" ng-model="s.FechaAbonoDiario" type="text" datepicker class="form-control" name="FechaAbonoDiario" id="FechaAbonoDiario" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required placeholder="dd-mm-yyyy">
+                                            <input ng-disabled="disabled" type="text" ng-model="s.FechaAbonoDiario" type="text" datepicker class="form-control" name="FechaAbonoDiario" id="FechaAbonoDiario" ng-pattern="/^(0?[1-9]|[12][0-9]|3[01])\-(0?[1-9]|1[012])\-(199\d|[2-9]\d{3})$/" required placeholder="dd-mm-yyyy"/>
                                             <span style="color:red" ng-show="formulario.FechaAbonoDiario.$dirty && formulario.FechaAbonoDiario.$invalid">
                                                 <span ng-show="formulario.FechaAbonoDiario.$error.pattern">* Formato de fecha no valido.</span>
                                                 <span ng-show="formulario.FechaAbonimoDiario.$error.required">* Fecha obligatoria.</span>
@@ -325,7 +323,7 @@
 
 
                         <div>
-                            <div <div class="tab-pane active" id="tab4" ng-show="tab4">
+                            <div class="tab-pane active" id="tab4" ng-show="tab4">
                                     <fieldset>
                                         <div class="form-group has-success has-feedback">
                                             <div class="alert alert-danger" id="divError">

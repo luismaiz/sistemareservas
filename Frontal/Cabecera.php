@@ -64,10 +64,13 @@ include 'config.php'
         <link rel="stylesheet" type="text/css" href="Utilidades/calendario/css/jquery.datetimepicker.css"/>
         <script src="Utilidades/calendario/js/jquery.datetimepicker.js" type="text/javascript"></script>
         <script src="Utilidades/js/angular-footable.js" type="text/javascript"></script>
-        <script src="Utilidades/js/jquery.bpopup.min.js" type="text/javascript"></script>
+        <link href="Utilidades/bootstrap-colorselector-0.2.0/css/bootstrap-colorselector.css" rel="stylesheet" type="text/css"/>
+        <script src="Utilidades/bootstrap-colorselector-0.2.0/js/bootstrap-colorselector.js" type="text/javascript"></script>
+              
+        
         <script>
-            var BASE_URL = 'http://vw15115.dinaserver.com/hosting/reservascentro.es-web/';
-            //var BASE_URL = 'http://localhost:8080/';
+            //var BASE_URL = 'http://vw15115.dinaserver.com/hosting/reservascentro.es-web/';
+            var BASE_URL = 'http://localhost:8080/';
         function AjaxObj()
         {
             var xmlhttp = null;
@@ -177,6 +180,7 @@ include 'config.php'
 											<li><a class="ajax-link" href="TipoAbono.php"><i class="glyphicon glyphicon-edit"></i><span> Tipo Abono</span></a></li>
 											<li><a class="ajax-link" href="TipoTarifa.php"><i class="glyphicon glyphicon-edit"></i><span> Tipo Tarifa</span></a></li>
 											<li><a class="ajax-link" href="Precios.php"><i class="glyphicon glyphicon-edit"></i><span> Precios</span></a></li>
+											<li><a class="ajax-link" href="Usuarios.php"><i class="glyphicon glyphicon-edit"></i><span> Usuarios</span></a></li>
 											</ul>
 									</li>
                                     <li><a class="ajax-link" href="Informes.php"><i class="glyphicon glyphicon-eye-open"></i><span> Informes</span></a>

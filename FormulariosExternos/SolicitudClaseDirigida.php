@@ -335,36 +335,38 @@
             }
         };
         $scope.codigoQR = function (Params) {
-            var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministradorAdministradorBO.php?url=codigoQR');
+            var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=codigoQR');
 
             Ajax.open("POST", URL, false);
             Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             Ajax.send(Params); // Enviamos los datos
+            //alert(Ajax.responseText);
             var response = Ajax.responseText;
             console.log(response);
         };
         $scope.enviar = function (s) {
             
-            var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSolicitudClaseDirigida');
+            var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=crearSolicitudClaseDirigida');
 
-            var Params = '&idTipoSolicitud=1&';            
+            var Params = 'idTipoSolicitud=1&';            
             Params += jQuery.param(s);
             Params += '&Actividad=' + $scope.selection;
             Ajax.open("POST", URL, false);
             Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             Ajax.send(Params); // Enviamos los datos
+            //alert(Ajax.responseText);
 			var response = Ajax.responseText;
             console.log(response);
             $scope.estado = JSON.parse(response).estado;
             console.log($scope.estado);
             if ($scope.estado === 'correcto')
             {
-			alert('correcto');
+			//alert('correcto');
                 document.getElementById('divCorrecto').style.display = 'block';
             }
             else
             {
-			alert('error');
+			//alert('error');
                 document.getElementById('divError').style.display = 'block';
             }
             $scope.solicitud = JSON.parse(response).solicitud;

@@ -65,7 +65,7 @@
              
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=crearActividad');
                 var Params = 'NombreActividad='+ document.getElementById('NombreActividad').value +
-                    '&IntensidadActividad='+ document.getElementById('IntensidadActividad').value +
+                    '&IntensidadActividad='+ document.getElementById('colorselector').value +
                     '&Descripcion='+ document.getElementById('Descripcion').value +
                     '&Grupo='+ document.getElementById('Grupo').value +
                     '&EdadMinima='+ document.getElementById('EdadMinima').value +
@@ -98,7 +98,7 @@
                 
                 var Params = 'idActividad='+ $location.search().idActividad +
                     '&NombreActividad='+ document.getElementById('NombreActividad').value +
-                    '&IntensidadActividad='+ document.getElementById('IntensidadActividad').value +
+                    '&IntensidadActividad='+ document.getElementById('colorselector').value +
                     '&Descripcion='+ document.getElementById('Descripcion').value +
                     '&Grupo='+ document.getElementById('Grupo').value +
                     '&EdadMinima='+ document.getElementById('EdadMinima').value +
@@ -107,6 +107,8 @@
                 Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
+                
+                //alert(Ajax.responseText);
              
                 
                 $scope.estado = JSON.parse(Ajax.responseText).estado;
@@ -263,20 +265,13 @@
                                 <span ng-show="formulario.Descripcion.$error.required">* Descripción de actividad obligatorio.</span>
                     </span>
                     </div>
-                    <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <select ng-model="actividad.IntensidadActividad" class="input-sm col-lg-2 col-md-6 col-sm-6 col-xs-6" id="colorselector">
-                        <option value="15" data-color="#DC143C"></option>
-                        <option value="24" data-color="#FF8C00"></option>
-                        <option value="78" data-color="#C71585"></option>
-                    </select>
-                    </div>
-                    <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <!--                    <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Intensidad Actividad</label>
                     <input ng-disabled="actividad.idActividad ===null || actividad.FechaBaja!==null" class="input-sm color" ng-model="actividad.IntensidadActividad"   id="IntensidadActividad" name="IntensidadActividad">
                     <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12"  style="color:red" ng-show="formulario.IntensidadActividad.$dirty && formulario.IntensidadActividad.$invalid">
                                 <span ng-show="formulario.IntensidadActividad.$error.required">* Intensidad de actividad obligatorio.</span>
                     </span>
-                    </div>    
+                    </div>    -->
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Edad Mínima</label>
                     <input ng-disabled="actividad.idActividad ===null || actividad.FechaBaja!==null" ng-model="actividad.EdadMinima" type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" name="EdadMinima" id="EdadMinima" ng-pattern="/^\d+$/"/>
@@ -296,6 +291,13 @@
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <label ng_show="false" class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12" >Grupo</label>
                     <input ng_show="false" ng-model="actividad.Grupo" type="text" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" id="Grupo" name="Grupo"/>
+                    </div>
+                    <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <select ng-model="actividad.IntensidadActividad" class="input-sm col-lg-2 col-md-6 col-sm-6 col-xs-6" id="colorselector">
+                        <option value="#d53f40" data-color="#d53f40"></option>
+                        <option value="#e08e0b" data-color="#e08e0b"></option>
+                        <option value="#779c52" data-color="#779c52"></option>
+                    </select>
                     </div>
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <label class="control-label col-lg-2 col-md-12 col-sm-12 col-xs-12 " >Fecha Alta</label>

@@ -48,7 +48,7 @@
             else
             {
                 document.getElementById('aceptar').style.display = 'inline';
-				$scope.tipotarifa.FechaBaja = null;
+		$scope.tipotarifa.FechaBaja = null;
             }
             
             $scope.guardarTipoTarifa = function() {
@@ -78,13 +78,13 @@
                 if ($scope.estado === 'correcto')
                 {
                     document.getElementById('divCorrecto').style.display = 'block';
-					document.getElementById('divError').style.display = 'none';
+		    document.getElementById('divError').style.display = 'none';
                     //$scope.obtenerTiposTarifa($location.search().idTipoTarifa);
                 }
                 else
                 {
                     document.getElementById('divError').style.display = 'block';
-					document.getElementById('divCorrecto').style.display = 'none';
+                    document.getElementById('divCorrecto').style.display = 'none';
                 }
             };
             

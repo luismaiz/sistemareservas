@@ -73,7 +73,9 @@
 		};    
                 $(function () {
                 $('.footable').footable();
+                 $('#colorselector').colorselector();
                 });
+                
 }
     
 </script>
@@ -128,8 +130,7 @@
                                                 <tr ng_repeat="actividad in actividades" my-repeat-directive>
                                                     <td>{{actividad.NombreActividad}}</td>
                                                     <td data-hide="phone,tablet">{{actividad.Descripcion}}</td>
-                                                    <td style="color: #{{actividad.IntensidadActividad}}">
-                                                        <div style="background-color: #{{actividad.IntensidadActividad}}" ng-model="actividad.IntensidadActividad" ></div>
+                                                    <td  style="background-color: {{actividad.IntensidadActividad}}">
                                                     </td>
                                                     <td data-hide="phone,tablet">{{actividad.EdadMinima}}</td>
                                                     <td data-hide="phone,tablet">{{actividad.EdadMaxima}}</td>

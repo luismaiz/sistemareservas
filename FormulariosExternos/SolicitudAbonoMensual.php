@@ -10,7 +10,7 @@ var Ajax = new AjaxObj();
 		$scope.disabled = false;
                 
                 $scope.crearSolicitudAbonoMensual = function(s) {
-                var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=crearSolicitudAbonoMensual');
+                var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=crearSolicitudAbonoMensual');
 
                         var Params = 'idTipoSolicitud=2';
 			Params += '&Nombre=' + s.Nombre + 
@@ -34,25 +34,24 @@ var Ajax = new AjaxObj();
                              '&Otros=' + s.Otros+
                              '&Renovacion=' + s.Renovacion+
                              '&PrecioPagado=' + s.PrecioPagado;
-						
-                        var Ajax = new AjaxObj();
+					
+                        
                         Ajax.open("POST", URL, false);
                         Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                         Ajax.send(Params); // Enviamos los datos
-                        alert(Ajax.responseText);
+                        //alert(Ajax.responseText);
                         var response = Ajax.responseText;
+                        
 						
                         if (JSON.parse(response).estado === 'correcto')
                         {
-			
+                            $scope.s.Localizador = JSON.parse(response).solicitud.Localizador;
+                            $scope.s.IdSolicitud = JSON.parse(response).solicitud.IdSolicitud;
                             Params += '&Localizador=' + JSON.parse(response).solicitud.Localizador;
-                            var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/AdministradorBO.php?url=codigoQR');
+                            var URL = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ReservasBO.php?url=codigoQR');
                             Ajax.open("POST", URL, false);
                             Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                             Ajax.send(Params); // Enviamos los datos
-			   
-			    $scope.s.Localizador = JSON.parse(response).solicitud.Localizador;
-                            $scope.s.IdSolicitud = JSON.parse(response).solicitud.IdSolicitud;
                         }
 			};
                         
@@ -65,12 +64,13 @@ var Ajax = new AjaxObj();
                         Ajax.open("POST", URL, false);
                         Ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                         Ajax.send(Params); // Enviamos los datos
-                        alert(Ajax.responseText);
+                        //alert(Ajax.responseText);
 			};        
                         
 		if($location.search().url==='pagoRealizado')
 		{
                     $scope.s = JSON.parse(localStorage.getItem('solicitudMensual'));
+                    //alert($scope.s.IdSolicitud);
                     $scope.confirmarPago($scope.s.IdSolicitud);
                     $scope.disabled = true;
                     $scope.tab1 = false;
@@ -95,7 +95,7 @@ var Ajax = new AjaxObj();
                 };   
                 
                 $scope.obtenerTipoAbono = function(idTipoAbono) {
-                alert('1');
+                //alert('1');
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/TiposAbonosBO.php?url=obtenerTipoAbono');
                 
                 var Params = 'idTipoAbono='+ idTipoAbono;
@@ -109,7 +109,7 @@ var Ajax = new AjaxObj();
                 
                 
                 $scope.obtenerTarifasAbono = function(idTipoAbono) {
-                alert('2');
+                //alert('2');
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerPreciosFiltro');
                 
                 var Params = 'TipoAbono='+ idTipoAbono +                
@@ -120,28 +120,29 @@ var Ajax = new AjaxObj();
                 Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
-                alert(Ajax.responseText);
-                $scope.tarifasabono = JSON.parse(Ajax.responseText).precios;
+                //alert(Ajax.responseText);
+                $scope.tarifas = JSON.parse(Ajax.responseText).precios;
                 };
                 
                 
                 
                 $scope.obtenerTipoActividad = function(idActividad) {
-                alert('3');
-                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerTipoActividad');
+                //alert('3');
+                var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ActividadesBO.php?url=obtenerActividad');
                 
                 var Params = 'idActividad='+ idActividad;
 
                 Ajax.open("POST", Url, false);
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
+                //alert(Ajax.responseText);
                 
-                $scope.tipoactividad = JSON.parse(Ajax.responseText).tipoactividad;
+                $scope.tipoactividad = JSON.parse(Ajax.responseText).actividad;
                 };
                 
                 
                 $scope.obtenerTarifasActividad = function(idActividad) {
-                alert('4');
+                //('4');
                 var Url = BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/PreciosBO.php?url=obtenerPreciosFiltro');
                 
                 var Params = 'Actividad='+ idActividad+
@@ -153,8 +154,8 @@ var Ajax = new AjaxObj();
                 Ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 Ajax.send(Params); // Enviamos los datos
                 
-                alert(Ajax.responseText);
-                $scope.tarifasactividad = JSON.parse(Ajax.responseText).precios;
+                //alert(Ajax.responseText);
+                $scope.tarifas = JSON.parse(Ajax.responseText).precios;
                 };
                 
                 
@@ -256,7 +257,7 @@ var Ajax = new AjaxObj();
                         break;
 
                     case 20:
-                        provincia = 'Guipúzcua';
+                        provincia = 'Guipúzcoa';
                         break;
 
                     case 21:
@@ -450,21 +451,21 @@ var Ajax = new AjaxObj();
             
             $scope.calcularPrecio($scope.s.FechaInicio, $scope.tipobusqueda, document.getElementById("filtroTipoTarifa").value);
         };
-            $scope.calcularPrecio = function (fechaInicio, abono,actividad, tarifa) 
+            $scope.calcularPrecio = function (fechaInicio, tarifa) 
             {
                 if (typeof($location.search().idTipoAbono) !== "undefined")
                 {
-                     var Params = '&TipoSolicitud=2' +
-                    '&TipoAbono=' + abono +
+                     var Params = 'TipoSolicitud=2' +
+                    '&TipoAbono=' + $location.search().idTipoAbono +
                     '&TipoTarifa=0' + 
                     '&Actividad=0';
                 }
                 else
                 {
-                     var Params = '&TipoSolicitud=2' +
+                     var Params = 'TipoSolicitud=2' +
                     '&TipoAbono=0' + 
                     '&TipoTarifa=0' +
-                    '&Actividad=' + actividad;                   
+                    '&Actividad=' + $location.search().idTipoActividad;                   
                 }
                 
                 
@@ -718,9 +719,17 @@ var Ajax = new AjaxObj();
                                         </select>-->
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 input-group-lg">
+                                        <label class="control-label">Tipo Actividad</label>
+                                        <input type="text" name="TipoActividad" id="filtroTipoActividad" ng-model="tipoactividad.NombreActividad" class="form-control" readonly />
+<!--                                        <select ng_disabled="false"  id="filtroTipoAbono" class="form-control" name="idTipoAbono" required> 	
+                                            <option ng_repeat="tipoabono in tiposAbonos" ng_selected="{{datossolicitud.idTipoAbono}} === null ? {{tipoabono.idTipoAbono}} === {{datossolicitud.idTipoAbono}} : {{tipoabono.idTipoAbono}} === {{datossolicitud.idTipoAbono}}" value="{{tipoabono.idTipoAbono}}">{{tipoabono.NombreAbono}}</option>
+                                            <option ng_repeat="tipoabono in tiposAbonos" value="{{tipoabono.idTipoAbono}}">{{tipoabono.NombreAbono}}</option>
+                                        </select>-->
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 input-group-lg">
                                         <label class="control-label">Tipo Tarifa</label>
                                         <select  id="filtroTipoTarifa" class="form-control" name="idTipoTarifa" required>	
-                                            <option ng_repeat="tarifaabono in tarifasabono" value="{{tarifaabono.idTipoTarifa}}">{{tarifaabono.NombrePrecio}}</option>
+                                            <option ng_repeat="tarifa in tarifas" value="{{tarifa.idTipoTarifa}}">{{tarifa.NombrePrecio}}</option>
                                             <!--<option ng_repeat="tarifaactividad in tarifasactividad" value="tarifaactividad.idTipoTarifa">{{tarifaactividad.NombreTarifa}}</option>-->
                                         </select>
                                         <br>
@@ -879,24 +888,25 @@ var Ajax = new AjaxObj();
                     </div>
                     <div class="tab-pane active" ng-show="tab4" id="4">
                         <fieldset>
-                            <div class="form-group has-success has-feedback">						
-                                <input name="cmd" type="hidden" value="_cart" /> <!-- comprar varios productos -->
-                                <input name="upload" type="hidden" value="1" /> <!--  -->
-                                <input name="business" type="hidden" value="alicia.barco.oviedo@gmail.com" /> <!-- cuenta vendedor -->
-                                <input name="shopping_url" type="hidden" value="http://localhost:8080/sistemareservas/Frontal/Inicio.php" /> <!-- dirección tienda -->
-                                <input name="currency_code" type="hidden" value="EUR" /> <!-- tipo moneda -->
-                                <input name="return" type="hidden" value="http://localhost:8080/sistemareservas/FormulariosExternos//SolicitudAbonoMensual.php?url=pagoRealizado"> <!-- pago realizado -->
-                                <input name="cancel_return" type="hidden" value="http://localhost:8080/sistemareservas/FormulariosExternos//SolicitudAbonoMensual.php?url=pagoRealizado"> <!-- pago no realizado -->
-                                <input name="notify_url" type="hidden" value="">  <!-- control de pago -->
-                                <input type="hidden" name="no_shipping" value="1"> <!-- no pedir direccion de entrega -->
-                                <input name="rm" type="hidden" value="2"> <!-- numero de productos  -->                                
-                                <input name="item_number_1" type="hidden"> <!-- identificador del producto -->
-                                <input name="item_name_1" type="hidden" value="AbonoMensual">  <!-- nombre del producto -->
-                                <input name="amount_1" id="amount_1" type="hidden">  <!-- precio del producto -->
-                                <input name="quantity_1" type="hidden" value="1">  <!-- cantidad del producto -->
-                            </div>
-                            <input type="image" id="submitBtn" value="Pay with PayPal" src="https://www.paypalobjects.com/en_US/i/btn/btn_paynowCC_LG.gif">
-                        </fieldset>              
+                                    <div class="form-group has-success has-feedback">						
+                                        <input name="cmd" type="hidden" value="_cart" /> <!-- comprar varios productos -->
+                                        <input name="upload" type="hidden" value="1" /> <!--  -->
+                                        <input name="business" type="hidden" value="<?php echo $BUSINESS_PAYPAL ?>" /> <!-- cuenta vendedor -->
+                                        <input name="shopping_url" type="hidden" value="<?php echo $SHOP_URL ?>" /> <!-- dirección tienda -->
+                                        <input name="currency_code" type="hidden" value="EUR" /> <!-- tipo moneda -->
+                                        <input name="return" type="hidden" value="<?php echo $RETURN_PAYPAL_MENSUAL_URL ?>"> <!-- pago realizado -->
+                                        <input name="cancel_return" type="hidden" value="<?php echo $CANCEL_PAYPAL_MENSUAL_URL ?>"> <!-- pago no realizado -->
+                                        <input name="notify_url" type="hidden" value="">  <!-- control de pago -->
+                                        <input type="hidden" name="no_shipping" value="1"> <!-- no pedir direccion de entrega -->
+                                        <input name="rm" type="hidden" value="2"> <!-- numero de productos  -->
+                                        <!--AbonoDiario ; Nombre: AbonoDiario ; Valor : 10.05 , Cantidad : 1<br>-->
+                                        <input name="item_number_1" type="hidden"> <!-- identificador del producto -->
+                                        <input name="item_name_1" type="hidden" value="AbonoDiario">  <!-- nombre del producto -->
+                                        <input name="amount_1" id="amount_1" type="hidden">  <!-- precio del producto -->
+                                        <input name="quantity_1" type="hidden" value="1">  <!-- cantidad del producto -->
+                                    </div>
+                                    <input type="image" id="submitBtn" value="Pay with PayPal" src="<?php echo $IMG_PAYPAL ?>">
+                                </fieldset>           
                         <ul class="pager">
                             <li><a class="btn" ng-click="avanzar(2);">&nbsp;Anterior&nbsp;&nbsp;</a></li>
                         </ul>
@@ -934,7 +944,7 @@ var Ajax = new AjaxObj();
                                 <input type="text" name="Localizador" class="form-control" ng-maxlength="40" ng-model="s.Localizador" readonly/>
                             </div>
                             <div class="col-md-6 col-sm-5 input-group-lg">
-                                <label class="control-label" > Código QR</label><img style="width:10em; height:10em" name="codigoQR" class="form-control" src="../../Negocio/NegocioAdministrador/temp/{{s.Localizador}}.png" />
+                                <label class="control-label" > Código QR</label><img style="width:10em; height:10em" name="codigoQR" class="form-control" src="../Negocio/NegocioAdministrador/temp/{{s.Localizador}}.png" />
                             </div>
                          </div>
                      </fieldset>                                           

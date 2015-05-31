@@ -393,9 +393,9 @@
                                                         <a target="_self"  ng_show="solicitud.idTipoSolicitud==3" href="" class="btn btn-info" ng_click="redirigirdiario(solicitud.idSolicitud);"><i class="glyphicon glyphicon-edit icon-white"></i>Detalle</a>
                                                         <a target="_self"  ng_show="solicitud.idTipoSolicitud==3 && solicitud.Gestionado==0" href="" class="btn btn-success" ng_click="validarSolicitud(solicitud.idSolicitud);">Validar</a>
                                                         <a target="_self"  ng_show="solicitud.idTipoSolicitud==1 && solicitud.Gestionado==0" href="" class="btn btn-success" ng_click="validarSolicitud(solicitud.idSolicitud);">Validar</a>
-														<a target="_self" ng_show="solicitud.Gestionado=='1'" ng_click="cancelarAnulacion(solicitud.idSolicitud)" class="btn btn-danger">Cancelar</a>
+							<a target="_self" ng_show="solicitud.Gestionado=='1' && solicitud.Anulado!='1'" ng_click="cancelarAnulacion(solicitud.idSolicitud)" class="btn btn-danger">Invalidar</a>
                                                         <a target="_self" ng_show="solicitud.Anulado!=='0'"  class="btn btn-danger">Anulada</a>
-                                                        <i class="glyphicon glyphicon-bell blue" ng_show="solicitud.idTipoTarifa!=1"></i></td>
+                                                        <i class="glyphicon glyphicon-bell blue" ng_show="solicitud.Confirmado!=1"></i></td>
                                                         
                                                     </td>
                                                 </tr>

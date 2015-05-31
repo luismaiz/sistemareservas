@@ -92,6 +92,7 @@
                         lang:'es',
                         format: 'd/m/Y H:i:00'//,
                         }); 
+        $('#colorselector').colorselector();
         $('#external-events .fc-event').each(function() {				
             
             var eventObject = {
@@ -178,8 +179,8 @@
                                 allDay: false,
                                 start: Cfechainicio,
                                 end:  Cfechafin,
-                                backgroundColor: "#"+doc.clases[i].Ocupacion,
-                                borderColor: "#"+doc.clases[i].Ocupacion
+                                backgroundColor:doc.clases[i].Ocupacion,
+                                borderColor: doc.clases[i].Ocupacion
                             });
                             
                             for (var loop = 1;
@@ -203,8 +204,8 @@
                                 allDay: false,
                                 start: date,
                                 end:  date2,
-                                backgroundColor: "#"+doc.clases[i].Ocupacion,
-                                borderColor: "#"+doc.clases[i].Ocupacion
+                                backgroundColor: doc.clases[i].Ocupacion,
+                                borderColor: doc.clases[i].Ocupacion
                     });
             } // for loop
                             
@@ -318,8 +319,8 @@
                 $('#fullCalModal').find('button[data-action=delete]').hide();
                 $('#fechaInicio').val('');
                 $('#fechaFin').val('');
-                $('#OcupacionClase').val('FFFFFF');
-                $('#OcupacionClase').css('background-color',"#FFFFFF");
+                $('#colorselector').val('#FFFFFF');
+                $('#colorselector').css('background-color',"#FFFFFF");
                 
                  //$('#fullCalModal').find('button[data-action=crear]').on('click', function(ev) { 
                 
@@ -345,8 +346,8 @@
             $('#idActividad').val(calEvent.idActividad);
             $('#idClase').val(calEvent.idClase);
             $('#idSala').val(calEvent.idSala);
-            $('#OcupacionClase').val(calEvent.OcupacionClase);
-            $('#OcupacionClase').css('background-color',"#"+calEvent.OcupacionClase);
+            $('#colorselector').val(calEvent.OcupacionClase);
+            $('#colorselector').css('background-color',calEvent.OcupacionClase);
             $('#fechaInicio').val(Cfechainiciocarga.toLocaleString());
             $('#fechaFin').val(Cfechafincarga.toLocaleString());
             $('#fullCalModal').find('button[data-action=crear]').hide();
@@ -417,8 +418,8 @@
                     fechafin = $('#fechaFin').val().replace(/[^0-9]+/g, '');
                     CfechafincargaActu = new Date(fechafin.substring(4,8),fechafin.substring(2,4)-1,fechafin.substring(0,2),fechafin.substring(8,10),fechafin.substring(10,12),fechafin.substring(12,14));
                 }
-               
-               var json = {idClase:$('#idClase').val(),idActividad:$('#idActividad').val(),idSala:$('#idSala').val(),FechaInicio:CfechainiciocargaActu.toUTCString(), FechaFin:CfechafincargaActu.toUTCString(), Ocupacion:$('#OcupacionClase').val(), Dia:0, Publicada:1};
+               //alert($('#colorselector').val());
+               var json = {idClase:$('#idClase').val(),idActividad:$('#idActividad').val(),idSala:$('#idSala').val(),FechaInicio:CfechainiciocargaActu.toUTCString(), FechaFin:CfechafincargaActu.toUTCString(), Ocupacion:$('#colorselector').val(), Dia:0, Publicada:1};
                
                 
                 $.ajax({
@@ -462,7 +463,7 @@
                 var Cfechainiciocarga = new Date(fechainicio[2],isNaN(parseInt(fechainicio[1].substring(0,2)))?fechainicio[1].substring(1,3)-1:fechainicio[1].substring(0,2)-1,fechainicio[0],fechainicio[3],fechainicio[4],fechainicio[5]);
                 var Cfechafincarga = new Date(fechafin[2],isNaN(parseInt(fechafin[1].substring(0,2)))?fechafin[1].substring(1,3)-1:fechafin[1].substring(0,2)-1,fechafin[0],fechafin[3],fechafin[4],fechafin[5]);
                     
-                var json = {idActividad:$('#idActividad').val(),idSala:$('#idSala').val(),FechaInicio:Cfechainiciocarga.toUTCString(), FechaFin:Cfechafincarga.toUTCString(), Ocupacion:$('#OcupacionClase').val(), Dia:0, Publicada:1};
+                var json = {idActividad:$('#idActividad').val(),idSala:$('#idSala').val(),FechaInicio:Cfechainiciocarga.toUTCString(), FechaFin:Cfechafincarga.toUTCString(), Ocupacion:$('#colorselector').val(), Dia:0, Publicada:1};
                 $.ajax({
                     type: "POST",
                     url: BASE_URL.concat('sistemareservas/Negocio/NegocioAdministrador/ClasesBO.php?url=crearClase'),
@@ -477,13 +478,13 @@
                     objeto.title= Actividades[arrayactividades.indexOf($('#idActividad').val())].NombreActividad;
                     objeto.idActividad= $('#idActividad').val();
                     objeto.idSala= $('#idSala').val();
-                    objeto.OcupacionClase= $('#OcupacionClase').val();
+                    objeto.OcupacionClase= $('#colorselector').val();
                     objeto.idClase= 0;
                     objeto.allDay= false;
                     objeto.start= Cfechainiciocarga;
                     objeto.end=  Cfechafincarga;
-                    objeto.backgroundColor= "#"+ $('#OcupacionClase').val();
-                    objeto.borderColor= "#"+ $('#OcupacionClase').val();
+                    objeto.backgroundColor= "#"+ $('#colorselector').val();
+                    objeto.borderColor= "#"+ $('#colorselector').val();
                     objeto.dow=[1,2,3,4];
                     
                     //$('#calendar').fullCalendar('renderEvent', objeto, true);
@@ -562,23 +563,30 @@
                                     <!--<select ng-model="selectedSalas" ng-options="sala.NombreSala for sala in salas track by sala.idSala"  name="idSala" id="idSala" class="input-sm col-lg-4 col-md-4 col-sm-6 col-xs-12" >-->	
                                 </select>
                                 </div>
-				<div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <select class="input-sm col-lg-2 col-md-6 col-sm-6 col-xs-6" id="colorselector">
+                                        <option value="#d53f40" data-color="#d53f40"></option>
+                                        <option value="#e08e0b" data-color="#e08e0b"></option>
+                                        <option value="#779c52" data-color="#779c52"></option>
+                                </select>
+                                </div>
+<!--				<div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12" >Ocupacion</label>
                                 <input class="input-sm color" id="OcupacionClase" name="OcupacionClase" required>
                                 <span  class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.OcupacionClase.$dirty && formulario.OcupacionClase.$invalid">
                                     <span ng-show="formulario.OcupacionClase.$error.required">* Indique la ocupación.</span>
                                 </span>
-                                </div>
+                                </div>-->
                                 <div  class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12" >Inicio</label>
-                                <input id="fechaInicio"  type="text"  class="input-sm col-md-6 col-sm-6 col-xs-12" name="fechaInicio" required>
+                                <input id="fechaInicio"  type="text"  class="input-sm col-md-6 col-sm-6 col-xs-12" name="fechaInicio" required readonly>
                                 <span  class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.fechaInicio.$dirty && formulario.fechaInicio.$invalid">
                                     <span ng-show="formulario.fechaInicio.$error.required">* Fecha inicio obligatoria.</span>
                                 </span>
                                 </div>
                                 <div  class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label class="control-label col-lg-6 col-md-12 col-sm-12 col-xs-12" >Fin</label>
-                                <input id="fechaFin" type="text"  class="input-sm col-md-6 col-sm-6 col-xs-12" name="fechaFin" required>
+                                <input id="fechaFin" type="text"  class="input-sm col-md-6 col-sm-6 col-xs-12" name="fechaFin" required readonly>
                                 <span  class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="color:red" ng-show="formulario.fechaFin.$dirty && formulario.fechaFin.$invalid">
                                     <span ng-show="formulario.fechaFin.$error.required">* Fecha fin obligatoria.</span>
                                 </span>

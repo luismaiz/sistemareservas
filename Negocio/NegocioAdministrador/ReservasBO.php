@@ -251,6 +251,7 @@ class ReservasBO extends Rest{
                 $respuesta['abonodiario']['FechaSolicitud'] = date("d-m-Y",strtotime($fila->getFechaSolicitud()));
                 $respuesta['abonodiario']['FechaAbonoDiario'] = date("d-m-Y",strtotime($fila->getFechaAbonoDiario()));
                 $respuesta['abonodiario']['Localizador'] = $fila->getLocalizador();
+                $respuesta['abonodiario']['Confirmado'] = $fila->getConfirmado();
 
                 $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
             }
@@ -297,6 +298,7 @@ class ReservasBO extends Rest{
                 $Gestionado = $fila->getGestionado();
                 $Anulado = $fila->getAnulado();
                 $FechaDiario = $fila->getFechaAbonoDiario();
+                $Confirmado = $fila->getConfirmado();
                                 
                 $solicitud->setIdSolicitud($idSolicitud);
                 $solicitud->setIdTipoSolicitud($idTipoSolicitud);
@@ -322,6 +324,7 @@ class ReservasBO extends Rest{
                 $solicitud->setGestionado(1);
                 $solicitud->setAnulado($Anulado);
                 $solicitud->setFechaAbonoDiario($FechaDiario);
+                $solicitud->setConfirmado($Confirmado);
                 
                 $filasActualizadas = $solicitud->updateToDatabase($this->con);
                 
@@ -375,6 +378,7 @@ class ReservasBO extends Rest{
                 $Gestionado = $fila->getGestionado();
                 $Anulado = $fila->getAnulado();
                 $FechaDiario = $fila->getFechaAbonoDiario();
+                $Confirmado = $fila->getConfirmado();
                                 
                 $solicitud->setIdSolicitud($idSolicitud);
                 $solicitud->setIdTipoSolicitud($idTipoSolicitud);
@@ -400,6 +404,7 @@ class ReservasBO extends Rest{
                 $solicitud->setGestionado(0);
                 $solicitud->setAnulado($Anulado);
                 $solicitud->setFechaAbonoDiario($FechaDiario);
+                $solicitud->setConfirmado($Confirmado);
                 
                 $filasActualizadas = $solicitud->updateToDatabase($this->con);
                 
@@ -475,6 +480,7 @@ class ReservasBO extends Rest{
                 $respuesta['abonomensual']['Telefono1'] = $fila->getTelefono1();
                 $respuesta['abonomensual']['Telefono2'] = $fila->getTelefono2();
                 $respuesta['abonomensual']['Anulado'] = $fila->getAnulado();
+                $respuesta['abonomensual']['Confirmado'] = $fila->getConfirmado();
                 
                 $respuesta['datossolicitud']['FechaInicio'] = date("d-m-Y",strtotime($filadatos[0]->getFechaInicio()));
                 $respuesta['datossolicitud']['FechaFin']  = date("d-m-Y",strtotime($filadatos[0]->getFechaFin()));
@@ -570,6 +576,7 @@ class ReservasBO extends Rest{
                 $respuesta['clasesdirigidas']['Provincia'] = $fila->getProvincia();
                 $respuesta['clasesdirigidas']['Sexo'] = $fila->getSexo();
                 $respuesta['clasesdirigidas']['Anulado'] = $fila->getAnulado();
+                $respuesta['clasesdirigidas']['Confirmado'] = $fila->getConfirmado();
                 $respuesta['datosbancarios']['idDatos'] = $filadatosbancarios[0]->getIdDatosSolicitudClaseDirigida();
                 $respuesta['datosbancarios']['Titular'] = $filadatosbancarios[0]->getTitular();
                 $respuesta['datosbancarios']['IBAN'] = $filadatosbancarios[0]->getIban();
@@ -694,6 +701,7 @@ class ReservasBO extends Rest{
                 $Localizador= $fila->getLocalizador();
                 $Gestionado = $fila->getGestionado();
                 $Anulado = $fila->getAnulado();
+                $Confirmado = $fila->getConfirmado();
                 $FechaDiario = $fila->getFechaAbonoDiario();
                                 
                 $solicitud->setIdSolicitud($idSolicitud);
@@ -718,6 +726,7 @@ class ReservasBO extends Rest{
                 $solicitud->setLocalizador($Localizador);
                 $solicitud->setGestionado($Gestionado);
                 $solicitud->setAnulado(1);
+                $solicitud->setConfirmado($Confirmado);
                 $solicitud->setFechaAbonoDiario($FechaDiario);
                 
                 $filasActualizadas = $solicitud->updateToDatabase($this->con);
@@ -771,6 +780,7 @@ class ReservasBO extends Rest{
                 $Gestionado = $fila->getGestionado();
                 $Anulado = $fila->getAnulado();
                 $FechaDiario = $fila->getFechaAbonoDiario();
+                $Confirmado = $fila->getConfirmado();
                                 
                 $solicitud->setIdSolicitud($idSolicitud);
                 $solicitud->setIdTipoSolicitud($idTipoSolicitud);
@@ -795,6 +805,7 @@ class ReservasBO extends Rest{
                 $solicitud->setGestionado($Gestionado);
                 $solicitud->setAnulado(0);
                 $solicitud->setFechaAbonoDiario($FechaDiario);
+                $solicitud->setConfirmado($Confirmado);
                 
                 $filasActualizadas = $solicitud->updateToDatabase($this->con);
                 
@@ -855,6 +866,7 @@ class ReservasBO extends Rest{
                 $Localizador= $fila->getLocalizador();
                 $Gestionado = $fila->getGestionado();
                 $Anulado = $fila->getAnulado();
+                $Confirmado = $fila->getConfirmado();
                 
                                 
                 $solicitud->setIdSolicitud($idSolicitud);
@@ -881,6 +893,7 @@ class ReservasBO extends Rest{
                 $solicitud->setGestionado(1);
                 $solicitud->setAnulado($Anulado);
                 $solicitud->setFechaAbonoDiario($FechaAbonoDiario);
+                $solicitud->setConfirmado($Confirmado);
                 
                 $filasActualizadas = $solicitud->updateToDatabase($this->con);
                 
@@ -955,6 +968,7 @@ class ReservasBO extends Rest{
                 $Gestionado = $fila->getGestionado();
                 $Anulado = $fila->getAnulado();
                 $FechaDiario = $fila->getFechaAbonoDiario();
+                $Confirmado = $fila->getConfirmado();
                                 
                 $solicitud->setIdSolicitud($idSolicitud);
                 $solicitud->setIdTipoSolicitud($idTipoSolicitud);
@@ -980,6 +994,7 @@ class ReservasBO extends Rest{
                 $solicitud->setGestionado(1);
                 $solicitud->setAnulado($Anulado);
                 $solicitud->setFechaAbonoDiario($FechaDiario);
+                $solicitud->setConfirmado($Confirmado);
 				
 				
 				
@@ -1066,6 +1081,7 @@ class ReservasBO extends Rest{
                 $Localizador= $fila->getLocalizador();
                 $Gestionado = $fila->getGestionado();
                 $Anulado = $fila->getAnulado();
+                $Confirmado = $fila->getConfirmado();
                
                                 
                 $solicitud->setIdSolicitud($idSolicitud);
@@ -1091,6 +1107,7 @@ class ReservasBO extends Rest{
                 $solicitud->setLocalizador($Localizador);
                 $solicitud->setGestionado(1);
                 $solicitud->setAnulado($Anulado);
+                $solicitud->setConfirmado($Confirmado);
                 
                 $datossolicitud->setIdDatosSolicitudClaseDirigida($idDatos);
                 $datossolicitud->setIdSolicitud($idSolicitud);
@@ -1356,6 +1373,393 @@ private function confirmarPago() {
             }
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(5)), 400);
+    }
+    
+    private function crearSolicitud() {
+
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        
+        $this->con = ConexionBD::getInstance();
+        $solicitud = new SolicitudModel();
+        
+        $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
+        $FechaSolicitud = date("Y-m-d");
+        $Nombre =  html_entity_decode($this->datosPeticion['Nombre']);
+        $Apellidos =  html_entity_decode($this->datosPeticion['Apellidos']);
+        $DNI = $this->datosPeticion['DNI'];
+        $EMail = $this->datosPeticion['EMail'];
+        $Localizador1 = md5($this->generarLocalizador($Nombre, $Apellidos, date("y/m/d H:i:s"), $DNI));
+        $Localizador = substr($Localizador1, 0, 6);
+        $FechaAbonoDiario = date("Y-m-d",strtotime($this->datosPeticion['FechaAbonoDiario']));
+        $anulado = 0;
+        $gestionado = 0;
+        $confirmado = 0;
+        
+        $solicitud->setIdTipoSolicitud($idTipoSolicitud);
+        $solicitud->setFechaSolicitud($FechaSolicitud);
+        $solicitud->setNombre($Nombre);
+        $solicitud->setApellidos($Apellidos);
+        $solicitud->setDni($DNI);
+        $solicitud->setEMail($EMail);
+        $solicitud->setLocalizador($Localizador);
+        $solicitud->setFechaAbonoDiario($FechaAbonoDiario);
+        $solicitud->setAnulado($anulado);
+        $solicitud->setGestionado($gestionado);
+        $solicitud->setConfirmado($confirmado);
+
+        $result = $solicitud->insertIntoDatabase($this->con);
+      if (count($result) == 1) {
+            //$id = $this->_conn->lastInsertId();  */
+            $respuesta['estado'] = 'correcto';
+            //$respuesta = array('estado' => "correcto", "msg" => "Solictud prueba validada");
+            $respuesta['solicitud']['IdSolicitud'] = $solicitud->getIdSolicitud() ;
+            $respuesta['solicitud']['Localizador'] = $solicitud->getLocalizador();
+            $respuesta['msg'] = "solicitud creada correctamente";
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+            
+         } else
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
+          
+        //else  
+        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(8)), 400);  
+        //} else {  
+        //$this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);  
+        
+    }
+    
+     private function crearSolicitudAbonoMensual() {
+
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+		
+        $this->con = ConexionBD::getInstance();
+        $solicitud = new SolicitudModel();
+        $solAbonoMensual = new DatosolicitudabonomensualModel();
+
+        $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
+		$Sexo = $this->datosPeticion['Sexo'];
+		$tipoabono = $this->datosPeticion['idTipoAbono'];
+		$idTipoTarifa = $this->datosPeticion['idTipoTarifa'];
+		$FechaInicio = date("Y-m-d",strtotime($this->datosPeticion['FechaInicio']));
+        $FechaFin = date("Y-m-d",strtotime($this->datosPeticion['FechaFin']));
+		$PrecioPagado = $this->datosPeticion['PrecioPagado'];
+		$FechaSolicitud = date("Y-m-d");
+        $Nombre =  html_entity_decode($this->datosPeticion['Nombre']);
+        $Apellidos =  html_entity_decode($this->datosPeticion['Apellidos']);
+        $DNI = $this->datosPeticion['DNI'];
+        $EMail = $this->datosPeticion['EMail'];
+        $Direccion =  html_entity_decode($this->datosPeticion['Direccion']);
+        $CP = $this->datosPeticion['CP'];
+       
+	   
+        $FechaNacimiento = date("Y-m-d",strtotime($this->datosPeticion['FechaNacimiento']));
+        $TutorLegal = $this->datosPeticion['TutorLegal'];
+        $Localidad =  html_entity_decode($this->datosPeticion['Localidad']);
+        $Telefono1 = $this->datosPeticion['Telefono1'];
+        $Telefono2 = $this->datosPeticion['Telefono2'];
+        $Provincia =  html_entity_decode($this->datosPeticion['Provincia']);
+        $DescripcionSolicitud = $this->datosPeticion['DescripcionSolicitud'];
+        $Otros = $this->datosPeticion['Otros'];
+        
+		
+		$Localizador1 = md5($this->generarLocalizador($Nombre, $Apellidos, date("y/m/d H:i:s"), $DNI));
+        $Localizador = substr($Localizador1, 0, 6);
+        $anulado = 0;
+        $gestionado = 0;
+        $confirmado = 0;
+        
+		
+		/* Especificos */
+        
+       
+        
+        $Renovacion = $this->datosPeticion['Renovacion'];
+		if($Renovacion){
+			$temp = 1;
+		}else{
+			$temp = 0;
+		}
+		$Renovacion = $temp;
+
+        //Modelo Solicitud
+        $solicitud->setIdTipoSolicitud($idTipoSolicitud);
+        $solicitud->setIdTipoTarifa($idTipoTarifa);
+        $solicitud->setFechaSolicitud($FechaSolicitud);
+        $solicitud->setNombre($Nombre);
+        $solicitud->setApellidos($Apellidos);
+        $solicitud->setDni($DNI);
+        $solicitud->setEMail($EMail);
+        $solicitud->setDireccion($Direccion);
+        $solicitud->setCp($CP);
+        $solicitud->setSexo($Sexo);
+        $solicitud->setFechaNacimiento($FechaNacimiento);
+        $solicitud->setTutorLegal($TutorLegal);
+        $solicitud->setLocalidad($Localidad);
+        $solicitud->setTelefono1($Telefono1);
+        $solicitud->setTelefono2($Telefono2);
+        $solicitud->setProvincia($Provincia);
+        $solicitud->setDescripcionSolicitud($DescripcionSolicitud);
+        $solicitud->setOtros($Otros);
+        $solicitud->setLocalizador($Localizador);
+        $solicitud->setAnulado($anulado);
+        $solicitud->setGestionado($gestionado);
+        $solicitud->setConfirmado($confirmado);
+
+        //var_dump($solicitud);
+        //Modelo Datos Solicitud Abono Mensual
+        $solAbonoMensual->setIdTipoAbono($tipoabono);
+        $solAbonoMensual->setPrecioPagado($PrecioPagado);
+        $solAbonoMensual->setFechaInicio($FechaInicio);
+        $solAbonoMensual->setFechaFin($FechaFin);
+        $solAbonoMensual->setRenovacion($Renovacion);
+		
+		
+        //var_dump($solAbonoMensual);
+        //Inicio Transaccion
+        //try {
+         //   $this->con->beginTransaction();*/
+            $result1 = $solicitud->insertIntoDatabase($this->con);
+            $solAbonoMensual->setIdSolicitud($solicitud->getIdSolicitud());
+            $result2 = $solAbonoMensual->insertIntoDatabase($this->con);
+         //   $this->con->commit();
+        //} catch (Exception $e) {
+         //   $this->con->rollBack();
+         //   echo "Fallo: " . $e->getMessage();
+       // }
+
+        if (count($result1) === 1 && count($result2) === 1) {
+		//if (count($result1) == 1) {
+
+            $respuesta["estado"] = "correcto";
+            $respuesta["solicitud"]['IdSolicitud'] = $solicitud->getIdSolicitud();
+            $respuesta["solicitud"]["Localizador"] = $solicitud->getLocalizador();
+            $respuesta["msg"] = "solicitud creada correctamente";
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        } else
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
+	}
+
+    private function crearSolicitudClaseDirigida() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+        $this->con = ConexionBD::getInstance();
+        $solicitud = new SolicitudModel();
+        $solClase = new DatosolicitudclasedirigidaModel();
+
+        $idTipoSolicitud = $this->datosPeticion['idTipoSolicitud'];
+        //$idTipoTarifa = $this->datosPeticion['idTipoTarifa'];
+        $FechaSolicitud = date("Y-m-d");
+        $Nombre =  html_entity_decode($this->datosPeticion['Nombre']);
+        $Apellidos =  html_entity_decode($this->datosPeticion['Apellidos']);
+        $DNI = $this->datosPeticion['DNI'];
+        $EMail = $this->datosPeticion['EMail'];
+        $Direccion =  html_entity_decode($this->datosPeticion['Direccion']);
+        $CP = $this->datosPeticion['CP'];
+        $Sexo = $this->datosPeticion['Sexo'];
+        $FechaNacimiento = date("Y-m-d",strtotime($this->datosPeticion['FechaNacimiento']));
+        $TutorLegal =  html_entity_decode($this->datosPeticion['TutorLegal']);
+        $Localidad =  html_entity_decode($this->datosPeticion['Localidad']);
+        $Telefono1 = $this->datosPeticion['Telefono1'];
+        //$Telefono2 = $this->datosPeticion['Telefono2'];
+        $Provincia =  html_entity_decode($this->datosPeticion['Provincia']);
+        //$DescripcionSolicitud = $this->datosPeticion['DescripcionSolicitud'];
+        //$Otros = $this->datosPeticion['Otros'];
+        $Localizador1 = md5($this->generarLocalizador($Nombre, $Apellidos, date("y/m/d H:i:s"), $DNI));
+        $Localizador = substr($Localizador1, 0, 6);
+        $anulado = 0;
+        $gestionado = 0;
+        /* Especificos */
+        $Titular =  html_entity_decode($this->datosPeticion['Titular']);
+        $IBAN = $this->datosPeticion['IBAN'];
+        $Entidad = $this->datosPeticion['Entidad'];
+        $Oficina = $this->datosPeticion['Oficina'];
+        $DigitoControl = $this->datosPeticion['DigitoControl'];
+        $Cuenta = $this->datosPeticion['Cuenta'];
+        $actividad = $this->datosPeticion['Actividad'];
+
+		
+		
+        //Modelo Solicitud
+        $solicitud->setIdTipoSolicitud($idTipoSolicitud);
+        //$solicitud->setIdTipoTarifa($idTipoTarifa);
+        $solicitud->setFechaSolicitud($FechaSolicitud);
+        $solicitud->setNombre($Nombre);
+        $solicitud->setApellidos($Apellidos);
+        $solicitud->setDni($DNI);
+        $solicitud->setEMail($EMail);
+        $solicitud->setDireccion($Direccion);
+        $solicitud->setCp($CP);
+        $solicitud->setSexo($Sexo);
+        $solicitud->setFechaNacimiento($FechaNacimiento);
+        $solicitud->setTutorLegal($TutorLegal);
+        $solicitud->setLocalidad($Localidad);
+        $solicitud->setTelefono1($Telefono1);
+        //$solicitud->setTelefono2($Telefono2);
+        $solicitud->setProvincia($Provincia);
+        //$solicitud->setDescripcionSolicitud($DescripcionSolicitud);
+        //$solicitud->setOtros($Otros);
+        $solicitud->setLocalizador($Localizador);
+        $solicitud->setAnulado($anulado);
+        $solicitud->setGestionado($gestionado);
+
+        //var_dump($solicitud);
+        //Modelo Datos Solicitud Clase Dirigida
+        $solClase->setTitular($Titular);
+        $solClase->setIban($IBAN);
+        $solClase->setEntidad($Entidad);
+        $solClase->setOficina($Oficina);
+        $solClase->setDigitoControl($DigitoControl);
+        $solClase->setCuenta($Cuenta);
+        //var_dump($solClase);
+        //Modelo Datos Actividadsolicitudclasedirigida
+        $a = explode(',',$actividad);
+		
+
+        //Inicio Transaccion
+        //try {
+            //$this->con->beginTransaction();
+            $result1 = $solicitud->insertIntoDatabase($this->con);
+            $solClase->setIdSolicitud($solicitud->getIdSolicitud());
+            $result2 = $solClase->insertIntoDatabase($this->con);
+			
+
+            //for($i=0;$a[$i];$i++){
+            for($i=0;$i<count($a);$i++){
+                $act = new ActividadsolicitudclasedirigidaModel();
+                $act->setIdActividad($a[$i]);
+                $act->setIdSolicitud($solClase->getIdSolicitud());
+                $result3 = $act->insertIntoDatabase($this->con);
+            }
+            //$this->con->commit();
+        //} catch (Exception $e) {
+            //$this->con->rollBack();
+        //    echo "Fallo: " . $e->getMessage();
+        //}
+
+        if (count($result1) == 1 && count($result2) == 1 && count($result3) == 1) {
+
+            $respuesta['estado'] = 'correcto';
+            $respuesta['solicitud']['IdSolicitud'] = $solicitud->getIdSolicitud();
+            $respuesta['solicitud']['Localizador'] = $solicitud->getLocalizador();
+            $respuesta['msg'] = 'solicitud creada correctamente';
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        } else
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(7)), 400);
+    }
+    
+    private function codigoQR() {
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+
+        $Localizador = $this->datosPeticion['Localizador'];
+        $Nombre = html_entity_decode($this->datosPeticion['Nombre']);
+        $Apellidos = html_entity_decode($this->datosPeticion['Apellidos']);
+        $EMail = $this->datosPeticion['EMail'];
+
+		var_dump('aqui llego');
+        //set it to writable location, a place for temp generated PNG files
+        $PNG_TEMP_DIR = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'temp' . DIRECTORY_SEPARATOR;
+
+        //html PNG location prefix
+        $PNG_WEB_DIR = '../../Negocio/NegocioAdministrador/temp/';
+
+		var_dump($PNG_WEB_DIR );
+        require_once "../UtilidadesNegocio/phpqrcode/qrlib.php";
+
+        //ofcourse we need rights to create temp dir
+        if (!file_exists($PNG_TEMP_DIR))
+            mkdir($PNG_TEMP_DIR);
+
+
+        $filename = $PNG_TEMP_DIR . '' . $Localizador . '.png';
+        $nom = $Localizador . '.png';
+
+        //echo $filename;
+
+        $data = 'http://vw15115.dinaserver.com/hosting/reservascentro.es-web/sistemareservas/Frontal/Reservas.php';
+
+        //processing form input
+        //remember to sanitize user input in real-life solution !!!
+        $errorCorrectionLevel = 'L';
+        if (isset($_REQUEST['level']) && in_array($_REQUEST['level'], array('L', 'M', 'Q', 'H')))
+            $errorCorrectionLevel = $_REQUEST['level'];
+
+        $matrixPointSize = 10;
+        if (isset($_REQUEST['size']))
+            $matrixPointSize = min(max((int) $_REQUEST['size'], 1), 10);
+
+        // user data
+        //$filename = $PNG_TEMP_DIR.'test'.md5($data.'|'.$errorCorrectionLevel.'|'.$matrixPointSize).'.png';
+        //$filename = $PNG_TEMP_DIR.'test'.md5($data.'|'.$errorCorrectionLevel.'|'.$matrixPointSize).'.png';
+        $resultqr = QRcode::png($data, $filename, $errorCorrectionLevel, $matrixPointSize, 2);
+        
+        $respuesta['codigoQR'] = $resultqr;
+        $respuesta['msg'] = 'codigo qr creado';
+            
+        //echo $PNG_WEB_DIR.$nombre;        
+        $resultEmail = $this->enviarMail($PNG_WEB_DIR . '' . $nom, $Nombre, $Apellidos, $EMail, $Localizador);
+        
+        $respuesta['EMail'] = $resultEmail;
+		
+			
+		if($resultqr != null){
+            $respuesta['estado'] = 'incorrecto';
+            $respuesta['msg'] = 'error creando qr';
+            $code = 500;
+        }else if($resultEmail== null){
+            $respuesta['estado'] = 'incorrecto';
+            $respuesta['msg'] = 'error enviando correo';
+            $code = 500;
+        }else if(resultqr== null && $resultEmail== null){
+            $respuesta['estado'] = 'correcto';
+            $respuesta['msg'] = 'codigo qr generado y enviado por correo';
+            $code = 200;
+        }
+        
+        $this->mostrarRespuesta($this->convertirJson($respuesta),$code);    
+    }
+
+    private function enviarMail($file, $nom, $ape, $Email, $loc) {
+        require("../UtilidadesNegocio/class.phpmailer.php");
+        
+        include 'config.php';
+
+        $mail = new PHPMailer();
+        $mail->Host = $MAIL_HOST;
+		$mail->Username = $MAIL_USERNAME; // SMTP account username
+		$mail->Password = $MAIL_PASS; 
+		
+        $mail->From = $MAIL_FROM; //"mariosgsg@gmail.com";
+        $mail->FromName = $MAIL_NAME; //"Nombre del Remitente";
+        $mail->Subject = "Reserva " . $loc;
+		$remitente = $nom.' '.$ape;
+        $mail->AddAddress($Email, $remitente); //"mariosgsg@gmail.com", "Nombre 01");
+        //$mail->AddAddress("mariosgsg@gmail.com", "Nombre 02");
+        //$mail->AddCC("mariosgsg@gmail.com");
+        //$mail->AddBCC("mariosgsg@gmail.com");
+
+        $body = "Hola <strong>".$nom."</strong><br> La compra se ha realizado con &eacute;xito.<br> Muestra este localizador a la entrada: " . $loc;
+        //$body .= "probando <i>PHPMailer<i>.<br><br>";
+        //$body .= "<font color='red'>Saludos</font>";
+        $mail->Body = $body;
+        $mail->AltBody = "Hola amigo\nprobando PHPMailer\n\nSaludos";
+        //$mail->AddAttachment("temp/localizador.jpg", "codigoQR.jpg");
+        $mail->AddAttachment($file, $loc . '.png'); //"temp/Mario.png", "Mario.png");//"localizador.png");
+        //$mail->AddAttachment($filename, "localizador.png");
+        if(!$mail->Send()) {
+			echo "Mailer Error: " . $mail->ErrorInfo;
+		} else {
+			echo "Message sent!";
+		}
+    }
+
+    private function generarLocalizador($nom, $ape, $fecha, $dni) {
+        return substr($nom, 0, 2) . substr($ape, 0, 2) . str_replace('/', '', substr($fecha, 0, 8)) . str_replace(':', '', substr($fecha, 9, 5)) . $dni;
     }
 }
 

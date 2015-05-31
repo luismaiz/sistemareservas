@@ -82,6 +82,45 @@ class UsuariosBO extends Rest{
         }
         $this->mostrarRespuesta($this->devolverError(2), 204);
     }
+	
+	private function obtenerUsuariosFiltro() {
+        
+        if ($_SERVER['REQUEST_METHOD'] != "POST") {
+            $this->mostrarRespuesta($this->convertirJson($this->devolverError(1)), 405);
+        }
+                
+        $nombre = $this->datosPeticion['NombreUsuario'];
+        
+        $this->con = ConexionBD::getInstance();
+        $sort = array(
+            new DSC(UsuarioModel::FIELD_NOMBREUSUARIO, DSC::ASC)
+        );
+        
+        $usuario = new UsuarioModel();
+        
+        if($nombre != '')
+            $usuario->setNombreUsuario($nombre);
+        
+        $filas = UsuarioModel::findByExample($this->con,$usuario,$sort);
+                                
+        $num = count($filas);
+        if ($num > 0) {
+            $respuesta['estado'] = 'correcto';
+
+            for ($i = 0; $i < $num; $i++) {
+                $array[] = $filas[$i]->toHash();
+            }
+
+            $respuesta['usuarios'] = $array;
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        else
+        {
+            $respuesta['estado'] = 'No se encontraron datos';
+            $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
+        }
+        $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
+    }
 
     private function crearUsuario() {
         if ($_SERVER['REQUEST_METHOD'] != "POST") {
@@ -92,8 +131,8 @@ class UsuariosBO extends Rest{
         $NombreUsuario = $this->datosPeticion['NombreUsuario'];
         $Password = md5($this->datosPeticion['Password']);
         $TipoUsuario = $this->datosPeticion['TipoUsuario'];
-        date_default_timezone_set("Europe/Madrid");
-        $FechaAlta = date("y/m/d H:i:s");
+        $FechaAlta =date("Y-m-d");
+        $FechaBaja =null;
 
         $this->con = ConexionBD::getInstance();
         $usuario = new UsuarioModel();
@@ -102,6 +141,7 @@ class UsuariosBO extends Rest{
         $usuario->setPassword($Password);
         $usuario->setTipoUsuario($TipoUsuario);
         $usuario->setFechaAlta($FechaAlta);
+        $usuario->setFechaBaja($FechaBaja);
 
         $result = $usuario->insertIntoDatabase($this->con);
 
@@ -125,27 +165,22 @@ class UsuariosBO extends Rest{
             $NombreUsuario = $this->datosPeticion['NombreUsuario'];
             $Password = $this->datosPeticion['Password'];
             $TipoUsuario = $this->datosPeticion['TipoUsuario'];
-
-            date_default_timezone_set("Europe/Madrid");
-            $Fecha = date("y/m/d H:i:s");
+            $FechaAlta =date("Y-m-d");
+                        
 
             if (!empty($idUsuario)) {
                 $this->con = ConexionBD::getInstance();
                 $usuario = new UsuarioModel();
-
-                $usuario->setIdUsuario($idUsuario);
-                $usuario->setFechaBaja($Fecha);
-
-                $resultUpdate = $usuario->updateToDatabase($this->con);
+                
+                $fila = $usuario->findById($this->con,$this->datosPeticion['idUsuario']);
 
                 $usuario->setIdUsuario($idUsuario);
                 $usuario->setNombreUsuario($NombreUsuario);
                 $usuario->setPassword($Password);
-                $usuario->setTipoUsuario($TipoUsuario);
-                $usuario->setFechaAlta($Fecha);
-
-                $resultInsert = $usuario->insertIntoDatabase($this->con);
-
+                $usuario->setFechaAlta($fila->getFechaAlta());
+                $usuario->setFechaBaja($fila->getFechaBaja());
+                
+                $resultUpdate = $usuario->updateToDatabase($this->con);
                 if (count($resultUpdate) == 1 && count($resultInsert) == 1) {
                     $resp = array('estado' => "correcto", "msg" => "precio actualizado");
                     $this->mostrarRespuesta($this->convertirJson($resp), 200);
@@ -184,12 +219,12 @@ class UsuariosBO extends Rest{
             $respuesta['usuario']['NombreUsuario'] = $fila->getNombreUsuario();
             $respuesta['usuario']['Password'] = $fila->getPassword();
             $respuesta['usuario']['TipoUsuario'] = $fila->getTipoUsuario();
-            $respuesta['usuario']['FechaAlta'] = $fila->getFechaAlta();
-            $respuesta['usuario']['FechaBaja'] = $fila->getFechaBaja();
+            $respuesta['usuario']['FechaAlta'] = date("d-m-Y",strtotime($fila->getFechaAlta()));
+            $respuesta['usuario']['FechaBaja'] = date("d-m-Y",strtotime($fila->getFechaBaja()));
             $this->mostrarRespuesta($this->convertirJson($respuesta), 200);
         }
         $this->mostrarRespuesta($this->convertirJson($this->devolverError(3)), 400);
     }
 }
-$usuarioBO = new UsuariosBO();
+$usuariosBO = new UsuariosBO();
 $usuariosBO->procesarLLamada();
